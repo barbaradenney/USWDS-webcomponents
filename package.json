@@ -647,7 +647,6 @@
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "dependencies": {},
   "lint-staged": {
     "*.{ts,js}": [
       "eslint --fix",
@@ -668,6 +667,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
+    "@changesets/cli": "^2.29.7",
     "@cypress/vite-dev-server": "^7.0.0",
     "@fullhuman/postcss-purgecss": "^7.0.2",
     "@octokit/rest": "^22.0.0",
@@ -724,6 +724,7 @@
     "start-server-and-test": "^2.0.13",
     "storybook": "^9.1.10",
     "storybook-addon-designs": "^6.3.1",
+    "turbo": "^2.5.8",
     "typescript": "^5.0.2",
     "vite": "^7.1.4",
     "vite-plugin-compression": "^0.5.1",

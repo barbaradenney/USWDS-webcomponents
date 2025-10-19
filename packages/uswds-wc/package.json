@@ -1,0 +1,58 @@
+{
+  "name": "@uswds-wc",
+  "version": "2.0.0",
+  "description": "U.S. Web Design System components as Web Components - Complete Package",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test": "echo 'Tests run in individual packages'",
+    "lint": "echo 'Linting run in individual packages'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@uswds-wc/core": "workspace:*",
+    "@uswds-wc/forms": "workspace:*",
+    "@uswds-wc/navigation": "workspace:*",
+    "@uswds-wc/data-display": "workspace:*",
+    "@uswds-wc/feedback": "workspace:*",
+    "@uswds-wc/actions": "workspace:*",
+    "@uswds-wc/layout": "workspace:*",
+    "@uswds-wc/structure": "workspace:*"
+  },
+  "peerDependencies": {
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "uswds",
+    "web-components",
+    "custom-elements",
+    "lit",
+    "design-system",
+    "government",
+    "accessibility",
+    "typescript"
+  ],
+  "author": "Barbara Miles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
+    "directory": "packages/uswds-wc"
+  },
+  "homepage": "https://barbaradenney.github.io/USWDS-webcomponents/"
+}

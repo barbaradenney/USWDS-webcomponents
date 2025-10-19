@@ -1,0 +1,94 @@
+{
+  "name": "uswds-webcomponents-monorepo",
+  "version": "2.0.0",
+  "private": true,
+  "description": "U.S. Web Design System components as Web Components using Lit Element - Monorepo",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "// MONOREPO COMMANDS": "",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "clean": "turbo clean && rm -rf node_modules/.cache",
+
+    "// PACKAGE MANAGEMENT": "",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "turbo build --filter='./packages/*' && changeset publish",
+
+    "// LEGACY SCRIPTS (For Compatibility During Migration)": "",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "build:css": "turbo build:css",
+
+    "// VALIDATION": "",
+    "validate": "turbo typecheck && turbo lint && turbo test",
+    "validate:uswds-compliance": "node scripts/validate/validate-all-components-compliance.js",
+
+    "// UTILITIES": "",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "lit": "^3.3.1"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@uswds/uswds": "^3.13.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-lit": "^1.15.0",
+    "eslint-plugin-wc": "^2.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.4",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "prettier": "^3.6.2",
+    "sass": "^1.93.2",
+    "storybook": "^9.1.13",
+    "@storybook/web-components-vite": "^9.1.13",
+    "@storybook/addon-a11y": "^9.1.13",
+    "@storybook/addon-links": "^9.1.13",
+    "@storybook/addon-docs": "^9.1.13",
+    "turbo": "^2.5.8",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.10",
+    "vitest": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@10.15.0",
+  "keywords": [
+    "uswds",
+    "web-components",
+    "custom-elements",
+    "lit",
+    "design-system",
+    "government",
+    "accessibility",
+    "typescript",
+    "monorepo"
+  ],
+  "author": "Barbara Miles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git"
+  },
+  "homepage": "https://barbaradenney.github.io/USWDS-webcomponents/",
+  "bugs": {
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents/issues"
+  }
+}
