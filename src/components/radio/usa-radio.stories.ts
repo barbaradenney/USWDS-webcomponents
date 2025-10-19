@@ -4,7 +4,7 @@ import './index.ts';
 import type { USARadio } from './usa-radio.js';
 
 const meta: Meta<USARadio> = {
-  title: 'Components/Radio',
+  title: 'Forms/Radio',
   component: 'usa-radio',
   parameters: {
     layout: 'padded',

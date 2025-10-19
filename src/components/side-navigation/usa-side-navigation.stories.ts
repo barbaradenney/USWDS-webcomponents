@@ -4,7 +4,7 @@ import './index.ts';
 import type { USASideNavigation } from './usa-side-navigation.js';
 
 const meta: Meta<USASideNavigation> = {
-  title: 'Components/Side Navigation',
+  title: 'Navigation/Side Navigation',
   component: 'usa-side-navigation',
   parameters: {
     layout: 'padded',

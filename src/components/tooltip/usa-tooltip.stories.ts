@@ -4,7 +4,7 @@ import './index.ts';
 import type { USATooltip } from './usa-tooltip.js';
 
 const meta: Meta<USATooltip> = {
-  title: 'Components/Tooltip',
+  title: 'Feedback/Tooltip',
   component: 'usa-tooltip',
   parameters: {
     layout: 'padded',

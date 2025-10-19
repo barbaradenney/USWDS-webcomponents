@@ -5,7 +5,7 @@ import '../identifier/index.ts';
 import type { USAFooter, FooterSection } from './usa-footer.js';
 
 const meta: Meta<USAFooter> = {
-  title: 'Components/Footer',
+  title: 'Navigation/Footer',
   component: 'usa-footer',
   parameters: {
     layout: 'padded',

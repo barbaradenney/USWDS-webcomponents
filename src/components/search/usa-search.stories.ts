@@ -4,7 +4,7 @@ import './index.ts';
 import type { USASearch } from './usa-search.js';
 
 const meta: Meta<USASearch> = {
-  title: 'Components/Search',
+  title: 'Actions/Search',
   component: 'usa-search',
   parameters: {
     layout: 'padded',

@@ -4,7 +4,7 @@ import './index.ts';
 import type { USATextarea } from './usa-textarea.js';
 
 const meta: Meta<USATextarea> = {
-  title: 'Components/Textarea',
+  title: 'Forms/Textarea',
   component: 'usa-textarea',
   parameters: {
     layout: 'padded',

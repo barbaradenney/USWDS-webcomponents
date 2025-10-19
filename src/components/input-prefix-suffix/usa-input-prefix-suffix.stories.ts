@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAInputPrefixSuffix } from './usa-input-prefix-suffix.js';
 
 const meta: Meta<USAInputPrefixSuffix> = {
-  title: 'Components/Input Prefix Suffix',
+  title: 'Forms/Input Prefix Suffix',
   component: 'usa-input-prefix-suffix',
   parameters: {
     layout: 'padded',

@@ -4,7 +4,7 @@ import './index.js';
 import type { USAValidation } from './usa-validation.js';
 
 const meta: Meta<USAValidation> = {
-  title: 'Components/Validation',
+  title: 'Forms/Validation',
   component: 'usa-validation',
   parameters: {
     layout: 'padded',

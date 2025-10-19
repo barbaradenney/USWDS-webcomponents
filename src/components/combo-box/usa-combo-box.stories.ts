@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAComboBox } from './usa-combo-box.js';
 
 const meta: Meta<USAComboBox> = {
-  title: 'Components/Combo Box',
+  title: 'Forms/Combo Box',
   component: 'usa-combo-box',
   decorators: [
     (story) => html`

@@ -5,7 +5,7 @@ import '../icon/index.ts';
 import type { USALink } from './usa-link.js';
 
 const meta: Meta<USALink> = {
-  title: 'Components/Link',
+  title: 'Actions/Link',
   component: 'usa-link',
   parameters: {
     layout: 'padded',

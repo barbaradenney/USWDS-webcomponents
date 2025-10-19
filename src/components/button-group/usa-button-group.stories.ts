@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAButtonGroup } from './usa-button-group.js';
 
 const meta: Meta<USAButtonGroup> = {
-  title: 'Components/Button Group',
+  title: 'Actions/Button Group',
   component: 'usa-button-group',
   parameters: {
     layout: 'padded',

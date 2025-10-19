@@ -4,7 +4,7 @@ import './index.ts';
 import type { USATimePicker } from './usa-time-picker.js';
 
 const meta: Meta<USATimePicker> = {
-  title: 'Components/Time Picker',
+  title: 'Forms/Time Picker',
   component: 'usa-time-picker',
   parameters: {
     layout: 'padded',

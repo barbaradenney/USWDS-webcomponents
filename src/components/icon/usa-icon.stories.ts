@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAIcon } from './usa-icon.js';
 
 const meta: Meta<USAIcon> = {
-  title: 'Components/Icon',
+  title: 'Data Display/Icon',
   component: 'usa-icon',
   parameters: {
     layout: 'padded',

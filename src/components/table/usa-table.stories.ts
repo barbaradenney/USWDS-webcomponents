@@ -4,7 +4,7 @@ import './index.ts';
 import type { USATable, TableRow } from './usa-table.js';
 
 const meta: Meta<USATable> = {
-  title: 'Components/Table',
+  title: 'Data Display/Table',
   component: 'usa-table',
   parameters: {
     layout: 'padded',

@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAStepIndicator } from './usa-step-indicator.js';
 
 const meta: Meta<USAStepIndicator> = {
-  title: 'Components/Step Indicator',
+  title: 'Layout/Step Indicator',
   component: 'usa-step-indicator',
   parameters: {
     layout: 'padded',

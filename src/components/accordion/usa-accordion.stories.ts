@@ -52,7 +52,7 @@ const sampleItems: AccordionItem[] = [
 ];
 
 const meta: Meta<USAAccordion> = {
-  title: 'Components/Accordion',
+  title: 'Structure/Accordion',
   component: 'usa-accordion',
   parameters: {
     layout: 'padded',

@@ -4,7 +4,7 @@ import './index.ts';
 import type { USACheckbox } from './usa-checkbox.js';
 
 const meta: Meta<USACheckbox> = {
-  title: 'Components/Checkbox',
+  title: 'Forms/Checkbox',
   component: 'usa-checkbox',
   parameters: {
     layout: 'padded',

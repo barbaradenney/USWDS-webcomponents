@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAPagination } from './usa-pagination.js';
 
 const meta: Meta<USAPagination> = {
-  title: 'Components/Pagination',
+  title: 'Navigation/Pagination',
   component: 'usa-pagination',
   parameters: {
     layout: 'padded',

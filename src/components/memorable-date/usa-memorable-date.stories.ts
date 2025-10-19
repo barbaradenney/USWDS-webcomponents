@@ -4,7 +4,7 @@ import './index.js';
 import type { USAMemorableDate } from './usa-memorable-date.js';
 
 const meta: Meta<USAMemorableDate> = {
-  title: 'Components/Memorable Date',
+  title: 'Forms/Memorable Date',
   component: 'usa-memorable-date',
   parameters: {
     layout: 'padded',

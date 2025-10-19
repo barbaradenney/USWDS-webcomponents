@@ -4,7 +4,7 @@ import './index.ts';
 import type { USATag } from './usa-tag.js';
 
 const meta: Meta<USATag> = {
-  title: 'Components/Tag',
+  title: 'Data Display/Tag',
   component: 'usa-tag',
   parameters: {
     layout: 'padded',

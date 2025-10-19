@@ -4,7 +4,7 @@ import './index.ts';
 import type { USACharacterCount } from './usa-character-count.js';
 
 const meta: Meta<USACharacterCount> = {
-  title: 'Components/Character Count',
+  title: 'Forms/Character Count',
   component: 'usa-character-count',
   parameters: {
     layout: 'padded',

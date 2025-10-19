@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAIdentifier } from './usa-identifier.js';
 
 const meta: Meta<USAIdentifier> = {
-  title: 'Components/Identifier',
+  title: 'Layout/Identifier',
   component: 'usa-identifier',
   parameters: {
     layout: 'padded',

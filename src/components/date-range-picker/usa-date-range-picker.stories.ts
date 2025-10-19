@@ -4,7 +4,7 @@ import './index.ts';
 import type { USADateRangePicker } from './usa-date-range-picker.js';
 
 const meta: Meta<USADateRangePicker> = {
-  title: 'Components/Date Range Picker',
+  title: 'Forms/Date Range Picker',
   component: 'usa-date-range-picker',
   parameters: {
     layout: 'padded',

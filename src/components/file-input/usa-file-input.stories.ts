@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAFileInput } from './usa-file-input.js';
 
 const meta: Meta<USAFileInput> = {
-  title: 'Components/File Input',
+  title: 'Forms/File Input',
   component: 'usa-file-input',
   parameters: {
     layout: 'padded',

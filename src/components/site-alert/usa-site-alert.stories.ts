@@ -4,7 +4,7 @@ import './index.js';
 import type { USASiteAlert } from './usa-site-alert.js';
 
 const meta: Meta<USASiteAlert> = {
-  title: 'Components/Site Alert',
+  title: 'Feedback/Site Alert',
   component: 'usa-site-alert',
   parameters: {
     layout: 'padded',

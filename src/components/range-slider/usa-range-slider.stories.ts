@@ -4,7 +4,7 @@ import './index.ts';
 import type { USARangeSlider } from './usa-range-slider.js';
 
 const meta: Meta<USARangeSlider> = {
-  title: 'Components/Range Slider',
+  title: 'Forms/Range Slider',
   component: 'usa-range-slider',
   parameters: {
     layout: 'padded',

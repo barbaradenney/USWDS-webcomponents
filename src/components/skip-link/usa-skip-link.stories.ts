@@ -4,7 +4,7 @@ import './index.ts';
 import type { USASkipLink } from './usa-skip-link.js';
 
 const meta: Meta<USASkipLink> = {
-  title: 'Components/Skip Link',
+  title: 'Navigation/Skip Link',
   component: 'usa-skip-link',
   parameters: {
     layout: 'padded',

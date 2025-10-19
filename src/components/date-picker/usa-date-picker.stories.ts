@@ -4,7 +4,7 @@ import './index.ts';
 import type { USADatePicker } from './usa-date-picker.js';
 
 const meta: Meta<USADatePicker> = {
-  title: 'Components/Date Picker',
+  title: 'Forms/Date Picker',
   component: 'usa-date-picker',
   parameters: {
     layout: 'padded',

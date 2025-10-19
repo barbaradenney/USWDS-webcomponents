@@ -4,7 +4,7 @@ import './index.ts';
 import type { USABanner } from './usa-banner.js';
 
 const meta: Meta<USABanner> = {
-  title: 'Components/Banner',
+  title: 'Feedback/Banner',
   component: 'usa-banner',
   parameters: {
     layout: 'padded',

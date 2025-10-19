@@ -4,7 +4,7 @@ import './index.ts';
 import type { USATextInput } from './usa-text-input.js';
 
 const meta: Meta<USATextInput> = {
-  title: 'Components/Text Input',
+  title: 'Forms/Text Input',
   component: 'usa-text-input',
   parameters: {
     layout: 'padded',

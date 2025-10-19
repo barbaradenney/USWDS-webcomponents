@@ -6,7 +6,7 @@ import type { USAInPageNavigation } from './usa-in-page-navigation.js';
 // Component now uses USWDS auto-generation - no manual items needed!
 
 const meta: Meta<USAInPageNavigation> = {
-  title: 'Components/In-Page Navigation',
+  title: 'Navigation/In-Page Navigation',
   component: 'usa-in-page-navigation',
   parameters: {
     layout: 'fullscreen', // Changed from 'padded' to enable sticky positioning in scroll container

@@ -4,7 +4,7 @@ import './index.ts';
 import type { USASelect } from './usa-select.js';
 
 const meta: Meta<USASelect> = {
-  title: 'Components/Select',
+  title: 'Forms/Select',
   component: 'usa-select',
   parameters: {
     layout: 'padded',

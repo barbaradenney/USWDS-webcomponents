@@ -4,7 +4,7 @@ import './index.js';
 import type { USAList } from './usa-list.js';
 
 const meta: Meta<USAList> = {
-  title: 'Components/List',
+  title: 'Data Display/List',
   component: 'usa-list',
   parameters: {
     layout: 'padded',

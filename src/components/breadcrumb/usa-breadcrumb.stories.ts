@@ -4,7 +4,7 @@ import './index.ts';
 import type { USABreadcrumb, BreadcrumbItem } from './usa-breadcrumb.js';
 
 const meta: Meta<USABreadcrumb> = {
-  title: 'Components/Breadcrumb',
+  title: 'Navigation/Breadcrumb',
   component: 'usa-breadcrumb',
   parameters: {
     layout: 'padded',

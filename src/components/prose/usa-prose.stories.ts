@@ -4,7 +4,7 @@ import './index.js';
 import type { USAProse } from './usa-prose.js';
 
 const meta: Meta<USAProse> = {
-  title: 'Components/Prose',
+  title: 'Layout/Prose',
   component: 'usa-prose',
   parameters: {
     layout: 'padded',

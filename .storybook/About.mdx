@@ -78,61 +78,80 @@ Components follow web standards:
 
 ## 🎨 Component Categories
 
-### Layout Components
-- **Section** - Page sections with variants
-- **Prose** - Long-form content styling
-- **Card** - Content cards with media support
-- **Collection** - Content listing with rich metadata
+All 45 components are organized into 7 logical categories that align with the package structure:
 
-### Navigation Components
-- **Header** - Site-wide navigation with mobile menu
-- **Footer** - Government-compliant footer layouts
-- **Side Navigation** - Hierarchical navigation menus
-- **Breadcrumb** - Location breadcrumbs
-- **In-Page Navigation** - Table of contents navigation
-- **Pagination** - Multi-page navigation
-- **Skip Link** - Accessibility skip navigation
+### 📝 Forms (15 components)
+Form controls and data entry components for collecting user input.
 
-### Form Components
 - **Text Input** - Single-line text input with validation
 - **Textarea** - Multi-line text input with character count
-- **Select** - Dropdown selection
 - **Checkbox** - Single and grouped checkboxes
 - **Radio** - Radio button groups
-- **Date Picker** - Calendar date selection
-- **Time Picker** - Time selection with dropdown
-- **Date Range Picker** - Start/end date selection
+- **Select** - Dropdown selection
 - **File Input** - File upload with drag-and-drop
-- **Combo Box** - Autocomplete selection
-- **Character Count** - Text length validation
-- **Input Prefix/Suffix** - Input field enhancements
+- **Date Picker** - Calendar date selection
+- **Date Range Picker** - Start/end date selection
+- **Time Picker** - Time selection with dropdown
 - **Memorable Date** - Month/Day/Year date input
+- **Combo Box** - Autocomplete selection
 - **Range Slider** - Numeric range selection
+- **Character Count** - Text length validation
 - **Validation** - Form validation messages
+- **Input Prefix/Suffix** - Input field enhancements
 
-### Interactive Components
-- **Accordion** - Expandable content sections
-- **Modal** - Dialog overlays
-- **Tooltip** - Contextual information popups
-- **Button** - Action buttons with variants
-- **Button Group** - Grouped button actions
-- **Banner** - Government website identifier
-- **Site Alert** - Site-wide notifications
-- **Alert** - Contextual user alerts
-- **Menu** - Dropdown menus
+### 🧭 Navigation (8 components)
+Site navigation and wayfinding components for helping users move through your application.
 
-### Display Components
-- **Table** - Sortable data tables
-- **Tag** - Content labels and filters
-- **Icon** - SVG icon system
-- **Link** - Styled hyperlinks
-- **List** - Styled lists (ordered/unordered)
-- **Step Indicator** - Multi-step process visualization
-- **Process List** - Step-by-step instructions
-- **Summary Box** - Key information highlighting
-- **Identifier** - Agency identification
-- **Search** - Search input component
+- **Header** - Site-wide navigation with mobile menu
+- **Footer** - Government-compliant footer layouts
+- **Breadcrumb** - Location breadcrumbs
+- **Pagination** - Multi-page navigation
+- **Side Navigation** - Hierarchical navigation menus
+- **In-Page Navigation** - Table of contents navigation
+- **Skip Link** - Accessibility skip navigation
 - **Language Selector** - Language selection dropdown
+
+### 📊 Data Display (8 components)
+Components for displaying information, data, and content to users.
+
+- **Table** - Sortable data tables with accessibility
+- **Collection** - Content listing with rich metadata
+- **Card** - Content cards with media support
+- **List** - Styled lists (ordered/unordered)
+- **Icon List** - Lists with icon prefixes
+- **Summary Box** - Key information highlighting
+- **Tag** - Content labels and filters
+- **Icon** - SVG icon system from USWDS library
+
+### 💬 Feedback (5 components)
+User feedback, alerts, and notification components.
+
+- **Alert** - Contextual user alerts (info, warning, error, success)
+- **Site Alert** - Site-wide emergency notifications
+- **Modal** - Dialog overlays and modals
+- **Tooltip** - Contextual information popups
+- **Banner** - Official government website identifier
+
+### ⚡ Actions (4 components)
+Interactive elements and user action components.
+
+- **Button** - Action buttons with variants (primary, secondary, outline)
+- **Button Group** - Grouped button actions
+- **Link** - Styled hyperlinks with variants
+- **Search** - Search input component
+
+### 📐 Layout (4 components)
+Page structure and content organization components.
+
+- **Prose** - Long-form content styling
+- **Process List** - Step-by-step instructions
+- **Step Indicator** - Multi-step process visualization
+- **Identifier** - Agency identification footer
+
+### 🗂️ Structure (1 component)
+Content structure and organization component.
+
+- **Accordion** - Expandable/collapsible content sections
 
 ## 🔧 Technology Stack
 
@@ -173,11 +192,22 @@ npm install uswds-webcomponents
 
 ### Usage
 ```javascript
-// Auto-registration (imports all components)
+// Import all components
 import 'uswds-webcomponents';
 
-// Individual component import (tree-shakeable)
-import { USAButton } from 'uswds-webcomponents/components/button';
+// Import by category (tree-shakeable)
+import 'uswds-webcomponents/forms';        // All 15 form components
+import 'uswds-webcomponents/navigation';   // All 8 navigation components
+import 'uswds-webcomponents/actions';      // All 4 action components
+
+// Import individual components
+import 'uswds-webcomponents/components/button';
+import 'uswds-webcomponents/forms/text-input';
+import 'uswds-webcomponents/navigation/header';
+
+// Named imports for TypeScript
+import { USAButton, USAButtonGroup } from 'uswds-webcomponents/actions';
+import { USATextInput, USACheckbox } from 'uswds-webcomponents/forms';
 ```
 
 ## 🎯 100% USWDS Compliance Achievement

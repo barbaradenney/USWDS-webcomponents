@@ -4,7 +4,7 @@ import './index.ts';
 import type { USALanguageSelector, LanguageOption } from './usa-language-selector.js';
 
 const meta: Meta<USALanguageSelector> = {
-  title: 'Components/Language Selector',
+  title: 'Navigation/Language Selector',
   component: 'usa-language-selector',
   decorators: [
     (story) => html`

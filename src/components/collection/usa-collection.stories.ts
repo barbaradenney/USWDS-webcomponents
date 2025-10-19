@@ -4,7 +4,7 @@ import './index.ts';
 import type { USACollection } from './usa-collection.js';
 
 const meta: Meta<USACollection> = {
-  title: 'Components/Collection',
+  title: 'Data Display/Collection',
   component: 'usa-collection',
   parameters: {
     layout: 'padded',

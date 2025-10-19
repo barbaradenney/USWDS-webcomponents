@@ -4,7 +4,7 @@ import './index.ts';
 import type { USACard } from './usa-card.js';
 
 const meta: Meta<USACard> = {
-  title: 'Components/Card',
+  title: 'Data Display/Card',
   component: 'usa-card',
   parameters: {
     layout: 'padded',

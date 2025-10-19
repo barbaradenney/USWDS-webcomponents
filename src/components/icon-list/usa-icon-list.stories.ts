@@ -5,7 +5,7 @@ import '../icon/index.ts';
 import type { USAIconList } from './usa-icon-list.js';
 
 const meta: Meta<USAIconList> = {
-  title: 'Components/Icon List',
+  title: 'Data Display/Icon List',
   component: 'usa-icon-list',
   parameters: {
     layout: 'padded',

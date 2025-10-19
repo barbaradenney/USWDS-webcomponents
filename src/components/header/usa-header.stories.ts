@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAHeader, NavItem } from './usa-header.js';
 
 const meta: Meta<USAHeader> = {
-  title: 'Components/Header',
+  title: 'Navigation/Header',
   component: 'usa-header',
   parameters: {
     layout: 'padded',

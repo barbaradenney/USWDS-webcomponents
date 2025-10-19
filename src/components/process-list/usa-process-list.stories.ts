@@ -4,7 +4,7 @@ import './index.ts';
 import type { USAProcessList } from './usa-process-list.js';
 
 const meta: Meta<USAProcessList> = {
-  title: 'Components/Process List',
+  title: 'Layout/Process List',
   component: 'usa-process-list',
   parameters: {
     layout: 'padded',

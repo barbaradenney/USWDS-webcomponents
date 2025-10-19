@@ -4,7 +4,7 @@ import './index.js';
 import type { USASummaryBox } from './usa-summary-box.js';
 
 const meta: Meta<USASummaryBox> = {
-  title: 'Components/Summary Box',
+  title: 'Data Display/Summary Box',
   component: 'usa-summary-box',
   parameters: {
     layout: 'padded',

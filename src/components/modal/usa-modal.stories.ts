@@ -4,7 +4,7 @@ import './index.js';
 import type { USAModal } from './usa-modal.js';
 
 const meta: Meta<USAModal> = {
-  title: 'Components/Modal',
+  title: 'Feedback/Modal',
   component: 'usa-modal',
   parameters: {
     layout: 'padded',
