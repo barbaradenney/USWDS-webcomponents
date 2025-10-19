@@ -15,29 +15,57 @@
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
     },
+    "./forms": {
+      "import": "./dist/forms/index.js",
+      "types": "./dist/forms/index.d.ts"
+    },
     "./forms/*": {
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
+    },
+    "./navigation": {
+      "import": "./dist/navigation/index.js",
+      "types": "./dist/navigation/index.d.ts"
     },
     "./navigation/*": {
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
     },
+    "./data-display": {
+      "import": "./dist/data-display/index.js",
+      "types": "./dist/data-display/index.d.ts"
+    },
     "./data-display/*": {
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
+    },
+    "./feedback": {
+      "import": "./dist/feedback/index.js",
+      "types": "./dist/feedback/index.d.ts"
     },
     "./feedback/*": {
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
     },
+    "./actions": {
+      "import": "./dist/actions/index.js",
+      "types": "./dist/actions/index.d.ts"
+    },
     "./actions/*": {
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
     },
+    "./layout": {
+      "import": "./dist/layout/index.js",
+      "types": "./dist/layout/index.d.ts"
+    },
     "./layout/*": {
       "import": "./dist/components/*.js",
       "types": "./dist/components/*.d.ts"
+    },
+    "./structure": {
+      "import": "./dist/structure/index.js",
+      "types": "./dist/structure/index.d.ts"
     },
     "./structure/*": {
       "import": "./dist/components/*.js",

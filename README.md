@@ -217,6 +217,18 @@ import 'uswds-webcomponents/components/button';
 import 'uswds-webcomponents/components/alert';
 import 'uswds-webcomponents/components/modal';
 
+// Import by category (smaller bundles than full import)
+import 'uswds-webcomponents/forms';        // All form components
+import 'uswds-webcomponents/navigation';   // All navigation components
+
+// Import individual components from categories
+import 'uswds-webcomponents/forms/text-input';
+import 'uswds-webcomponents/navigation/header';
+
+// Named imports for TypeScript (side-effect free)
+import { USAButton, USAAlert } from 'uswds-webcomponents/actions';
+import { USATextInput, USACheckbox } from 'uswds-webcomponents/forms';
+
 // Components will automatically import their required styles
 ```
 
@@ -244,9 +256,15 @@ Form controls and data entry components
 - **usa-input-prefix-suffix** - Input with prefix/suffix labels
 
 ```javascript
-// Category import (future-ready)
+// Import all forms components at once
+import 'uswds-webcomponents/forms';
+
+// Or import individual components
 import 'uswds-webcomponents/forms/text-input';
 import 'uswds-webcomponents/forms/checkbox';
+
+// Named imports for TypeScript
+import { USATextInput, USACheckbox, USASelect } from 'uswds-webcomponents/forms';
 ```
 
 ### 🧭 Navigation (8 components)
@@ -262,8 +280,15 @@ Site navigation and wayfinding components
 - **usa-language-selector** - Language selection dropdown
 
 ```javascript
+// Import all navigation components
+import 'uswds-webcomponents/navigation';
+
+// Or import individual components
 import 'uswds-webcomponents/navigation/header';
 import 'uswds-webcomponents/navigation/footer';
+
+// Named imports
+import { USAHeader, USAFooter, USABreadcrumb } from 'uswds-webcomponents/navigation';
 ```
 
 ### 📊 Data Display (8 components)
@@ -279,8 +304,15 @@ Components for displaying information and data
 - **usa-icon** - SVG icons from USWDS library
 
 ```javascript
+// Import all data display components
+import 'uswds-webcomponents/data-display';
+
+// Or import individual components
 import 'uswds-webcomponents/data-display/table';
 import 'uswds-webcomponents/data-display/card';
+
+// Named imports
+import { USATable, USACard, USATag, USAIcon } from 'uswds-webcomponents/data-display';
 ```
 
 ### 💬 Feedback (5 components)
@@ -293,8 +325,15 @@ User feedback, alerts, and notifications
 - **usa-banner** - Official government website banner
 
 ```javascript
+// Import all feedback components
+import 'uswds-webcomponents/feedback';
+
+// Or import individual components
 import 'uswds-webcomponents/feedback/alert';
 import 'uswds-webcomponents/feedback/modal';
+
+// Named imports
+import { USAAlert, USAModal, USATooltip, USABanner } from 'uswds-webcomponents/feedback';
 ```
 
 ### ⚡ Actions (4 components)
@@ -306,8 +345,15 @@ Interactive elements and user actions
 - **usa-search** - Search input field
 
 ```javascript
+// Import all action components
+import 'uswds-webcomponents/actions';
+
+// Or import individual components
 import 'uswds-webcomponents/actions/button';
 import 'uswds-webcomponents/actions/search';
+
+// Named imports
+import { USAButton, USAButtonGroup, USALink, USASearch } from 'uswds-webcomponents/actions';
 ```
 
 ### 📐 Layout (4 components)
@@ -319,8 +365,15 @@ Page structure and content organization
 - **usa-identifier** - Site identifier with agency info
 
 ```javascript
+// Import all layout components
+import 'uswds-webcomponents/layout';
+
+// Or import individual components
 import 'uswds-webcomponents/layout/prose';
 import 'uswds-webcomponents/layout/step-indicator';
+
+// Named imports
+import { USAProse, USAProcessList, USAStepIndicator, USAIdentifier } from 'uswds-webcomponents/layout';
 ```
 
 ### 🗂️ Structure (1 component)
@@ -329,7 +382,14 @@ Content structure and organization
 - **usa-accordion** - Expandable/collapsible sections
 
 ```javascript
+// Import structure components
+import 'uswds-webcomponents/structure';
+
+// Or import individual component
 import 'uswds-webcomponents/structure/accordion';
+
+// Named import
+import { USAAccordion } from 'uswds-webcomponents/structure';
 ```
 
 ### 📚 Complete Reference

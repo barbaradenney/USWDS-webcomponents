@@ -87,6 +87,14 @@ export default defineConfig(({ mode }) => ({
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
+        // Category entry points for organized imports
+        'forms/index': resolve(__dirname, 'src/forms/index.ts'),
+        'navigation/index': resolve(__dirname, 'src/navigation/index.ts'),
+        'data-display/index': resolve(__dirname, 'src/data-display/index.ts'),
+        'feedback/index': resolve(__dirname, 'src/feedback/index.ts'),
+        'actions/index': resolve(__dirname, 'src/actions/index.ts'),
+        'layout/index': resolve(__dirname, 'src/layout/index.ts'),
+        'structure/index': resolve(__dirname, 'src/structure/index.ts'),
         // Individual component entries for selective imports
         'components/accordion': resolve(__dirname, 'src/components/accordion/index.ts'),
         'components/button': resolve(__dirname, 'src/components/button/index.ts'),

@@ -361,17 +361,38 @@ import 'uswds-webcomponents/components/alert';
 import 'uswds-webcomponents/components/modal';
 ```
 
-### Category Import (Future)
+### Category Imports (Available Now!)
 ```javascript
-// When packages split in v2.0+
-import '@uswds/forms/text-input';
-import '@uswds/forms/checkbox';
-import '@uswds/feedback/alert';
+// Import all components from a category
+import 'uswds-webcomponents/forms';        // All 15 form components
+import 'uswds-webcomponents/navigation';   // All 8 navigation components
+import 'uswds-webcomponents/data-display'; // All 8 data display components
+import 'uswds-webcomponents/feedback';     // All 5 feedback components
+import 'uswds-webcomponents/actions';      // All 4 action components
+import 'uswds-webcomponents/layout';       // All 4 layout components
+import 'uswds-webcomponents/structure';    // Accordion component
+
+// Import specific components from categories
+import 'uswds-webcomponents/forms/text-input';
+import 'uswds-webcomponents/forms/checkbox';
+import 'uswds-webcomponents/feedback/alert';
+```
+
+### Named Imports (TypeScript)
+```javascript
+// Import class references for TypeScript
+import { USAButton, USAAlert } from 'uswds-webcomponents/actions';
+import { USATextInput, USACheckbox } from 'uswds-webcomponents/forms';
+import { USATable, USACard } from 'uswds-webcomponents/data-display';
+
+// Use in your code
+const button = new USAButton();
+button.variant = 'primary';
 ```
 
 ### All Components
 ```javascript
-import 'uswds-webcomponents'; // Imports all components
+import 'uswds-webcomponents'; // Imports all 45 components
 ```
 
 ---
