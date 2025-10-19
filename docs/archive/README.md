@@ -4,17 +4,17 @@ This directory contains historical documentation that has been superseded by mor
 
 ## Archived Files
 
-### Testing Documentation (Archived 2025-10-13)
+### Testing Documentation (Archived 2025-10-18)
 
-**SKIPPED_TESTS_AUDIT_2025-10-13.md**
+**SKIPPED_TESTS_AUDIT_2025-10-18.md**
 - **Superseded by**: `docs/TESTING_CLEANUP_COMPLETE.md`
 - **Reason**: Historical snapshot showing 117 skipped tests. Testing cleanup is now complete with only ~15-20 acceptable skips remaining.
 
-**SKIPPED_TESTS_RESOLUTION_SUMMARY_2025-10-13.md**
+**SKIPPED_TESTS_RESOLUTION_SUMMARY_2025-10-18.md**
 - **Superseded by**: `docs/TESTING_CLEANUP_COMPLETE.md` and `docs/ZERO_SKIPPED_TESTS_PLAN.md`
 - **Reason**: Historical progress report showing 31/117 tests resolved. Work is now complete.
 
-### Bundle Optimization (Archived 2025-10-13)
+### Bundle Optimization (Archived 2025-10-18)
 
 **BUNDLE_OPTIMIZATION_HISTORY.md**
 - **Superseded by**: `docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md`

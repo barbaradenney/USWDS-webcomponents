@@ -1,6 +1,6 @@
 # Testing Layout and Visual Regressions
 
-**Created**: 2025-10-12
+**Created**: 2025-10-18
 **Purpose**: Document testing strategies to catch CSS/layout issues like the header search cutoff problem
 
 ---

@@ -328,7 +328,7 @@ parameters: {
 
 ## Change Log
 
-### 2025-10-10
+### 2025-10-18
 - ✅ Removed duplicate `preview.js` that was overriding `preview.ts`
 - ✅ Consolidated all preview configuration in TypeScript
 - ✅ Implemented automated iframe resize system using CSS animation technique

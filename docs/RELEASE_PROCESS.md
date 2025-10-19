@@ -395,7 +395,7 @@ Manually update the root CHANGELOG.md:
 
 <!-- Empty for next release -->
 
-## [1.1.0] - 2025-10-12
+## [1.1.0] - 2025-10-18
 
 ### Added
 - New feature A
@@ -452,7 +452,7 @@ Create `release-notes-v{version}.md`:
 ```markdown
 # USWDS Web Components v1.1.0
 
-Released: 2025-10-12
+Released: 2025-10-18
 
 ## 🎉 Highlights
 
@@ -1001,6 +1001,6 @@ npm run validate:bundle-size -- --strict
 
 ---
 
-**Last Updated:** 2025-10-12
+**Last Updated:** 2025-10-18
 
 _This release process is designed to ensure high-quality, reliable releases of the USWDS Web Components library._

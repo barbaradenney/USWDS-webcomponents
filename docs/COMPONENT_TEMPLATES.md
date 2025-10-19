@@ -170,7 +170,7 @@ For components requiring custom behavior mirroring USWDS:
  *
  * @uswds-source https://github.com/uswds/uswds/blob/develop/packages/usa-[component]/src/index.js
  * @uswds-version 3.8.0
- * @last-synced 2025-10-10
+ * @last-synced 2025-10-18
  * @sync-status ✅ UP TO DATE
  *
  * CRITICAL: This file replicates USWDS source code to maintain 100% behavior parity.
