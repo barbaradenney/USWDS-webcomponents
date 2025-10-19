@@ -1,0 +1,379 @@
+import { html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { USWDSBaseComponent } from '../../utils/base-component.js';
+
+// Import official USWDS compiled CSS
+import '../../styles/styles.css';
+
+export interface ComboBoxOption {
+  value: string;
+  label: string;
+  text?: string; // Alias for compatibility
+  disabled?: boolean;
+}
+
+export interface ComboBoxChangeDetail {
+  value: string;
+  displayValue: string;
+}
+
+/**
+ * ARCHITECTURE: Option B (Pure Global Init)
+ * - USWDS is initialized globally via .on(document) in .storybook/preview-head.html
+ * - This component ONLY renders HTML structure
+ * - All behavior managed by USWDS event delegation
+ * - Component properties synced to USWDS-created elements
+ *
+ * USA Combo Box Web Component
+ *
+ * Minimal wrapper around USWDS combo box functionality.
+ * All option filtering, dropdown behavior, and interaction is managed by USWDS JavaScript.
+ * USWDS transforms the simple select element into a full combo box with input and dropdown.
+ *
+ * @element usa-combo-box
+ * @fires combo-box-change - Dispatched when selection changes (via USWDS)
+ *
+ * @see README.mdx - Complete API documentation, usage examples, and implementation notes
+ * @see CHANGELOG.mdx - Component version history and breaking changes
+ * @see TESTING.mdx - Testing documentation and coverage reports
+ *
+ * @uswds-js-reference https://github.com/uswds/uswds/tree/develop/packages/usa-combo-box/src/index.js
+ * @uswds-css-reference https://github.com/uswds/uswds/tree/develop/packages/usa-combo-box/src/styles/_usa-combo-box.scss
+ * @uswds-docs https://designsystem.digital.gov/components/combo-box/
+ * @uswds-guidance https://designsystem.digital.gov/components/combo-box/#guidance
+ * @uswds-accessibility https://designsystem.digital.gov/components/combo-box/#accessibility
+ */
+@customElement('usa-combo-box')
+export class USAComboBox extends USWDSBaseComponent {
+  // CRITICAL: Light DOM implementation for USWDS compatibility
+  protected override createRenderRoot() {
+    return this;
+  }
+
+  static override styles = css`
+    :host {
+      display: block;
+    }
+    :host([hidden]) {
+      display: none;
+    }
+  `;
+
+  @property({ type: String })
+  value = '';
+
+  @property({ type: String })
+  name = '';
+
+  @property({ type: String })
+  inputId = 'uswds-combo-box-select';
+
+  @property({ type: String })
+  selectId = '';
+
+  @property({ type: String })
+  label = '';
+
+  @property({ type: String })
+  hint = '';
+
+  @property({ type: String })
+  placeholder = '';
+
+  @property({ type: Boolean })
+  disabled = false;
+
+  @property({ type: Boolean })
+  required = false;
+
+  @property({ type: String })
+  error = '';
+
+  @property({ type: Boolean })
+  errorState = false;
+
+  @property({ type: Array })
+  options: ComboBoxOption[] = [];
+
+  // Let USWDS handle all state management
+
+  // Store USWDS module for cleanup
+  private comboBoxModule: any = null;
+  private uswdsInitialized = false;
+
+  override connectedCallback() {
+    super.connectedCallback();
+
+    // Set web component managed flag to prevent USWDS auto-initialization conflicts
+    this.setAttribute('data-web-component-managed', 'true');
+  }
+
+  override firstUpdated(changedProperties: Map<string, any>) {
+    super.firstUpdated(changedProperties);
+    // Global USWDS initialization handles all behavior via event delegation
+  }
+
+
+  
+  override shouldUpdate(changedProperties: Map<string, any>): boolean {
+    // Protect USWDS transformations from re-rendering after enhancement
+    const componentElement = this.querySelector('.usa-combo-box');
+    const hasEnhancedElements = componentElement?.querySelector('.usa-combo-box__button') ||
+                               componentElement?.querySelector('.usa-combo-box__wrapper') ||
+                               componentElement?.querySelector('.usa-combo-box__list');
+
+    if (hasEnhancedElements) {
+      // Only allow critical property updates that need DOM changes
+      const criticalProps = ['disabled', 'required', 'readonly', 'value', 'error', 'placeholder'];
+      const hasCriticalChange = Array.from(changedProperties.keys()).some(prop =>
+        criticalProps.includes(prop as string)
+      );
+
+      if (!hasCriticalChange) {
+        return false; // Preserve USWDS transformation
+      }
+    }
+
+    return super.shouldUpdate(changedProperties);
+  }
+
+  override updated(changedProperties: Map<string, any>) {
+    super.updated(changedProperties);
+
+    // Sync state to USWDS if component is already initialized
+    if (this.uswdsInitialized) {
+      const criticalProps = ['disabled', 'required', 'value', 'placeholder'];
+      const hasCriticalChange = Array.from(changedProperties.keys()).some(prop =>
+        criticalProps.includes(prop as string)
+      );
+
+      if (hasCriticalChange) {
+        this.syncStateToUSWDS();
+      }
+    }
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.cleanupUSWDS();
+  }
+
+  
+
+  private async cleanupUSWDS() {
+    try {
+      const { cleanupUSWDSComponent } = await import('../../utils/uswds-loader.js');
+      cleanupUSWDSComponent(this, this.comboBoxModule);
+    } catch (error) {
+      console.warn('⚠️ Combo Box: Error importing cleanup utility:', error);
+    }
+
+    this.comboBoxModule = null;
+    this.uswdsInitialized = false;
+  }
+
+  /**
+   * Ensure required DOM elements exist before USWDS initialization
+   */
+  private ensureRequiredElements() {
+    const comboBoxElement = this.querySelector('.usa-combo-box');
+    if (!comboBoxElement) return;
+
+    // Ensure select element has required attributes
+    const selectElement = comboBoxElement.querySelector('select');
+    if (selectElement) {
+      // Ensure select has proper USWDS class
+      if (!selectElement.classList.contains('usa-select')) {
+        selectElement.classList.add('usa-select');
+      }
+
+      // Ensure select has proper ID for USWDS initialization
+      if (!selectElement.id) {
+        selectElement.id = this.inputId || 'combo-box-select';
+      }
+    }
+
+    console.log('✅ Required elements ensured for combo-box');
+  }
+
+  private syncStateToUSWDS() {
+    // Sync component properties to USWDS-enhanced elements
+    setTimeout(() => {
+      const select = this.querySelector('.usa-select') as HTMLSelectElement;
+      const input = this.querySelector('.usa-combo-box__input') as HTMLInputElement;
+
+      if (this.hasAttribute('debug')) {
+        console.log('🔄 Combo Box: Syncing state to USWDS:', {
+          componentValue: this.value,
+          componentPlaceholder: this.placeholder,
+          selectValue: select?.value,
+          inputValue: input?.value,
+          inputPlaceholder: input?.placeholder,
+          hasSelect: !!select,
+          hasInput: !!input
+        });
+      }
+
+      // Sync to select element (before USWDS enhancement)
+      if (select) {
+        if (this.value !== select.value) {
+          select.value = this.value;
+        }
+        if (this.disabled !== select.disabled) {
+          select.disabled = this.disabled;
+        }
+        if (this.required !== select.required) {
+          select.required = this.required;
+        }
+      }
+
+      // Sync to input element (after USWDS enhancement)
+      if (input) {
+        // Sync placeholder
+        if (this.placeholder && input.placeholder !== this.placeholder) {
+          input.placeholder = this.placeholder;
+          if (this.hasAttribute('debug')) {
+            console.log('📝 Combo Box: Set placeholder to:', this.placeholder);
+          }
+        }
+
+        // Sync disabled state
+        if (this.disabled !== input.disabled) {
+          input.disabled = this.disabled;
+        }
+
+        // Sync required state
+        if (this.required !== input.required) {
+          input.required = this.required;
+        }
+
+        // Sync value - find the label for the selected option
+        const selectedOption = this.options.find(opt => opt.value === this.value);
+        const displayValue = selectedOption?.label || this.value;
+        if (displayValue !== input.value) {
+          input.value = displayValue;
+          // Trigger USWDS to update any related displays
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+    }, 10);
+  }
+
+
+
+
+  private renderError() {
+    if (!this.error) return '';
+    return html`
+      <div class="usa-error-message" id="${this.inputId}-error" role="alert">
+        <span class="usa-sr-only">Error:</span> ${this.error}
+      </div>
+    `;
+  }
+
+  private renderRequiredIndicator() {
+    if (!this.required) return '';
+    return html`<abbr title="required" class="usa-hint usa-hint--required">*</abbr>`;
+  }
+
+  private renderHint() {
+    if (!this.hint) return '';
+    return html`<div class="usa-hint" id="${this.inputId}-hint">${this.hint}</div>`;
+  }
+
+  private renderLabel(selectId: string) {
+    // Always provide a label for accessibility
+    return html`
+      <label class="usa-label" for="${selectId}">
+        ${this.label || 'Combo Box'}
+        ${this.renderRequiredIndicator()}
+      </label>
+    `;
+  }
+
+  private renderPlaceholderOption() {
+    if (!this.placeholder) return '';
+    return html`<option value="">${this.placeholder}</option>`;
+  }
+
+  private renderSelectOption(option: ComboBoxOption) {
+    return html`
+      <option value="${option.value}"
+              ?selected=${this.value === option.value}
+              ?disabled=${option.disabled}>
+        ${option.label}
+      </option>
+    `;
+  }
+
+
+
+  override render() {
+    const formGroupClasses = [
+      'usa-form-group',
+      this.error || this.errorState ? 'usa-form-group--error' : '',
+      this.required ? 'usa-form-group--required' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    // Ensure we always have a valid, unique ID for the select element
+    // Using a more robust ID that's less likely to conflict with USWDS internals
+    const selectId = this.selectId || this.inputId || `uswds-combo-box-${Math.random().toString(36).substr(2, 9)}`;
+
+    const ariaDescribedBy = [
+      this.hint ? `${selectId}-hint` : '',
+      this.error ? `${selectId}-error` : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    // Render simple select structure that USWDS will transform into a combo box
+
+    return html`
+      <div class="${formGroupClasses}">
+        ${this.renderError()}
+        ${this.renderLabel(selectId)}
+        ${this.renderHint()}
+        <div class="usa-combo-box">
+          <select
+            id="${selectId}"
+            name="${this.name}"
+            class="usa-select"
+            .value="${this.value}"
+            ?disabled=${this.disabled}
+            ?required=${this.required}
+            aria-describedby="${ifDefined(ariaDescribedBy || undefined)}"
+          >
+            ${this.renderPlaceholderOption()}
+            ${this.options.map((option) => this.renderSelectOption(option))}
+          </select>
+        </div>
+      </div>
+    `;
+  }
+
+  // Public API methods - delegate to USWDS
+  show() {
+    // USWDS will handle opening the combo box when user interacts
+    const selectElement = this.querySelector('.usa-combo-box select') as HTMLSelectElement;
+    if (selectElement) {
+      selectElement.focus();
+    }
+  }
+
+  hide() {
+    // USWDS will handle closing the combo box
+    const selectElement = this.querySelector('.usa-combo-box select') as HTMLSelectElement;
+    if (selectElement) {
+      selectElement.blur();
+    }
+  }
+
+  updateOptions() {
+    console.log('Combo Box: Update options triggered - requesting re-render');
+    // Trigger re-render to update the select options
+    this.requestUpdate();
+  }
+}
