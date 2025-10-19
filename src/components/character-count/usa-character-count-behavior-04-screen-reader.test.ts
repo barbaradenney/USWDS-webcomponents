@@ -29,7 +29,6 @@ describe('USWDS Character Count - Contract 4: Screen Reader Updates', () => {
     element.remove();
   });
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 
@@ -47,7 +46,6 @@ describe('USWDS Character Count - Contract 4: Screen Reader Updates', () => {
     expect(srStatus?.getAttribute('aria-atomic')).toBe('true');
   });
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 });

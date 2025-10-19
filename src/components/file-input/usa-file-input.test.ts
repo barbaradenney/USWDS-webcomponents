@@ -200,11 +200,9 @@ describe('USAFileInput', () => {
       expect(hint?.id).toBe('test-file-hint');
     });
 
-    // TODO: Requires USWDS file preview rendering - redesign test
   });
 
   describe('File Selection', () => {
-    // TODO: File input mocking doesn't trigger USWDS change handler - needs Cypress test
 
     it('should handle multiple file selection', async () => {
       element.multiple = true;
@@ -221,10 +219,8 @@ describe('USAFileInput', () => {
       expect(element.selectedFiles[1].name).toBe('test2.txt');
     });
 
-    // TODO: Redesign to test via native input, not selectedFiles property
     // selectedFiles property doesn't trigger USWDS preview rendering
 
-    // TODO: Redesign to test via native input interaction
   });
 
   describe('Drag and Drop', () => {
@@ -250,7 +246,6 @@ describe('USAFileInput', () => {
     });
   });
 
-  // TODO: File size formatting is handled by USWDS JS - redesign these tests
 
   describe('Form Integration', () => {
     it('should work within a form', async () => {
@@ -306,11 +301,8 @@ describe('USAFileInput', () => {
     });
   });
 
-  // TODO: Preview display is handled by USWDS JS - redesign these tests
 
-  // TODO: Error handling requires USWDS behavior - test via Cypress
 
-  // TODO: Custom events require USWDS behavior - test via Cypress
 
   describe('Component Lifecycle Stability (CRITICAL)', () => {
     it('should remain in DOM after property updates (not auto-dismiss)', async () => {
@@ -386,9 +378,7 @@ describe('USAFileInput', () => {
     });
   });
 
-  // TODO: Storybook integration requires real file input - test via Cypress
 
-  // TODO: USWDS integration requires real browser - test via Cypress
 
   describe('Accessibility Compliance (CRITICAL)', () => {
     it('should pass comprehensive accessibility tests (same as Storybook)', async () => {

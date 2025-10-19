@@ -721,7 +721,6 @@ describe('USARangeSlider', () => {
       expect(element.parentElement).toBe(originalParent);
     });
 
-    // TODO: USWDS range slider DOM manipulation conflicts with Lit rendering in jsdom
     // Skipped - requires Cypress for USWDS JavaScript slider behavior
     // Coverage: src/components/range-slider/usa-range-slider.component.cy.ts (interaction tests)
 
@@ -813,7 +812,6 @@ describe('USARangeSlider', () => {
       expect(label?.textContent).toContain('Controls Updated Range');
     });
 
-    // TODO: USWDS range slider event handling conflicts with Lit rendering in jsdom
     // Skipped - requires Cypress for USWDS JavaScript event behavior
     // Coverage: src/components/range-slider/usa-range-slider.component.cy.ts (interaction tests)
     describe('JavaScript Implementation Validation', () => {

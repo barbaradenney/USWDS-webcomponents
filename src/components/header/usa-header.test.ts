@@ -221,7 +221,6 @@ describe('USAHeader', () => {
   });
 
   describe('Mobile Menu', () => {
-    // TODO: USWDS header mobile menu behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/header/usa-header.component.cy.ts
 

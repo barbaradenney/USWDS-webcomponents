@@ -87,11 +87,9 @@ describe('Character Count JavaScript Interaction Testing', () => {
   });
 
   describe('🔍 Real Click Behavior Testing', () => {
-    // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/character-count/usa-character-count.component.cy.ts
 
-    // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/character-count/usa-character-count.component.cy.ts
 

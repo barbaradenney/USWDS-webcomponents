@@ -142,7 +142,6 @@ describe('USWDS Combo Box Behavior Contract', () => {
   });
 
   describe('Contract 3: List Display', () => {
-    // TODO: USWDS combo box toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/combo-box/usa-combo-box.component.cy.ts
 

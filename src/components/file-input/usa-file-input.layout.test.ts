@@ -62,11 +62,9 @@ describe('USAFileInput Layout Tests', () => {
     expect(hintIndex, 'Hint should come before file input').toBeLessThan(fileInputIndex);
   });
 
-  // TODO: USWDS file input preview behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: src/components/file-input/usa-file-input.component.cy.ts
 
-  // TODO: USWDS file input preview behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: src/components/file-input/usa-file-input.component.cy.ts
 
@@ -140,7 +138,6 @@ describe('USAFileInput Layout Tests', () => {
       expect(input.classList.contains('usa-file-input')).toBe(true);
     });
 
-    // TODO: USWDS file input preview behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/file-input/usa-file-input.component.cy.ts
 

@@ -228,7 +228,6 @@ describe('USACharacterCount', () => {
       expect(element.value).toBe('User input');
     });
 
-    // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   });
 
@@ -352,7 +351,6 @@ describe('USACharacterCount', () => {
       expect(eventDetail.remaining).toBe(-5);
     });
 
-    // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   });
 
@@ -602,7 +600,6 @@ describe('USACharacterCount', () => {
       expect(element.parentElement).toBe(originalParent);
     });
 
-    // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
 
     it('should maintain DOM presence when switching between input types', async () => {
@@ -695,7 +692,6 @@ describe('USACharacterCount', () => {
       expect(label?.textContent).toContain('Controls Updated Label');
     });
 
-    // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
 
     // NOTE: JavaScript implementation validation moved to browser tests

@@ -210,7 +210,6 @@ describe('USWDS Footer Behavior Contract', () => {
       });
     });
 
-    // TODO: USWDS footer accordion behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/footer/usa-footer.component.cy.ts
 

@@ -293,7 +293,6 @@ describe('USATable', () => {
       });
     });
 
-    // TODO: USWDS table sorting behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/table/usa-table.component.cy.ts (comprehensive sorting tests)
 

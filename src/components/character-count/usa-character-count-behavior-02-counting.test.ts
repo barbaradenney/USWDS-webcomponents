@@ -37,7 +37,6 @@ describe('USWDS Character Count - Contract 2: Character Counting', () => {
     expect(message.textContent).toMatch(/character/i);
   });
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 
@@ -56,7 +55,6 @@ describe('USWDS Character Count - Contract 2: Character Counting', () => {
     expect(message.textContent).toMatch(/50 characters/i);
   });
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 });

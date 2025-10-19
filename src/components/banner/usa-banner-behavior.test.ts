@@ -71,15 +71,12 @@ describe('USWDS Banner Behavior Contract', () => {
       expect(content?.hasAttribute('hidden')).toBe(true);
     });
 
-    // TODO: USWDS banner toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/banner/usa-banner.component.cy.ts
 
-    // TODO: USWDS banner toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/banner/usa-banner.component.cy.ts
 
-    // TODO: USWDS banner toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/banner/usa-banner.component.cy.ts
   });
@@ -102,11 +99,9 @@ describe('USWDS Banner Behavior Contract', () => {
       expect(document.getElementById(contentId!)).not.toBeNull();
     });
 
-    // TODO: USWDS banner toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/banner/usa-banner.component.cy.ts
 
-    // TODO: USWDS banner toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/banner/usa-banner.component.cy.ts
   });
@@ -128,7 +123,6 @@ describe('USWDS Banner Behavior Contract', () => {
       expect(defaultPrevented).toBe(true);
     });
 
-    // TODO: USWDS banner toggle behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/banner/usa-banner.component.cy.ts
   });

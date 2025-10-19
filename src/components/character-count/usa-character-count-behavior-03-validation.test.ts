@@ -29,23 +29,18 @@ describe('USWDS Character Count - Contract 3: Validation States', () => {
     element.remove();
   });
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 
-  // TODO: USWDS character count behavior requires real browser DOM manipulation
   // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
   // Coverage: Already skipped in usa-character-count.test.ts with Cypress coverage
 });

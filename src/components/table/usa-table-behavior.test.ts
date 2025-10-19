@@ -246,7 +246,6 @@ describe('USWDS Table Behavior Contract', () => {
       expect(tbody).not.toBeNull();
     });
 
-    // TODO: USWDS table sorting behavior requires real browser DOM manipulation
     // Skipped - requires Cypress for USWDS JavaScript table sorting behavior
     // Coverage: src/components/table/usa-table.component.cy.ts (sorting tests)
 

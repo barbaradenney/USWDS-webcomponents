@@ -99,7 +99,6 @@ describe('Accordion JavaScript Interaction Testing', () => {
   });
 
   describe('🔍 Real Click Behavior Testing', () => {
-    // TODO: USWDS accordion click behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/accordion/usa-accordion.component.cy.ts (lines 114, 133, 148)
 
@@ -107,13 +106,11 @@ describe('Accordion JavaScript Interaction Testing', () => {
     // This functionality is comprehensively tested in Cypress with real browser behavior
     // See: cypress/component/accordion-interaction.cy.ts lines 193-223
 
-    // TODO: USWDS accordion click behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/accordion/usa-accordion.component.cy.ts (multiselectable tests)
   });
 
   describe('🚨 JavaScript Failure Detection', () => {
-    // TODO: USWDS accordion click behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/accordion/usa-accordion.component.cy.ts
 

@@ -1916,7 +1916,6 @@ describe('USAModal', () => {
       expect(result.details.relationshipsValid).toBe(true);
     });
 
-    // TODO: USWDS modal DOM manipulation conflicts with Lit rendering in jsdom
     // Skipped - requires Cypress for USWDS JavaScript close behavior
     // Coverage: src/components/modal/usa-modal.component.cy.ts (ARIA tests)
 
