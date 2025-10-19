@@ -1,0 +1,498 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Post-Commit System" />
+
+# Post-Commit Automation System
+
+> **Auto-generated on:** 2025-10-19
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+The USWDS Web Components library employs an intelligent post-commit automation system that runs after every commit to maintain documentation freshness, enforce quality policies, and prevent technical debt accumulation. This system operates seamlessly in the background to keep all documentation synchronized with code changes.
+
+## 🎯 Goals
+
+### Documentation Freshness
+- **Auto-update changelogs** - Component changes automatically logged
+- **Sync README files** - Component documentation stays current
+- **Update testing docs** - Test changes reflected in documentation
+- **Zero manual maintenance** - Documentation updates happen automatically
+
+### Quality Enforcement
+- **Discovered issues tracking** - Issues found during `--no-verify` commits must be fixed
+- **Documentation hygiene** - Obsolete docs automatically archived
+- **Prevent debt accumulation** - Issues can't be ignored or forgotten
+- **Enforce fix workflow** - No new work until discovered issues resolved
+
+### Developer Experience
+- **Zero overhead** - Runs automatically, no manual intervention
+- **Intelligent detection** - Only updates what changed
+- **Prevents loops** - Smart recursion detection
+- **Clear feedback** - Informative output at each step
+
+## 🔄 Post-Commit Automation Stages
+
+### Stage 1: Change Detection
+**Purpose:** Identify what type of changes were made in the commit
+
+**Detection Logic:**
+```bash
+# Detect component file changes
+COMPONENT_CHANGES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH |
+  grep "^src/components/" |
+  grep -v -E "(CHANGELOG\.md|TESTING\.md|\.docs\.mdx)" |
+  wc -l)
+
+# Detect test file changes
+TEST_CHANGES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH |
+  grep -E "\.(test|cy|stories)\.ts$" |
+  wc -l)
+
+# Detect documentation changes
+DOCS_CHANGES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH |
+  grep -E "(README\.md|CHANGELOG\.md|TESTING\.md)$" |
+  wc -l)
+```
+
+**Triggers:**
+- Component files changed → Update CHANGELOGs and READMEs
+- Test files changed → Update TESTING.md
+- Documentation changed → Update Storybook docs (currently disabled)
+
+### Stage 2: Automatic CHANGELOG Updates
+**Purpose:** Maintain version history for every component
+
+**When It Runs:**
+- Component TypeScript files modified
+- Component styles modified
+- Component behavior changed
+
+**What It Does:**
+```bash
+# Analyze commit and update changelogs
+node scripts/maintenance/manage-changelogs.js process-commit "$COMMIT_HASH" "$COMMIT_MESSAGE"
+
+# Example CHANGELOG entry generated:
+## [Unreleased]
+
+### Changed
+- Updated button component with new variant support
+- Commit: abc123 - feat(button): add outline variant
+```
+
+**Intelligent Detection:**
+- Parses commit message for conventional commits
+- Identifies affected components
+- Categorizes changes (Added, Changed, Fixed, etc.)
+- Maintains proper Keep a Changelog format
+
+### Stage 3: Automatic README Updates
+**Purpose:** Keep component documentation synchronized with implementation
+
+**When It Runs:**
+- Component properties added/changed
+- Component events added/changed
+- Component methods added/changed
+
+**What It Does:**
+```bash
+# Update README files with latest API
+node scripts/maintenance/manage-readmes.js process-commit "$COMMIT_HASH" "$COMMIT_MESSAGE"
+
+# Updates sections:
+- Properties table
+- Events table
+- Methods table
+- Usage examples
+- Accessibility features
+```
+
+**Smart Updates:**
+- Extracts property info from TypeScript decorators
+- Documents event types from dispatch calls
+- Maintains existing examples and descriptions
+- Preserves custom documentation sections
+
+### Stage 4: Testing Documentation Updates
+**Purpose:** Keep test documentation current with test implementation
+
+**When It Runs:**
+- Test files created/modified
+- Cypress tests added/changed
+- Story files updated
+
+**What It Does:**
+```bash
+# Update TESTING.md files
+node scripts/maintenance/manage-testing-docs.js process-commit "$COMMIT_HASH" "$COMMIT_MESSAGE"
+
+# Documents:
+- Test coverage status
+- Test file locations
+- Testing approach
+- Known testing issues
+```
+
+**Coverage Tracking:**
+- Unit test status
+- Component test status
+- Accessibility test status
+- Visual regression test status
+
+### Stage 5: Automated Documentation Cleanup
+**Purpose:** Prevent documentation accumulation and maintain organization
+
+**When It Runs:**
+- After every commit (unless disabled)
+- When 5+ documents ready for archive
+
+**What It Does:**
+```bash
+# Check archivable doc count
+ARCHIVABLE_COUNT=$(node scripts/maintenance/cleanup-documentation.cjs --dry-run)
+
+# If count > 5, automatically archive
+if [ "$ARCHIVABLE_COUNT" -gt 5 ]; then
+  node scripts/maintenance/cleanup-documentation.cjs
+  git add docs/
+  git commit -m "chore: archive obsolete documentation"
+fi
+```
+
+**Archive Categories:**
+- **TEMPORARY docs** → Archived after 7 days
+- **STATUS docs** → Archived after 60 days
+- **PERMANENT docs** → Never archived
+
+**Example:**
+```
+Before:
+docs/
+├── BUTTON_INVESTIGATION_2025_10_01.md (temp, 8 days old)
+├── TEST_FAILURE_ANALYSIS_2025_09_15.md (status, 35 days old)
+└── ARCHITECTURE_PATTERNS.md (permanent)
+
+After automatic cleanup:
+docs/
+├── ARCHITECTURE_PATTERNS.md (permanent)
+└── archive/
+    └── 2025-10/
+        ├── BUTTON_INVESTIGATION_2025_10_01.md
+        └── TEST_FAILURE_ANALYSIS_2025_09_15.md
+```
+
+### Stage 6: Discovered Issues Policy Enforcement
+**Purpose:** Ensure issues found during `--no-verify` commits get fixed
+
+**When It Runs:**
+- When commit message contains "no-verify"
+- When `--no-verify` flag was used
+
+**What It Does:**
+```bash
+# Generate .git/DISCOVERED_ISSUES.json tracker
+node scripts/validate/generate-discovered-issues.cjs
+
+# Example tracker file:
+{
+  "commit": "abc123",
+  "timestamp": "2025-10-19T12:00:00Z",
+  "message": "fix(header): add aria-label",
+  "issues": [
+    {
+      "type": "validation_failure",
+      "file": "src/components/character-count/usa-character-count.ts",
+      "description": "Missing USWDS JS integration"
+    }
+  ]
+}
+```
+
+**Enforcement:**
+- Next pre-commit hook checks for tracker file
+- If exists, **blocks all new commits** until issues fixed
+- Tracker auto-deletes when validation passes
+- Prevents ignoring validation failures
+
+## 📊 Recursion Prevention
+
+The post-commit hook includes intelligent recursion detection to prevent infinite loops:
+
+### Detection Methods
+
+**1. Commit Message Markers:**
+```bash
+# Skip hook-generated commits
+if echo "$COMMIT_MESSAGE" | grep -q "🤖 Generated by post-commit hook"; then
+  exit 0
+fi
+```
+
+**2. Commit Type Detection:**
+```bash
+# Skip documentation-only commits
+if echo "$COMMIT_MESSAGE" | grep -q "^docs: update component changelogs"; then
+  exit 0
+fi
+
+# Skip cleanup commits
+if echo "$COMMIT_MESSAGE" | grep -q "^chore: archive obsolete documentation"; then
+  exit 0
+fi
+```
+
+**3. --no-verify Flag:**
+```bash
+# All auto-commits use --no-verify
+git commit --no-verify -m "docs: update component changelogs
+
+🤖 Generated by post-commit hook"
+```
+
+## 🚫 Common Post-Commit Scenarios
+
+### 1. Component File Changed
+
+**Scenario:**
+```bash
+git commit -m "feat(button): add new variant"
+```
+
+**Post-Commit Actions:**
+```
+🔄 Post-commit: Updating component changelogs for 1 component file changes...
+📝 Changelogs updated
+📖 Post-commit: Updating component README files for 1 component file changes...
+📖 README files updated
+📝 Staging documentation changes...
+✅ Component documentation updated and committed
+
+# Automatic commit created:
+docs: update component changelogs and READMEs
+
+Automatically updated changelogs and READMEs for components affected by commit: abc123
+
+🤖 Generated by post-commit hook
+```
+
+### 2. Test File Changed
+
+**Scenario:**
+```bash
+git commit -m "test(alert): add accessibility tests"
+```
+
+**Post-Commit Actions:**
+```
+📋 Post-commit: Updating testing documentation for 1 test file changes...
+📋 Testing docs updated
+📝 Staging documentation changes...
+✅ Component documentation updated and committed
+
+# Automatic commit created:
+docs: update component testing documentation
+
+Automatically updated testing docs for test file changes in commit: def456
+
+🤖 Generated by post-commit hook
+```
+
+### 3. Using --no-verify
+
+**Scenario:**
+```bash
+git commit --no-verify -m "fix(header): add aria-label
+
+Note: Used --no-verify due to pre-existing validation failure
+in character-count. Will fix next."
+```
+
+**Post-Commit Actions:**
+```
+🚨 Detected --no-verify commit
+📋 Generating discovered issues tracker...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  IMPORTANT: Fix discovered issues before starting new work
+
+📖 See: CLAUDE.md - Discovered Issues Policy
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Creates .git/DISCOVERED_ISSUES.json
+# Next commit will be blocked until issues fixed
+```
+
+### 4. Documentation Cleanup Triggered
+
+**Scenario:**
+```bash
+# After multiple commits, 6 docs are ready for archive
+git commit -m "feat(modal): improve accessibility"
+```
+
+**Post-Commit Actions:**
+```
+🔄 Post-commit: Updating component changelogs...
+✅ Component documentation updated and committed
+
+🧹 Post-commit: Found 6 docs ready for archive
+   Running automated cleanup...
+📦 Staging archived documentation...
+✅ Documentation cleanup completed and committed
+
+# Two automatic commits created:
+1. docs: update component changelogs
+2. chore: archive obsolete documentation
+```
+
+## 🛠️ Configuration
+
+### Disable Documentation Cleanup
+```bash
+# Temporarily disable for one commit
+SKIP_DOC_CLEANUP=1 git commit -m "feat: add component"
+
+# Set environment variable for session
+export SKIP_DOC_CLEANUP=1
+```
+
+### Adjust Cleanup Threshold
+Edit `.husky/post-commit`:
+```bash
+# Change threshold from 5 to 10
+if [ "$ARCHIVABLE_COUNT" -gt 10 ]; then
+  node scripts/maintenance/cleanup-documentation.cjs
+fi
+```
+
+### Hook Location
+Post-commit hook: `.husky/post-commit`
+
+### Scripts Called
+- `scripts/maintenance/manage-changelogs.js` - CHANGELOG updates
+- `scripts/maintenance/manage-readmes.js` - README updates
+- `scripts/maintenance/manage-testing-docs.js` - TESTING.md updates
+- `scripts/maintenance/cleanup-documentation.cjs` - Documentation cleanup
+- `scripts/validate/generate-discovered-issues.cjs` - Issue tracking
+
+## 📈 Benefits
+
+### For Developers
+- **No manual docs** - Changelogs and READMEs auto-update
+- **No doc debt** - Obsolete docs automatically cleaned
+- **Clear accountability** - Discovered issues must be fixed
+- **Zero overhead** - Everything happens automatically
+
+### For the Project
+- **Always current** - Documentation never drifts from code
+- **Clean repository** - No documentation accumulation
+- **Quality enforcement** - Can't bypass validation permanently
+- **Audit trail** - Complete history of all changes
+
+### For Users
+- **Accurate docs** - Documentation matches current code
+- **Complete history** - Every change documented in changelogs
+- **Reliable testing info** - Test docs stay current
+- **Professional quality** - Well-maintained documentation
+
+## 🔄 Workflow Example
+
+**Complete workflow showing pre-commit and post-commit interaction:**
+
+```bash
+# 1. Make changes to button component
+vim src/components/button/usa-button.ts
+
+# 2. Commit changes
+git commit -m "feat(button): add danger variant"
+
+# PRE-COMMIT runs:
+# ✅ Repository organization
+# ✅ USWDS compliance
+# ✅ Code quality
+# ✅ TypeScript compilation
+# ✅ All 13 validation stages pass
+# ✅ Commit allowed
+
+# POST-COMMIT runs:
+# 🔄 Detects: 1 component file changed
+# 📝 Updates: src/components/button/CHANGELOG.md
+# 📖 Updates: src/components/button/README.md
+# ✅ Creates automatic commit:
+#    "docs: update component changelogs and READMEs"
+
+# 3. Git history now shows:
+# abc123 - feat(button): add danger variant
+# def456 - docs: update component changelogs and READMEs 🤖
+
+# 4. Documentation is automatically current!
+```
+
+## ⚠️ Important Notes
+
+### Recursion Safety
+The post-commit hook is designed to **never cause infinite loops**:
+- Recognizes its own commits
+- Skips documentation-only commits
+- Uses `--no-verify` for auto-commits
+- Has multiple safety checks
+
+### Discovered Issues Enforcement
+When you use `--no-verify`:
+1. Post-commit creates `.git/DISCOVERED_ISSUES.json`
+2. Next pre-commit **blocks all new work**
+3. You **must** fix the issues first
+4. Once fixed, tracker auto-deletes
+5. Normal development resumes
+
+**This prevents the pattern of:**
+```bash
+# Bad workflow (prevented):
+git commit --no-verify -m "quick fix"  # Issues discovered
+git commit -m "new feature"            # ❌ BLOCKED!
+
+# Good workflow (enforced):
+git commit --no-verify -m "quick fix"  # Issues discovered
+git commit -m "fix: resolve issues"    # ✅ Must fix first
+git commit -m "new feature"            # ✅ Now allowed
+```
+
+### Manual Overrides
+If post-commit is causing issues:
+```bash
+# Temporarily disable all hooks
+git commit --no-verify -m "emergency fix"
+
+# Disable just doc cleanup
+SKIP_DOC_CLEANUP=1 git commit -m "feat: add feature"
+```
+
+## 🔧 Troubleshooting
+
+### Post-Commit Runs on Every Commit
+**Expected behavior** - This is by design. The hook intelligently determines what to do based on file changes.
+
+### Automatic Commits Appearing
+**Expected behavior** - Documentation updates create automatic follow-up commits. This keeps docs separate from feature commits.
+
+### DISCOVERED_ISSUES.json Blocking Commits
+**Expected behavior** - Fix the discovered issues before proceeding. See `CLAUDE.md` - Discovered Issues Policy.
+
+### Documentation Cleanup Too Aggressive
+```bash
+# Adjust threshold in .husky/post-commit
+if [ "$ARCHIVABLE_COUNT" -gt 10 ]; then  # Was 5
+  node scripts/maintenance/cleanup-documentation.cjs
+fi
+```
+
+## 📚 Related Documentation
+
+- [Pre-Commit System](./PreCommitSystem.mdx) - Validation that runs before commits
+- [Documentation Lifecycle](../docs/DOCUMENTATION_LIFECYCLE.md) - Complete doc management guide
+- [CLAUDE.md](../CLAUDE.md) - Discovered Issues Policy
+
+---
+
+**The post-commit system ensures documentation stays synchronized with code changes automatically, enforces quality policies, and prevents technical debt accumulation - all without developer intervention.**

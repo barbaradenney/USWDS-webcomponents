@@ -145,7 +145,7 @@ const preview: Preview = {
         order: [
           'Getting Started',
           'Documentation',
-          ['About', 'USWDS Compliance', 'Bundle Optimization', 'CI/CD Pipeline', 'Pre-Commit System', 'Working With Claude'],
+          ['About', 'USWDS Compliance', 'Bundle Optimization', 'CI/CD Pipeline', 'Pre-Commit System', 'Post-Commit System', 'Working With Claude'],
           'Forms',
           'Navigation',
           'Data Display',
