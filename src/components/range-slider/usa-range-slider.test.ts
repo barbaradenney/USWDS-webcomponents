@@ -724,30 +724,6 @@ describe('USARangeSlider', () => {
     // TODO: USWDS range slider DOM manipulation conflicts with Lit rendering in jsdom
     // Skipped - requires Cypress for USWDS JavaScript slider behavior
     // Coverage: src/components/range-slider/usa-range-slider.component.cy.ts (interaction tests)
-    it.skip('should handle drag interactions without removal', async () => {
-      const originalParent = element.parentElement;
-
-      await waitForUpdate(element);
-      const input = element.querySelector('.usa-range') as HTMLInputElement;
-
-      if (input) {
-        // Simulate drag-like interactions
-        for (let i = 0; i <= 100; i += 10) {
-          input.value = i.toString();
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-          await new Promise((resolve) => setTimeout(resolve, 5));
-        }
-      }
-
-      element.showOutput = !element.showOutput;
-      element.showMinMax = !element.showMinMax;
-      await element.updateComplete;
-
-      expect(element.parentElement).toBe(originalParent);
-      expect(document.body.contains(element)).toBe(true);
-      expect(element.isConnected).toBe(true);
-    });
 
     it('should maintain DOM presence during rapid value changes', async () => {
       const originalParent = element.parentElement;
@@ -840,37 +816,6 @@ describe('USARangeSlider', () => {
     // TODO: USWDS range slider event handling conflicts with Lit rendering in jsdom
     // Skipped - requires Cypress for USWDS JavaScript event behavior
     // Coverage: src/components/range-slider/usa-range-slider.component.cy.ts (interaction tests)
-    it.skip('should maintain event listeners during Storybook interactions', async () => {
-      const changeSpy = vi.fn();
-
-      element.addEventListener('range-change', changeSpy);
-
-      await waitForUpdate(element);
-
-      const input = element.querySelector('.usa-range') as HTMLInputElement;
-
-      // Test range interactions
-      if (input) {
-        // Simulate dragging
-        input.value = '30';
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-
-        input.value = '60';
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-
-        input.value = '90';
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      // Update properties during interaction
-      element.showOutput = true;
-      element.unit = 'units';
-      await element.updateComplete;
-
-      expect(changeSpy).toHaveBeenCalled();
-      expect(document.body.contains(element)).toBe(true);
-      expect(element.isConnected).toBe(true);
-    });
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns

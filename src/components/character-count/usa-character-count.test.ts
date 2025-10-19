@@ -230,18 +230,6 @@ describe('USACharacterCount', () => {
 
     // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
-    it.skip('should update character count on input', async () => {
-      element.maxlength = 50;
-      await element.updateComplete;
-
-      const textarea = element.querySelector('textarea') as HTMLTextAreaElement;
-      textarea.value = 'Dynamic content';
-      textarea.dispatchEvent(new Event('input', { bubbles: true }));
-      await element.updateComplete;
-
-      const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('35 characters remaining');
-    });
   });
 
   describe('Visual States', () => {
@@ -366,24 +354,6 @@ describe('USACharacterCount', () => {
 
     // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
-    it.skip('should dispatch event on user input', async () => {
-      const eventSpy = vi.fn();
-      element.addEventListener('character-count-change', eventSpy);
-      element.maxlength = 20;
-      await element.updateComplete;
-
-      eventSpy.mockClear();
-
-      const textarea = element.querySelector('textarea') as HTMLTextAreaElement;
-      textarea.value = 'User input';
-      textarea.dispatchEvent(new Event('input', { bubbles: true }));
-      await element.updateComplete;
-
-      expect(eventSpy).toHaveBeenCalled();
-      const eventDetail = eventSpy.mock.calls[0][0].detail;
-      expect(eventDetail.value).toBe('User input');
-      expect(eventDetail.currentLength).toBe(10);
-    });
   });
 
   describe('Accessibility', () => {
@@ -634,34 +604,6 @@ describe('USACharacterCount', () => {
 
     // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
-    it.skip('should handle real-time character counting without removal', async () => {
-      const originalParent = element.parentElement;
-
-      element.maxlength = 50;
-      await element.updateComplete;
-
-      // Simulate rapid typing
-      const testString = 'The quick brown fox jumps over the lazy dog';
-      for (let i = 1; i <= testString.length; i++) {
-        element.value = testString.substring(0, i);
-        await element.updateComplete;
-
-        const textarea = element.querySelector('textarea, input');
-        if (textarea) {
-          textarea.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-      }
-
-      // Test backspacing
-      for (let i = testString.length; i >= 0; i -= 5) {
-        element.value = testString.substring(0, i);
-        await element.updateComplete;
-      }
-
-      expect(element.parentElement).toBe(originalParent);
-      expect(document.body.contains(element)).toBe(true);
-      expect(element.isConnected).toBe(true);
-    });
 
     it('should maintain DOM presence when switching between input types', async () => {
       const originalParent = element.parentElement;
@@ -755,44 +697,6 @@ describe('USACharacterCount', () => {
 
     // TODO: USWDS character count behavior requires real browser DOM manipulation
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
-    it.skip('should maintain event listeners during Storybook interactions', async () => {
-      const changeSpy = vi.fn();
-
-      element.addEventListener('character-count-change', changeSpy);
-
-      element.maxlength = 100;
-      await element.updateComplete;
-
-      const input = element.querySelector('textarea, input') as
-        | HTMLTextAreaElement
-        | HTMLInputElement;
-
-      // Test typing interactions
-      if (input) {
-        // Simulate typing
-        input.value = 'Testing character count';
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-
-        input.value = 'Testing character count with more text';
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-
-        input.value = 'Final text';
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      // Update properties during interaction
-      element.maxlength = 200;
-      element.inputType = 'textarea';
-      await element.updateComplete;
-
-      expect(changeSpy).toHaveBeenCalled();
-      expect(document.body.contains(element)).toBe(true);
-      expect(element.isConnected).toBe(true);
-
-      // Verify character count message is updated
-      const message = element.querySelector('.usa-character-count__message');
-      expect(message).toBeTruthy();
-    });
 
     // NOTE: JavaScript implementation validation moved to browser tests
     // Reason: This component uses USWDS-mirrored behavior pattern (usa-character-count-behavior.ts)

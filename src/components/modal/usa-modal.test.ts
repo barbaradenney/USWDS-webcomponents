@@ -1919,20 +1919,6 @@ describe('USAModal', () => {
     // TODO: USWDS modal DOM manipulation conflicts with Lit rendering in jsdom
     // Skipped - requires Cypress for USWDS JavaScript close behavior
     // Coverage: src/components/modal/usa-modal.component.cy.ts (ARIA tests)
-    it.skip('should maintain ARIA attributes when modal closes (WCAG 4.1.2)', async () => {
-      element.open = true;
-      await waitForUpdate(element);
-
-      const modal = element.querySelector('.usa-modal');
-      expect(modal?.getAttribute('role')).toBe('dialog');
-
-      element.open = false;
-      await waitForUpdate(element);
-
-      // Modal should still have role even when closed (for next open)
-      const closedModal = element.querySelector('.usa-modal');
-      expect(closedModal?.getAttribute('role')).toBe('dialog');
-    });
 
     it('should have proper ARIA for force action modals (WCAG 4.1.2)', async () => {
       element.forceAction = true;

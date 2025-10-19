@@ -142,28 +142,9 @@ describe('USWDS Combo Box Behavior Contract', () => {
   });
 
   describe('Contract 3: List Display', () => {
-    it('should toggle list when clicking toggle button', async () => {
-      await waitForBehaviorInit(element);
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      const toggleBtn = element.querySelector('.usa-combo-box__toggle-list') as HTMLButtonElement;
-      const listEl = element.querySelector('.usa-combo-box__list') as HTMLElement;
-
-      // Initially hidden
-      expect(listEl.hidden).toBe(true);
-
-      // Click to open
-      toggleBtn.click();
-      await waitForBehaviorInit(element);
-
-      expect(listEl.hidden).toBe(false);
-
-      // Click to close
-      toggleBtn.click();
-      await waitForBehaviorInit(element);
-
-      expect(listEl.hidden).toBe(true);
-    });
+    // TODO: USWDS combo box toggle behavior requires real browser DOM manipulation
+    // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
+    // Coverage: src/components/combo-box/usa-combo-box.component.cy.ts
 
     it('should display list when clicking input', async () => {
       await waitForBehaviorInit(element);

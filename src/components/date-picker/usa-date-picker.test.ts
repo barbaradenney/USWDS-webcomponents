@@ -361,10 +361,6 @@ describe('USADatePicker', () => {
   });
 
   describe('Calendar UI', () => {
-    it.skip('tests moved to Cypress - requires real browser environment', () => {
-      // NOTE: Calendar UI tests moved to Cypress (cypress/e2e/date-picker-calendar.cy.ts)
-      // Calendar UI requires real browser layout engine and USWDS JavaScript DOM manipulation
-    });
   });
 
   describe('Component Lifecycle Stability (CRITICAL)', () => {

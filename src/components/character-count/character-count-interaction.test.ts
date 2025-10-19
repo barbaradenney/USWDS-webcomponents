@@ -87,70 +87,13 @@ describe('Character Count JavaScript Interaction Testing', () => {
   });
 
   describe('🔍 Real Click Behavior Testing', () => {
-    it('should handle character counting while typing', async () => {
-      const textarea = element.querySelector('textarea') as HTMLTextAreaElement;
-      const message = element.querySelector('.usa-character-count__message') as HTMLElement;
+    // TODO: USWDS character count behavior requires real browser DOM manipulation
+    // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
+    // Coverage: src/components/character-count/usa-character-count.component.cy.ts
 
-      if (textarea && message) {
-        // Type some text
-        const testText = 'Hello, this is a test message.';
-        textarea.value = testText;
-
-        let eventFired = false;
-        element.addEventListener('character-count-update', () => {
-          eventFired = true;
-        });
-
-        const inputEvent = new Event('input', { bubbles: true });
-        textarea.dispatchEvent(inputEvent);
-        await waitForUpdate(element);
-
-        // Check if character count message was updated
-        const messageText = message.textContent || '';
-        const hasCountUpdate = messageText.includes(testText.length.toString()) ||
-                              messageText.includes((100 - testText.length).toString()) ||
-                              eventFired;
-
-        if (!hasCountUpdate) {
-          console.warn('⚠️ Character count may not be updating on input');
-        }
-
-        // This test documents character counting behavior
-        expect(true).toBe(true);
-      }
-    });
-
-    it('should handle over-limit character counting', async () => {
-      const textarea = element.querySelector('textarea') as HTMLTextAreaElement;
-      const message = element.querySelector('.usa-character-count__message') as HTMLElement;
-
-      if (textarea && message) {
-        // Type text that exceeds the limit
-        const longText = 'A'.repeat(120); // Exceeds 100 character limit
-        textarea.value = longText;
-
-        let eventFired = false;
-        element.addEventListener('character-limit-exceeded', () => {
-          eventFired = true;
-        });
-
-        const inputEvent = new Event('input', { bubbles: true });
-        textarea.dispatchEvent(inputEvent);
-        await waitForUpdate(element);
-
-        // Check for over-limit styling or messaging
-        const hasOverLimitClass = message.classList.contains('usa-character-count__message--invalid') ||
-                                 element.classList.contains('usa-character-count--over') ||
-                                 eventFired;
-
-        if (!hasOverLimitClass) {
-          console.warn('⚠️ Character count may not be indicating over-limit state');
-        }
-
-        // This test documents over-limit behavior
-        expect(true).toBe(true);
-      }
-    });
+    // TODO: USWDS character count behavior requires real browser DOM manipulation
+    // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
+    // Coverage: src/components/character-count/usa-character-count.component.cy.ts
 
     it('should handle validation on blur', async () => {
       const textarea = element.querySelector('textarea') as HTMLTextAreaElement;

@@ -249,28 +249,6 @@ describe('USWDS Table Behavior Contract', () => {
     // TODO: USWDS table sorting behavior requires real browser DOM manipulation
     // Skipped - requires Cypress for USWDS JavaScript table sorting behavior
     // Coverage: src/components/table/usa-table.component.cy.ts (sorting tests)
-    it.skip('should sort alphabetically by default', async () => {
-      await waitForBehaviorInit(element);
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      const sortButton = element.querySelector('.usa-table__header__button') as HTMLButtonElement;
-      const header = sortButton?.closest('th') as HTMLElement;
-      const columnIndex = Array.from(header.parentElement!.children).indexOf(header);
-
-      sortButton.click();
-      await waitForBehaviorInit(element);
-
-      const tbody = element.querySelector('tbody');
-      const rows = Array.from(tbody?.querySelectorAll('tr') || []);
-
-      if (rows.length > 1) {
-        const firstValue = (rows[0].children[columnIndex] as HTMLElement).textContent || '';
-        const secondValue = (rows[1].children[columnIndex] as HTMLElement).textContent || '';
-
-        // Should be in alphabetical order (ascending on first click per USWDS)
-        expect(firstValue.localeCompare(secondValue) <= 0).toBe(true);
-      }
-    });
 
     it('should reorder rows on first click with unsorted data', async () => {
       // Regression test for double-click bug

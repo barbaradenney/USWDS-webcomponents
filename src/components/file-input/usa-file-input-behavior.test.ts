@@ -152,11 +152,6 @@ describe('USWDS File Input Behavior Contract', () => {
   });
 
   describe('Contract 4: File Selection and Previews', () => {
-    it.skip('tests moved to Cypress - DataTransfer not available in JSDOM', () => {
-      // Skip in JSDOM - DataTransfer not available
-      // ✅ CYPRESS COVERAGE: cypress/e2e/file-input-drag-drop.cy.ts
-      // All 17 DataTransfer-dependent tests covered in browser environment
-    });
   });
 
   describe('Contract 5: Multiple File Selection', () => {

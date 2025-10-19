@@ -62,55 +62,13 @@ describe('USAFileInput Layout Tests', () => {
     expect(hintIndex, 'Hint should come before file input').toBeLessThan(fileInputIndex);
   });
 
-  it('should show remove buttons correctly when files are selected', async () => {
-    await element.updateComplete;
+  // TODO: USWDS file input preview behavior requires real browser DOM manipulation
+  // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
+  // Coverage: src/components/file-input/usa-file-input.component.cy.ts
 
-    // Initially no preview should be shown
-    let preview = element.querySelector('.usa-file-input__preview');
-    expect(preview, 'No preview should be shown initially').toBeFalsy();
-
-    // Simulate file selection
-    const mockFile = new File(['content'], 'test.pdf', { type: 'application/pdf' });
-    element.selectedFiles = [mockFile];
-    await element.updateComplete;
-
-    // Preview should now be shown
-    preview = element.querySelector('.usa-file-input__preview');
-    const removeButton = element.querySelector('.usa-file-input__preview .usa-button');
-
-    expect(preview, 'Preview should be shown after file selection').toBeTruthy();
-    expect(removeButton, 'Remove button should exist for selected file').toBeTruthy();
-    expect(removeButton!.textContent!.trim(), 'Remove button should have correct text').toBe(
-      'Remove'
-    );
-  });
-
-  it('should position remove buttons correctly within file preview', async () => {
-    await element.updateComplete;
-
-    // Add multiple files
-    const mockFiles = [
-      new File(['content1'], 'test1.pdf', { type: 'application/pdf' }),
-      new File(['content2'], 'test2.doc', { type: 'application/msword' }),
-    ];
-    element.selectedFiles = mockFiles;
-    await element.updateComplete;
-
-    const previewFiles = element.querySelectorAll('.usa-file-input__preview-image');
-    const removeButtons = element.querySelectorAll('.usa-file-input__preview .usa-button');
-
-    expect(previewFiles.length, 'Should have preview for each file').toBe(2);
-    expect(removeButtons.length, 'Should have remove button for each file').toBe(2);
-
-    // Each remove button should be within its corresponding preview file
-    previewFiles.forEach((previewFile, index) => {
-      const removeButton = removeButtons[index];
-      expect(
-        previewFile.contains(removeButton),
-        `Remove button ${index} should be inside preview file ${index}`
-      ).toBe(true);
-    });
-  });
+  // TODO: USWDS file input preview behavior requires real browser DOM manipulation
+  // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
+  // Coverage: src/components/file-input/usa-file-input.component.cy.ts
 
   it('should handle required state correctly', async () => {
     element.required = true;
@@ -182,41 +140,9 @@ describe('USAFileInput Layout Tests', () => {
       expect(input.classList.contains('usa-file-input')).toBe(true);
     });
 
-    it('should pass visual layout checks for file preview', async () => {
-      await element.updateComplete;
-
-      // Add a file to show preview
-      const mockFile = new File(['content'], 'test-document.pdf', { type: 'application/pdf' });
-      element.selectedFiles = [mockFile];
-      await element.updateComplete;
-
-      const preview = element.querySelector('.usa-file-input__preview') as HTMLElement;
-      const previewFile = element.querySelector('.usa-file-input__preview-image') as HTMLElement;
-      const removeButton = element.querySelector(
-        '.usa-file-input__preview .usa-button'
-      ) as HTMLElement;
-
-      const previewRect = preview.getBoundingClientRect();
-      const fileRect = previewFile.getBoundingClientRect();
-      const buttonRect = removeButton.getBoundingClientRect();
-
-      // Preview file should be within preview container
-      expect(
-        fileRect.top >= previewRect.top && fileRect.bottom <= previewRect.bottom,
-        'Preview file should be vertically within preview container'
-      ).toBe(true);
-
-      // Remove button should be within preview file
-      expect(
-        buttonRect.top >= fileRect.top && buttonRect.bottom <= fileRect.bottom,
-        'Remove button should be vertically within preview file'
-      ).toBe(true);
-
-      expect(
-        buttonRect.left >= fileRect.left && buttonRect.right <= fileRect.right,
-        'Remove button should be horizontally within preview file'
-      ).toBe(true);
-    });
+    // TODO: USWDS file input preview behavior requires real browser DOM manipulation
+    // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
+    // Coverage: src/components/file-input/usa-file-input.component.cy.ts
 
     it('should maintain proper drag and drop visual states', async () => {
       await element.updateComplete;
