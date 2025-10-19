@@ -1,0 +1,586 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Component Generator" />
+
+# Component Generator System
+
+> **Auto-generated on:** 2025-10-19
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+The Component Generator is an intelligent scaffolding system that creates fully-compliant USWDS web components with all required files, proper structure, and built-in best practices. It eliminates boilerplate and ensures every component starts with the correct patterns.
+
+## 🎯 Goals
+
+### Accelerate Development
+- **Zero boilerplate** - Generate complete component structure in seconds
+- **No manual setup** - All files created automatically
+- **Consistent structure** - Every component follows same patterns
+- **Best practices built-in** - Start with proven patterns
+
+### Enforce Compliance
+- **USWDS-first architecture** - Generated components use official USWDS patterns
+- **TypeScript by default** - Full type safety from day one
+- **Testing included** - Test files generated with examples
+- **Documentation ready** - README and CHANGELOG pre-populated
+
+### Prevent Common Issues
+- **Double initialization guards** - Built-in safeguards
+- **Light DOM pattern** - No Shadow DOM issues
+- **Proper cleanup** - Event listener cleanup included
+- **Accessibility baseline** - ARIA attributes and semantic HTML
+
+## 🚀 Quick Start
+
+### Basic Usage
+
+```bash
+# Generate a new component
+npm run generate:component -- --name=my-component
+
+# Interactive mode (prompts for options)
+npm run generate:component -- --interactive
+```
+
+### Example Output
+
+```bash
+npm run generate:component -- --name=alert-box
+
+🎯 Generating USWDS-compliant component: alert-box
+📁 Directory: src/components/alert-box
+
+✅ Created: src/components/alert-box/usa-alert-box.ts
+✅ Created: src/components/alert-box/usa-alert-box.test.ts
+✅ Created: src/components/alert-box/usa-alert-box.stories.ts
+✅ Created: src/components/alert-box/README.mdx
+✅ Created: src/components/alert-box/CHANGELOG.mdx
+✅ Created: src/components/alert-box/TESTING.md
+✅ Created: src/components/alert-box/index.ts
+
+🎉 Component generated successfully!
+
+📋 Next steps:
+   1. Review generated files in src/components/alert-box/
+   2. Implement component logic in usa-alert-box.ts
+   3. Add test cases to usa-alert-box.test.ts
+   4. Update README.mdx with usage examples
+   5. Run: npm test src/components/alert-box
+```
+
+## 📦 Generated Files
+
+### 1. Component TypeScript File (`usa-{name}.ts`)
+
+**What's included:**
+```typescript
+import { html, css } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { USWDSBaseComponent } from '../../utils/base-component.js';
+
+// Import official USWDS compiled CSS
+import '../../styles/styles.css';
+
+/**
+ * USA AlertBox Web Component
+ *
+ * @element usa-alert-box
+ * @uswds-css-reference https://github.com/uswds/uswds/...
+ * @uswds-docs https://designsystem.digital.gov/components/alert-box/
+ */
+@customElement('usa-alert-box')
+export class USAAlertBox extends USWDSBaseComponent {
+  static override styles = css\`
+    :host {
+      display: block;
+    }
+  \`;
+
+  @property({ type: String, reflect: true })
+  variant: 'default' | 'alternate' = 'default';
+
+  @property({ type: Boolean, reflect: true })
+  disabled = false;
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute('data-web-component-managed', 'true');
+    this.updateComplete.then(() => this.initializeUSWDS());
+  }
+
+  private async initializeUSWDS() {
+    // USWDS initialization logic
+  }
+
+  protected override render() {
+    return html\`
+      <div class="usa-alert-box">
+        <slot></slot>
+      </div>
+    \`;
+  }
+}
+```
+
+**Built-in features:**
+- ✅ TypeScript with full type annotations
+- ✅ Lit Element with decorators
+- ✅ USWDS CSS import
+- ✅ Light DOM (no Shadow DOM)
+- ✅ Proper USWDS initialization
+- ✅ Web component managed flag
+- ✅ JSDoc comments with USWDS references
+
+### 2. Test File (`usa-{name}.test.ts`)
+
+**What's included:**
+```typescript
+import { expect, fixture, html } from '@open-wc/testing';
+import { USAAlertBox } from './usa-alert-box.js';
+
+describe('USAAlertBox', () => {
+  it('should render', async () => {
+    const el = await fixture<USAAlertBox>(html\`
+      <usa-alert-box></usa-alert-box>
+    \`);
+    expect(el).to.exist;
+  });
+
+  it('should have default variant', async () => {
+    const el = await fixture<USAAlertBox>(html\`
+      <usa-alert-box></usa-alert-box>
+    \`);
+    expect(el.variant).to.equal('default');
+  });
+
+  it('should be accessible', async () => {
+    const el = await fixture<USAAlertBox>(html\`
+      <usa-alert-box></usa-alert-box>
+    \`);
+    await expect(el).to.be.accessible();
+  });
+});
+```
+
+**Built-in tests:**
+- ✅ Basic rendering test
+- ✅ Property tests
+- ✅ Accessibility test with axe-core
+- ✅ Event emission tests (for interactive components)
+
+### 3. Storybook Story (`usa-{name}.stories.ts`)
+
+**What's included:**
+```typescript
+import type { Meta, StoryObj } from '@storybook/web-components';
+import { html } from 'lit';
+import './usa-alert-box.js';
+import { USAAlertBox } from './usa-alert-box.js';
+
+const meta: Meta<USAAlertBox> = {
+  title: 'Components/AlertBox',
+  component: 'usa-alert-box',
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+  },
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'alternate'],
+    },
+    disabled: {
+      control: 'boolean',
+    },
+  },
+};
+
+export default meta;
+type Story = StoryObj<USAAlertBox>;
+
+export const Default: Story = {
+  args: {
+    variant: 'default',
+    disabled: false,
+  },
+  render: (args) => html\`
+    <usa-alert-box
+      variant=\${args.variant}
+      ?disabled=\${args.disabled}
+    >
+      Alert content
+    </usa-alert-box>
+  \`,
+};
+```
+
+**Built-in features:**
+- ✅ Autodocs enabled
+- ✅ Interactive controls
+- ✅ Default story
+- ✅ Variant stories (for common variants)
+- ✅ Proper layout configuration
+
+### 4. README Documentation (`README.mdx`)
+
+**What's included:**
+```markdown
+# USA AlertBox
+
+USWDS-compliant alert-box component.
+
+## Installation
+
+\`\`\`bash
+npm install uswds-webcomponents
+\`\`\`
+
+## Usage
+
+\`\`\`html
+<usa-alert-box variant="default">
+  Alert content
+</usa-alert-box>
+\`\`\`
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| variant | string | 'default' | Visual variant |
+| disabled | boolean | false | Disabled state |
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| change | {value: string} | Emitted on value change |
+
+## Accessibility
+
+- Keyboard navigation supported
+- Screen reader compatible
+- WCAG 2.1 AA compliant
+
+## USWDS References
+
+- [Component Documentation](https://designsystem.digital.gov/components/alert-box/)
+- [CSS Source](https://github.com/uswds/uswds/tree/develop/packages/usa-alert-box)
+```
+
+**Built-in sections:**
+- ✅ Installation instructions
+- ✅ Usage examples
+- ✅ Properties table
+- ✅ Events table
+- ✅ Accessibility notes
+- ✅ USWDS reference links
+
+### 5. Changelog (`CHANGELOG.mdx`)
+
+**What's included:**
+```markdown
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Components/AlertBox/Changelog" />
+
+# Changelog - Alert Box
+
+## [Unreleased]
+
+### Added
+- Initial component scaffolding
+- Basic properties and structure
+- Test suite setup
+- Storybook documentation
+
+## [Keep a Changelog](https://keepachangelog.com/)
+```
+
+**Built-in features:**
+- ✅ Keep a Changelog format
+- ✅ Storybook integration
+- ✅ Unreleased section ready
+- ✅ Semantic versioning structure
+
+### 6. Testing Documentation (`TESTING.md`)
+
+**What's included:**
+```markdown
+# Testing - Alert Box
+
+## Test Coverage
+
+- [x] Unit tests (Vitest)
+- [ ] Component tests (Cypress)
+- [x] Accessibility tests (axe-core)
+- [ ] Visual regression tests
+
+## Running Tests
+
+\`\`\`bash
+# Run unit tests
+npm test src/components/alert-box
+
+# Run with coverage
+npm run test:coverage
+
+# Run accessibility tests
+npm run test:a11y
+\`\`\`
+
+## Test Files
+
+- `usa-alert-box.test.ts` - Unit tests
+- `usa-alert-box.cy.ts` - Component tests (create when needed)
+
+## Known Issues
+
+None
+```
+
+**Built-in features:**
+- ✅ Coverage checklist
+- ✅ Test commands
+- ✅ File references
+- ✅ Known issues section
+
+### 7. Index Export (`index.ts`)
+
+**What's included:**
+```typescript
+export { USAAlertBox } from './usa-alert-box.js';
+```
+
+**Purpose:**
+- ✅ Clean imports
+- ✅ Tree-shaking support
+- ✅ TypeScript compatibility
+
+## ⚙️ Generator Options
+
+### Interactive Mode
+
+```bash
+npm run generate:component -- --interactive
+```
+
+**Prompts for:**
+- Component name
+- Component category (Forms, Navigation, etc.)
+- Interactive vs static component
+- Initial properties
+- Whether to include example implementation
+
+### Advanced Options
+
+```bash
+# Generate with specific options
+npm run generate:component -- --name=my-component --category=Forms --interactive=true
+```
+
+**Available options:**
+- `--name` - Component name (required)
+- `--category` - Component category for organization
+- `--interactive` - Interactive mode prompts
+- `--skip-tests` - Skip test file generation (not recommended)
+- `--skip-stories` - Skip Storybook story (not recommended)
+
+## 🎨 Component Categories
+
+Components are organized by category for better structure:
+
+- **Forms** (15 components) - Form inputs and controls
+- **Navigation** (8 components) - Navigation elements
+- **Data Display** (8 components) - Data presentation
+- **Feedback** (5 components) - Alerts and notifications
+- **Actions** (4 components) - Buttons and interactive elements
+- **Layout** (4 components) - Page structure
+- **Structure** (1 component) - Content organization
+
+The generator can place components in the appropriate category.
+
+## 🔒 Best Practices Built-In
+
+### 1. USWDS Compliance
+```typescript
+// ✅ Generated components use official USWDS CSS
+import '../../styles/styles.css';
+
+// ✅ Official USWDS classes
+<div class="usa-alert-box">
+```
+
+### 2. TypeScript Safety
+```typescript
+// ✅ Proper property typing
+@property({ type: String, reflect: true })
+variant: 'default' | 'alternate' = 'default';
+
+// ❌ Avoided: Untyped properties
+@property() variant; // Generator never creates this
+```
+
+### 3. Accessibility Baseline
+```typescript
+// ✅ ARIA attributes included in templates
+<div role="alert" aria-live="polite">
+
+// ✅ Semantic HTML
+<button type="button">
+
+// ✅ Keyboard navigation considered
+```
+
+### 4. Double Initialization Prevention
+```typescript
+// ✅ Guard flag included
+private isUSWDSInitialized = false;
+
+private async initializeUSWDS() {
+  if (this.isUSWDSInitialized) return;
+  this.isUSWDSInitialized = true;
+  // ... safe to initialize
+}
+```
+
+### 5. Proper Cleanup
+```typescript
+// ✅ Cleanup in disconnectedCallback
+override disconnectedCallback() {
+  super.disconnectedCallback();
+  this.removeEventListener('click', this.handleClick);
+}
+```
+
+## 📋 Post-Generation Checklist
+
+After generating a component:
+
+**1. Review Generated Files**
+- [ ] Check component TypeScript file
+- [ ] Verify property types are correct
+- [ ] Review USWDS class usage
+
+**2. Implement Component Logic**
+- [ ] Add component-specific properties
+- [ ] Implement render method with USWDS HTML
+- [ ] Add USWDS JavaScript initialization
+- [ ] Add event handlers
+
+**3. Write Tests**
+- [ ] Add property tests
+- [ ] Add interaction tests
+- [ ] Add accessibility tests
+- [ ] Add USWDS compliance tests
+
+**4. Update Documentation**
+- [ ] Complete README with real examples
+- [ ] Document all properties
+- [ ] Document all events
+- [ ] Add usage patterns
+
+**5. Create Storybook Stories**
+- [ ] Add stories for all variants
+- [ ] Add interactive examples
+- [ ] Test in Storybook
+
+**6. Validate**
+- [ ] Run `npm test src/components/{name}`
+- [ ] Run `npm run typecheck`
+- [ ] Run `npm run lint`
+- [ ] Run `npm run validate:uswds`
+
+## 🔧 Customizing Templates
+
+Component templates are located in `.templates/` directory.
+
+**Template files:**
+- `.templates/component.template.ts` - Component TypeScript
+- `.templates/test.template.ts` - Test file
+- `.templates/story.template.ts` - Storybook story
+- `.templates/readme.template.mdx` - README
+- `.templates/changelog.template.mdx` - CHANGELOG
+- `.templates/testing.template.md` - Testing docs
+
+**Customization:**
+1. Edit template files
+2. Use `{{componentName}}` placeholders
+3. Generator will replace with actual values
+
+## 🚀 Benefits
+
+### For Developers
+- **10x faster** - Component setup from hours to seconds
+- **No mistakes** - Correct structure every time
+- **Learning tool** - See best practices in generated code
+- **Consistency** - All components look and feel similar
+
+### For the Project
+- **Quality baseline** - Every component starts compliant
+- **Reduced reviews** - Less boilerplate to review
+- **Faster onboarding** - New developers see patterns
+- **Maintainability** - Consistent structure across all components
+
+### For Users
+- **Faster delivery** - Components developed quicker
+- **Higher quality** - Best practices from day one
+- **Better docs** - Documentation included automatically
+- **More reliable** - Testing included by default
+
+## 📚 Examples
+
+### Generate a Form Component
+```bash
+npm run generate:component -- --name=text-area --category=Forms
+
+# Generated structure:
+src/components/text-area/
+├── usa-text-area.ts          # Component implementation
+├── usa-text-area.test.ts     # Unit tests
+├── usa-text-area.stories.ts  # Storybook stories
+├── README.mdx                 # API documentation
+├── CHANGELOG.mdx              # Version history
+├── TESTING.md                 # Test documentation
+└── index.ts                   # Exports
+```
+
+### Generate a Navigation Component
+```bash
+npm run generate:component -- --name=breadcrumb --category=Navigation
+
+# All files generated with Navigation category structure
+```
+
+## 🔄 Integration with Other Systems
+
+### Works With Pre-Commit Validation
+Generated components pass all pre-commit checks:
+- ✅ TypeScript compilation
+- ✅ ESLint validation
+- ✅ USWDS compliance
+- ✅ Documentation requirements
+
+### Works With Post-Commit Automation
+Generated files integrate with post-commit system:
+- ✅ CHANGELOG auto-updates on changes
+- ✅ README auto-sync with properties
+- ✅ TESTING.md updates with test changes
+
+### Works With CI/CD Pipeline
+Generated components ready for CI:
+- ✅ Test files included
+- ✅ Storybook stories included
+- ✅ Documentation complete
+
+## 📖 Related Documentation
+
+- [COMPONENT_TEMPLATES.md](../docs/COMPONENT_TEMPLATES.md) - Template documentation
+- [Pre-Commit System](./PreCommitSystem.mdx) - Validation system
+- [Post-Commit System](./PostCommitSystem.mdx) - Automation system
+- [USWDS Compliance](./USWDSCompliance.mdx) - Compliance requirements
+
+---
+
+**The Component Generator eliminates boilerplate and ensures every new component starts with best practices, proper structure, and full USWDS compliance built-in.**

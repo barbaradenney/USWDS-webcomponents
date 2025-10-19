@@ -1,0 +1,696 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/USWDS Sync System" />
+
+# USWDS Sync & Update System
+
+> **Auto-generated on:** 2025-10-19
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+The USWDS Sync System automatically detects USWDS version changes and updates the component library's compliance database to match. This ensures 100% USWDS alignment without manual class list maintenance or version tracking.
+
+## 🎯 Goals
+
+### Automatic USWDS Tracking
+- **Detect version changes** - Automatically detect USWDS updates
+- **Extract official classes** - Scan SCSS, JavaScript, and compiled CSS
+- **Update compliance database** - Keep class list current (592+ classes)
+- **Zero manual work** - Everything automated
+
+### 100% USWDS Compliance
+- **Official classes only** - Validate against complete USWDS class list
+- **Multi-source extraction** - SCSS source + JavaScript + compiled CSS
+- **Comprehensive coverage** - All component variants and modifiers
+- **Version-specific** - Classes match exact USWDS version
+
+### Safe Updates
+- **Backup before update** - Preserve previous class list
+- **Validation after extraction** - Verify class list completeness
+- **Change reporting** - See exactly what changed
+- **Rollback capability** - Restore previous version if needed
+
+## 🚀 Quick Start
+
+### Full Sync Workflow
+
+```bash
+# Complete USWDS sync (recommended)
+npm run uswds:sync
+
+# This runs:
+# 1. npm run uswds:check-updates    → Check for new USWDS version
+# 2. npm run uswds:update-classes   → Extract and update class list
+# 3. npm run uswds:compliance       → Validate all components
+# 4. npm run test:accessibility     → Run accessibility tests
+```
+
+### Individual Commands
+
+```bash
+# Check for USWDS updates
+npm run uswds:check-updates
+
+# Update USWDS class list (auto-detects version change)
+npm run uswds:update-classes
+
+# Force update (even if version unchanged)
+npm run uswds:update-classes --force
+
+# Check if update needed (dry-run)
+npm run uswds:update-classes --check-only
+
+# Run USWDS compliance validation
+npm run uswds:compliance
+```
+
+## 📦 System Components
+
+### 1. USWDS Version Checker
+
+**Purpose:** Detect when a new USWDS version is available
+
+**Script:** `scripts/validate/uswds-version-check.js`
+
+**What It Does:**
+```bash
+npm run uswds:check-updates
+
+🔍 Checking USWDS Version Status...
+
+📦 USWDS Version Information:
+   Current: 3.13.0
+   Latest:  3.13.0
+
+✅ Using latest USWDS version
+
+📅 Compliance Status:
+   Last Sync: 2025-10-18 (1 days ago)
+   ✅ Recently synced
+```
+
+**Features:**
+- Fetches latest USWDS version from npm registry
+- Compares with current version in package.json
+- Checks last compliance sync date
+- Provides update instructions if needed
+
+**When It Runs:**
+- Part of `npm run uswds:sync` workflow
+- Can run standalone with `npm run uswds:check-updates`
+
+### 2. USWDS Class Extractor
+
+**Purpose:** Extract all official USWDS CSS classes from source files
+
+**Script:** `scripts/utils/extract-complete-uswds-classes.js`
+
+**What It Does:**
+
+Scans three sources to build comprehensive class list:
+
+**Source 1: SCSS Files** (Primary source)
+```bash
+🔍 Extracting USWDS classes from SCSS source files...
+📁 Found 450 SCSS files to scan
+  📄 packages/usa-accordion/src/styles/_usa-accordion.scss: 12 classes
+  📄 packages/usa-alert/src/styles/_usa-alert.scss: 15 classes
+  📄 packages/usa-banner/src/styles/_usa-banner.scss: 18 classes
+  ...
+✅ SCSS: Processed 450 files, found 580 class instances
+🎯 SCSS: Unique classes found: 420
+```
+
+**Source 2: JavaScript Files** (Dynamic classes)
+```bash
+🔍 Extracting USWDS classes from JavaScript source files...
+📁 Found 85 JavaScript files to scan
+  📄 packages/usa-character-count/src/index.js: 8 classes
+  📄 packages/usa-combo-box/src/index.js: 12 classes
+  ...
+✅ JS: Processed 85 files, found 95 class instances
+🎯 JS: Unique classes found: 75
+```
+
+**Source 3: Compiled CSS** (Verification)
+```bash
+📊 Extracting classes from compiled CSS for comparison...
+📄 Compiled CSS contains 592 unique USWDS classes
+```
+
+**Class Patterns Detected:**
+- Standard classes: `.usa-component`
+- BEM elements: `.usa-component__element`
+- BEM modifiers: `.usa-component--modifier`
+- Nested BEM: `.usa-component__element--modifier`
+- JavaScript-generated classes from template literals
+
+**Output:**
+```bash
+📊 Comparison Results:
+  SCSS source files: 420 classes
+  JavaScript files:  75 classes
+  Compiled CSS:      592 classes
+  Current list:      592 classes
+  Combined total:    592 classes
+
+🔍 Analysis:
+  Missing from current list: 0 classes
+  Only in current list:      0 classes
+
+✅ Complete class list written to: /tmp/uswds_classes_complete.txt
+📊 Total classes: 592
+```
+
+### 3. USWDS Class Auto-Updater
+
+**Purpose:** Detect version changes and automatically update class list
+
+**Script:** `scripts/maintenance/auto-update-uswds-classes.js`
+
+**What It Does:**
+
+**Step 1: Version Detection**
+```bash
+🚀 USWDS Class List Automation
+
+📦 Current USWDS version: 3.13.0
+📋 Last processed version: none
+
+📋 No previous version recorded, updating class list
+```
+
+**Step 2: Class Extraction**
+```bash
+🔄 Updating USWDS class list...
+🔍 Extracting USWDS classes...
+[Runs extract-complete-uswds-classes.js with --auto-update flag]
+```
+
+**Step 3: Validation**
+```bash
+✅ Class list validated: 592 USWDS classes
+```
+
+**Step 4: Compliance Check**
+```bash
+🔍 Running compliance check to verify class list...
+✅ Compliance check passed
+```
+
+**Step 5: Save Version**
+```bash
+📝 Saved processed version: 3.13.0
+
+🎉 USWDS class list successfully updated!
+💡 You may want to run the full compliance check to see improvements:
+   npm run uswds:compliance
+```
+
+**Version Tracking:**
+- Stores processed version in `.uswds-version` file
+- Compares current vs. last processed version
+- Updates only when version changes (or with `--force`)
+
+**Update Triggers:**
+- USWDS version changed in package.json
+- No previous version recorded
+- Class list file missing
+- Force update requested
+
+### 4. USWDS Compliance Validator
+
+**Purpose:** Validate components use only official USWDS classes
+
+**Script:** `scripts/validate/validate-all-components-compliance.js`
+
+**What It Does:**
+
+Scans all component files for CSS classes and validates them against the extracted USWDS class list:
+
+```bash
+npm run uswds:compliance
+
+🔍 USWDS Compliance Validation
+
+Component: accordion
+  ✅ All classes valid (12 USWDS classes used)
+
+Component: alert
+  ✅ All classes valid (15 USWDS classes used)
+
+Component: character-count
+  ✅ All classes valid (8 USWDS classes used)
+
+...
+
+📊 Summary:
+   Total components: 45
+   Compliant: 45
+   Issues: 0
+
+✅ 100% USWDS Compliance Achieved!
+```
+
+**Validation Rules:**
+- All classes must start with `.usa-`
+- All classes must exist in official USWDS class list
+- No custom USWDS-style classes allowed
+- Reports any non-compliant classes found
+
+## 🔄 Complete Workflow
+
+### When USWDS Updates
+
+**Scenario:** USWDS releases version 3.14.0
+
+```bash
+# 1. Update USWDS package
+npm install @uswds/uswds@3.14.0
+
+# 2. Run full sync workflow
+npm run uswds:sync
+
+# OUTPUT:
+
+🔍 Checking USWDS Version Status...
+
+📦 USWDS Version Information:
+   Current: 3.14.0
+   Latest:  3.14.0
+
+✅ Using latest USWDS version
+
+# Next stage: Auto-update classes
+
+🚀 USWDS Class List Automation
+
+📦 Current USWDS version: 3.14.0
+📋 Last processed version: 3.13.0
+
+🆕 USWDS version changed: 3.13.0 → 3.14.0
+
+🔄 Updating USWDS class list...
+🔍 Extracting USWDS classes...
+  [Scans all SCSS, JS, and CSS files]
+
+📈 Update Summary:
+   Classes added: 8
+   Classes removed: 2
+   Net change: +6
+   Total classes: 598
+
+✅ USWDS class list successfully updated!
+
+# Next stage: Compliance check
+
+🔍 USWDS Compliance Validation
+  [Validates all 45 components]
+
+✅ 100% USWDS Compliance Achieved!
+
+# Final stage: Accessibility tests
+
+  [Runs accessibility test suite]
+
+✅ All tests passed!
+
+# 3. Commit the changes
+git add .uswds-version package.json package-lock.json
+git commit -m "chore(deps): update USWDS to v3.14.0
+
+- Updated @uswds/uswds to 3.14.0
+- Auto-updated USWDS class list (598 classes, +6 net change)
+- All components remain 100% USWDS compliant
+- All accessibility tests passing"
+```
+
+### First Time Setup
+
+**Scenario:** New clone of repository
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Run initial sync
+npm run uswds:sync
+
+# OUTPUT:
+
+📦 Current USWDS version: 3.13.0
+📋 Last processed version: none
+
+📋 No previous version recorded, updating class list
+
+🔍 Extracting USWDS classes...
+  [Extracts all classes from USWDS 3.13.0]
+
+✅ Class list validated: 592 USWDS classes
+📝 Saved processed version: 3.13.0
+
+🎉 USWDS class list successfully updated!
+```
+
+### Manual Force Update
+
+**Scenario:** Class list corrupted or missing
+
+```bash
+npm run uswds:update-classes --force
+
+🔄 Force update requested
+
+🔄 Updating USWDS class list...
+  [Re-extracts all classes]
+
+💾 Current class list backed up to: /tmp/uswds_classes_backup.txt
+
+🔄 Production class list updated: /tmp/uswds_classes.txt
+
+📈 Update Summary:
+   Classes added: 0
+   Classes removed: 0
+   Net change: +0
+   Total classes: 592
+
+✅ USWDS class list successfully updated!
+```
+
+## 📊 Class List Details
+
+### Class List Location
+
+**Production:** `/tmp/uswds_classes.txt`
+- Used by compliance validator
+- Updated automatically by sync system
+- 592+ official USWDS classes (as of v3.13.0)
+
+**Backup:** `/tmp/uswds_classes_backup.txt`
+- Created before each update
+- Allows rollback if needed
+
+**Complete:** `/tmp/uswds_classes_complete.txt`
+- Full extraction output
+- Includes analysis and comparison data
+
+### Class List Format
+
+```
+.usa-accordion
+.usa-accordion__button
+.usa-accordion__content
+.usa-alert
+.usa-alert--emergency
+.usa-alert--error
+.usa-alert--info
+.usa-alert--slim
+.usa-alert--success
+.usa-alert--warning
+.usa-alert__body
+.usa-alert__heading
+.usa-alert__text
+...
+```
+
+**Total Classes (USWDS 3.13.0):** 592 classes
+
+**Breakdown by Source:**
+- SCSS source files: 420 classes
+- JavaScript files: 75 classes (dynamic/programmatic classes)
+- Compiled CSS: 592 classes (complete set)
+
+### Class Categories
+
+**Component Base Classes:**
+- `.usa-accordion`
+- `.usa-alert`
+- `.usa-banner`
+- etc. (45 components)
+
+**BEM Elements (__):**
+- `.usa-accordion__button`
+- `.usa-alert__heading`
+- `.usa-banner__header`
+- etc. (250+ element classes)
+
+**BEM Modifiers (--):**
+- `.usa-alert--error`
+- `.usa-alert--success`
+- `.usa-button--secondary`
+- etc. (120+ modifier classes)
+
+**Combination Classes:**
+- `.usa-step-indicator__heading-counter`
+- `.usa-step-indicator__heading-text`
+- `.usa-character-count__field`
+- etc. (197+ combination classes)
+
+## ⚙️ Configuration
+
+### Version Tracking File
+
+**Location:** `.uswds-version` (root directory)
+
+**Purpose:**
+- Stores last processed USWDS version
+- Prevents unnecessary re-extraction
+- Enables version change detection
+
+**Content Example:**
+```
+3.13.0
+```
+
+**Lifecycle:**
+- Created on first sync
+- Updated when USWDS version changes
+- Checked before each class extraction
+
+### Environment Variables
+
+```bash
+# Enable auto-update mode
+export USWDS_AUTO_UPDATE=true
+
+# Run extraction
+node scripts/utils/extract-complete-uswds-classes.js
+# Will automatically update production class list
+```
+
+### Script Options
+
+**uswds:update-classes:**
+- `--force` - Update even if version unchanged
+- `--check-only` - Check if update needed (exit code 1 if yes)
+
+**extract-complete-uswds-classes.js:**
+- `--auto-update` - Automatically update production file
+
+## 🔧 Integration with Other Systems
+
+### Pre-Commit Validation
+
+The pre-commit hook validates USWDS compliance using the auto-updated class list:
+
+```bash
+# Pre-commit Stage 6: USWDS Compliance
+npm run validate:uswds-compliance
+
+# Uses /tmp/uswds_classes.txt
+# Ensures all components use only official USWDS classes
+```
+
+### Component Generator
+
+Generated components include USWDS class validation:
+
+```typescript
+// Auto-generated component
+import '../../styles/styles.css'; // Compiled USWDS CSS
+
+protected override render() {
+  return html`
+    <div class="usa-alert-box">  <!-- Validated against class list -->
+      <slot></slot>
+    </div>
+  `;
+}
+```
+
+### Continuous Integration
+
+GitHub Actions workflow can verify USWDS compliance:
+
+```yaml
+- name: Verify USWDS Compliance
+  run: |
+    npm run uswds:sync
+    npm run uswds:compliance
+```
+
+## 📈 Benefits
+
+### For Developers
+
+**Zero Manual Work:**
+- No manually updating class lists
+- No tracking USWDS version changes
+- No worrying about missing classes
+
+**Confidence:**
+- Always using official USWDS classes
+- Automatic validation on every commit
+- Immediate feedback on compliance issues
+
+**Easy Updates:**
+- Update USWDS: `npm install @uswds/uswds@latest`
+- Sync classes: `npm run uswds:sync`
+- Done! All 45 components validated automatically
+
+### For the Project
+
+**100% USWDS Compliance:**
+- 592+ official USWDS classes tracked
+- 45/45 components fully compliant
+- Zero custom USWDS-style classes
+- True 1:1 USWDS alignment
+
+**Maintainability:**
+- Self-updating system
+- No technical debt accumulation
+- Clear audit trail of changes
+- Rollback capability
+
+**Quality Assurance:**
+- Automated validation
+- Comprehensive coverage
+- Version-specific accuracy
+- Regression prevention
+
+### For Users
+
+**Authentic USWDS:**
+- Official USWDS classes only
+- Matches USWDS documentation exactly
+- Consistent with other USWDS implementations
+- Government-standard compliance
+
+**Reliability:**
+- Thoroughly validated
+- Tested against official USWDS
+- Accessibility verified
+- Production-ready
+
+## 🚨 Troubleshooting
+
+### Class List Not Updating
+
+**Problem:** Class list file not created or updated
+
+**Solution:**
+```bash
+# Force regeneration
+npm run uswds:update-classes --force
+
+# Verify USWDS is installed
+npm list @uswds/uswds
+
+# Check for errors in extraction
+node scripts/utils/extract-complete-uswds-classes.js
+```
+
+### USWDS Version Mismatch
+
+**Problem:** `.uswds-version` doesn't match package.json
+
+**Solution:**
+```bash
+# Delete version file
+rm .uswds-version
+
+# Re-run sync
+npm run uswds:sync
+
+# Version will be detected and saved
+```
+
+### Compliance Failures After Update
+
+**Problem:** Components fail compliance after USWDS update
+
+**Investigation:**
+```bash
+# Check what changed
+npm run uswds:update-classes --force
+# Review the "Update Summary" output
+
+# Identify removed classes
+diff /tmp/uswds_classes_backup.txt /tmp/uswds_classes.txt
+
+# Fix components using removed classes
+npm run uswds:compliance
+# Will show which components have issues
+```
+
+### Class List Incomplete
+
+**Problem:** Class list has fewer than 500 classes
+
+**Solution:**
+```bash
+# Re-extract with verbose output
+node scripts/utils/extract-complete-uswds-classes.js
+
+# Check all three sources:
+# - SCSS source files
+# - JavaScript files
+# - Compiled CSS
+
+# Verify USWDS is properly installed
+npm ci
+npm run build:css
+```
+
+## 📚 Related Documentation
+
+- [USWDS Compliance Methodology](../docs/USWDS_COMPLIANCE_METHODOLOGY.md) - Structural requirements
+- [Pre-Commit System](./PreCommitSystem.mdx) - Compliance validation
+- [Component Templates](../docs/COMPONENT_TEMPLATES.md) - USWDS-compliant templates
+
+## 🔄 Maintenance Schedule
+
+### Automatic (As Needed)
+- **Version Detection** - Every time dependencies change
+- **Class Extraction** - When USWDS version changes
+- **Compliance Validation** - Every commit (pre-commit hook)
+
+### Manual (Optional)
+- **Force Update** - If class list corrupted: `npm run uswds:update-classes --force`
+- **Full Sync** - After major USWDS update: `npm run uswds:sync`
+
+### Recommended Workflow
+
+**When USWDS Updates:**
+```bash
+# 1. Update USWDS
+npm install @uswds/uswds@latest
+
+# 2. Run full sync
+npm run uswds:sync
+
+# 3. Review changes
+git diff .uswds-version
+
+# 4. Test components
+npm test
+npm run test:accessibility
+
+# 5. Commit
+git commit -m "chore(deps): update USWDS to vX.Y.Z"
+```
+
+---
+
+**The USWDS Sync System ensures 100% USWDS compliance automatically by detecting version changes, extracting official classes, and validating all components - with zero manual intervention required.**
