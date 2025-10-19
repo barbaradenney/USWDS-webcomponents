@@ -220,6 +220,124 @@ import 'uswds-webcomponents/components/modal';
 // Components will automatically import their required styles
 ```
 
+## 📦 Available Components (45 Total)
+
+All components are production-ready, USWDS 3.13.0 compliant, and fully accessible (WCAG 2.1 AA).
+
+### 📝 Forms & Inputs (15 components)
+Form controls and data entry components
+
+- **usa-text-input** - Single-line text input
+- **usa-textarea** - Multi-line text area
+- **usa-checkbox** - Checkbox for binary choices
+- **usa-radio** - Radio button for single selection
+- **usa-select** - Dropdown selection
+- **usa-file-input** - File upload with preview
+- **usa-date-picker** - Calendar date selection
+- **usa-date-range-picker** - Date range selection
+- **usa-time-picker** - Time selection (12/24 hour)
+- **usa-memorable-date** - Month/day/year input
+- **usa-combo-box** - Searchable dropdown with autocomplete
+- **usa-range-slider** - Numerical range slider
+- **usa-character-count** - Text input with character limit
+- **usa-validation** - Form validation messaging
+- **usa-input-prefix-suffix** - Input with prefix/suffix labels
+
+```javascript
+// Category import (future-ready)
+import 'uswds-webcomponents/forms/text-input';
+import 'uswds-webcomponents/forms/checkbox';
+```
+
+### 🧭 Navigation (8 components)
+Site navigation and wayfinding components
+
+- **usa-header** - Site header with logo and navigation
+- **usa-footer** - Site footer with links
+- **usa-breadcrumb** - Breadcrumb navigation trail
+- **usa-pagination** - Multi-page navigation
+- **usa-side-navigation** - Vertical navigation menu
+- **usa-in-page-navigation** - Jump links for sections
+- **usa-skip-link** - Skip to main content (accessibility)
+- **usa-language-selector** - Language selection dropdown
+
+```javascript
+import 'uswds-webcomponents/navigation/header';
+import 'uswds-webcomponents/navigation/footer';
+```
+
+### 📊 Data Display (8 components)
+Components for displaying information and data
+
+- **usa-table** - Data table with sorting
+- **usa-collection** - List of items with metadata
+- **usa-card** - Content card container
+- **usa-list** - Styled ordered/unordered lists
+- **usa-icon-list** - List with icons
+- **usa-summary-box** - Highlighted summary box
+- **usa-tag** - Label or category tag
+- **usa-icon** - SVG icons from USWDS library
+
+```javascript
+import 'uswds-webcomponents/data-display/table';
+import 'uswds-webcomponents/data-display/card';
+```
+
+### 💬 Feedback (5 components)
+User feedback, alerts, and notifications
+
+- **usa-alert** - Alert messages (info, warning, error, success)
+- **usa-site-alert** - Site-wide emergency alerts
+- **usa-modal** - Modal dialog/overlay
+- **usa-tooltip** - Contextual help tooltip
+- **usa-banner** - Official government website banner
+
+```javascript
+import 'uswds-webcomponents/feedback/alert';
+import 'uswds-webcomponents/feedback/modal';
+```
+
+### ⚡ Actions (4 components)
+Interactive elements and user actions
+
+- **usa-button** - Action buttons with variants
+- **usa-button-group** - Group of related buttons
+- **usa-link** - Styled anchor links
+- **usa-search** - Search input field
+
+```javascript
+import 'uswds-webcomponents/actions/button';
+import 'uswds-webcomponents/actions/search';
+```
+
+### 📐 Layout (4 components)
+Page structure and content organization
+
+- **usa-prose** - Styled long-form content
+- **usa-process-list** - Numbered process/step list
+- **usa-step-indicator** - Visual step progress
+- **usa-identifier** - Site identifier with agency info
+
+```javascript
+import 'uswds-webcomponents/layout/prose';
+import 'uswds-webcomponents/layout/step-indicator';
+```
+
+### 🗂️ Structure (1 component)
+Content structure and organization
+
+- **usa-accordion** - Expandable/collapsible sections
+
+```javascript
+import 'uswds-webcomponents/structure/accordion';
+```
+
+### 📚 Complete Reference
+
+For detailed documentation, properties, events, and examples for each component, see [COMPONENTS.md](docs/COMPONENTS.md).
+
+---
+
 ## 🛠️ Development Setup
 
 For contributors who want to work on the library itself:
