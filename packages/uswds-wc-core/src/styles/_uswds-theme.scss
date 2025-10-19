@@ -1,0 +1,41 @@
+/*
+ * USWDS Theme Settings
+ * 
+ * This file contains custom theme configuration following
+ * the official USWDS settings pattern.
+ * 
+ * Documentation: https://designsystem.digital.gov/documentation/settings/
+ */
+
+@use "uswds-core" with (
+  // Essential paths
+  $theme-image-path: "../img",
+  $theme-font-path: "../fonts",
+  
+  // Typography settings (USWDS defaults)
+  $theme-font-type-sans: "source-sans-pro",
+  $theme-font-type-serif: "merriweather", 
+  $theme-font-type-mono: "roboto-mono",
+  
+  // Typography scale (USWDS defaults)
+  $theme-type-scale-3xs: 2,
+  $theme-type-scale-2xs: 3,
+  $theme-type-scale-xs: 4,
+  $theme-type-scale-sm: 5,
+  $theme-type-scale-md: 6,
+  $theme-type-scale-lg: 9,
+  $theme-type-scale-xl: 12,
+  $theme-type-scale-2xl: 14,
+  $theme-type-scale-3xl: 15,
+  
+  // Primary colors
+  $theme-color-primary-family: "blue",
+  $theme-color-primary: "blue-60v",
+  
+  // Essential component settings
+  $theme-button-border-radius: "md",
+  
+  // Keep notifications and warnings on
+  $theme-show-compile-warnings: true,
+  $theme-show-notifications: true
+);

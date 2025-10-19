@@ -1,0 +1,75 @@
+// Foundation styles - Essential styles that components need
+// This provides minimal foundation without complex USWDS dependencies
+// Individual components will import their specific USWDS packages
+
+// Core typography and base styles that components rely on
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  box-sizing: border-box;
+  font-feature-settings: "kern" 1;
+  font-kerning: normal;
+  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  color: #1b1b1b;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+*,
+::after,
+::before {
+  box-sizing: inherit;
+}
+
+// Focus states for accessibility
+button:not([disabled]):focus,
+input:not([disabled]):focus,
+select:not([disabled]):focus,
+textarea:not([disabled]):focus {
+  outline: 0.25rem solid #2491ff;
+  outline-offset: 0;
+}
+
+[contentEditable="true"]:focus,
+[href]:focus,
+[tabindex]:focus,
+iframe:focus {
+  outline: 0.25rem solid #2491ff;
+  outline-offset: 0;
+}
+
+// Common utility classes
+.usa-focus {
+  outline: 0.25rem solid #2491ff;
+  outline-offset: 0;
+}
+
+.usa-sr-only {
+  position: absolute;
+  left: -999em;
+  right: auto;
+}
+
+// Font faces
+@font-face {
+  font-family: "Source Sans Pro Web";
+  font-style: normal;
+  font-weight: 400;
+  font-display: fallback;
+  src: url(../fonts/source-sans-pro/sourcesanspro-regular-webfont.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: "Source Sans Pro Web";
+  font-style: normal;
+  font-weight: 700;
+  font-display: fallback;
+  src: url(../fonts/source-sans-pro/sourcesanspro-bold-webfont.woff2) format("woff2");
+}
+
+// Add other essential font-faces as needed...

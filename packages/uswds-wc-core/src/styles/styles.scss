@@ -1,0 +1,17 @@
+/*
+ * USWDS Web Components - Main Styles
+ * 
+ * This file follows the official USWDS approach for importing
+ * theme settings and compiling USWDS SCSS.
+ * 
+ * Official documentation:
+ * https://designsystem.digital.gov/documentation/developers/#sass-and-theme-settings-2
+ */
+
+// Official USWDS approach using @forward
+@forward "uswds-theme";
+@forward "uswds";
+
+// Web component essential styles
+@import "components/host-styles";
+@import "components/functional-extensions";
