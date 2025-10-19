@@ -28,5 +28,19 @@ export * from './utils/uswds-behavior.js';
 export * from './utils/uswds-class-builder.js';
 export * from './utils/uswds-enhancement.js';
 export * from './utils/uswds-initialization-registry.js';
-export * from './utils/uswds-loader.js';
+// Export specific items from uswds-loader to avoid interface conflicts
+// Note: initializeUSWDSComponent and cleanupUSWDSComponent are exported from uswds-initialization-registry
+export {
+  loadUSWDSModule,
+  loadUSWDSModules,
+  loadTypedUSWDSModule,
+  loadUSWDS,
+  initUSWDS,
+  getUSWDSBehavior,
+  isCSSOnlyComponent,
+  SUPPORTED_USWDS_MODULES,
+  CSS_ONLY_USWDS_MODULES,
+  type SupportedUSWDSModule,
+  type CSSOnlyUSWDSModule
+} from './utils/uswds-loader.js';
 export * from './utils/uswds-modules-registry.js';
