@@ -86,16 +86,6 @@ const setupDocsIframeResize = (): void => {
   if (iframeResizeListenerAdded) return;
   iframeResizeListenerAdded = true;
 
-  console.log('🔧 setupDocsIframeResize() initialized');
-  console.log(`📍 Context:
-    isIframe: ${window.self !== window.top}
-    pathname: ${window.location.pathname}
-    search: ${window.location.search}
-    hasIframeHtml: ${window.location.pathname.includes('/iframe.html')}
-    viewMode: ${new URLSearchParams(window.location.search).get('viewMode')}
-    storyId: ${new URLSearchParams(window.location.search).get('id')}`
-  );
-
   /**
    * Trigger iframe resize
    * Storybook listens for 'resize' events to adjust iframe height
@@ -110,7 +100,6 @@ const setupDocsIframeResize = (): void => {
 
     // Check if click is on accordion or banner button
     if (target?.closest?.('.usa-accordion__button') || target?.closest?.('.usa-banner__button')) {
-      console.log('🎯 Accordion/Banner button clicked');
       // Wait for animation/transition to complete
       setTimeout(triggerResize, 350);
     }
@@ -119,7 +108,6 @@ const setupDocsIframeResize = (): void => {
     if (target?.closest?.('.usa-combo-box__toggle-list') ||
         target?.closest?.('.usa-date-picker__button') ||
         target?.closest?.('.usa-time-picker__button')) {
-      console.log('🎯 Dropdown/Calendar toggle clicked');
       // Wait for dropdown/calendar to render
       setTimeout(triggerResize, 100);
     }
@@ -135,7 +123,6 @@ const setupDocsIframeResize = (): void => {
               node.classList.contains('usa-date-picker__calendar') ||
               node.classList.contains('usa-time-picker__list') ||
               node.classList.contains('usa-tooltip__body')) {
-            console.log('🎯 USWDS popup element added:', node.className);
             // Trigger resize when dropdown appears
             setTimeout(triggerResize, 50);
           }
@@ -149,12 +136,26 @@ const setupDocsIframeResize = (): void => {
     childList: true,
     subtree: true,
   });
-
-  console.log('✅ Dynamic iframe resize enabled for dropdowns and calendars');
 };
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: [
+          'Getting Started',
+          'Documentation',
+          ['About', 'USWDS Compliance', 'Bundle Optimization', 'CI/CD Pipeline', 'Pre-Commit System', 'Working With Claude'],
+          'Forms',
+          'Navigation',
+          'Data Display',
+          'Feedback',
+          'Actions',
+          'Layout',
+          'Structure',
+        ],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
