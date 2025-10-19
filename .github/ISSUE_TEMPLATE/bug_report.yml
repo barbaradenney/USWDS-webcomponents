@@ -1,0 +1,185 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the sections below to help us understand and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: When I click the accordion, it doesn't expand...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which component is affected?
+      options:
+        - Accordion
+        - Alert
+        - Banner
+        - Breadcrumb
+        - Button
+        - Button Group
+        - Card
+        - Character Count
+        - Checkbox
+        - Collection
+        - Combo Box
+        - Date Picker
+        - Date Range Picker
+        - File Input
+        - Footer
+        - Header
+        - Icon
+        - Identifier
+        - In-Page Navigation
+        - Input Prefix/Suffix
+        - Language Selector
+        - Link
+        - List
+        - Memorable Date
+        - Menu
+        - Modal
+        - Pagination
+        - Process List
+        - Prose
+        - Radio
+        - Range Slider
+        - Search
+        - Section
+        - Select
+        - Side Navigation
+        - Site Alert
+        - Skip Link
+        - Step Indicator
+        - Summary Box
+        - Table
+        - Tag
+        - Text Input
+        - Textarea
+        - Time Picker
+        - Tooltip
+        - Validation
+        - Other/Multiple Components
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: The accordion should expand smoothly...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: The accordion doesn't respond to clicks...
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots/Videos
+      description: If applicable, add screenshots or videos to help explain the problem.
+      placeholder: Drag and drop images here or paste image URLs
+
+  - type: input
+    id: version
+    attributes:
+      label: Package Version
+      description: Which version of uswds-webcomponents are you using?
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser(s) does this occur in?
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser Version
+      description: What version of the browser?
+      placeholder: "120.0.6099.109"
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework (if applicable)
+      description: Are you using this with a framework?
+      options:
+        - None (Vanilla JavaScript)
+        - React
+        - Vue
+        - Angular
+        - Svelte
+        - Other
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here.
+      placeholder: |
+        - This only happens when...
+        - I noticed that...
+        - Related issues: #123
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I have searched existing issues to ensure this hasn't been reported
+          required: true
+        - label: I have tested this with the latest version of the package
+          required: true
+        - label: I have included all relevant information above
+          required: true

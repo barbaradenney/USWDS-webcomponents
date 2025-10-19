@@ -1,0 +1,95 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":dependencyDashboard", ":semanticCommitTypeAll(chore)"],
+  "timezone": "America/New_York",
+  "schedule": ["after 10pm on sunday"],
+  "labels": ["dependencies", "automated"],
+  "packageRules": [
+    {
+      "description": "USWDS core package - requires careful testing",
+      "matchPackageNames": ["@uswds/uswds"],
+      "labels": ["uswds-update", "needs-review"],
+      "assignees": ["@barbaramiles"],
+      "rangeStrategy": "pin",
+      "automerge": false,
+      "prPriority": 10
+    },
+    {
+      "description": "Lit framework updates",
+      "matchPackagePatterns": ["^lit", "^@lit/"],
+      "labels": ["lit-framework"],
+      "rangeStrategy": "bump",
+      "automerge": false,
+      "prPriority": 5
+    },
+    {
+      "description": "Storybook updates",
+      "matchPackagePatterns": ["^@storybook/"],
+      "labels": ["storybook"],
+      "rangeStrategy": "bump",
+      "automerge": false,
+      "groupName": "storybook packages"
+    },
+    {
+      "description": "Testing libraries",
+      "matchPackagePatterns": ["vitest", "cypress", "playwright"],
+      "labels": ["testing"],
+      "automerge": false,
+      "groupName": "testing packages"
+    },
+    {
+      "description": "Development dependencies - auto-merge patch updates",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "labels": ["dev-dependencies", "auto-merge"]
+    },
+    {
+      "description": "Security updates - high priority",
+      "matchDatasources": ["npm"],
+      "matchUpdateTypes": ["patch"],
+      "matchPackagePatterns": ["*"],
+      "prPriority": 10,
+      "vulnerabilityAlerts": {
+        "labels": ["security"],
+        "assignees": ["@barbaramiles"],
+        "reviewers": ["@barbaramiles"]
+      }
+    }
+  ],
+  "postUpdateOptions": ["npmDedupe"],
+  "prConcurrentLimit": 3,
+  "prCreation": "not-pending",
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "prBodyDefinitions": {
+    "Package": "{{depNameLinked}}",
+    "Type": "{{depType}}",
+    "Update": "{{updateType}}",
+    "Current version": "{{currentVersion}}",
+    "New version": "{{newVersion}}",
+    "Change": "{{#if displayFrom}}`{{displayFrom}}` -> {{/if}}`{{displayTo}}`",
+    "Pending": "{{#if statusCheckNames}}{{statusCheckNames}}{{/if}}",
+    "References": "{{references}}",
+    "Package file": "{{packageFile}}",
+    "USWDS Impact": "{{#if (containsString depName 'uswds')}}⚠️ This update may affect USWDS compliance. Manual testing required.{{/if}}"
+  },
+  "prBodyColumns": ["Package", "Type", "Update", "Change", "USWDS Impact"],
+  "ignoreDeps": [],
+  "enabledManagers": ["npm"],
+  "rangeStrategy": "auto",
+  "separateMajorMinor": true,
+  "separateMinorPatch": false,
+  "separateMultipleMajor": false,
+  "stabilityDays": 3,
+  "prNotPendingHours": 25,
+  "rebaseWhen": "behind-base-branch",
+  "updateNotScheduled": false,
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "📦 Dependency Updates Dashboard",
+  "dependencyDashboardLabels": ["dependencies", "dashboard"],
+  "osvVulnerabilityAlerts": true
+}

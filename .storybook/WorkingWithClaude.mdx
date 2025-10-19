@@ -1,0 +1,828 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Working with Claude" />
+
+# Working with Claude on USWDS Web Components
+
+> **Auto-generated on:** 2025-10-12
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+This entire USWDS Web Components library was built using **Claude Code**, Anthropic's AI-powered development assistant. This document explains how Claude was used to build the library and provides practical prompts you can use to work with this codebase effectively.
+
+## 🤖 About Claude Code
+
+**Claude Code** is an advanced AI assistant that can:
+- Read and understand entire codebases
+- Write production-quality code following architectural patterns
+- Execute commands, run tests, and validate changes
+- Follow complex development workflows and standards
+- Maintain consistency across large projects
+- Generate comprehensive documentation
+- Debug complex issues systematically
+
+## 🏗️ How This Library Was Built
+
+### Development Philosophy
+
+Every aspect of this library was created through collaboration with Claude:
+
+1. **Architecture Design** - Claude helped establish the Script Tag Pattern, Light DOM approach, and USWDS-first methodology
+2. **Component Implementation** - All 46 components written with Claude following USWDS compliance standards
+3. **Testing Infrastructure** - 2301+ tests created with comprehensive coverage
+4. **Documentation** - All component READMEs, guides, and Storybook documentation
+5. **Automation** - Pre-commit hooks, validation scripts, and CI/CD pipelines
+6. **Quality Assurance** - Code reviews, refactoring, and continuous improvement
+
+### Key Achievements
+
+- ✅ **100% USWDS Compliance** - Achieved through systematic validation
+- ✅ **Zero Breaking Changes** - Careful architectural decisions
+- ✅ **Comprehensive Testing** - Every component fully tested
+- ✅ **Complete Documentation** - No component left undocumented
+- ✅ **Automated Quality** - 13 pre-commit validation stages
+
+## 💬 Essential Claude Prompts
+
+### Getting Started with the Codebase
+
+#### Understanding the Project
+```
+Please read CLAUDE.md and give me an overview of this project's
+architecture, key principles, and development workflow.
+```
+
+#### Finding Your Way Around
+```
+Where can I find the documentation for [component-name]?
+Show me the component implementation, tests, and README.
+```
+
+#### Understanding a Component
+```
+Explain how the [component-name] component works. Include:
+- Its USWDS integration approach
+- Key properties and events
+- Testing strategy
+- Any special architectural considerations
+```
+
+### Creating New Components
+
+#### Generate a Component (Recommended)
+```
+I need to create a new component called [component-name].
+Use the component generator to scaffold it with all required files.
+
+Command: npm run generate:component -- --interactive
+```
+
+#### Manual Component Creation
+```
+Create a new USWDS component for [component-name] following these requirements:
+1. Follow the Script Tag Pattern (mandatory)
+2. Use Light DOM (no Shadow DOM)
+3. Match official USWDS structure from node_modules/@uswds/uswds/packages/usa-[component]
+4. Include comprehensive tests with accessibility validation
+5. Create Storybook stories with all variants
+6. Write component README.mdx with USWDS links
+7. Ensure 100% USWDS compliance
+
+Reference: docs/COMPONENT_TEMPLATES.md
+```
+
+#### Component with Complex Behavior
+```
+Create a [component-name] component that needs custom behavior mirroring.
+This component has complex interactions that require a separate behavior file.
+
+Requirements:
+1. Create usa-[component]-behavior.ts that replicates USWDS JavaScript
+2. Source: node_modules/@uswds/uswds/packages/usa-[component]/src/index.js
+3. Document all USWDS source references
+4. Follow Pattern 2 from USWDS_INTEGRATION_GUIDE.md
+
+The component needs: [describe specific behaviors]
+```
+
+### Testing and Validation
+
+#### Run All Tests Before Committing
+```
+Run the complete test suite to ensure nothing is broken:
+
+Commands:
+npm test                    # Unit tests
+npm run test:run -- --all   # All tests (comprehensive)
+npm run typecheck          # TypeScript validation
+npm run lint               # Code quality
+npm run validate           # All pre-commit checks
+```
+
+#### Fix Test Failures
+```
+The tests are failing with these errors: [paste error output]
+
+Please investigate and fix the issues. Follow the debugging protocol:
+1. Check docs/USWDS_JAVASCRIPT_DEBUGGING_PROTOCOL.md
+2. Compare with USWDS source in node_modules/@uswds/uswds
+3. Verify USWDS integration patterns
+4. Run tests after each fix
+```
+
+#### Add Tests for Existing Component
+```
+The [component-name] component needs better test coverage. Add:
+1. Unit tests for all properties and methods
+2. Accessibility tests (axe-core validation)
+3. Interactive behavior tests (if applicable)
+4. USWDS compliance tests
+
+Current coverage: [describe what exists]
+Missing coverage: [describe gaps]
+```
+
+### Debugging and Fixing Issues
+
+#### Component Not Working in Storybook
+```
+The [component-name] component isn't working correctly in Storybook.
+
+Symptoms: [describe what you're seeing]
+Expected: [describe expected behavior]
+
+Please debug using:
+1. docs/DEBUGGING_GUIDE.md
+2. docs/USWDS_JAVASCRIPT_DEBUGGING_PROTOCOL.md
+3. Check console errors in browser
+4. Verify USWDS script tag pattern
+5. Compare with official USWDS example
+```
+
+#### USWDS Compliance Issues
+```
+The pre-commit hook is reporting USWDS compliance issues for [component-name]:
+
+[paste error output]
+
+Please fix these issues following:
+1. docs/USWDS_COMPLIANCE_METHODOLOGY.md
+2. .storybook/USWDSCompliance.mdx
+3. Ensure only approved USWDS CSS classes used
+4. Verify Light DOM rendering
+5. Check Script Tag Pattern implementation
+```
+
+#### Validation Errors
+```
+I'm getting pre-commit validation errors:
+
+[paste error output]
+
+Please fix these issues. The errors are from stage [X] of the
+pre-commit system. Reference: .storybook/PreCommitSystem.mdx
+```
+
+### Documentation
+
+#### Update Component Documentation
+```
+Update the README.mdx for [component-name] to include:
+1. New property: [property-name]
+2. New event: [event-name]
+3. Updated usage example showing [new feature]
+4. Link to official USWDS documentation
+
+Maintain the existing structure and style.
+```
+
+#### Generate API Documentation
+```
+Generate comprehensive API documentation for [component-name] including:
+- All properties with types and descriptions
+- All events with payload details
+- All methods (public API only)
+- Usage examples for common scenarios
+- Accessibility considerations
+```
+
+#### Create Migration Guide
+```
+Create a migration guide for upgrading from version [X] to [Y].
+Include:
+- Breaking changes
+- New features
+- Deprecated functionality
+- Code examples showing before/after
+- Testing recommendations
+```
+
+### Code Quality and Refactoring
+
+#### Refactor Component
+```
+The [component-name] component needs refactoring:
+
+Issues:
+- [list specific issues]
+
+Requirements:
+- Maintain 100% USWDS compliance
+- Don't break existing tests
+- Improve code clarity
+- Follow architectural patterns from CLAUDE.md
+- Update tests if behavior changes
+```
+
+#### Remove Code Duplication
+```
+I've noticed code duplication between [component-1] and [component-2]:
+
+[describe duplication]
+
+Please:
+1. Extract shared logic to src/utils/
+2. Update both components to use shared code
+3. Ensure all tests still pass
+4. Document the utility function
+```
+
+#### Improve Performance
+```
+The [component-name] component has performance issues:
+
+Symptoms: [describe performance problem]
+Metrics: [any measurements]
+
+Please optimize following:
+1. .storybook/BundleOptimization.mdx strategies
+2. Maintain USWDS compliance
+3. Don't sacrifice functionality
+4. Add performance tests if needed
+```
+
+### USWDS Updates
+
+#### Sync with New USWDS Version
+```
+USWDS has released version [X.X.X] with these changes:
+[list relevant changes]
+
+Please update the library:
+
+Command: npm run uswds:sync
+
+Then:
+1. Review all affected components
+2. Update component implementations if needed
+3. Run full test suite
+4. Update documentation
+5. Test in Storybook
+```
+
+#### Add New USWDS Component
+```
+USWDS has added a new component: [component-name]
+
+Please implement it:
+1. Study official USWDS implementation
+2. Use component generator
+3. Follow Script Tag Pattern
+4. Ensure 100% compliance
+5. Add comprehensive tests
+6. Create Storybook stories
+7. Write component README.mdx
+
+USWDS docs: https://designsystem.digital.gov/components/[component]/
+```
+
+### Build and Deployment
+
+#### Production Build
+```
+Create a production build and verify everything works:
+
+Commands:
+npm run build                      # Build library
+npm run build:css:prod            # Build production CSS
+npm run validate:bundle-size      # Check bundle size
+
+Then verify:
+- Bundle sizes are acceptable
+- All components export correctly
+- TypeScript definitions included
+- No build warnings or errors
+```
+
+#### Analyze Bundle Size
+```
+Analyze the bundle size and identify optimization opportunities:
+
+Commands:
+npm run build
+npx vite-bundle-visualizer
+
+Then:
+1. Identify large dependencies
+2. Check for code duplication
+3. Verify tree-shaking working
+4. Suggest optimizations
+5. Reference: .storybook/BundleOptimization.mdx
+```
+
+#### Prepare Release
+```
+Prepare a release for version [X.X.X]:
+
+1. Update version in package.json
+2. Update CHANGELOG.mdx files for affected components
+3. Run full test suite (npm run test:run -- --all)
+4. Run all validations (npm run validate)
+5. Create production build (npm run build)
+6. Generate release notes
+7. Tag version in git
+
+Type of release: [major/minor/patch]
+Changes included: [describe changes]
+```
+
+### Storybook Management
+
+#### Add New Story
+```
+Add a new Storybook story for [component-name] showing [scenario]:
+
+Requirements:
+1. Co-locate at src/components/[component]/usa-[component].stories.ts
+2. Use layout: 'padded'
+3. Include interactive controls
+4. Show all relevant properties
+5. Add helpful description
+6. Follow patterns from docs/STORYBOOK_BEST_PRACTICES.md
+```
+
+#### Fix Storybook Story
+```
+The Storybook story for [component-name] - [story-name] isn't working:
+
+Issue: [describe problem]
+
+Please fix:
+1. Check component implementation
+2. Verify USWDS initialization
+3. Test story in isolation
+4. Check browser console
+5. Compare with working stories
+```
+
+#### Update Storybook Documentation
+```
+Update the Storybook documentation pages in .storybook/:
+
+Changes needed:
+- About.mdx: [changes]
+- USWDSCompliance.mdx: [changes]
+- PreCommitSystem.mdx: [changes]
+- CICDPipeline.mdx: [changes]
+- BundleOptimization.mdx: [changes]
+
+The sync script will auto-update timestamps.
+```
+
+### Git and Version Control
+
+#### Create Commit
+```
+Create a git commit for these changes:
+
+Changes:
+- [list changes]
+
+Requirements:
+1. Follow conventional commits format
+2. Include detailed description
+3. Reference any related issues
+4. Ensure pre-commit hooks pass
+5. All tests must pass first
+```
+
+#### Review Changes Before Commit
+```
+Review all my uncommitted changes and verify:
+1. No debug code or console.logs
+2. All tests pass
+3. Documentation updated
+4. No unintended file changes
+5. Follows code style guidelines
+6. USWDS compliance maintained
+
+Command: git status && git diff
+```
+
+## 🎯 Common Workflows
+
+### Adding a New Component (Complete Workflow)
+
+```
+I want to add a new USWDS component: [component-name]
+
+Complete workflow:
+1. Generate component scaffold
+2. Study official USWDS implementation
+3. Implement component following Script Tag Pattern
+4. Write comprehensive tests
+5. Create Storybook stories
+6. Write component README.mdx
+7. Run all validations
+8. Test in Storybook
+9. Create commit
+
+Let's start with step 1. Use the interactive generator:
+npm run generate:component -- --interactive
+```
+
+### Fixing a Bug (Complete Workflow)
+
+```
+There's a bug in [component-name]:
+
+Bug description: [describe bug]
+Steps to reproduce: [list steps]
+Expected behavior: [describe expected]
+Actual behavior: [describe actual]
+
+Debug and fix following this workflow:
+1. Read component README.mdx
+2. Check docs/DEBUGGING_GUIDE.md
+3. Review USWDS source code
+4. Identify root cause
+5. Implement fix
+6. Add regression test
+7. Run full test suite
+8. Verify in Storybook
+9. Update documentation if needed
+10. Create commit with fix
+```
+
+### Improving Component Quality (Complete Workflow)
+
+```
+Improve the quality of [component-name]:
+
+Areas to review:
+1. Code structure and clarity
+2. Test coverage
+3. Documentation completeness
+4. Performance optimization
+5. Accessibility compliance
+6. USWDS compliance
+7. Type safety
+
+Provide recommendations and implement improvements.
+```
+
+## 📚 Essential Documentation
+
+Before asking Claude to work on something, ensure Claude has read:
+
+### Always Relevant
+- **CLAUDE.md** - Core project instructions and architecture
+- **docs/TESTING_GUIDE.md** - Complete testing documentation
+- **docs/COMPONENT_TEMPLATES.md** - Reusable templates
+
+### Component Development
+- **docs/USWDS_INTEGRATION_GUIDE.md** - USWDS patterns
+- **docs/USWDS_COMPLIANCE_METHODOLOGY.md** - Compliance requirements
+- **docs/LIT_USWDS_INTEGRATION_PATTERNS.md** - Critical patterns
+
+### Debugging
+- **docs/DEBUGGING_GUIDE.md** - Troubleshooting guide
+- **docs/USWDS_JAVASCRIPT_DEBUGGING_PROTOCOL.md** - Systematic debugging
+
+### Quality Assurance
+- **docs/CODE_QUALITY_ARCHITECTURAL_REVIEW.md** - Architecture standards
+- **.storybook/USWDSCompliance.mdx** - Compliance validation
+- **.storybook/PreCommitSystem.mdx** - Validation stages
+
+### Storybook
+- **docs/STORYBOOK_BEST_PRACTICES.md** - Story patterns
+- **Component README.mdx files** - Component-specific docs
+
+## 🚀 Advanced Claude Workflows
+
+### Batch Component Updates
+
+```
+Update all components to use the new [pattern/feature]:
+
+1. List all affected components
+2. For each component:
+   - Update implementation
+   - Update tests
+   - Update documentation
+   - Verify USWDS compliance
+   - Test in Storybook
+3. Run full test suite
+4. Create single commit with all changes
+
+Affected components: [list or "all components"]
+```
+
+### Create New Architectural Pattern
+
+```
+I want to introduce a new pattern for [purpose]:
+
+Requirements:
+- [list requirements]
+
+Please:
+1. Design the pattern following project architecture
+2. Document in docs/ directory
+3. Create example implementation
+4. Update CLAUDE.md with pattern guidance
+5. Apply to [number] example components
+6. Add validation to pre-commit hooks (if needed)
+```
+
+### Comprehensive Codebase Audit
+
+```
+Perform a comprehensive audit of the codebase:
+
+Focus areas:
+1. USWDS compliance across all components
+2. Test coverage gaps
+3. Documentation completeness
+4. Code duplication
+5. Performance issues
+6. Accessibility compliance
+7. Type safety
+8. Bundle size optimization opportunities
+
+Generate report with:
+- Issues found
+- Priority levels
+- Recommendations
+- Implementation plan
+```
+
+## 💡 Best Practices for Working with Claude
+
+### 1. Be Specific and Detailed
+❌ "Fix the button component"
+✅ "The button component's hover state isn't working in Safari. The expected behavior is [X] but actual is [Y]. Please debug following USWDS_JAVASCRIPT_DEBUGGING_PROTOCOL.md"
+
+### 2. Reference Documentation
+❌ "Make it follow our patterns"
+✅ "Implement following the Script Tag Pattern described in CLAUDE.md and USWDS_INTEGRATION_GUIDE.md section 2.1"
+
+### 3. Provide Context
+❌ "Tests are failing"
+✅ "Tests are failing with error: [paste error]. This started after [change]. The component uses [USWDS pattern]. Reference: [file:line]"
+
+### 4. Request Validation
+❌ "Is this done?"
+✅ "Please verify this implementation: 1) All tests pass, 2) USWDS compliant, 3) Documentation updated, 4) Storybook working, 5) Pre-commit hooks pass"
+
+### 5. Ask for Explanations
+❌ "Why doesn't this work?"
+✅ "Explain why the Script Tag Pattern is required for this component and what would happen if we used ES module imports instead"
+
+### 6. Request Step-by-Step Approaches
+❌ "Build feature X"
+✅ "Build feature X following this workflow: 1) Design, 2) Implement, 3) Test, 4) Document, 5) Validate. Let's start with step 1 design"
+
+## 🔧 Useful npm Commands
+
+### Development
+```bash
+npm run dev              # Start dev server
+npm run storybook        # Start Storybook (port 6006)
+npm run build            # Production build
+npm run build:css:prod   # Build production CSS
+```
+
+### Testing
+```bash
+npm test                          # Unit tests (watch mode)
+npm run test:run                  # Run all unit tests once
+npm run test:run -- --all        # Run ALL tests (comprehensive)
+npm run test:run -- --unit       # Unit tests only
+npm run test:run -- --component  # Component tests only
+npm run test:run -- --e2e        # E2E tests only
+npm run test:coverage            # Generate coverage report
+```
+
+### Validation
+```bash
+npm run validate                  # All validations
+npm run validate -- --uswds      # USWDS compliance only
+npm run validate:bundle-size     # Check bundle size
+npm run typecheck                # TypeScript validation
+npm run lint                     # ESLint validation
+npm run lint:fix                 # Auto-fix linting issues
+```
+
+### USWDS Management
+```bash
+npm run uswds:sync               # Complete USWDS update workflow
+npm run uswds:check-updates      # Check for USWDS updates
+npm run uswds:validate           # Validate USWDS integration
+```
+
+### Component Generation
+```bash
+npm run generate:component -- --interactive              # Interactive generation
+npm run generate:component -- --name=my-component        # Generate component
+npm run generate:component -- --name=my-component --type=form  # With type
+```
+
+### Documentation
+```bash
+npm run docs:sync                # Sync Storybook documentation
+npm run docs:validate            # Validate documentation
+npm run build-storybook          # Build Storybook for deployment
+```
+
+### Utilities
+```bash
+npm run clean                    # Clean build artifacts
+npm run clean:all                # Deep clean (includes node_modules)
+npm list                         # List installed packages
+npx vite-bundle-visualizer       # Analyze bundle size (after build)
+```
+
+### Git Hooks
+```bash
+npm run prepare                  # Install git hooks
+git commit                       # Triggers pre-commit hooks (13 stages)
+```
+
+## 📊 Prompt Examples for Common Tasks
+
+### Example 1: Add New Property to Component
+
+```
+Add a new property to [component-name]:
+
+Property: [property-name]
+Type: [type]
+Default: [default-value]
+Purpose: [describe purpose]
+
+Requirements:
+1. Add to component class with @property() decorator
+2. Update render() method to use property
+3. Add to TypeScript interface if applicable
+4. Update Storybook story with control
+5. Add to component README.mdx properties table
+6. Add test coverage for new property
+7. Ensure USWDS compliance maintained
+
+Reference component: src/components/[component]/usa-[component].ts:XX
+```
+
+### Example 2: Fix Accessibility Issue
+
+```
+Accessibility audit found issues in [component-name]:
+
+Issues:
+- [list axe-core violations]
+
+Please fix:
+1. Review USWDS accessibility patterns
+2. Update component implementation
+3. Add/update ARIA attributes
+4. Ensure keyboard navigation works
+5. Update tests to verify accessibility
+6. Document accessibility features in README.mdx
+7. Verify with axe-core in tests
+
+Reference: Official USWDS accessibility guide for this component
+```
+
+### Example 3: Optimize Bundle Size
+
+```
+The [component-name] component bundle size is too large:
+
+Current size: [X] KB
+Target size: < [Y] KB
+
+Optimize following .storybook/BundleOptimization.mdx:
+1. Analyze what's included in the bundle
+2. Check for unnecessary dependencies
+3. Verify tree-shaking working
+4. Look for code duplication
+5. Consider dynamic imports for rare features
+6. Ensure no inline styles when USWDS classes exist
+7. Report size reduction achieved
+```
+
+### Example 4: Create Integration Test
+
+```
+Create an integration test for [scenario]:
+
+Scenario: [describe user workflow]
+Components involved: [list components]
+Steps:
+1. [step 1]
+2. [step 2]
+3. [step 3]
+
+Test should:
+- Use Cypress for component testing
+- Test realistic user interactions
+- Verify USWDS behavior maintained
+- Check accessibility during interaction
+- Handle async operations properly
+- Include clear assertions
+
+Location: cypress/component/[test-name].cy.ts
+```
+
+## 🎓 Learning from This Project
+
+### What Made This Library Successful
+
+1. **Clear Architecture** - Script Tag Pattern, Light DOM, USWDS-first
+2. **Comprehensive Documentation** - Every decision documented
+3. **Automated Quality** - 13-stage pre-commit validation
+4. **Systematic Testing** - 2301+ tests covering all scenarios
+5. **Consistent Patterns** - Templates and guides for everything
+6. **Continuous Validation** - USWDS compliance checked automatically
+
+### Key Principles Applied
+
+- **USWDS-First** - Never deviate from official USWDS
+- **Test Everything** - No code without tests
+- **Document Everything** - No component without docs
+- **Automate Quality** - Prevent issues, don't fix them later
+- **Follow Patterns** - Consistency over cleverness
+- **Validate Continuously** - Catch issues immediately
+
+### Architectural Decisions
+
+All documented in:
+- **CLAUDE.md** - Core instructions
+- **docs/USWDS_INTEGRATION_GUIDE.md** - Integration patterns
+- **docs/LIT_USWDS_INTEGRATION_PATTERNS.md** - Critical patterns
+- **.storybook/USWDSCompliance.mdx** - Compliance methodology
+
+## 🚀 Future Development with Claude
+
+This library will continue evolving with Claude:
+
+- Adding new USWDS components as they're released
+- Improving performance and bundle size
+- Enhancing accessibility compliance
+- Expanding test coverage
+- Refining documentation
+- Optimizing developer experience
+
+Every change will maintain:
+- ✅ 100% USWDS compliance
+- ✅ Comprehensive testing
+- ✅ Complete documentation
+- ✅ Automated validation
+- ✅ Architectural consistency
+
+---
+
+**Claude Code made this library possible. By following these prompts and patterns, you can work effectively with Claude to maintain and enhance this codebase while maintaining the same high standards of quality and compliance.**
+
+## 💬 Getting Help from Claude
+
+When you're stuck, ask Claude:
+
+```
+I'm working on [task] but [problem].
+
+I've tried:
+- [thing 1]
+- [thing 2]
+
+I've read:
+- [documentation file 1]
+- [documentation file 2]
+
+Current state: [describe current state]
+Expected state: [describe desired state]
+
+Please help me:
+1. Understand what's wrong
+2. Identify the root cause
+3. Implement a fix following project patterns
+4. Verify the fix works
+5. Add tests to prevent regression
+
+Relevant files:
+- [file 1 with line numbers if known]
+- [file 2 with line numbers if known]
+```
+
+Claude will systematically work through the problem using the project's established patterns and documentation.

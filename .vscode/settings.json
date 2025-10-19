@@ -1,0 +1,74 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "typescript.validate.enable": true,
+  "typescript.reportStyleChecksAsWarnings": true,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+
+  "files.associations": {
+    "*.ts": "typescript",
+    "*.stories.ts": "typescript",
+    "*.test.ts": "typescript",
+    "*.component.cy.ts": "typescript"
+  },
+
+  "eslint.validate": ["javascript", "typescript"],
+
+  "eslint.workingDirectories": ["./src"],
+
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.git/**": true,
+    "**/coverage/**": true,
+    "**/storybook-static/**": true
+  },
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "**/storybook-static": true,
+    "**/*.lock": true
+  },
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [100]
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+
+  "task.problemMatchers": ["$tsc-watch"],
+
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.preferences.importModuleSpecifier": "relative",
+
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggestSelection": "first",
+  "cSpell.words": [
+    "USWDS",
+    "Vitest",
+    "WCAG"
+  ]
+}

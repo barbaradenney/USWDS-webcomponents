@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-10-15T01:04:54.619Z",
+  "bundle": {
+    "total": "474 KB",
+    "gzipped": "87 KB",
+    "componentCount": 3
+  },
+  "css": {
+    "averageReduction": "94.9%",
+    "averageSize": "15.4 KB",
+    "smallest": [
+      {
+        "name": "date-range-picker",
+        "size": "7.8"
+      },
+      {
+        "name": "time-picker",
+        "size": "7.8"
+      },
+      {
+        "name": "character-count",
+        "size": "8.0"
+      }
+    ],
+    "largest": [
+      {
+        "name": "icon",
+        "size": "61.2"
+      },
+      {
+        "name": "table",
+        "size": "55.2"
+      },
+      {
+        "name": "button",
+        "size": "47.8"
+      }
+    ]
+  },
+  "optimizations": {
+    "cssTreeShaking": true,
+    "serviceWorker": true,
+    "lazyLoading": true,
+    "partialHydration": true
+  }
+}

@@ -1,0 +1,294 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/About" />
+
+# About USWDS Web Components
+
+> **Auto-generated on:** 2025-10-12
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+USWDS Web Components is a production-ready library that converts all U.S. Web Design System (USWDS) components into modern, standards-compliant Web Components using Lit Element. This library provides a true 1:1 implementation of USWDS while offering the benefits of modern web component technology.
+
+## 🎯 Project Mission
+
+Transform USWDS into reusable, framework-agnostic web components that:
+- **Maintain 100% USWDS compliance** - Identical HTML, CSS, and JavaScript behavior
+- **Work everywhere** - Compatible with React, Vue, Angular, vanilla JS, and any web framework
+- **Preserve accessibility** - Full Section 508 and WCAG 2.1 Level AA compliance
+- **Enable progressive enhancement** - Components work as HTML, enhance with JavaScript
+- **Support government standards** - Meet 21st Century IDEA Act requirements
+
+## 📊 Project Statistics
+
+### Component Coverage
+- **Total Components:** 45/45 (100%)
+- **USWDS Compliant:** 46/46 (100%)
+- **Test Coverage:** 151+ passing tests
+- **Accessibility Tests:** All components include axe-core validation
+
+### Code Quality Metrics
+- **TypeScript:** 100% type-safe implementation
+- **Build System:** Vite + Lit with tree-shaking
+- **CSS Strategy:** Pure USWDS CSS (zero custom styles)
+- **Bundle Size:** Optimized with code splitting and tree-shaking
+
+## 🏗️ Architecture Principles
+
+### 1. USWDS-First Methodology
+Every component follows the **USWDS-First** approach:
+- Use official USWDS CSS classes directly (no custom styling)
+- Load USWDS JavaScript globally via script tag pattern
+- Let USWDS handle all transformations and behavior
+- Components render HTML, USWDS enhances automatically
+
+### 2. Light DOM Pattern
+All components use **Light DOM** (no Shadow DOM) to ensure:
+- USWDS CSS applies correctly without complex style injection
+- Maximum compatibility with existing USWDS implementations
+- Screen readers and assistive technologies work seamlessly
+- Standard DOM manipulation and event handling
+
+### 3. Script Tag Pattern (Mandatory)
+**Global USWDS Loading:**
+```html
+<!-- .storybook/preview-head.html -->
+<script src="/node_modules/@uswds/uswds/dist/js/uswds.min.js"></script>
+```
+
+**Component Implementation:**
+```typescript
+override firstUpdated(changedProperties: Map<string, any>) {
+  // ARCHITECTURE: Script Tag Pattern
+  // USWDS is loaded globally via script tag
+  // Components just render HTML - USWDS enhances automatically
+
+  super.firstUpdated(changedProperties);
+  this.initializeUSWDSComponent();
+}
+```
+
+### 4. Progressive Enhancement
+Components follow web standards:
+1. **HTML Layer** - Semantic markup works without JavaScript
+2. **CSS Layer** - USWDS styles provide visual design
+3. **JavaScript Layer** - USWDS enhances with interactive behavior
+4. **Web Component Layer** - Adds encapsulation and reusability
+
+## 🎨 Component Categories
+
+### Layout Components
+- **Section** - Page sections with variants
+- **Prose** - Long-form content styling
+- **Card** - Content cards with media support
+- **Collection** - Content listing with rich metadata
+
+### Navigation Components
+- **Header** - Site-wide navigation with mobile menu
+- **Footer** - Government-compliant footer layouts
+- **Side Navigation** - Hierarchical navigation menus
+- **Breadcrumb** - Location breadcrumbs
+- **In-Page Navigation** - Table of contents navigation
+- **Pagination** - Multi-page navigation
+- **Skip Link** - Accessibility skip navigation
+
+### Form Components
+- **Text Input** - Single-line text input with validation
+- **Textarea** - Multi-line text input with character count
+- **Select** - Dropdown selection
+- **Checkbox** - Single and grouped checkboxes
+- **Radio** - Radio button groups
+- **Date Picker** - Calendar date selection
+- **Time Picker** - Time selection with dropdown
+- **Date Range Picker** - Start/end date selection
+- **File Input** - File upload with drag-and-drop
+- **Combo Box** - Autocomplete selection
+- **Character Count** - Text length validation
+- **Input Prefix/Suffix** - Input field enhancements
+- **Memorable Date** - Month/Day/Year date input
+- **Range Slider** - Numeric range selection
+- **Validation** - Form validation messages
+
+### Interactive Components
+- **Accordion** - Expandable content sections
+- **Modal** - Dialog overlays
+- **Tooltip** - Contextual information popups
+- **Button** - Action buttons with variants
+- **Button Group** - Grouped button actions
+- **Banner** - Government website identifier
+- **Site Alert** - Site-wide notifications
+- **Alert** - Contextual user alerts
+- **Menu** - Dropdown menus
+
+### Display Components
+- **Table** - Sortable data tables
+- **Tag** - Content labels and filters
+- **Icon** - SVG icon system
+- **Link** - Styled hyperlinks
+- **List** - Styled lists (ordered/unordered)
+- **Step Indicator** - Multi-step process visualization
+- **Process List** - Step-by-step instructions
+- **Summary Box** - Key information highlighting
+- **Identifier** - Agency identification
+- **Search** - Search input component
+- **Language Selector** - Language selection dropdown
+
+## 🔧 Technology Stack
+
+### Core Technologies
+- **Lit 3.3+** - Fast, lightweight web component library
+- **TypeScript 5.0+** - Type-safe development
+- **USWDS 3.13.0** - U.S. Web Design System
+- **Vite 7.1+** - Modern build tool with HMR
+
+### Development Tools
+- **Vitest** - Unit testing framework
+- **Playwright** - Browser testing
+- **Cypress** - Component and E2E testing
+- **Storybook 9.1+** - Component documentation and testing
+- **ESLint** - Code quality enforcement
+- **Prettier** - Code formatting
+
+### Testing Infrastructure
+- **2301+ Unit Tests** - Comprehensive test coverage
+- **Accessibility Tests** - axe-core validation for all components
+- **Visual Regression Tests** - Chromatic integration
+- **Cross-Browser Tests** - Playwright multi-browser support
+- **Performance Tests** - Bundle size and runtime monitoring
+
+## 📦 Package Information
+
+### Distribution
+- **Package Name:** `uswds-webcomponents`
+- **License:** MIT
+- **Package Format:** ES Modules (ESM)
+- **Bundle Format:** Optimized with tree-shaking
+- **TypeScript Definitions:** Included
+
+### Installation
+```bash
+npm install uswds-webcomponents
+```
+
+### Usage
+```javascript
+// Auto-registration (imports all components)
+import 'uswds-webcomponents';
+
+// Individual component import (tree-shakeable)
+import { USAButton } from 'uswds-webcomponents/components/button';
+```
+
+## 🎯 100% USWDS Compliance Achievement
+
+### What This Means
+**True 1:1 USWDS functionality:**
+- ✅ Identical HTML structure to official USWDS
+- ✅ Uses official USWDS CSS without modifications
+- ✅ Implements official USWDS JavaScript behavior
+- ✅ Matches USWDS accessibility patterns
+- ✅ Supports all USWDS component variants
+- ✅ Progressive enhancement just like USWDS
+
+### How We Achieved It
+1. **Script Tag Pattern** - Global USWDS loading eliminates custom implementations
+2. **Light DOM** - Direct USWDS CSS application without style injection
+3. **Zero Custom CSS** - Pure USWDS classes (only `:host` display styles)
+4. **Behavior Mirroring** - Complex components replicate exact USWDS JavaScript
+5. **Automated Validation** - Pre-commit hooks prevent compliance drift
+
+### Compliance Validation
+Every component includes:
+- **Structural validation** - DOM structure matches USWDS source
+- **CSS validation** - Only approved USWDS classes used
+- **JavaScript validation** - Behavior matches USWDS patterns
+- **Accessibility validation** - axe-core automated testing
+- **Visual validation** - Chromatic visual regression testing
+
+## 🚀 Development Philosophy
+
+### Quality Over Speed
+- **Comprehensive testing required** - No commits without tests
+- **Zero tolerance for regressions** - Automated prevention systems
+- **Documentation mandatory** - Every component fully documented
+- **Accessibility non-negotiable** - All components must pass axe-core
+
+### Automated Quality Assurance
+- **Pre-commit validation** - 13+ automated checks before commit
+- **Continuous integration** - Full test suite on every push
+- **Visual regression prevention** - Chromatic catches visual changes
+- **Bundle size monitoring** - Prevent bloat with automated tracking
+
+### Developer Experience
+- **Hot module replacement** - Instant feedback during development
+- **Component generator** - Scaffold new components with templates
+- **Storybook integration** - Interactive component development
+- **Comprehensive documentation** - Clear guides for all processes
+
+## 📚 Documentation Structure
+
+### For Developers
+- **CLAUDE.md** - Complete development guidelines and architectural decisions
+- **TESTING_GUIDE.md** - Comprehensive testing documentation
+- **COMPONENT_TEMPLATES.md** - Reusable component templates
+- **USWDS_INTEGRATION_GUIDE.md** - USWDS integration patterns
+- **DEBUGGING_GUIDE.md** - Systematic debugging approaches
+
+### For Contributors
+- **README.md** - Project overview and quick start
+- **CONTRIBUTING.md** - Contribution guidelines
+- **Component READMEs** - Individual component documentation with examples
+
+### For Public
+- **Storybook** - Interactive component documentation and examples
+- **Component Changelogs** - Version history for each component
+- **API Documentation** - Complete property, event, and method documentation
+
+## 🎓 Government Compliance
+
+### Standards Compliance
+- **Section 508** - Full accessibility compliance
+- **WCAG 2.1 Level AA** - Web Content Accessibility Guidelines
+- **21st Century IDEA Act** - Digital service modernization requirements
+- **OMB M-17-06** - Policies for federal public websites
+
+### Agency Adoption
+This library is designed for:
+- Federal government websites and applications
+- State and local government digital services
+- Government contractors and vendors
+- Public-facing government services
+- Internal government tools and systems
+
+## 🔄 Continuous Improvement
+
+### Active Maintenance
+- **Regular USWDS updates** - Stay current with official releases
+- **Security patches** - Prompt updates for vulnerabilities
+- **Bug fixes** - Rapid response to reported issues
+- **Feature enhancements** - Community-driven improvements
+
+### Community Engagement
+- **Open source** - Public GitHub repository
+- **Issue tracking** - Transparent bug and feature tracking
+- **Pull requests welcome** - Community contributions encouraged
+- **Documentation improvements** - Help us improve docs
+
+## 📞 Support & Resources
+
+### Getting Help
+- **GitHub Issues** - Report bugs or request features
+- **Storybook Documentation** - Interactive component examples
+- **Component READMEs** - Detailed usage documentation
+- **DEBUGGING_GUIDE.md** - Troubleshooting common issues
+
+### Key Links
+- **USWDS Official Site:** https://designsystem.digital.gov/
+- **USWDS GitHub:** https://github.com/uswds/uswds
+- **Lit Documentation:** https://lit.dev/
+- **Web Components Standard:** https://developer.mozilla.org/en-US/docs/Web/Web_Components
+
+---
+
+**This library represents a commitment to government digital service excellence, accessibility, and modern web standards.**

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy USWDS Loading Example - USWDS Web Components</title>
+  <link rel="stylesheet" href="/src/styles/styles.css">
+  <style>
+    body {
+      font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #f0f0f0;
+    }
+
+    .demo-section {
+      background: white;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .status-panel {
+      background: #e7f6f8;
+      border-left: 4px solid #00bde3;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .status-item:last-child {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background: #00a91c;
+      color: white;
+    }
+
+    .badge-warning {
+      background: #ffbe2e;
+      color: #1b1b1b;
+    }
+
+    .badge-info {
+      background: #00bde3;
+      color: white;
+    }
+
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .component-card {
+      border: 2px solid #dfe1e2;
+      padding: 1rem;
+      border-radius: 4px;
+    }
+
+    .component-card h4 {
+      margin-top: 0;
+    }
+
+    pre {
+      background: #1b1b1b;
+      color: #f0f0f0;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 Lazy USWDS Loading Example</h1>
+
+  <div class="demo-section">
+    <h2>About Lazy Loading</h2>
+    <p>
+      This demo shows how the Lazy USWDS Loading system automatically detects
+      which components need USWDS JavaScript and loads it only when necessary.
+    </p>
+    <p>
+      <strong>Savings:</strong> ~200 KB for pages with only static components!
+    </p>
+  </div>
+
+  <div class="status-panel">
+    <h3>📊 Current Status</h3>
+    <div id="status">
+      <div class="status-item">
+        <span>USWDS Loaded:</span>
+        <span id="status-loaded" class="badge badge-warning">Checking...</span>
+      </div>
+      <div class="status-item">
+        <span>Interactive Components:</span>
+        <span id="status-interactive">-</span>
+      </div>
+      <div class="status-item">
+        <span>Static Components:</span>
+        <span id="status-static">-</span>
+      </div>
+      <div class="status-item">
+        <span>Bytes Saved:</span>
+        <span id="status-savings">-</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Scenario 1: Static Components Only</h2>
+    <p>These components don't require USWDS JavaScript:</p>
+
+    <div class="component-grid" id="static-demo">
+      <div class="component-card">
+        <h4>Button (Static)</h4>
+        <usa-button variant="default">Click Me</usa-button>
+      </div>
+      <div class="component-card">
+        <h4>Alert (Static)</h4>
+        <usa-alert type="info" heading="Information">
+          This is a static alert component.
+        </usa-alert>
+      </div>
+      <div class="component-card">
+        <h4>Tag (Static)</h4>
+        <usa-tag>Static Tag</usa-tag>
+      </div>
+    </div>
+
+    <button id="scan-static" class="usa-button usa-button--secondary">
+      Scan for Static Components
+    </button>
+  </div>
+
+  <div class="demo-section">
+    <h2>Scenario 2: Add Interactive Component</h2>
+    <p>Click the button below to add an interactive component that requires USWDS:</p>
+
+    <div id="interactive-demo">
+      <!-- Interactive components will be added here -->
+    </div>
+
+    <button id="add-modal" class="usa-button">
+      Add Modal (Requires USWDS JS)
+    </button>
+    <button id="add-accordion" class="usa-button">
+      Add Accordion (Requires USWDS JS)
+    </button>
+  </div>
+
+  <div class="demo-section">
+    <h2>Code Examples</h2>
+
+    <h3>1. Automatic Detection (Recommended)</h3>
+    <pre><code>import { autoLoadUSWDS } from './utils/lazy-uswds-loader.js';
+
+// Automatically scan and load USWDS if needed
+window.addEventListener('DOMContentLoaded', async () => {
+  const result = await autoLoadUSWDS({ debug: true });
+
+  console.log('USWDS loaded:', result.loaded);
+  console.log('Saved:', result.loaded ? '0 KB' : '~200 KB');
+});</code></pre>
+
+    <h3>2. Manual Component Loading</h3>
+    <pre><code>import { ensureUSWDSLoaded, requiresUSWDS } from './utils/lazy-uswds-loader.js';
+
+class USAModal extends LitElement {
+  async connectedCallback() {
+    super.connectedCallback();
+
+    // Only load USWDS for interactive components
+    if (requiresUSWDS('usa-modal')) {
+      await ensureUSWDSLoaded();
+    }
+
+    this.initializeUSWDSComponent();
+  }
+}</code></pre>
+
+    <h3>3. Preloading Strategy</h3>
+    <pre><code>import { preloadUSWDS, ensureUSWDSLoaded } from './utils/lazy-uswds-loader.js';
+
+// Start downloading USWDS early (in parallel)
+preloadUSWDS();
+
+// Later, when needed
+await ensureUSWDSLoaded(); // Will use preloaded script</code></pre>
+  </div>
+
+  <script type="module">
+    import { autoLoadUSWDS, requiresUSWDS, getUSWDSStatus, ensureUSWDSLoaded } from '/src/utils/lazy-uswds-loader.js';
+
+    // Update status display
+    function updateStatus() {
+      const status = getUSWDSStatus();
+      const loadedBadge = document.getElementById('status-loaded');
+
+      if (status.available) {
+        loadedBadge.textContent = 'Yes';
+        loadedBadge.className = 'badge badge-success';
+      } else {
+        loadedBadge.textContent = 'No';
+        loadedBadge.className = 'badge badge-warning';
+      }
+    }
+
+    // Scan static components
+    document.getElementById('scan-static').addEventListener('click', async () => {
+      const result = await autoLoadUSWDS({ debug: true });
+
+      document.getElementById('status-interactive').textContent =
+        result.interactiveComponents.length || 'None';
+      document.getElementById('status-static').textContent =
+        result.staticComponents.length || 'None';
+      document.getElementById('status-savings').textContent =
+        result.loaded ? '0 KB' : '~200 KB';
+
+      updateStatus();
+
+      alert(`Scan complete!\n\nInteractive: ${result.interactiveComponents.length}\nStatic: ${result.staticComponents.length}\nUSWDS Loaded: ${result.loaded}\nSavings: ${result.loaded ? '0 KB' : '~200 KB'}`);
+    });
+
+    // Add modal
+    document.getElementById('add-modal').addEventListener('click', async () => {
+      const container = document.getElementById('interactive-demo');
+
+      // Create modal element
+      const modal = document.createElement('usa-modal');
+      modal.setAttribute('id', 'example-modal');
+      modal.innerHTML = `
+        <h2>Example Modal</h2>
+        <p>This modal requires USWDS JavaScript to function.</p>
+        <button class="usa-button usa-modal__close">Close</button>
+      `;
+
+      container.appendChild(modal);
+
+      // Load USWDS for modal
+      await ensureUSWDSLoaded({ debug: true });
+
+      updateStatus();
+
+      // Rescan
+      const result = await autoLoadUSWDS({ debug: true });
+      document.getElementById('status-interactive').textContent =
+        result.interactiveComponents.join(', ') || 'None';
+
+      alert('Modal added! USWDS JavaScript is now loaded.');
+    });
+
+    // Add accordion
+    document.getElementById('add-accordion').addEventListener('click', async () => {
+      const container = document.getElementById('interactive-demo');
+
+      // Create accordion element
+      const accordion = document.createElement('usa-accordion');
+      accordion.innerHTML = `
+        <h4 class="usa-accordion__heading">
+          <button class="usa-accordion__button" aria-expanded="false">
+            Accordion Item
+          </button>
+        </h4>
+        <div class="usa-accordion__content" hidden>
+          <p>This accordion requires USWDS JavaScript to function.</p>
+        </div>
+      `;
+
+      container.appendChild(accordion);
+
+      // Load USWDS for accordion
+      await ensureUSWDSLoaded({ debug: true });
+
+      updateStatus();
+
+      // Rescan
+      const result = await autoLoadUSWDS({ debug: true });
+      document.getElementById('status-interactive').textContent =
+        result.interactiveComponents.join(', ') || 'None';
+
+      alert('Accordion added! USWDS JavaScript is now loaded.');
+    });
+
+    // Initial status check
+    updateStatus();
+  </script>
+</body>
+</html>

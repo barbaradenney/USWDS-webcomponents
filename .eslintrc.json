@@ -1,0 +1,89 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint-config-prettier",
+    "plugin:storybook/recommended"
+  ],
+  "ignorePatterns": ["dist", ".eslintrc.cjs", "**/*.cy.ts"],
+  "overrides": [
+    {
+      "files": ["scripts/**/*.js"],
+      "env": {
+        "node": true,
+        "es2020": true
+      }
+    },
+    {
+      "files": ["src/utils/uswds-loader.ts", "src/components/accordion/usa-accordion.ts"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    },
+    {
+      "files": ["**/*.stories.ts", "**/*.stories.js"],
+      "rules": {
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "TemplateLiteral[quasis.*.value.raw*=\".\"][quasis.*.value.raw*=\"JSON.stringify\"]",
+            "message": "Avoid using JSON.stringify for property assignment in story templates. Use Lit html template with .property=${value} instead."
+          },
+          {
+            "selector": "TemplateLiteral[quasis.*.value.raw*=\".options='\"][quasis.*.value.raw*=\"${\"]",
+            "message": "Use .options=${args.options} instead of .options='${JSON.stringify(args.options)}' in Lit html templates."
+          },
+          {
+            "selector": "TemplateLiteral[quasis.*.value.raw*=\".items='\"][quasis.*.value.raw*=\"${\"]",
+            "message": "Use .items=${args.items} instead of .items='${JSON.stringify(args.items)}' in Lit html templates."
+          },
+          {
+            "selector": "TemplateLiteral[quasis.*.value.raw*=\".data='\"][quasis.*.value.raw*=\"${\"]",
+            "message": "Use .data=${args.data} instead of .data='${JSON.stringify(args.data)}' in Lit html templates."
+          }
+        ]
+      }
+    }
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "lit", "wc"],
+  "rules": {
+    // USWDS Import Enforcement Rules - MANDATORY utility usage
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["@uswds/uswds", "uswds"],
+            "message": "Importing full USWDS library is forbidden. Use src/utils/uswds-loader.ts utility instead."
+          },
+          {
+            "group": ["@uswds/uswds/js/*", "@uswds/uswds/packages/*", "@uswds/uswds/dist/*"],
+            "message": "Direct USWDS imports are forbidden. Use src/utils/uswds-loader.ts utility instead to prevent import issues."
+          }
+        ]
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "lit/no-invalid-html": "error",
+    "lit/no-useless-template-literals": "warn",
+    "lit/attribute-value-entities": "warn",
+    "lit/binding-positions": "error",
+    "lit/no-invalid-escape-sequences": "error",
+    "wc/guard-super-call": "off",
+    "wc/no-closed-shadow-root": "error",
+    "wc/no-constructor-params": "error",
+    "storybook/no-redundant-story-name": "off"
+  }
+}

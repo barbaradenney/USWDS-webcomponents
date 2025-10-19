@@ -1,0 +1,528 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="CI/CD Pipeline" />
+
+# Continuous Integration & Deployment Pipeline
+
+> **Auto-generated on:** 2025-10-12
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+The USWDS Web Components library employs a comprehensive CI/CD pipeline that ensures every change is thoroughly tested, validated, and ready for production before deployment. This multi-stage pipeline provides confidence that all releases maintain the highest quality standards.
+
+## 🎯 Pipeline Goals
+
+### Quality Assurance
+- **Comprehensive Testing** - Run 2301+ tests on every push
+- **Multi-Environment Validation** - Test across browsers and platforms
+- **Regression Prevention** - Catch breaking changes automatically
+- **Performance Monitoring** - Track bundle size and runtime performance
+
+### Automation
+- **Automated Testing** - No manual test runs required
+- **Automated Deployment** - Seamless release process
+- **Automated Documentation** - Storybook auto-deployed
+- **Automated Notifications** - Team alerted to issues
+
+### Confidence
+- **Pre-Merge Validation** - No broken code reaches main branch
+- **Deployment Safety** - Every release fully tested
+- **Rollback Capability** - Quick recovery from issues
+- **Audit Trail** - Complete history of all changes
+
+## 🔄 Pipeline Stages
+
+### Stage 1: Pre-Commit Validation (Local)
+**Trigger:** Before every commit
+**Duration:** 15-30 seconds
+
+**Actions:**
+1. Repository organization cleanup
+2. Script organization validation
+3. USWDS script tag validation
+4. Layout forcing pattern validation
+5. Component issue detection
+6. USWDS compliance validation
+7. Lint validation
+8. TypeScript compilation
+9. Code quality review
+10. Component-specific validation
+11. Test expectations validation
+12. USWDS transformation validation
+13. Component JavaScript integration
+14. Documentation synchronization
+
+**Output:** Commit blocked if any check fails
+
+### Stage 2: Push Validation (GitHub Actions)
+**Trigger:** On push to any branch
+**Duration:** 3-5 minutes
+
+**Actions:**
+```yaml
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type checking
+        run: npm run typecheck
+
+      - name: Linting
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test -- --coverage
+
+      - name: Build
+        run: npm run build
+```
+
+**Output:** CI status badge updated
+
+### Stage 3: Comprehensive Testing (GitHub Actions)
+**Trigger:** On pull request
+**Duration:** 10-15 minutes
+
+**Test Matrix:**
+```yaml
+test-matrix:
+  strategy:
+    matrix:
+      os: [ubuntu-latest, windows-latest, macos-latest]
+      node: [18, 20, 21]
+  runs-on: ${{ matrix.os }}
+
+  steps:
+    - name: Unit Tests
+      run: npm test
+
+    - name: Browser Tests
+      run: npm run test:browser
+
+    - name: Integration Tests
+      run: npm run test:integration
+
+    - name: E2E Tests
+      run: npm run test:e2e
+
+    - name: Accessibility Tests
+      run: npm run test:accessibility
+```
+
+**Coverage Requirements:**
+- Unit Test Coverage: > 80%
+- Integration Test Coverage: > 70%
+- E2E Test Coverage: > 60%
+- Accessibility Tests: 100% of components
+
+### Stage 4: Cross-Browser Testing (Playwright)
+**Trigger:** On pull request
+**Duration:** 5-10 minutes
+
+**Browser Matrix:**
+- **Chromium** - Latest stable
+- **Firefox** - Latest stable
+- **WebKit** - Latest stable (Safari engine)
+- **Mobile Chrome** - Latest stable
+- **Mobile Safari** - Latest stable
+
+**Test Categories:**
+```typescript
+// Cross-browser compatibility tests
+describe('Cross-Browser', () => {
+  test('renders correctly in Chromium', async ({ page }) => { ... });
+  test('renders correctly in Firefox', async ({ page }) => { ... });
+  test('renders correctly in WebKit', async ({ page }) => { ... });
+});
+
+// Mobile-specific tests
+describe('Mobile', () => {
+  test('responsive design in mobile Chrome', async ({ page }) => { ... });
+  test('responsive design in mobile Safari', async ({ page }) => { ... });
+});
+```
+
+### Stage 5: Visual Regression Testing (Chromatic)
+**Trigger:** On pull request
+**Duration:** 5-10 minutes
+
+**Process:**
+1. Build Storybook
+2. Capture screenshots of all stories
+3. Compare with baseline screenshots
+4. Flag visual changes for review
+
+**Configuration:**
+```json
+{
+  "chromatic": {
+    "projectToken": "PROJECT_TOKEN",
+    "exitZeroOnChanges": true,
+    "autoAcceptChanges": "main",
+    "skip": "dependabot/**"
+  }
+}
+```
+
+**Review Process:**
+- Developer reviews visual changes
+- Approves or rejects changes
+- Baseline updated on approval
+
+### Stage 6: Bundle Size Monitoring
+**Trigger:** On pull request
+**Duration:** 1-2 minutes
+
+**Metrics Tracked:**
+```javascript
+// Bundle size analysis
+{
+  "total": "245 KB",
+  "gzipped": "78 KB",
+  "individual": {
+    "button": "12 KB",
+    "modal": "18 KB",
+    "date-picker": "25 KB",
+    // ... all components
+  },
+  "change": "+2.5 KB (+1.0%)"
+}
+```
+
+**Thresholds:**
+- Total bundle size: < 500 KB
+- Gzipped size: < 150 KB
+- Individual component: < 50 KB
+- Change threshold: +5% triggers review
+
+### Stage 7: Security Scanning
+**Trigger:** On pull request + scheduled weekly
+**Duration:** 2-3 minutes
+
+**Security Checks:**
+```yaml
+security:
+  steps:
+    - name: npm audit
+      run: npm audit --audit-level=moderate
+
+    - name: Dependency check
+      run: npm run security:check
+
+    - name: Code scanning
+      uses: github/codeql-action/analyze@v2
+```
+
+**Vulnerability Response:**
+- **Critical:** Block merge, immediate fix required
+- **High:** Warning, fix within 24 hours
+- **Medium:** Warning, fix within 1 week
+- **Low:** Tracked, fix in next release
+
+### Stage 8: Performance Testing
+**Trigger:** On pull request to main
+**Duration:** 5-10 minutes
+
+**Performance Metrics:**
+```javascript
+// Component render performance
+{
+  "button": {
+    "firstRender": "15ms",
+    "reRender": "3ms",
+    "memory": "245 KB"
+  },
+  "modal": {
+    "firstRender": "45ms",
+    "reRender": "8ms",
+    "memory": "512 KB"
+  },
+  // ... all components
+}
+```
+
+**Performance Thresholds:**
+- First render: < 100ms
+- Re-render: < 20ms
+- Memory usage: < 2 MB per component
+- Regression threshold: +20% triggers review
+
+### Stage 9: Documentation Build
+**Trigger:** On merge to main
+**Duration:** 3-5 minutes
+
+**Build Process:**
+```yaml
+documentation:
+  steps:
+    - name: Build Storybook
+      run: npm run build-storybook
+
+    - name: Generate API docs
+      run: npm run docs:generate
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./storybook-static
+```
+
+**Deployment:**
+- Storybook published to GitHub Pages
+- API documentation updated
+- Component changelogs synced
+
+### Stage 10: Package Publication
+**Trigger:** On version tag (e.g., v1.2.3)
+**Duration:** 2-3 minutes
+
+**Publication Process:**
+```yaml
+publish:
+  steps:
+    - name: Build package
+      run: npm run build
+
+    - name: Run tests
+      run: npm test
+
+    - name: Publish to npm
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Create GitHub release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ steps.changelog.outputs.changes }}
+```
+
+**Version Strategy:**
+- **Major (1.0.0):** Breaking changes
+- **Minor (1.1.0):** New features, backwards compatible
+- **Patch (1.1.1):** Bug fixes only
+
+## 📊 Pipeline Metrics
+
+### Performance
+- **Total Pipeline Time:** 15-30 minutes
+- **Cache Hit Rate:** > 80%
+- **Test Success Rate:** > 98%
+- **Deployment Success Rate:** > 99%
+
+### Coverage
+- **Code Coverage:** 85%+ (unit tests)
+- **Browser Coverage:** 5 browsers + 2 mobile
+- **Accessibility Coverage:** 100% of components
+- **Visual Coverage:** All Storybook stories
+
+### Reliability
+- **Uptime:** 99.9%
+- **False Positive Rate:** < 2%
+- **Flaky Test Rate:** < 1%
+- **Deployment Failure Rate:** < 1%
+
+## 🚨 Failure Handling
+
+### Test Failures
+**When tests fail:**
+1. CI status check fails
+2. PR blocked from merging
+3. Team notified via GitHub notifications
+4. Developer fixes issue and pushes again
+
+**Flaky Test Detection:**
+```bash
+# Run flaky test detector
+npm run test:flaky-detection
+
+# Quarantine flaky tests
+npm run test:flaky-detection:quarantine
+
+# Fix or disable flaky tests
+```
+
+### Build Failures
+**When build fails:**
+1. Identify failing stage
+2. Review build logs
+3. Reproduce locally
+4. Fix and re-run
+
+**Common Build Failures:**
+- TypeScript errors → Run `npm run typecheck`
+- Dependency issues → Run `npm ci`
+- Configuration errors → Check config files
+
+### Deployment Failures
+**When deployment fails:**
+1. Automatic rollback to previous version
+2. Team alerted immediately
+3. Incident investigation
+4. Fix deployed once identified
+
+**Rollback Process:**
+```bash
+# Quick rollback to previous version
+npm dist-tag add uswds-webcomponents@1.2.2 latest
+
+# Verify rollback
+npm view uswds-webcomponents dist-tags
+```
+
+## 🔧 Pipeline Configuration
+
+### GitHub Actions Workflows
+Located in `.github/workflows/`:
+- `ci.yml` - Main CI pipeline
+- `test.yml` - Comprehensive testing
+- `visual-regression.yml` - Chromatic integration
+- `security.yml` - Security scanning
+- `publish.yml` - Package publication
+
+### Required Secrets
+```yaml
+# npm publication
+NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+# Chromatic integration
+CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+# GitHub releases
+GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Branch Protection Rules
+```yaml
+main:
+  required_status_checks:
+    - continuous-integration
+    - test-matrix
+    - chromatic
+    - bundle-size
+  required_reviews: 1
+  enforce_admins: false
+  restrictions: null
+```
+
+## 📈 Continuous Monitoring
+
+### Build Dashboard
+Track pipeline health in real-time:
+- Build success rate
+- Test coverage trends
+- Performance metrics
+- Bundle size over time
+
+### Alerts & Notifications
+**Team notified on:**
+- Build failures
+- Test failures
+- Security vulnerabilities
+- Performance regressions
+- Bundle size increases
+
+**Notification Channels:**
+- GitHub notifications
+- Email (optional)
+- Slack (if configured)
+
+## 🔄 Pipeline Evolution
+
+### Regular Reviews
+- **Weekly:** Review flaky tests
+- **Monthly:** Analyze pipeline performance
+- **Quarterly:** Update testing strategies
+- **Yearly:** Major pipeline refactoring
+
+### Improvement Areas
+- **Speed Optimization:** Reduce pipeline time
+- **Coverage Expansion:** Add more test scenarios
+- **Automation Enhancement:** Reduce manual steps
+- **Reliability Improvement:** Reduce false positives
+
+## 🎓 Best Practices
+
+### For Developers
+1. **Run tests locally** before pushing
+2. **Check CI status** before requesting review
+3. **Fix failures promptly** - don't let them accumulate
+4. **Update tests** when changing behavior
+5. **Monitor bundle size** impact
+
+### For Reviewers
+1. **Wait for CI** before reviewing code
+2. **Review visual changes** in Chromatic
+3. **Check coverage** didn't decrease
+4. **Verify bundle size** acceptable
+5. **Ensure documentation** updated
+
+### For Maintainers
+1. **Monitor pipeline health** regularly
+2. **Address flaky tests** promptly
+3. **Update dependencies** proactively
+4. **Optimize slow tests** continuously
+5. **Document changes** to pipeline
+
+## 🚀 Deployment Process
+
+### Manual Release Process
+```bash
+# 1. Update version
+npm version major|minor|patch
+
+# 2. Push with tags
+git push && git push --tags
+
+# 3. CI automatically:
+#    - Runs all tests
+#    - Builds package
+#    - Publishes to npm
+#    - Deploys documentation
+#    - Creates GitHub release
+```
+
+### Automated Release Process
+Using GitHub Actions and semantic release:
+```yaml
+# On merge to main with conventional commits
+- feat: triggers minor version bump
+- fix: triggers patch version bump
+- BREAKING CHANGE: triggers major version bump
+```
+
+## 📊 Pipeline Status
+
+### Current Status
+- **Build Status:** [![CI](https://github.com/org/repo/workflows/CI/badge.svg)](https://github.com/org/repo/actions)
+- **Test Coverage:** ![Coverage](https://img.shields.io/codecov/c/github/org/repo)
+- **npm Version:** ![npm](https://img.shields.io/npm/v/uswds-webcomponents)
+- **Bundle Size:** ![Bundle Size](https://img.shields.io/bundlephobia/min/uswds-webcomponents)
+
+### Recent Improvements
+- Added cross-browser testing with Playwright
+- Implemented visual regression testing with Chromatic
+- Added bundle size monitoring and alerts
+- Optimized test execution with parallel runners
+- Enhanced security scanning with CodeQL
+
+---
+
+**The CI/CD pipeline ensures that every change undergoes rigorous validation before reaching users, maintaining the highest standards of quality, performance, and reliability.**

@@ -1,0 +1,175 @@
+name: 🧩 Component Request
+description: Request implementation of a USWDS component
+title: "[Component]: "
+labels: ["new-component", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for requesting a new USWDS component! This project aims for 100% USWDS coverage.
+
+        **Note**: This is a 100% AI-contributed project. If you implement this component, please use AI tools.
+
+  - type: input
+    id: component-name
+    attributes:
+      label: Component Name
+      description: What USWDS component would you like implemented?
+      placeholder: "usa-[component-name]"
+    validations:
+      required: true
+
+  - type: input
+    id: uswds-link
+    attributes:
+      label: USWDS Documentation Link
+      description: Link to the official USWDS component documentation
+      placeholder: https://designsystem.digital.gov/components/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Component Description
+      description: Briefly describe what this component does and why it's needed
+      placeholder: |
+        The [component] allows users to...
+        It's commonly used for...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this component to your project?
+      options:
+        - Critical - Blocking my project
+        - High - Needed soon
+        - Medium - Would be nice to have
+        - Low - Not urgent
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe your specific use case for this component
+      placeholder: |
+        I need this component because...
+        In my application, users will...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Expected Complexity
+      description: Based on USWDS docs, how complex is this component?
+      options:
+        - Simple - Basic HTML/CSS (like Tag, Button)
+        - Moderate - Some JavaScript (like Alert, Accordion)
+        - Complex - Heavy JavaScript/State (like Date Picker, Combo Box)
+        - Very Complex - Advanced interactions (like Modal, File Input)
+
+  - type: checkboxes
+    id: features
+    attributes:
+      label: Required Features
+      description: Which USWDS features must be included?
+      options:
+        - label: All USWDS variants and modifiers
+        - label: Full JavaScript functionality
+        - label: Accessibility features (ARIA, keyboard navigation)
+        - label: All documented props/attributes
+        - label: Events and callbacks
+        - label: Form integration (if applicable)
+
+  - type: textarea
+    id: variants
+    attributes:
+      label: Important Variants
+      description: List any specific variants or configurations that are critical
+      placeholder: |
+        - Variant 1: ...
+        - Variant 2: ...
+
+  - type: checkboxes
+    id: existing-work
+    attributes:
+      label: Existing Work
+      description: Have you checked for existing implementations?
+      options:
+        - label: I checked and this component is not yet implemented
+          required: true
+        - label: I checked the USWDS source code for reference
+        - label: I reviewed similar components in this library
+
+  - type: dropdown
+    id: implement
+    attributes:
+      label: Can You Implement This?
+      description: Are you willing to implement this component with AI assistance?
+      options:
+        - "Yes, I can implement this with AI tools"
+        - "Maybe, with guidance"
+        - "No, I'm requesting someone else implement it"
+    validations:
+      required: true
+
+  - type: textarea
+    id: ai-approach
+    attributes:
+      label: Implementation Approach (if implementing)
+      description: How would you approach implementing this with AI?
+      placeholder: |
+        1. Study USWDS source code at node_modules/@uswds/uswds/packages/usa-[component]/
+        2. Use Claude Code to generate initial component structure
+        3. Follow patterns from similar components (e.g., accordion, modal)
+        4. Implement tests with AI assistance
+        5. Create Storybook stories
+
+  - type: input
+    id: ai-tool
+    attributes:
+      label: AI Tool (if implementing)
+      description: Which AI tool would you use?
+      placeholder: Claude Code, GitHub Copilot, Cursor, etc.
+
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Proposed Timeline (if implementing)
+      description: When could you complete this?
+      placeholder: |
+        - Initial implementation: 1-2 weeks
+        - Testing and refinement: 1 week
+        - Total: 2-3 weeks
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other details that would help with implementation
+      placeholder: |
+        - Similar components: ...
+        - Special considerations: ...
+        - Related issues: ...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have verified this component exists in USWDS
+          required: true
+        - label: I have confirmed it's not already implemented
+          required: true
+        - label: I have provided the USWDS documentation link
+          required: true
+        - label: I understand this requires AI-assisted implementation
+          required: true

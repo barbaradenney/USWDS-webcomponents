@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partial Hydration Example - USWDS Web Components</title>
+  <link rel="stylesheet" href="/src/styles/styles.css">
+  <style>
+    body {
+      font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #f0f0f0;
+    }
+
+    .demo-section {
+      background: white;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .stats-panel {
+      background: #e7f6f8;
+      border-left: 4px solid #00bde3;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #005ea2;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: #71767a;
+      margin-top: 0.5rem;
+    }
+
+    .component-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .showcase-item {
+      border: 2px solid #dfe1e2;
+      padding: 1.5rem;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .showcase-item h4 {
+      margin-top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hydration-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .hydration-static {
+      background: #00a91c;
+      color: white;
+    }
+
+    .hydration-interactive {
+      background: #005ea2;
+      color: white;
+    }
+
+    .performance-comparison {
+      background: #fff;
+      border: 2px solid #005ea2;
+      padding: 1.5rem;
+      border-radius: 4px;
+      margin-top: 2rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .comparison-column h4 {
+      margin-top: 0;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #dfe1e2;
+    }
+
+    .metric:last-child {
+      border-bottom: none;
+    }
+
+    pre {
+      background: #1b1b1b;
+      color: #f0f0f0;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ Partial Hydration / Interactive Islands</h1>
+
+  <div class="demo-section">
+    <h2>About Partial Hydration</h2>
+    <p>
+      The Interactive Islands pattern hydrates only components that need JavaScript,
+      keeping static content as plain HTML for better performance.
+    </p>
+    <p>
+      <strong>Key Benefit:</strong> Reduced JavaScript execution, faster Time to Interactive (TTI)
+    </p>
+  </div>
+
+  <div class="stats-panel">
+    <h3>📊 Hydration Statistics</h3>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-static">0</div>
+        <div class="stat-label">Static Components</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-interactive">0</div>
+        <div class="stat-label">Interactive Components</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-label">Total Components</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-savings">0%</div>
+        <div class="stat-label">JS Execution Saved</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Component Examples</h2>
+
+    <div class="component-showcase">
+      <!-- Static Components -->
+      <div class="showcase-item">
+        <h4>
+          Alert
+          <span class="hydration-badge hydration-static" data-component="alert">Static</span>
+        </h4>
+        <usa-alert type="info" heading="Static Component">
+          This alert is rendered once and doesn't need JavaScript updates.
+        </usa-alert>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #71767a;">
+          ✓ No re-renders<br>
+          ✓ Lower memory usage<br>
+          ✓ Faster initial render
+        </p>
+      </div>
+
+      <div class="showcase-item">
+        <h4>
+          Button
+          <span class="hydration-badge hydration-static" data-component="button">Static</span>
+        </h4>
+        <usa-button variant="default">Static Button</usa-button>
+        <usa-button variant="primary">Primary Button</usa-button>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #71767a;">
+          ✓ Pure HTML rendering<br>
+          ✓ No reactivity overhead<br>
+          ✓ Click events via HTML
+        </p>
+      </div>
+
+      <div class="showcase-item">
+        <h4>
+          Tag
+          <span class="hydration-badge hydration-static" data-component="tag">Static</span>
+        </h4>
+        <usa-tag>Static Content</usa-tag>
+        <usa-tag>No Updates</usa-tag>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #71767a;">
+          ✓ Lightweight<br>
+          ✓ One-time render<br>
+          ✓ Perfect for static badges
+        </p>
+      </div>
+
+      <!-- Interactive Components -->
+      <div class="showcase-item">
+        <h4>
+          Accordion
+          <span class="hydration-badge hydration-interactive" data-component="accordion">Interactive</span>
+        </h4>
+        <usa-accordion>
+          <h4 class="usa-accordion__heading">
+            <button class="usa-accordion__button" aria-expanded="false">
+              Expandable Section
+            </button>
+          </h4>
+          <div class="usa-accordion__content" hidden>
+            <p>This accordion requires full JavaScript hydration for interactions.</p>
+          </div>
+        </usa-accordion>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #71767a;">
+          ✓ Full reactivity<br>
+          ✓ Event handling<br>
+          ✓ State management
+        </p>
+      </div>
+
+      <div class="showcase-item">
+        <h4>
+          Text Input
+          <span class="hydration-badge hydration-interactive" data-component="input">Interactive</span>
+        </h4>
+        <usa-text-input
+          label="Interactive Input"
+          name="demo-input"
+          placeholder="Type something..."
+        ></usa-text-input>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #71767a;">
+          ✓ Two-way binding<br>
+          ✓ Validation<br>
+          ✓ Real-time updates
+        </p>
+      </div>
+
+      <div class="showcase-item">
+        <h4>
+          Character Count
+          <span class="hydration-badge hydration-interactive" data-component="char-count">Interactive</span>
+        </h4>
+        <usa-character-count maxlength="50">
+          <label for="with-hint-textarea">Textarea with character count</label>
+          <textarea id="with-hint-textarea" name="with-hint-textarea"></textarea>
+        </usa-character-count>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: #71767a;">
+          ✓ Live counting<br>
+          ✓ Dynamic feedback<br>
+          ✓ Requires JS
+        </p>
+      </div>
+    </div>
+
+    <button id="scan-components" class="usa-button" style="margin-top: 2rem;">
+      Scan & Optimize Components
+    </button>
+  </div>
+
+  <div class="performance-comparison">
+    <h3>⚡ Performance Comparison</h3>
+    <div class="comparison-grid">
+      <div>
+        <h4>Without Partial Hydration</h4>
+        <div class="metric">
+          <span>Components Hydrated:</span>
+          <strong id="metric-all">All (100%)</strong>
+        </div>
+        <div class="metric">
+          <span>JS Execution Time:</span>
+          <strong id="metric-time-without">~100ms</strong>
+        </div>
+        <div class="metric">
+          <span>Memory Usage:</span>
+          <strong id="metric-mem-without">~2 MB</strong>
+        </div>
+        <div class="metric">
+          <span>Time to Interactive:</span>
+          <strong id="metric-tti-without">Slower</strong>
+        </div>
+      </div>
+      <div>
+        <h4>With Partial Hydration</h4>
+        <div class="metric">
+          <span>Components Hydrated:</span>
+          <strong id="metric-partial">0 (0%)</strong>
+        </div>
+        <div class="metric">
+          <span>JS Execution Time:</span>
+          <strong id="metric-time-with">~0ms</strong>
+        </div>
+        <div class="metric">
+          <span>Memory Usage:</span>
+          <strong id="metric-mem-with">~0 MB</strong>
+        </div>
+        <div class="metric">
+          <span>Time to Interactive:</span>
+          <strong id="metric-tti-with">✓ Faster</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Code Examples</h2>
+
+    <h3>1. Automatic Hydration</h3>
+    <pre><code>import { scanAndHydrate } from './utils/partial-hydration.js';
+
+// Automatically optimize all components
+window.addEventListener('DOMContentLoaded', () => {
+  const stats = scanAndHydrate(document.body, { debug: true });
+
+  console.log('Static:', stats.static);
+  console.log('Interactive:', stats.interactive);
+  console.log('Savings:', stats.savings);
+});</code></pre>
+
+    <h3>2. Manual Component Marking</h3>
+    <pre><code>import { markAsStatic, markAsInteractive } from './utils/partial-hydration.js';
+
+// Static component (no updates needed)
+class USAButton extends LitElement {
+  constructor() {
+    super();
+    markAsStatic(this); // Optimized rendering
+  }
+}
+
+// Interactive component (full reactivity)
+class USAModal extends LitElement {
+  constructor() {
+    super();
+    markAsInteractive(this); // Full features
+  }
+}</code></pre>
+
+    <h3>3. Progressive Enhancement</h3>
+    <pre><code>import { markAsStatic, hydrateComponent } from './utils/partial-hydration.js';
+
+// Start static
+markAsStatic(button);
+
+// Later, make interactive based on user action
+document.getElementById('enable-features').addEventListener('click', () => {
+  hydrateComponent(button); // Now fully interactive
+});</code></pre>
+  </div>
+
+  <script type="module">
+    import { scanAndHydrate, getHydrationStats } from '/src/utils/partial-hydration.js';
+
+    function updateStats() {
+      const stats = getHydrationStats();
+
+      document.getElementById('stat-static').textContent = stats.staticComponents;
+      document.getElementById('stat-interactive').textContent = stats.interactiveComponents;
+      document.getElementById('stat-total').textContent = stats.total;
+
+      const savingsPercent = stats.total > 0
+        ? Math.round((stats.staticComponents / stats.total) * 100)
+        : 0;
+
+      document.getElementById('stat-savings').textContent = `${savingsPercent}%`;
+
+      // Update comparison metrics
+      const totalComponents = stats.total;
+      const interactivePercent = totalComponents > 0
+        ? Math.round((stats.interactiveComponents / totalComponents) * 100)
+        : 0;
+
+      document.getElementById('metric-partial').textContent =
+        `${stats.interactiveComponents} (${interactivePercent}%)`;
+
+      // Estimate time savings (rough approximation)
+      const timeSaved = stats.staticComponents * 1.5; // ~1.5ms per component
+      document.getElementById('metric-time-with').textContent = `~${Math.round(timeSaved)}ms saved`;
+
+      // Estimate memory savings
+      const memSaved = (stats.staticComponents * 0.03).toFixed(1); // ~30KB per component
+      document.getElementById('metric-mem-with').textContent = `~${memSaved} MB saved`;
+    }
+
+    document.getElementById('scan-components').addEventListener('click', () => {
+      const result = scanAndHydrate(document.body, { debug: true });
+
+      updateStats();
+
+      alert(`Hydration complete!\n\nStatic: ${result.static}\nInteractive: ${result.interactive}\nTotal: ${result.total}\nJS Savings: ${result.savings}`);
+
+      // Update badges
+      document.querySelectorAll('.hydration-badge').forEach(badge => {
+        const element = badge.closest('.showcase-item');
+        if (element) {
+          const hydration = element.querySelector('[data-hydration]');
+          if (hydration) {
+            const mode = hydration.getAttribute('data-hydration');
+            badge.textContent = mode === 'static' ? 'Static' : 'Interactive';
+            badge.className = `hydration-badge hydration-${mode}`;
+          }
+        }
+      });
+    });
+
+    // Initial stats
+    updateStats();
+  </script>
+</body>
+</html>

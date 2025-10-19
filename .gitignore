@@ -1,0 +1,95 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# Backup files
+*.backup
+*.bak
+*-backup.*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+# Share workspace settings but ignore personal settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Storybook
+storybook-static/
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# ESLint cache
+.eslintcache
+
+# Cypress
+cypress/screenshots
+cypress/videos
+cypress/downloads
+
+# Test and coverage outputs
+coverage-storybook/
+test-results/
+reports/
+/reports/compliance/
+/reports/compliance-reports/
+/reports/playwright-report/
+
+# Temporary test files
+test-*.html
+architecture-proposal*.md
+*.backup
+*.bak
+*-backup.*
+
+# Debug files
+debug-*.html
+debug-*.js
+test-*-debug.js
+/reports/*.json
+
+# Archived scripts and documentation (keep structure, ignore if generated)
+/scripts/archived/
+/docs/archived/
+
+# Assets directory (USWDS assets served from node_modules)
+assets/
+
+# Build artifacts
+tsconfig.tsbuildinfocomponent-issues-report.json

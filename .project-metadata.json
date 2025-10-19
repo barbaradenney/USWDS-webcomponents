@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "project-metadata",
+  "title": "USWDS Web Components Project Metadata",
+  "description": "Centralized configuration for project metadata, contact information, and documentation generation",
+
+  "project": {
+    "name": "USWDS Web Components",
+    "packageName": "uswds-webcomponents",
+    "version": "1.0.0",
+    "description": "U.S. Web Design System components as Web Components using Lit Element",
+    "shortDescription": "USWDS components as Web Components",
+    "tagline": "Build government websites with modern web components",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/barbaradenney/USWDS-webcomponents",
+      "homepage": "https://github.com/barbaradenney/USWDS-webcomponents#readme",
+      "bugs": "https://github.com/barbaradenney/USWDS-webcomponents/issues",
+      "discussions": "https://github.com/barbaradenney/USWDS-webcomponents/discussions"
+    },
+    "license": "MIT"
+  },
+
+  "contact": {
+    "security": {
+      "email": "barbaradenney@users.noreply.github.com",
+      "description": "For security vulnerability reports",
+      "pgpKey": null
+    },
+    "codeOfConduct": {
+      "email": "barbaradenney@users.noreply.github.com",
+      "description": "For code of conduct violations"
+    },
+    "general": {
+      "discussions": "https://github.com/barbaradenney/USWDS-webcomponents/discussions",
+      "issues": "https://github.com/barbaradenney/USWDS-webcomponents/issues"
+    }
+  },
+
+  "author": {
+    "name": "Barbara Miles",
+    "github": "barbaramiles",
+    "githubUrl": "https://github.com/barbaramiles"
+  },
+
+  "security": {
+    "supportedVersions": [
+      {
+        "version": "1.x.x",
+        "supported": true,
+        "emoji": ":white_check_mark:"
+      },
+      {
+        "version": "< 1.0",
+        "supported": false,
+        "emoji": ":x:"
+      }
+    ],
+    "responseTimeline": {
+      "acknowledgment": {
+        "duration": "48 hours",
+        "description": "Acknowledge receipt of vulnerability report"
+      },
+      "confirmation": {
+        "duration": "7 days",
+        "description": "Confirm the vulnerability"
+      },
+      "fixTimeline": {
+        "duration": "14 days",
+        "description": "Provide a fix timeline"
+      },
+      "patchRelease": {
+        "duration": "30 days",
+        "context": "for critical issues",
+        "description": "Release a patch"
+      }
+    },
+    "scope": {
+      "inScope": [
+        "Cross-Site Scripting (XSS)",
+        "Code injection",
+        "Authentication bypass",
+        "Privilege escalation",
+        "Denial of Service (DoS)",
+        "Data exposure",
+        "Dependency vulnerabilities"
+      ],
+      "outOfScope": [
+        "Social engineering",
+        "Physical attacks",
+        "Spam or abuse of services",
+        "Issues in third-party dependencies (report to them directly)",
+        "Issues requiring compromised user credentials"
+      ]
+    }
+  },
+
+  "contributing": {
+    "prerequisites": [
+      "Node.js 18+ and npm 9+",
+      "Git",
+      "Basic understanding of Web Components and TypeScript",
+      "Familiarity with the U.S. Web Design System (USWDS)"
+    ],
+    "requiredReading": [
+      "CLAUDE.md - Complete development guidelines",
+      "docs/USWDS_INTEGRATION_GUIDE.md - USWDS integration patterns",
+      "docs/COMPONENT_DEVELOPMENT_GUIDE.md - Step-by-step guide",
+      "docs/COMPONENT_TEMPLATES.md - Code templates"
+    ],
+    "principles": [
+      "Use official USWDS CSS directly (no custom style reimplementation)",
+      "Keep custom code minimal (only web component behavior)",
+      "Use Light DOM (no Shadow DOM)",
+      "Follow Script Tag Pattern for USWDS loading",
+      "Write comprehensive tests"
+    ]
+  },
+
+  "technology": {
+    "dependencies": {
+      "lit": "^3.0.0",
+      "uswds": "@uswds/uswds ^3.13.0"
+    },
+    "frameworks": {
+      "primary": "Lit Element",
+      "designSystem": "U.S. Web Design System (USWDS)",
+      "language": "TypeScript"
+    },
+    "browserSupport": [
+      "Chrome/Edge 67+",
+      "Firefox 63+",
+      "Safari 10.1+"
+    ]
+  },
+
+  "links": {
+    "documentation": {
+      "uswds": "https://designsystem.digital.gov/",
+      "lit": "https://lit.dev/",
+      "webComponents": "https://developer.mozilla.org/en-US/docs/Web/Web_Components"
+    },
+    "resources": {
+      "owasp": "https://owasp.org/www-project-web-security-testing-guide/",
+      "nist": "https://www.nist.gov/cyberframework",
+      "cwe": "https://cwe.mitre.org/"
+    }
+  },
+
+  "meta": {
+    "generatedFrom": ".project-metadata.json",
+    "lastUpdated": "2025-10-18",
+    "version": "1.0.0"
+  }
+}

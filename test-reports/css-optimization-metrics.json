@@ -1,0 +1,337 @@
+{
+  "generated": "2025-10-12",
+  "fullBundle": {
+    "size": 307157,
+    "sizeKB": "300.0"
+  },
+  "components": [
+    {
+      "name": "accordion",
+      "size": 13775,
+      "sizeKB": "13.5",
+      "reduction": "95.5%",
+      "ruleCount": 216
+    },
+    {
+      "name": "alert",
+      "size": 19656,
+      "sizeKB": "19.2",
+      "reduction": "93.6%",
+      "ruleCount": 275
+    },
+    {
+      "name": "banner",
+      "size": 17513,
+      "sizeKB": "17.1",
+      "reduction": "94.3%",
+      "ruleCount": 265
+    },
+    {
+      "name": "breadcrumb",
+      "size": 11272,
+      "sizeKB": "11.0",
+      "reduction": "96.3%",
+      "ruleCount": 203
+    },
+    {
+      "name": "button",
+      "size": 48955,
+      "sizeKB": "47.8",
+      "reduction": "84.1%",
+      "ruleCount": 333
+    },
+    {
+      "name": "button-group",
+      "size": 9706,
+      "sizeKB": "9.5",
+      "reduction": "96.8%",
+      "ruleCount": 193
+    },
+    {
+      "name": "card",
+      "size": 13707,
+      "sizeKB": "13.4",
+      "reduction": "95.5%",
+      "ruleCount": 236
+    },
+    {
+      "name": "character-count",
+      "size": 8169,
+      "sizeKB": "8.0",
+      "reduction": "97.3%",
+      "ruleCount": 176
+    },
+    {
+      "name": "checkbox",
+      "size": 14195,
+      "sizeKB": "13.9",
+      "reduction": "95.4%",
+      "ruleCount": 208
+    },
+    {
+      "name": "collection",
+      "size": 11616,
+      "sizeKB": "11.3",
+      "reduction": "96.2%",
+      "ruleCount": 211
+    },
+    {
+      "name": "combo-box",
+      "size": 13681,
+      "sizeKB": "13.4",
+      "reduction": "95.5%",
+      "ruleCount": 211
+    },
+    {
+      "name": "date-picker",
+      "size": 31476,
+      "sizeKB": "30.7",
+      "reduction": "89.8%",
+      "ruleCount": 276
+    },
+    {
+      "name": "date-range-picker",
+      "size": 8000,
+      "sizeKB": "7.8",
+      "reduction": "97.4%",
+      "ruleCount": 174
+    },
+    {
+      "name": "file-input",
+      "size": 12017,
+      "sizeKB": "11.7",
+      "reduction": "96.1%",
+      "ruleCount": 212
+    },
+    {
+      "name": "footer",
+      "size": 15266,
+      "sizeKB": "14.9",
+      "reduction": "95.0%",
+      "ruleCount": 253
+    },
+    {
+      "name": "header",
+      "size": 28665,
+      "sizeKB": "28.0",
+      "reduction": "90.7%",
+      "ruleCount": 360
+    },
+    {
+      "name": "icon",
+      "size": 62650,
+      "sizeKB": "61.2",
+      "reduction": "79.6%",
+      "ruleCount": 646
+    },
+    {
+      "name": "identifier",
+      "size": 10740,
+      "sizeKB": "10.5",
+      "reduction": "96.5%",
+      "ruleCount": 207
+    },
+    {
+      "name": "in-page-navigation",
+      "size": 10919,
+      "sizeKB": "10.7",
+      "reduction": "96.4%",
+      "ruleCount": 205
+    },
+    {
+      "name": "input-prefix-suffix",
+      "size": 10855,
+      "sizeKB": "10.6",
+      "reduction": "96.5%",
+      "ruleCount": 186
+    },
+    {
+      "name": "language-selector",
+      "size": 10230,
+      "sizeKB": "10.0",
+      "reduction": "96.7%",
+      "ruleCount": 201
+    },
+    {
+      "name": "link",
+      "size": 12282,
+      "sizeKB": "12.0",
+      "reduction": "96.0%",
+      "ruleCount": 213
+    },
+    {
+      "name": "list",
+      "size": 9465,
+      "sizeKB": "9.2",
+      "reduction": "96.9%",
+      "ruleCount": 192
+    },
+    {
+      "name": "memorable-date",
+      "size": 8403,
+      "sizeKB": "8.2",
+      "reduction": "97.3%",
+      "ruleCount": 179
+    },
+    {
+      "name": "menu",
+      "size": 9977,
+      "sizeKB": "9.7",
+      "reduction": "96.8%",
+      "ruleCount": 189
+    },
+    {
+      "name": "modal",
+      "size": 10410,
+      "sizeKB": "10.2",
+      "reduction": "96.6%",
+      "ruleCount": 200
+    },
+    {
+      "name": "pagination",
+      "size": 10127,
+      "sizeKB": "9.9",
+      "reduction": "96.7%",
+      "ruleCount": 195
+    },
+    {
+      "name": "process-list",
+      "size": 10199,
+      "sizeKB": "10.0",
+      "reduction": "96.7%",
+      "ruleCount": 193
+    },
+    {
+      "name": "prose",
+      "size": 39219,
+      "sizeKB": "38.3",
+      "reduction": "87.2%",
+      "ruleCount": 329
+    },
+    {
+      "name": "radio",
+      "size": 11301,
+      "sizeKB": "11.0",
+      "reduction": "96.3%",
+      "ruleCount": 200
+    },
+    {
+      "name": "range-slider",
+      "size": 19858,
+      "sizeKB": "19.4",
+      "reduction": "93.5%",
+      "ruleCount": 230
+    },
+    {
+      "name": "search",
+      "size": 10402,
+      "sizeKB": "10.2",
+      "reduction": "96.6%",
+      "ruleCount": 202
+    },
+    {
+      "name": "section",
+      "size": 8844,
+      "sizeKB": "8.6",
+      "reduction": "97.1%",
+      "ruleCount": 184
+    },
+    {
+      "name": "select",
+      "size": 10139,
+      "sizeKB": "9.9",
+      "reduction": "96.7%",
+      "ruleCount": 189
+    },
+    {
+      "name": "side-navigation",
+      "size": 9874,
+      "sizeKB": "9.6",
+      "reduction": "96.8%",
+      "ruleCount": 198
+    },
+    {
+      "name": "site-alert",
+      "size": 12586,
+      "sizeKB": "12.3",
+      "reduction": "95.9%",
+      "ruleCount": 212
+    },
+    {
+      "name": "skip-link",
+      "size": 8664,
+      "sizeKB": "8.5",
+      "reduction": "97.2%",
+      "ruleCount": 184
+    },
+    {
+      "name": "step-indicator",
+      "size": 13513,
+      "sizeKB": "13.2",
+      "reduction": "95.6%",
+      "ruleCount": 216
+    },
+    {
+      "name": "summary-box",
+      "size": 8886,
+      "sizeKB": "8.7",
+      "reduction": "97.1%",
+      "ruleCount": 184
+    },
+    {
+      "name": "table",
+      "size": 56551,
+      "sizeKB": "55.2",
+      "reduction": "81.6%",
+      "ruleCount": 371
+    },
+    {
+      "name": "tag",
+      "size": 8668,
+      "sizeKB": "8.5",
+      "reduction": "97.2%",
+      "ruleCount": 179
+    },
+    {
+      "name": "text-input",
+      "size": 15689,
+      "sizeKB": "15.3",
+      "reduction": "94.9%",
+      "ruleCount": 239
+    },
+    {
+      "name": "textarea",
+      "size": 9589,
+      "sizeKB": "9.4",
+      "reduction": "96.9%",
+      "ruleCount": 183
+    },
+    {
+      "name": "time-picker",
+      "size": 8030,
+      "sizeKB": "7.8",
+      "reduction": "97.4%",
+      "ruleCount": 175
+    },
+    {
+      "name": "tooltip",
+      "size": 10105,
+      "sizeKB": "9.9",
+      "reduction": "96.7%",
+      "ruleCount": 196
+    },
+    {
+      "name": "validation",
+      "size": 8715,
+      "sizeKB": "8.5",
+      "reduction": "97.2%",
+      "ruleCount": 180
+    }
+  ],
+  "summary": {
+    "componentCount": 46,
+    "averageSize": 15751,
+    "averageSizeKB": "15.4",
+    "averageReduction": "94.9%"
+  }
+}

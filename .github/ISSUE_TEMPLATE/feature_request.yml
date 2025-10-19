@@ -1,0 +1,180 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! This project is 100% AI-contributed, so if you're interested in implementing this feature, please use AI tools like Claude Code, GitHub Copilot, or Cursor.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: I'm always frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see.
+      placeholder: |
+        I would like to see...
+        This could work by...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Feature Type
+      description: What type of enhancement is this?
+      options:
+        - New component variant
+        - New component property/attribute
+        - Accessibility improvement
+        - Performance improvement
+        - Developer experience (DX)
+        - Documentation
+        - Testing infrastructure
+        - Build/tooling
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Related Component (if applicable)
+      description: Which component would this affect?
+      options:
+        - Not component-specific
+        - Accordion
+        - Alert
+        - Banner
+        - Breadcrumb
+        - Button
+        - Button Group
+        - Card
+        - Character Count
+        - Checkbox
+        - Collection
+        - Combo Box
+        - Date Picker
+        - Date Range Picker
+        - File Input
+        - Footer
+        - Header
+        - Icon
+        - Identifier
+        - In-Page Navigation
+        - Input Prefix/Suffix
+        - Language Selector
+        - Link
+        - List
+        - Memorable Date
+        - Menu
+        - Modal
+        - Pagination
+        - Process List
+        - Prose
+        - Radio
+        - Range Slider
+        - Search
+        - Section
+        - Select
+        - Side Navigation
+        - Site Alert
+        - Skip Link
+        - Step Indicator
+        - Summary Box
+        - Table
+        - Tag
+        - Text Input
+        - Textarea
+        - Time Picker
+        - Tooltip
+        - Validation
+        - Multiple Components
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or features you've considered.
+      placeholder: |
+        Alternative 1: ...
+        Alternative 2: ...
+
+  - type: textarea
+    id: uswds-reference
+    attributes:
+      label: USWDS Reference
+      description: Link to the USWDS documentation or component this relates to.
+      placeholder: https://designsystem.digital.gov/components/...
+
+  - type: checkboxes
+    id: uswds-compliance
+    attributes:
+      label: USWDS Compliance
+      description: How does this relate to USWDS?
+      options:
+        - label: This feature exists in USWDS and should be added here
+        - label: This is an enhancement beyond USWDS (justify below)
+        - label: Not applicable
+
+  - type: textarea
+    id: breaking
+    attributes:
+      label: Breaking Changes
+      description: Would this be a breaking change? If yes, please explain.
+      placeholder: |
+        This would be breaking because...
+        Migration path: ...
+
+  - type: dropdown
+    id: willing
+    attributes:
+      label: Implementation
+      description: Are you willing to implement this feature with AI assistance?
+      options:
+        - "Yes, I can implement this with AI tools"
+        - "Maybe, depending on complexity"
+        - "No, I'm just suggesting it"
+    validations:
+      required: true
+
+  - type: textarea
+    id: ai-tool
+    attributes:
+      label: Preferred AI Tool (if implementing)
+      description: Which AI tool would you use to implement this?
+      placeholder: Claude Code, GitHub Copilot, Cursor, ChatGPT, etc.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, or examples about the feature request.
+      placeholder: |
+        - Example implementations: ...
+        - Related projects: ...
+        - Use cases: ...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to ensure this hasn't been requested
+          required: true
+        - label: This feature aligns with USWDS principles (if applicable)
+          required: true
+        - label: I understand this project requires AI-assisted contributions
+          required: true

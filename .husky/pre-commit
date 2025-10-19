@@ -1,0 +1,514 @@
+#!/bin/sh
+
+echo "🎯 Running component-specific pre-commit validation..."
+echo ""
+
+# Get list of modified component files
+MODIFIED_COMPONENTS=$(git diff --cached --name-only | grep "src/components/" | grep -E "\.(ts|js)$" | grep -v ".test.ts" | grep -v ".stories.ts" | sed 's|src/components/||' | cut -d'/' -f1 | sort -u)
+MODIFIED_COMPONENT_COUNT=$(echo "$MODIFIED_COMPONENTS" | grep -v '^$' | wc -l | tr -d ' ')
+
+# Get modified files outside components
+MODIFIED_CORE=$(git diff --cached --name-only | grep -E "(src/utils|src/styles|scripts/|.husky/)" | wc -l | tr -d ' ')
+
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  echo "📦 Modified components detected: $MODIFIED_COMPONENT_COUNT"
+  echo "$MODIFIED_COMPONENTS" | while read comp; do
+    [ -n "$comp" ] && echo "   • $comp"
+  done
+  echo ""
+elif [ "$MODIFIED_CORE" -gt 0 ]; then
+  echo "🔧 Core files modified (utils/styles/scripts) - running global validation"
+  echo ""
+else
+  echo "📝 No component or core files modified - running basic validation"
+  echo ""
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Discovered Issues Policy Enforcement
+# See: CLAUDE.md - Discovered Issues Policy
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+echo "🚨 0/11 Discovered issues check..."
+node scripts/validate/check-discovered-issues.cjs || exit 1
+echo "   ✅ Pass"
+
+# MANDATORY: Repository Organization Cleanup (always run)
+echo "🧹 1/9 Repository organization..."
+node scripts/ci/cleanup-validator.cjs > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "   ⚠️  Files need organization - running auto-cleanup..."
+  node scripts/maintenance/auto-cleanup.cjs
+  # Re-validate after cleanup
+  node scripts/ci/cleanup-validator.cjs || {
+    echo "❌ Repository organization issues remain after auto-cleanup!"
+    echo "💡 Manual intervention needed"
+    exit 1
+  }
+  # Stage cleaned up files
+  git add -u
+  echo "   ✅ Auto-cleanup complete and staged"
+else
+  echo "   ✅ Pass"
+fi
+
+# MANDATORY: Script Organization (always run)
+echo "🧹 1a/9 Script organization..."
+node scripts/validate/validate-script-organization.js > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "❌ One-off scripts detected in active directories!"
+  echo "💡 Run: node scripts/validate/validate-script-organization.js"
+  echo "   Review and move completed scripts to scripts/archived/one-off-fixes/"
+  exit 1
+fi
+echo "   ✅ Pass"
+
+# MANDATORY: USWDS Script Tag Validation (always run)
+echo "🏗️  2/9 USWDS script tag presence..."
+bash scripts/validate/validate-uswds-script-tag.sh > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "❌ USWDS script tag validation failed!"
+  echo "See docs/DEBUGGING_GUIDE.md - 'USWDS Script Tag Loading Issue'"
+  exit 1
+fi
+echo "   ✅ Pass"
+
+# MANDATORY: Layout Forcing Pattern Validation (always run)
+echo "🎨 2a/9 Layout forcing pattern..."
+npm run validate:layout-forcing > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "❌ Layout forcing pattern validation failed!"
+  echo "CRITICAL: This fixes zero BoundingClientRect after Storybook navigation"
+  echo "See docs/STORYBOOK_LAYOUT_FORCING_PATTERN.md"
+  echo "Run: npm run validate:layout-forcing (for details)"
+  exit 1
+fi
+echo "   ✅ Pass"
+
+# Component-specific or global validation
+echo "🤖 3/9 Component issue detection..."
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  # Component-specific detection
+  if node scripts/validate/auto-detect-component-issues.js --quiet --components="$(echo $MODIFIED_COMPONENTS | tr '\n' ',')" > /dev/null 2>&1; then
+    echo "   ✅ Pass (checked $MODIFIED_COMPONENT_COUNT components)"
+  else
+    echo "⚠️  Component issues detected - run 'npm run detect:issues' for details"
+  fi
+else
+  # Global detection for core changes
+  if node scripts/validate/auto-detect-component-issues.js --quiet > /dev/null 2>&1; then
+    echo "   ✅ Pass"
+  else
+    echo "⚠️  Component issues detected - run 'npm run detect:issues' for details"
+  fi
+fi
+
+# Component compliance (uses main USWDS validator - 100% coverage)
+echo "🛡️  4/9 USWDS compliance..."
+npm run validate:uswds-compliance > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "❌ USWDS compliance failed! Run: npm run validate:uswds-compliance"
+  exit 1
+fi
+echo "   ✅ Pass"
+
+# Auto-clear discovered issues tracker if all validations passed
+if [ -f ".git/DISCOVERED_ISSUES.json" ]; then
+  echo "   🗑️  All validations passed - clearing discovered issues tracker"
+  rm .git/DISCOVERED_ISSUES.json
+fi
+
+# Custom USWDS class validation (fast, component-specific)
+echo "🎨 4a/9 Custom USWDS class validation..."
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  node scripts/validate/validate-no-custom-uswds-classes.js > /dev/null 2>&1
+  VALIDATION_EXIT_CODE=$?
+  if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+    echo "❌ Custom USWDS classes detected!"
+    echo ""
+    # Run again without redirection to show detailed output
+    node scripts/validate/validate-no-custom-uswds-classes.js
+    exit 1
+  fi
+  echo "   ✅ Pass (checked $MODIFIED_COMPONENT_COUNT components)"
+else
+  echo "   ⏭️  Skipped (no components modified)"
+fi
+
+# Linting (fast, blocks bad code)
+echo "🔍 5/9 Linting..."
+npm run lint > /dev/null 2>&1 || {
+  echo "❌ Linting failed! Run: npm run lint"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# TypeScript (fast, blocks type errors)
+echo "📘 6/9 TypeScript compilation..."
+npm run typecheck > /dev/null 2>&1 || {
+  echo "❌ TypeScript errors! Run: npm run typecheck"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Code Quality Review (NEW - validates code quality standards)
+echo "✨ 6a/9 Code quality review..."
+node scripts/validate/code-quality-review.cjs > /dev/null 2>&1 || {
+  echo "❌ Code quality issues detected!"
+  echo "   Run: npm run validate:code-quality (for detailed report)"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# AI Code Quality Validation (detects common AI anti-patterns)
+echo "🤖 6b/9 AI code quality..."
+node scripts/validate/ai-code-quality-validator.cjs > /dev/null 2>&1 || {
+  echo "❌ AI code quality issues detected!"
+  echo "   Run: npm run validate:ai-quality (for detailed report)"
+  echo ""
+  echo "💡 Common issues:"
+  echo "   • console.log statements"
+  echo "   • Debug code not removed"
+  echo "   • Event listeners without cleanup"
+  echo "   • Generic error messages"
+  echo ""
+  echo "To bypass warnings: AI_QUALITY_STRICT=0 git commit"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Code Refactoring Analysis (informational only)
+if [ "$CODE_REFACTOR_CHECK" = "1" ]; then
+  echo "♻️  6c/9 Refactoring analysis (opt-in)..."
+  node scripts/validate/code-refactoring-analyzer.cjs || {
+    echo "⚠️  Refactoring suggestions available"
+    echo "   Run: npm run validate:refactoring (for details)"
+    # Don't block commit
+  }
+  echo "   ✅ Pass"
+fi
+
+# Component-specific validations (only if components modified)
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  echo "🎯 7/9 Component-specific validations..."
+
+  # Attribute mapping (component-specific)
+  npm run validate:attribute-mapping > /dev/null 2>&1 || {
+    echo "❌ Attribute mapping issues! Run: npm run validate:attribute-mapping"
+    exit 1
+  }
+
+  # Component registration (component-specific)
+  npm run validate:registrations > /dev/null 2>&1 || {
+    echo "❌ Component registration conflicts! Run: npm run validate:registrations"
+    exit 1
+  }
+
+  # Slot rendering (component-specific)
+  MODIFIED_COMPONENTS="$MODIFIED_COMPONENTS" node scripts/validate/validate-slot-rendering.js > /dev/null 2>&1 || {
+    echo "❌ Slot rendering issues! Run: npm run validate:slots"
+    exit 1
+  }
+
+  # Story styles validation (component-specific)
+  MODIFIED_COMPONENTS="$MODIFIED_COMPONENTS" node scripts/validate/validate-story-styles.js > /dev/null 2>&1 || {
+    echo "❌ Story inline styles detected! Run: npm run validate:story-styles"
+    echo "   Use USWDS utility classes and <usa-alert>/<usa-tag> components"
+    exit 1
+  }
+
+  # Image link validation (component-specific story files)
+  npm run validate:image-links:strict > /dev/null 2>&1 || {
+    echo "❌ Broken image links detected! Run: npm run validate:image-links"
+    echo "   Ensure all image paths exist in public/img/ or external URLs are valid"
+    exit 1
+  }
+
+  echo "   ✅ Pass (5 component-specific checks)"
+else
+  echo "🎯 7/9 Component-specific validations..."
+  echo "   ⏭️  Skipped (no components modified)"
+fi
+
+# Test expectations (always run)
+echo "🧪 8/9 Test expectations..."
+npm run validate:test-expectations > /dev/null 2>&1 || {
+  echo "❌ Test expectation violations! Run: npm run validate:test-expectations"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Test skip policy enforcement (NEW - prevents new skipped tests)
+echo "🚫 8b/9 Test skip policy..."
+node scripts/validate/validate-no-skipped-tests.cjs > /dev/null 2>&1 || {
+  echo "❌ Test skip policy violations detected!"
+  echo ""
+  node scripts/validate/validate-no-skipped-tests.cjs
+  echo ""
+  echo "📖 Policy: docs/TEST_SKIP_POLICY.md"
+  echo "💡 Fix the test instead of skipping it"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Cypress test pattern validation (NEW - prevents Storybook 6 pattern regression)
+CYPRESS_FILES_MODIFIED=$(git diff --cached --name-only | grep "cypress/" | wc -l | tr -d ' ')
+if [ "$CYPRESS_FILES_MODIFIED" -gt 0 ]; then
+  echo "🎭 8c/9 Cypress test patterns..."
+  node scripts/validate/validate-cypress-patterns.cjs > /dev/null 2>&1 || {
+    echo "❌ Cypress pattern issues detected!"
+    echo ""
+    node scripts/validate/validate-cypress-patterns.cjs
+    echo ""
+    exit 1
+  }
+  echo "   ✅ Pass ($CYPRESS_FILES_MODIFIED Cypress files checked)"
+else
+  echo "🎭 8c/9 Cypress test patterns..."
+  echo "   ⏭️  Skipped (no Cypress files modified)"
+fi
+
+# Component-specific regression tests (only if specific components modified)
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  echo "🔄 8a/9 Component regression tests..."
+
+  REGRESSION_TESTS_RUN=0
+  REGRESSION_TESTS_FAILED=0
+
+  # Check each modified component for regression tests
+  echo "$MODIFIED_COMPONENTS" | while read comp; do
+    if [ -n "$comp" ]; then
+      # Check if component has regression tests
+      if [ "$comp" = "range-slider" ]; then
+        echo "   → Running range-slider regression tests..."
+        if npm run test:regression:range-slider > /dev/null 2>&1; then
+          echo "   ✅ range-slider: 3 regression tests passed"
+        else
+          echo "   ❌ range-slider: regression tests failed!"
+          exit 1
+        fi
+        REGRESSION_TESTS_RUN=$((REGRESSION_TESTS_RUN + 1))
+      elif [ "$comp" = "in-page-navigation" ]; then
+        echo "   → Running in-page-navigation regression tests..."
+        if npm run test:regression:in-page-nav > /dev/null 2>&1; then
+          echo "   ✅ in-page-navigation: 6 regression tests passed"
+        else
+          echo "   ❌ in-page-navigation: regression tests failed!"
+          exit 1
+        fi
+        REGRESSION_TESTS_RUN=$((REGRESSION_TESTS_RUN + 1))
+      fi
+    fi
+  done
+
+  if [ "$REGRESSION_TESTS_RUN" -eq 0 ]; then
+    echo "   ⏭️  Skipped (modified components have no regression tests)"
+  fi
+else
+  echo "🔄 8a/9 Component regression tests..."
+  echo "   ⏭️  Skipped (no components modified)"
+fi
+
+# USWDS final validation
+echo "🏛️  9/10 USWDS transformation validation..."
+.husky/pre-commit-uswds > /dev/null 2>&1 || {
+  echo "❌ USWDS validation failed! See .husky/pre-commit-uswds"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Component JavaScript Integration (NEW - catches missing USWDS.on() calls)
+echo "🔧 10/11 Component JavaScript integration..."
+node scripts/validate/validate-component-javascript.js > /dev/null 2>&1 || {
+  echo "❌ JavaScript integration failed! Run: npm run validate:component-javascript"
+  echo "   This validates USWDS.componentName.on(this) is called properly"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Holistic Documentation Validation (NEW - checks documentation is up-to-date)
+echo "📚 11/11 Documentation synchronization..."
+node scripts/validate/validate-documentation-sync.cjs || {
+  echo ""
+  echo "❌ Documentation validation issues detected!"
+  echo "   Review warnings and errors above"
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Documentation Hygiene Check (non-blocking warnings)
+echo "🧹 11a/11 Documentation hygiene..."
+node scripts/validate/validate-documentation-hygiene.cjs || {
+  echo ""
+  echo "❌ Documentation policy violations detected!"
+  echo "   Review errors above and categorize new documentation"
+  exit 1
+}
+
+# Documentation Placeholder Validation (NEW - ensures docs are generated from metadata)
+echo "📝 11b/11 Documentation placeholders..."
+node scripts/validate/validate-documentation-placeholders.cjs > /dev/null 2>&1 || {
+  echo ""
+  node scripts/validate/validate-documentation-placeholders.cjs
+  echo ""
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Optional: Cypress component tests (opt-in via CYPRESS_PRECOMMIT=1)
+if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
+  echo ""
+  echo "🧪 12/13 Cypress component tests (opt-in)..."
+  npm run cypress:component > /dev/null 2>&1 || {
+    echo "❌ Cypress component tests failed!"
+    echo "   Run: npm run cypress:component:open (to debug)"
+    echo ""
+    exit 1
+  }
+  echo "   ✅ Pass"
+fi
+
+# Optional: Bundle size check (opt-in via BUNDLE_SIZE_PRECOMMIT=1)
+if [ "$BUNDLE_SIZE_PRECOMMIT" = "1" ]; then
+  echo ""
+  echo "📦 13/14 Bundle size validation (opt-in)..."
+
+  # Check if dist directory exists
+  if [ ! -d "dist" ]; then
+    echo "⚠️  No dist/ directory found - building first..."
+    NODE_ENV=production npm run build > /dev/null 2>&1 || {
+      echo "❌ Build failed! Cannot validate bundle size."
+      exit 1
+    }
+  fi
+
+  npm run validate:bundle-size > /dev/null 2>&1 || {
+    echo "❌ Bundle size validation failed!"
+    echo ""
+    npm run validate:bundle-size
+    echo ""
+    echo "💡 Actions to take:"
+    echo "   • Review bundle composition: npm run build:analyze:visual"
+    echo "   • Check for large dependencies or unused imports"
+    echo "   • See docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md"
+    echo ""
+    exit 1
+  }
+  echo "   ✅ Pass"
+fi
+
+# Optional: Smoke tests (opt-in via SMOKE_TESTS_PRECOMMIT=1)
+if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
+  echo ""
+  echo "🔥 14/14 Smoke tests - critical interaction validation (opt-in)..."
+  echo "   → Testing: accordion, combo-box, date-picker, modal, time-picker, character-count, file-input, search"
+
+  # Check if Storybook is already running
+  if ! curl -s http://localhost:6006 > /dev/null 2>&1; then
+    echo "   ⚠️  Storybook not running - starting server..."
+    echo "   💡 Tip: Run 'npm run storybook' in another terminal to speed up future commits"
+
+    # Start Storybook in background
+    npm run storybook > /dev/null 2>&1 &
+    STORYBOOK_PID=$!
+
+    # Wait for Storybook to be ready (max 60 seconds)
+    WAIT_TIME=0
+    while ! curl -s http://localhost:6006 > /dev/null 2>&1; do
+      sleep 2
+      WAIT_TIME=$((WAIT_TIME + 2))
+      if [ $WAIT_TIME -ge 60 ]; then
+        echo "   ❌ Storybook failed to start within 60 seconds"
+        kill $STORYBOOK_PID 2>/dev/null
+        exit 1
+      fi
+    done
+    echo "   ✅ Storybook ready"
+
+    # Run smoke tests
+    npm run cypress:smoke > /dev/null 2>&1
+    SMOKE_EXIT_CODE=$?
+
+    # Kill Storybook after tests
+    kill $STORYBOOK_PID 2>/dev/null
+
+    if [ $SMOKE_EXIT_CODE -ne 0 ]; then
+      echo "   ❌ Smoke tests failed!"
+      echo ""
+      echo "   💡 Debug with: npm run cypress:smoke:headed"
+      echo "   📖 See: docs/POST_MORTEM_TIME_PICKER_DROPDOWN_ISSUE.md"
+      exit 1
+    fi
+  else
+    # Storybook already running - just run tests
+    npm run cypress:smoke > /dev/null 2>&1 || {
+      echo "   ❌ Smoke tests failed!"
+      echo ""
+      echo "   💡 Debug with: npm run cypress:smoke:headed"
+      echo "   📖 See: docs/POST_MORTEM_TIME_PICKER_DROPDOWN_ISSUE.md"
+      exit 1
+    }
+  fi
+
+  echo "   ✅ Pass (8 interactive components tested)"
+fi
+
+echo ""
+echo "✅ All checks passed!"
+echo ""
+
+# Summary based on what was checked
+TOTAL_STAGES=11
+if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
+  TOTAL_STAGES=12
+fi
+if [ "$BUNDLE_SIZE_PRECOMMIT" = "1" ]; then
+  TOTAL_STAGES=13
+fi
+if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
+  TOTAL_STAGES=14
+fi
+
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  echo "📊 Validation Summary:"
+  echo "   • $MODIFIED_COMPONENT_COUNT component(s) validated"
+  echo "   • $TOTAL_STAGES validation stages completed"
+  echo "   • Repository organization clean"
+  echo "   • Code quality standards verified"
+  echo "   • All component-specific checks passed"
+  echo "   • JavaScript integration verified"
+  echo "   • Documentation synchronized"
+  if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
+    echo "   • Cypress component tests passed (opt-in)"
+  fi
+  echo ""
+elif [ "$MODIFIED_CORE" -gt 0 ]; then
+  echo "📊 Validation Summary:"
+  echo "   • Core files validated (global checks)"
+  echo "   • $TOTAL_STAGES validation stages completed"
+  echo "   • Repository organization clean"
+  echo "   • Code quality standards verified"
+  echo "   • Component-specific checks skipped (not needed)"
+  echo "   • JavaScript integration verified"
+  echo "   • Documentation synchronized"
+  if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
+    echo "   • Cypress component tests passed (opt-in)"
+  fi
+  echo ""
+fi
+
+echo "💡 Additional validation available (run manually when needed):"
+if [ "$CYPRESS_PRECOMMIT" != "1" ]; then
+  echo "   • CYPRESS_PRECOMMIT=1 git commit - Run Cypress tests before commit"
+fi
+if [ "$SMOKE_TESTS_PRECOMMIT" != "1" ]; then
+  echo "   • SMOKE_TESTS_PRECOMMIT=1 git commit - Run smoke tests before commit (~30s)"
+fi
+if [ "$BUNDLE_SIZE_PRECOMMIT" != "1" ]; then
+  echo "   • BUNDLE_SIZE_PRECOMMIT=1 git commit - Validate bundle size before commit"
+fi
+echo "   • npm run validate:storybook-uswds - Storybook USWDS integration"
+echo "   • npm run validate:story-args - Storybook controls binding"
+echo "   • node scripts/validate-minimal-wrapper-pattern.js - Minimal wrapper pattern"
+echo "   • node scripts/pre-commit-test-validation.js - Test health validation"
+echo "   • npm test -- dom-validation - DOM structure validation"
+echo ""

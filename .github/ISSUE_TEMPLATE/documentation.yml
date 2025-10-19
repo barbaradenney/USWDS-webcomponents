@@ -1,0 +1,200 @@
+name: 📚 Documentation Improvement
+description: Suggest improvements to documentation
+title: "[Docs]: "
+labels: ["documentation", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation! Clear docs make this library more accessible to everyone.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation needs improvement?
+      options:
+        - Component README.mdx
+        - Storybook stories
+        - Main README.md
+        - CONTRIBUTING.md
+        - Architecture guides (docs/)
+        - API documentation
+        - Code comments
+        - Examples/demos
+        - Migration guides
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: File/Location
+      description: Which file or section needs improvement?
+      placeholder: "src/components/button/README.mdx or docs/ARCHITECTURE.md"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What kind of documentation issue is this?
+      options:
+        - Missing documentation
+        - Outdated information
+        - Unclear explanation
+        - Incorrect information
+        - Typo/grammar
+        - Missing examples
+        - Broken links
+        - Inconsistency
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Documentation
+      description: What does the current documentation say (if anything)?
+      placeholder: |
+        Currently it says...
+        Or: There is no documentation for...
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's Wrong or Missing?
+      description: Explain what's incorrect, unclear, or missing
+      placeholder: |
+        The documentation is unclear because...
+        This important detail is missing: ...
+        This information is outdated: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be improved?
+      placeholder: |
+        The documentation should explain...
+        Add an example showing...
+        Update the text to say...
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example Content (Optional)
+      description: If you have specific text or code examples to suggest, include them here
+      placeholder: |
+        ```typescript
+        // Example code here
+        ```
+
+        Or suggested text:
+        "The button component accepts..."
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Related Component (if applicable)
+      description: Which component does this documentation relate to?
+      options:
+        - Not component-specific
+        - Accordion
+        - Alert
+        - Banner
+        - Breadcrumb
+        - Button
+        - Button Group
+        - Card
+        - Character Count
+        - Checkbox
+        - Collection
+        - Combo Box
+        - Date Picker
+        - Date Range Picker
+        - File Input
+        - Footer
+        - Header
+        - Icon
+        - Identifier
+        - In-Page Navigation
+        - Input Prefix/Suffix
+        - Language Selector
+        - Link
+        - List
+        - Memorable Date
+        - Menu
+        - Modal
+        - Pagination
+        - Process List
+        - Prose
+        - Radio
+        - Range Slider
+        - Search
+        - Section
+        - Select
+        - Side Navigation
+        - Site Alert
+        - Skip Link
+        - Step Indicator
+        - Summary Box
+        - Table
+        - Tag
+        - Text Input
+        - Textarea
+        - Time Picker
+        - Tooltip
+        - Validation
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is this documentation for?
+      options:
+        - End users (consuming the components)
+        - Contributors (developing components)
+        - Both
+        - Other
+
+  - type: dropdown
+    id: implement
+    attributes:
+      label: Can You Create a PR?
+      description: Are you willing to submit a PR to fix this documentation?
+      options:
+        - "Yes, I can create a PR (with AI assistance if needed)"
+        - "Maybe, with guidance"
+        - "No, I'm just reporting it"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: |
+        - Related issues: ...
+        - USWDS reference: ...
+        - Screenshots: ...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have checked that this documentation issue doesn't already have an open issue
+          required: true
+        - label: I have provided specific details about the problem
+          required: true

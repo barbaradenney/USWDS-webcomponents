@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Worker Example - USWDS Web Components</title>
+</head>
+<body>
+  <h1>Service Worker Example</h1>
+  <p>This page demonstrates service worker registration.</p>
+
+  <div id="status"></div>
+
+  <button id="register">Register Service Worker</button>
+  <button id="unregister">Unregister Service Worker</button>
+  <button id="clear-cache">Clear Cache</button>
+
+  <script type="module">
+    import {
+      registerServiceWorker,
+      unregisterServiceWorker,
+      clearServiceWorkerCaches
+    } from './service-worker-registration.js';
+
+    const status = document.getElementById('status');
+
+    // Register on page load
+    window.addEventListener('load', async () => {
+      try {
+        const registration = await registerServiceWorker('/service-worker.js', {
+          enableInDev: true, // Enable in development for testing
+          onUpdate: (reg) => {
+            status.innerHTML = '<p style="color: orange;">New version available! Reload to update.</p>';
+          }
+        });
+
+        if (registration) {
+          status.innerHTML = '<p style="color: green;">Service Worker registered successfully!</p>';
+        }
+      } catch (error) {
+        status.innerHTML = `<p style="color: red;">Registration failed: ${error.message}</p>`;
+      }
+    });
+
+    // Manual controls
+    document.getElementById('register').addEventListener('click', async () => {
+      try {
+        await registerServiceWorker('/service-worker.js', { enableInDev: true });
+        status.innerHTML = '<p style="color: green;">Service Worker registered!</p>';
+      } catch (error) {
+        status.innerHTML = `<p style="color: red;">Failed: ${error.message}</p>`;
+      }
+    });
+
+    document.getElementById('unregister').addEventListener('click', async () => {
+      const success = await unregisterServiceWorker();
+      status.innerHTML = success
+        ? '<p style="color: green;">Service Worker unregistered!</p>'
+        : '<p style="color: red;">Unregistration failed</p>';
+    });
+
+    document.getElementById('clear-cache').addEventListener('click', async () => {
+      const success = await clearServiceWorkerCaches();
+      status.innerHTML = success
+        ? '<p style="color: green;">All caches cleared!</p>'
+        : '<p style="color: red;">Cache clearing failed</p>';
+    });
+  </script>
+</body>
+</html>

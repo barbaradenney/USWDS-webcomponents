@@ -1,0 +1,119 @@
+<!-- Storybook Preview Head -->
+<script>
+  // Configure USWDS Web Components debug output
+  // This suppresses informational console messages by default
+  window.__USWDS_DEBUG__ = {
+    enabled: false,          // Disable all debug output by default
+    showInit: false,        // Don't show initialization messages
+    showUSWDS: false,       // Don't show USWDS progressive enhancement messages
+    showWarnings: false,    // Don't show warning messages
+    showErrors: true        // Always show actual errors
+  };
+
+  // Enable debug mode via URL parameter for troubleshooting
+  // Add ?debug=true to Storybook URL to see all messages
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('debug') === 'true') {
+    window.__USWDS_DEBUG__ = {
+      enabled: true,
+      showInit: true,
+      showUSWDS: true,
+      showWarnings: true,
+      showErrors: true
+    };
+    console.log('🔧 USWDS Debug Mode Enabled - All console messages will be shown');
+  }
+
+  // NOTE: Dynamic iframe height adjustment for Docs mode
+  //
+  // Storybook has a known limitation with iframe resizing in Docs mode,
+  // especially for absolutely-positioned elements (combo box dropdowns, tooltips, etc.)
+  // See: https://github.com/storybookjs/storybook/issues/8112
+  //
+  // The official workaround is to set a fixed `iframeHeight` parameter in each story's
+  // configuration to accommodate the maximum expected height.
+</script>
+
+<!-- Load USWDS Global Bundle - Deferred until DOM is ready -->
+<!--
+  CRITICAL: This script must use <script src> tag approach (not ES module imports)
+  to properly set window.USWDS global object.
+
+  Why this is required:
+  - Modal and other components need USWDS.modal.init() from window.USWDS
+  - ES module imports don't create the global object
+  - Must wait for DOM ready to avoid "Cannot read properties of null" errors
+  - USWDS tries to appendChild to document.body, which must exist first
+
+  See docs/STORYBOOK_USWDS_INTEGRATION.md for full documentation.
+-->
+<script>
+  // Load USWDS after DOM is ready to avoid null body errors
+  // USWDS global script loading is DISABLED in Storybook to prevent double initialization and modal ID errors.
+  // If you need to test with the global USWDS script, uncomment the following block.
+  /*
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadUSWDS);
+  } else {
+    // DOM already loaded
+    loadUSWDS();
+  }
+
+  function loadUSWDS() {
+    // ARCHITECTURE: Script Tag Pattern (MANDATORY)
+    // Load USWDS globally to create window.USWDS object
+    // This ensures consistent initialization across all environments
+    //
+    // Why this is required:
+    // - Creates window.USWDS global object needed by all USWDS components
+    // - Prevents modal visibility issues and button jumping
+    // - Prevents timing issues and initialization failures
+    // - Ensures components work correctly when navigating between stories
+    // - See: docs/DEBUGGING_GUIDE.md - "USWDS Script Tag Loading Issue"
+
+    // DO NOT REMOVE: This script tag is MANDATORY
+    // Removing it will cause modal visibility issues and component failures
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/@uswds/uswds@latest/dist/js/uswds.min.js';
+    script.onload = function() {
+      console.log('✅ USWDS loaded globally - window.USWDS available');
+      window.uswdsPresent = true;
+    };
+    script.onerror = function() {
+      console.error('❌ Failed to load USWDS from CDN');
+      window.uswdsPresent = false;
+    };
+    document.head.appendChild(script);
+  }
+  */
+</script>
+
+<!-- Prevent modal flash before USWDS initialization -->
+<style>
+  /* Hide modals until USWDS wraps them with proper visibility classes
+     This prevents the flash of visible modal content on page load
+
+     Also remove from layout flow to prevent button jumping when USWDS
+     moves the modal to document.body */
+  .usa-modal:not(.usa-modal-wrapper .usa-modal) {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  /* Once USWDS wraps the modal, restore USWDS positioning
+     We only override what was changed for flash prevention.
+     USWDS handles centering via its own CSS. */
+  .usa-modal-wrapper .usa-modal {
+    visibility: visible;
+    opacity: 1;
+    position: static; /* Let USWDS CSS control positioning */
+    pointer-events: auto;
+  }
+
+  /* Optional: Hide Storybook's verbose console output */
+  @media print {
+    * { display: none !important; }
+  }
+</style>

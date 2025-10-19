@@ -1,0 +1,118 @@
+# .npmignore - Controls what gets published to npm
+# Only dist/, src/, and essential files will be published
+
+# Test files
+__tests__/
+cypress/
+test-*.html
+test-*.js
+debug-*.html
+debug-*.js
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+*.component.cy.ts
+*.e2e.cy.ts
+
+# Test results and reports
+test-results/
+test-reports/
+visual-test-results/
+playwright-report/
+coverage/
+reports/
+compliance-reports/
+.regression-baselines/
+
+# Documentation (keep in repo, exclude from npm)
+docs/
+AUDIT_REPORT.md
+BEHAVIORAL_TESTING_IMPLEMENTATION.md
+CLAUDE.md
+IMPROVEMENT_CHECKLIST.md
+PERFORMANCE_CHANGELOG.md
+REMEDIATION_CHECKLIST.md
+REMEDIATION_PLAN.md
+SKIPPED_TESTS_ANALYSIS.md
+TESTING_QUICK_REFERENCE.md
+
+# Build artifacts
+tsconfig.tsbuildinfo
+*.log
+*.tsbuildinfo
+storybook-output.log
+dist/debug-nav.html
+
+# JSON reports and artifacts
+audit-report.json
+behavior-test-results-*.json
+chaos-engineering-report.json
+component-integration-analysis.json
+test-health-report.json
+test-performance-report.json
+.predictive-test-results.json
+
+# Development directories
+compliance/
+templates/
+tests/
+sass/
+public/
+assets/
+
+# Storybook
+.storybook/
+storybook-static/
+
+# Development configs
+.eslintrc-dom-safety.js
+.eslintrc-storybook.js
+lighthouserc.js
+playwright.config.ts
+playwright.comprehensive.config.ts
+visual.config.ts
+vitest.config.ts
+vitest.browser.config.ts
+vitest.storybook.config.ts
+vitest.setup.ts
+vitest.browser.setup.ts
+vite.config.optimized.ts
+cypress.config.ts
+renovate.json
+gulpfile.cjs
+postcss.config.cjs
+
+# IDE and tooling
+.vscode/
+.claude/
+.husky/
+.github/
+eslint-rules/
+
+# Git
+.git/
+.gitattributes
+.gitignore
+
+# CI/CD
+.uswds-version
+
+# Dependencies
+node_modules/
+
+# Keep these essential files (explicitly allowed):
+# - dist/
+# - src/
+# - package.json
+# - LICENSE
+# - README.md
+# - CHANGELOG.md
+# - .prettierrc
+# - .eslintignore
+# - .eslintrc.json
+# - tsconfig.json
+# - tsconfig.build.json
+# - tsconfig.node.json
+# - tsconfig.test.json
+# - vite.config.ts

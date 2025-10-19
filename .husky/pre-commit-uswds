@@ -1,0 +1,19 @@
+#!/bin/sh
+# USWDS Validation Pre-commit Hook (Placeholder)
+#
+# NOTE: This hook is currently a placeholder for future USWDS-specific validations.
+# The transformation validator was removed because it checked for outdated "Option B" patterns.
+#
+# Current USWDS validation is handled by:
+# - npm run validate:uswds-compliance (step 4/9 in main pre-commit)
+# - npm run validate:component-javascript (step 10/10 in main pre-commit)
+#
+# These validators check:
+# - HTML structure and CSS classes match USWDS
+# - USWDS JavaScript integration (USWDS.componentName.on() calls)
+# - Script tag pattern is followed
+#
+# The old transformation validator checked for module imports and DOM transformation
+# which doesn't apply to the current Script Tag Pattern architecture.
+
+exit 0

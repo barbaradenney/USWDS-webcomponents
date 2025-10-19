@@ -1,0 +1,1198 @@
+Component Test Run - Fri Oct 17 01:15:08 MDT 2025
+==========================================
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run accordion
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/accordion/accordion-dom-validation.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/accordion/accordion-interaction.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/accordion/usa-accordion-behavior.test.ts
+✅ Vitest test environment setup complete
+
+ ✓ src/components/accordion/usa-accordion-behavior.test.ts (22 tests) 1732ms 49 MB heap used
+stdout | src/components/accordion/usa-accordion.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/accordion/accordion-uswds-validation.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/accordion/accordion-dom-validation.test.ts [ src/components/accordion/accordion-dom-validation.test.ts ]
+Error: Failed to resolve import "./dom-structure-validation.js" from "src/components/accordion/accordion-dom-validation.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/accordion/accordion-dom-validation.test.ts:7:7
+  4  |    validateDOMStructure,
+  5  |    USWDS_DOM_SPECS
+  6  |  } from "./dom-structure-validation.js";
+     |          ^
+  7  |  describe("Accordion DOM Structure Validation", () => {
+  8  |    let element;
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31522:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31519:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:29991:18
+ ❯ node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30049:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30017:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31320:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:26407:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/components/accordion/accordion-interaction.test.ts [ src/components/accordion/accordion-interaction.test.ts ]
+Error: Failed to resolve import "./test-utils.js" from "src/components/accordion/accordion-interaction.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/accordion/accordion-interaction.test.ts:11:30
+  1  |  import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+  2  |  import "./usa-accordion.ts";
+  3  |  import { waitForUpdate } from "./test-utils.js";
+     |                                 ^
+  4  |  describe("Accordion JavaScript Interaction Testing", () => {
+  5  |    let element;
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31522:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31519:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:29991:18
+ ❯ node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30049:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30017:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31320:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:26407:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/components/accordion/accordion-uswds-validation.test.ts [ src/components/accordion/accordion-uswds-validation.test.ts ]
+ FAIL  src/components/accordion/usa-accordion.test.ts [ src/components/accordion/usa-accordion.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  4 failed | 1 passed (5)
+      Tests  22 passed (22)
+   Start at  01:15:09
+   Duration  3.79s (transform 225ms, setup 59ms, collect 167ms, tests 1.73s, environment 631ms, prepare 107ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run alert
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/alert/usa-alert.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Default Properties > should have correct default properties
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Default Properties > should have correct default properties
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Default Properties > should set appropriate ARIA role by default
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Default Properties > should set appropriate ARIA role by default
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should render correct CSS class for each variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should render correct CSS class for each variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should set alert role for urgent variants
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should set alert role for urgent variants
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should pass comprehensive USWDS compliance tests (prevents structural issues)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Variant Property > should pass comprehensive USWDS compliance tests (prevents structural issues)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Heading Property > should render heading when provided
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Heading Property > should render heading when provided
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Heading Property > should not render heading element when heading is empty
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Heading Property > should not render heading element when heading is empty
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slim Property > should add slim CSS class when slim is true
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slim Property > should add slim CSS class when slim is true
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slim Property > should not add slim CSS class when slim is false
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slim Property > should not add slim CSS class when slim is false
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > NoIcon Property > should add no-icon CSS class when noIcon is true
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > NoIcon Property > should add no-icon CSS class when noIcon is true
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > NoIcon Property > should not add no-icon CSS class when noIcon is false
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > NoIcon Property > should not add no-icon CSS class when noIcon is false
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render text property content in alert text
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render text property content in alert text
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render text property content in alert text
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render text property content in alert text
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render HTML structure correctly
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render HTML structure correctly
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render HTML structure correctly
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render HTML structure correctly
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render content without duplication
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render content without duplication
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render content without duplication
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Slot Content > should render content without duplication
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > HTML Structure > should render correct USWDS HTML structure
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > HTML Structure > should render correct USWDS HTML structure
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > HTML Structure > should not render dismiss button (USWDS compliance)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > HTML Structure > should not render dismiss button (USWDS compliance)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > CSS Classes > should apply all appropriate USWDS classes
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > CSS Classes > should apply all appropriate USWDS classes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility > should have proper ARIA roles for different variants
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility > should have proper ARIA roles for different variants
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility > should use semantic HTML elements
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility > should use semantic HTML elements
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Property Updates > should update DOM when properties change
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Property Updates > should update DOM when properties change
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Light DOM Rendering > should render in light DOM for USWDS compatibility
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Light DOM Rendering > should render in light DOM for USWDS compatibility
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Light DOM Rendering > JavaScript Implementation Validation > should pass JavaScript implementation validation
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Light DOM Rendering > JavaScript Implementation Validation > should pass JavaScript implementation validation
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should pass comprehensive accessibility tests (same as Storybook)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should maintain accessibility during dynamic state changes
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should maintain accessibility during dynamic state changes
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should maintain accessibility during dynamic state changes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should maintain accessibility during dynamic state changes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should maintain accessibility during dynamic state changes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should maintain accessibility during dynamic state changes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Accessibility Compliance (CRITICAL) > should be accessible in real-world government use cases
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should allow keyboard navigation to links in alert content
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should allow keyboard navigation to links in alert content
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should be keyboard-only usable when containing interactive elements
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should be keyboard-only usable when containing interactive elements
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should pass keyboard navigation tests for interactive alerts
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should pass keyboard navigation tests for interactive alerts
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should have no keyboard traps in alert content
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should have no keyboard traps in alert content
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should maintain proper tab order for multiple interactive elements
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should maintain proper tab order for multiple interactive elements
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should handle alerts without interactive content (no focusable elements)
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should handle alerts without interactive content (no focusable elements)
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should support keyboard activation of buttons in alert content
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should support keyboard activation of buttons in alert content
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should handle keyboard focus for emergency variant with multiple actions
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Keyboard Navigation (WCAG 2.1) > should handle keyboard focus for emergency variant with multiple actions
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for info variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for info variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for info variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for info variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for error variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for error variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for error variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for error variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for warning variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for warning variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for warning variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for warning variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for success variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for success variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for success variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for success variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for emergency variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for emergency variant
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for emergency variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have correct ARIA role for emergency variant
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have accessible text in heading element
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have accessible text in heading element
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have accessible text in heading element
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should have accessible text in heading element
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should pass comprehensive ARIA accessibility tests
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should pass comprehensive ARIA accessibility tests
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should pass comprehensive ARIA accessibility tests
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should pass comprehensive ARIA accessibility tests
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should maintain ARIA attributes when variant changes
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should maintain ARIA attributes when variant changes
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should maintain ARIA attributes when variant changes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > ARIA/Screen Reader Accessibility (WCAG 4.1) > should maintain ARIA attributes when variant changes
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify info variant has USWDS classes for contrast
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify info variant has USWDS classes for contrast
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify warning variant has USWDS classes for contrast
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify warning variant has USWDS classes for contrast
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify error variant has USWDS classes for contrast
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify error variant has USWDS classes for contrast
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify success variant has USWDS classes for contrast
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify success variant has USWDS classes for contrast
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should calculate contrast correctly for alert text
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should calculate contrast correctly for alert text
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify alert heading has adequate contrast
+📋 Alert: Initialized as presentational component (no USWDS JavaScript required)
+
+stdout | src/components/alert/usa-alert.test.ts > USAAlert > Color/Contrast Accessibility (WCAG 1.4) > should verify alert heading has adequate contrast
+📋 Alert: Cleanup complete (no USWDS JavaScript required)
+
+ ✓ src/components/alert/usa-alert.test.ts (51 tests | 3 skipped) 933ms 50 MB heap used
+stdout | src/components/site-alert/usa-site-alert.test.ts
+✅ Vitest test environment setup complete
+
+ ✓ src/components/site-alert/usa-site-alert.test.ts (57 tests) 329ms 55 MB heap used
+stdout | src/components/alert/usa-alert.layout.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/site-alert/usa-site-alert.layout.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/alert/usa-alert.layout.test.ts [ src/components/alert/usa-alert.layout.test.ts ]
+ FAIL  src/components/site-alert/usa-site-alert.layout.test.ts [ src/components/site-alert/usa-site-alert.layout.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  105 passed | 3 skipped (108)
+   Start at  01:15:14
+   Duration  3.18s (transform 212ms, setup 58ms, collect 335ms, tests 1.26s, environment 703ms, prepare 100ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run banner
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/banner/banner-interaction.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/banner/usa-banner.layout.test.ts
+✅ Vitest test environment setup complete
+
+ ✓ src/components/banner/usa-banner.layout.test.ts (14 tests) 196ms 49 MB heap used
+stdout | src/components/banner/usa-banner.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/banner/usa-banner-behavior.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/banner/banner-interaction.test.ts [ src/components/banner/banner-interaction.test.ts ]
+Error: Failed to resolve import "./test-utils.js" from "src/components/banner/banner-interaction.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/banner/banner-interaction.test.ts:11:30
+  1  |  import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+  2  |  import "./usa-banner.ts";
+  3  |  import { waitForUpdate } from "./test-utils.js";
+     |                                 ^
+  4  |  describe("Banner JavaScript Interaction Testing", () => {
+  5  |    let element;
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31522:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31519:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:29991:18
+ ❯ node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30049:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30017:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31320:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:26407:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/components/banner/usa-banner-behavior.test.ts [ src/components/banner/usa-banner-behavior.test.ts ]
+ FAIL  src/components/banner/usa-banner.test.ts [ src/components/banner/usa-banner.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  14 passed (14)
+   Start at  01:15:18
+   Duration  1.92s (transform 195ms, setup 52ms, collect 153ms, tests 196ms, environment 689ms, prepare 130ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run breadcrumb
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/breadcrumb/usa-breadcrumb.test.ts
+✅ Vitest test environment setup complete
+
+stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Component Lifecycle Stability > should remain in DOM after property changes
+Error: Not implemented: navigation (except hash changes)
+    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7) [90mundefined[39m
+
+stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Event System Stability > should not pollute global event handling
+Error: Not implemented: navigation (except hash changes)
+    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7) [90mundefined[39m
+
+stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Event System Stability > should maintain stability during breadcrumb navigation clicks
+Error: Not implemented: navigation (except hash changes)
+    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7) [90mundefined[39m
+
+stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Event System Stability > should maintain stability during breadcrumb navigation clicks
+Error: Not implemented: navigation (except hash changes)
+    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at listOnTimeout (node:internal/timers:588:17)
+    at processTimers (node:internal/timers:523:7) [90mundefined[39m
+
+ ✓ src/components/breadcrumb/usa-breadcrumb.test.ts (58 tests) 681ms 44 MB heap used
+stdout | src/components/breadcrumb/usa-breadcrumb.layout.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/breadcrumb/usa-breadcrumb.layout.test.ts [ src/components/breadcrumb/usa-breadcrumb.layout.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  58 passed (58)
+   Start at  01:15:21
+   Duration  2.45s (transform 171ms, setup 53ms, collect 285ms, tests 681ms, environment 620ms, prepare 118ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run button
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/button/usa-button.layout.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > should have correct USWDS button structure
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > should handle different button variants correctly
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > should handle button sizes correctly
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > should position icon correctly when present
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > should position icon correctly when present
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > CSS Class Regression Prevention > should have clean CSS classes for primary button variant
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > CSS Class Regression Prevention > should have clean CSS classes for all button variants
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > CSS Class Regression Prevention > should have clean CSS classes for all button sizes
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > CSS Class Regression Prevention > should have clean CSS classes for combined variants and sizes
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > CSS Class Regression Prevention > should validate all button CSS classes are properly formatted
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > CSS Class Regression Prevention > should prevent CSS class spacing regression issues
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > Visual Regression Prevention > should maintain button structure integrity
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > Visual Regression Prevention > should handle disabled state correctly
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+stdout | src/components/button/usa-button.layout.test.ts > USAButton Layout Tests > Visual Regression Prevention > should handle unstyled variant correctly
+🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)
+🔘 Button: Using presentational component behavior (USWDS Button is CSS-only)
+
+ ✓ src/components/button/usa-button.layout.test.ts (13 tests) 192ms 48 MB heap used
+stdout | src/components/button/usa-button.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/button-group/usa-button-group.test.ts
+✅ Vitest test environment setup complete
+
+ ✓ src/components/button-group/usa-button-group.test.ts (55 tests | 1 skipped) 809ms 47 MB heap used
+stdout | src/components/button/usa-button.ai-generated.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/button-group/usa-button-group.layout.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/button/usa-button.ai-generated.test.ts [ src/components/button/usa-button.ai-generated.test.ts ]
+ FAIL  src/components/button/usa-button.test.ts [ src/components/button/usa-button.test.ts ]
+ FAIL  src/components/button-group/usa-button-group.layout.test.ts [ src/components/button-group/usa-button-group.layout.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  3 failed | 2 passed (5)
+      Tests  67 passed | 1 skipped (68)
+   Start at  01:15:25
+   Duration  2.74s (transform 229ms, setup 54ms, collect 299ms, tests 1.00s, environment 546ms, prepare 98ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run button-group
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/button-group/usa-button-group.layout.test.ts
+✅ Vitest test environment setup complete
+
+ ✓ src/components/button-group/usa-button-group.layout.test.ts (14 tests) 120ms 50 MB heap used
+stdout | src/components/button-group/usa-button-group.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/button-group/usa-button-group.test.ts [ src/components/button-group/usa-button-group.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  14 passed (14)
+   Start at  01:15:28
+   Duration  1.89s (transform 162ms, setup 51ms, collect 123ms, tests 120ms, environment 669ms, prepare 89ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run card
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/card/usa-card.layout.test.ts
+✅ Vitest test environment setup complete
+
+stderr | src/components/card/usa-card.layout.test.ts > USACard Layout Tests > Visual Regression Prevention > should handle card click events correctly
+Error: Not implemented: navigation (except hash changes)
+    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at LocationImpl._locationObjectNavigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:30:5)
+    at LocationImpl._locationObjectSetterNavigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:24:17)
+    at LocationImpl.set href [as href] (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:46:10)
+    at Location.set href [as href] (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/generated/Location.js:125:37)
+    at USACard.handleCardClick (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/card/usa-card.ts:140:27)
+    at USACard.callTheUserObjectsOperation (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25) [90mundefined[39m
+
+ ✓ src/components/card/usa-card.layout.test.ts (23 tests) 161ms 52 MB heap used
+stdout | src/components/card/usa-card.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/card/usa-card.test.ts [ src/components/card/usa-card.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  23 passed (23)
+   Start at  01:15:31
+   Duration  1.73s (transform 159ms, setup 51ms, collect 129ms, tests 161ms, environment 601ms, prepare 420ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run character-count
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/character-count/usa-character-count-behavior.test.ts
+✅ Vitest test environment setup complete
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run checkbox
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/checkbox/usa-checkbox.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Default Properties > should have correct default properties
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Basic Checkbox Properties > should set name property
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Basic Checkbox Properties > should set value property
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Basic Checkbox Properties > should set checked state
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Basic Checkbox Properties > should set disabled state
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Basic Checkbox Properties > should set required state
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Basic Checkbox Properties > should set indeterminate state
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Label and Description > should render label text
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Label and Description > should associate label with checkbox via ID
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Label and Description > should render description when provided
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Label and Description > should not render description when empty
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Label and Description > should generate ID when not provided
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Tile Variant > should apply tile classes when tile is true
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Tile Variant > should not apply tile classes when tile is false
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Error State > should render error message when provided
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Error State > should apply error class to checkbox when error exists
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Error State > should set aria-invalid when error exists
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Error State > should not render error message when empty
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ARIA Attributes > should associate checkbox with description via aria-describedby
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ARIA Attributes > should associate checkbox with error via aria-describedby
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ARIA Attributes > should associate checkbox with both description and error
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ARIA Attributes > should have correct IDs for description and error elements
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ARIA Attributes > should pass comprehensive accessibility tests (same as Storybook)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Event Handling > should dispatch change event when checkbox is toggled
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Event Handling > should dispatch input event when checkbox is toggled
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Event Handling > should include name and value in event detail
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > USWDS CSS Classes > should always have base usa-checkbox class
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > USWDS CSS Classes > should have correct input class
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > USWDS CSS Classes > should have correct label class
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > USWDS CSS Classes > should have proper USWDS structure
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Light DOM Rendering > should render in light DOM for USWDS compatibility
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Form Integration > should work with form data
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Form Integration > should work with form data
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Form Integration > should not appear in form data when unchecked
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Form Integration > should not appear in form data when unchecked
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ID Management > should use provided ID consistently
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > ID Management > should use provided ID consistently
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > should remain in DOM after property updates (not auto-dismiss)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > should remain in DOM after property updates (not auto-dismiss)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > should not fire unintended events on property changes
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > should not fire unintended events on property changes
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > should handle rapid property updates without breaking
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > should handle rapid property updates without breaking
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > JavaScript Implementation Validation > should pass JavaScript implementation validation
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Component Lifecycle Stability (CRITICAL) > JavaScript Implementation Validation > should pass JavaScript implementation validation
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Storybook Integration Tests (CRITICAL) > should render correctly when created via Storybook patterns
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Storybook Integration Tests (CRITICAL) > should render correctly when created via Storybook patterns
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Storybook Integration Tests (CRITICAL) > should handle Storybook controls updates without breaking
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Storybook Integration Tests (CRITICAL) > should handle Storybook controls updates without breaking
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Storybook Integration Tests (CRITICAL) > should maintain visual state during hot reloads
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Storybook Integration Tests (CRITICAL) > should maintain visual state during hot reloads
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should be focusable via keyboard (Tab)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should toggle checked state with Space key (WCAG 2.1.1)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should support Enter and Space key activation
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should be keyboard-only usable
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should pass comprehensive keyboard navigation tests
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should not trap keyboard focus
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should maintain focus visibility (WCAG 2.4.7)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should handle Tab navigation in checkbox group
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should handle Tab navigation in checkbox group
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should not respond to disabled checkboxes via keyboard
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should maintain required attribute during keyboard interaction
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+stdout | src/components/checkbox/usa-checkbox.test.ts > USACheckbox > Keyboard Navigation (WCAG 2.1) > should support tile variant keyboard interaction
+☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)
+☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)
+
+ ✓ src/components/checkbox/usa-checkbox.test.ts (52 tests) 451ms 42 MB heap used
+stdout | src/components/checkbox/usa-checkbox.layout.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/checkbox/usa-checkbox.layout.test.ts [ src/components/checkbox/usa-checkbox.layout.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  52 passed (52)
+   Start at  01:28:13
+   Duration  2.20s (transform 177ms, setup 57ms, collect 308ms, tests 451ms, environment 643ms, prepare 114ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run collection
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/collection/usa-collection.test.ts
+✅ Vitest test environment setup complete
+
+ ✓ src/components/collection/usa-collection.test.ts (54 tests) 960ms 58 MB heap used
+stdout | src/components/collection/usa-collection.layout.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/collection/usa-collection.layout.test.ts [ src/components/collection/usa-collection.layout.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  54 passed (54)
+   Start at  01:28:17
+   Duration  2.22s (transform 158ms, setup 49ms, collect 268ms, tests 960ms, environment 539ms, prepare 92ms)
+
+
+
+> uswds-webcomponents@1.0.0 test
+> vitest run combo-box
+
+
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+
+stdout | src/components/combo-box/combo-box-dom-validation.test.ts
+✅ Vitest test environment setup complete
+
+ ↓ src/components/combo-box/combo-box-dom-validation.test.ts (13 tests | 13 skipped)
+stdout | src/components/combo-box/combo-box-interaction.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/combo-box/usa-combo-box-behavior.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/combo-box/usa-combo-box.layout.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/combo-box/usa-combo-box.popup.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/combo-box/usa-combo-box.test.ts
+✅ Vitest test environment setup complete
+
+stdout | src/components/combo-box/combo-box-uswds-validation.test.ts
+✅ Vitest test environment setup complete
+
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/combo-box/combo-box-interaction.test.ts [ src/components/combo-box/combo-box-interaction.test.ts ]
+Error: Failed to resolve import "./test-utils.js" from "src/components/combo-box/combo-box-interaction.test.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/combo-box/combo-box-interaction.test.ts:11:30
+  1  |  import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+  2  |  import "./usa-combo-box.ts";
+  3  |  import { waitForUpdate } from "./test-utils.js";
+     |                                 ^
+  4  |  describe("Combo Box JavaScript Interaction Testing", () => {
+  5  |    let element;
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31522:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31519:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:29991:18
+ ❯ node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30049:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:30017:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:31320:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:26407:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/components/combo-box/combo-box-uswds-validation.test.ts [ src/components/combo-box/combo-box-uswds-validation.test.ts ]
+ FAIL  src/components/combo-box/usa-combo-box-behavior.test.ts [ src/components/combo-box/usa-combo-box-behavior.test.ts ]
+ FAIL  src/components/combo-box/usa-combo-box.layout.test.ts [ src/components/combo-box/usa-combo-box.layout.test.ts ]
+ FAIL  src/components/combo-box/usa-combo-box.popup.test.ts [ src/components/combo-box/usa-combo-box.popup.test.ts ]
+ FAIL  src/components/combo-box/usa-combo-box.test.ts [ src/components/combo-box/usa-combo-box.test.ts ]
+NotSupportedError: This name has already been registered in the registry.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+
+ Test Files  6 failed | 1 skipped (7)
+      Tests  13 skipped (13)
+   Start at  01:28:20
+   Duration  1.71s (transform 228ms, setup 62ms, collect 161ms, tests 0ms, environment 615ms, prepare 100ms)
+

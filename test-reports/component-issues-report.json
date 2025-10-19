@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-10-19T02:00:41.849Z",
+  "totalIssues": 1,
+  "autoFixableIssues": 1,
+  "issues": [
+    {
+      "file": "vitest.config.ts",
+      "component": "test-suite",
+      "type": "test-performance",
+      "severity": "medium",
+      "autoFixable": true,
+      "details": "Found 303 test files - may need performance optimization",
+      "suggestedFix": "\n// Add to vitest.config.ts for better performance with large test suites:\ntest: {\n  maxConcurrency: 10, // Limit concurrent tests\n  slowTestThreshold: 5000, // Report slow tests\n  bail: 5, // Stop after 5 failures\n  poolOptions: {\n    threads: {\n      maxThreads: Math.min(4, require('os').cpus().length)\n    }\n  }\n}"
+    }
+  ]
+}

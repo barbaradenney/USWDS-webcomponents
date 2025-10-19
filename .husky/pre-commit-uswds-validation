@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+
+# USWDS Integration Validation Pre-commit Hook
+#
+# This hook prevents commits that contain:
+# 1. Direct USWDS imports instead of using the loader utility
+# 2. Missing USWDS transformation protections
+# 3. Regression issues that could cause combo-box-like problems
+
+echo "🔍 Running USWDS integration validation..."
+
+# Run USWDS loader validation
+echo "📦 Validating USWDS loader usage..."
+npm run validate:uswds-loader
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ COMMIT BLOCKED: USWDS loader validation failed"
+  echo "💡 Fix the issues above before committing"
+  echo "📖 See docs/USWDS_TRANSFORMATION_PATTERNS.md for guidance"
+  exit 1
+fi
+
+# Run USWDS transformation tests (quick)
+echo "🧪 Running USWDS transformation stability tests..."
+npm run test:uswds-transformation
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ COMMIT BLOCKED: USWDS transformation tests failed"
+  echo "💡 Component transformation stability issues detected"
+  echo "🔧 This prevents combo-box-like regression issues"
+  exit 1
+fi
+
+echo "✅ USWDS integration validation passed"
+exit 0

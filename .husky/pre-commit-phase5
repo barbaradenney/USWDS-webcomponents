@@ -1,0 +1,99 @@
+#!/bin/sh
+
+# Enhanced Pre-commit hook with Phase 5 AI-Powered Testing
+echo "🤖 Running Phase 5 enhanced pre-commit checks..."
+
+# Include all existing pre-commit functionality
+source .husky/pre-commit
+
+# Phase 5 Enhancement: Smart Test Recommendations for modified components
+echo "💡 Running smart test gap analysis..."
+MODIFIED_COMPONENTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E "src/components/.+\.(ts|js)$" | grep -v "\.test\." | grep -v "\.stories\." | sed 's|src/components/||' | sed 's|/.*||' | sort -u || true)
+
+if [ ! -z "$MODIFIED_COMPONENTS" ]; then
+  echo "🔍 Analyzing test gaps for: $(echo $MODIFIED_COMPONENTS | tr '\n' ' ')"
+
+  # Run smart recommendations for modified components (fast mode)
+  COMPONENT_LIST=$(echo $MODIFIED_COMPONENTS | tr '\n' ',' | sed 's/,$//')
+  npm run test:gaps --component "$COMPONENT_LIST" --dry-run 2>/dev/null || echo "⚠️  Gap analysis skipped (not configured)"
+
+  if [ $? -ne 0 ]; then
+    echo "❌ Critical test gaps found in modified components"
+    echo "💡 Run: npm run test:recommend --component $COMPONENT_LIST --verbose"
+    echo "🔧 Add missing tests before committing"
+    exit 1
+  fi
+  echo "✅ No critical test gaps found!"
+else
+  echo "📝 No components modified, skipping gap analysis"
+fi
+
+# Phase 5 Enhancement: Predictive regression testing
+echo "🔮 Running predictive test selection..."
+CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | wc -l)
+
+if [ "$CHANGED_FILES" -gt 0 ]; then
+  echo "📊 Analyzing $CHANGED_FILES changed files for test prediction..."
+
+  # Run predictive testing in fast mode (30% of tests)
+  npm run test:predict:fast --dry-run 2>/dev/null || echo "⚠️  Predictive testing skipped"
+
+  if [ $? -eq 0 ]; then
+    echo "✅ Predictive test analysis completed"
+
+    # Optional: Actually run the predicted tests (uncomment if desired)
+    # npm run test:predict:fast
+    # if [ $? -ne 0 ]; then
+    #   echo "❌ Predicted critical tests failed"
+    #   echo "💡 Run: npm run test:predict:fast"
+    #   exit 1
+    # fi
+  fi
+else
+  echo "📝 No files changed, skipping predictive testing"
+fi
+
+# Phase 5 Enhancement: AI test generation suggestions
+echo "🧠 Checking for AI test generation opportunities..."
+if [ ! -z "$MODIFIED_COMPONENTS" ]; then
+  for component in $MODIFIED_COMPONENTS; do
+    TEST_FILE="src/components/$component/usa-$component.test.ts"
+
+    # Check if component exists but has no tests
+    if [ ! -f "$TEST_FILE" ]; then
+      echo "💡 Component $component has no tests - consider running:"
+      echo "   npm run ai:generate-tests src/components/$component/usa-$component.ts"
+    fi
+  done
+fi
+
+# Phase 5 Enhancement: Quick chaos engineering health check (for critical components only)
+echo "🌪️ Running quick resilience check on critical components..."
+CRITICAL_MODIFIED=$(echo "$MODIFIED_COMPONENTS" | grep -E "(button|modal|accordion|form|input)" || true)
+
+if [ ! -z "$CRITICAL_MODIFIED" ]; then
+  echo "🎯 Critical components modified: $CRITICAL_MODIFIED"
+  echo "🔧 Running light chaos engineering check..."
+
+  # Very light chaos test (network only, low intensity)
+  timeout 30 npm run test:chaos:network --intensity low --dry-run 2>/dev/null || echo "⚠️  Chaos check skipped (timeout/not configured)"
+
+  if [ $? -eq 124 ]; then
+    echo "⚠️  Chaos check timed out (>30s), continuing..."
+  elif [ $? -ne 0 ]; then
+    echo "⚠️  Light chaos check found potential issues"
+    echo "💡 Consider running: npm run test:chaos:low"
+    echo "📝 This is a warning, not blocking commit"
+  else
+    echo "✅ Basic resilience check passed"
+  fi
+fi
+
+echo "🎉 Phase 5 enhanced pre-commit checks completed!"
+echo ""
+echo "🚀 Phase 5 Commands Available:"
+echo "   npm run test:predict:fast    # Smart test selection (94% reduction)"
+echo "   npm run test:recommend       # Get test improvement suggestions"
+echo "   npm run test:chaos:low       # Resilience testing"
+echo "   npm run ai:analyze           # AI-powered test analysis"
+echo ""

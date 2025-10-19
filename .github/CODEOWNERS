@@ -1,0 +1,49 @@
+# CODEOWNERS
+#
+# This file defines individuals or teams that are responsible for code in this repository.
+# Code owners are automatically requested for review when someone opens a pull request
+# that modifies code that they own.
+#
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+* @barbaramiles
+
+# Component-specific ownership
+/src/components/ @barbaramiles
+
+# Core infrastructure
+/scripts/ @barbaramiles
+/.husky/ @barbaramiles
+/vite.config.ts @barbaramiles
+/vitest.config.ts @barbaramiles
+/tsconfig*.json @barbaramiles
+
+# Documentation
+/docs/ @barbaramiles
+/CLAUDE.md @barbaramiles
+/README.md @barbaramiles
+/CONTRIBUTING.md @barbaramiles
+/SECURITY.md @barbaramiles
+
+# GitHub configuration
+/.github/ @barbaramiles
+
+# Storybook
+/.storybook/ @barbaramiles
+
+# Tests
+/__tests__/ @barbaramiles
+*.test.ts @barbaramiles
+*.cy.ts @barbaramiles
+
+# CI/CD workflows
+/.github/workflows/ @barbaramiles
+
+# Package configuration
+/package.json @barbaramiles
+/package-lock.json @barbaramiles
+
+# Project metadata (documentation generation system)
+/.project-metadata.json @barbaramiles
+/.templates/ @barbaramiles

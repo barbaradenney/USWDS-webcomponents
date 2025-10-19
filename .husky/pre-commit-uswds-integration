@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+# USWDS Integration Pre-commit Validation
+
+echo "🔍 Validating USWDS Integration Configuration..."
+
+# Validate Vite configuration
+node scripts/validate-vite-uswds-config.js || {
+  echo "❌ USWDS Vite configuration validation failed"
+  echo "💡 This prevents regression of the Storybook USWDS module loading solution"
+  echo "💡 Check .storybook/main.ts, vite.config.ts, and .storybook/preview-head.html"
+  exit 1
+}
+
+# Run USWDS integration tests
+npm run test -- __tests__/storybook-uswds-integration.test.ts || {
+  echo "❌ USWDS integration tests failed"
+  echo "💡 This prevents breaking the Storybook USWDS module loading solution"
+  exit 1
+}
+
+echo "✅ USWDS Integration validation passed"

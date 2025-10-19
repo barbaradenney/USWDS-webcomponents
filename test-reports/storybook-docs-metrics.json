@@ -1,0 +1,17 @@
+{
+  "generated": "2025-10-19",
+  "components": {
+    "total": 45,
+    "compliant": 45,
+    "compliancePercentage": 100
+  },
+  "tests": {
+    "total": 151,
+    "passing": 151,
+    "passRate": "100.0"
+  },
+  "bundle": {
+    "total": "3 KB",
+    "gzipped": "1 KB"
+  }
+}

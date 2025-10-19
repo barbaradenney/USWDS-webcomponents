@@ -1,0 +1,26 @@
+{
+  "name": "USWDS Web Components",
+  "email": "test@example.com",
+  "components": [
+    {
+      "name": "usa-accordion",
+      "type": "interactive",
+      "accessibility": true
+    },
+    {
+      "name": "usa-alert",
+      "type": "notification",
+      "accessibility": true
+    },
+    {
+      "name": "usa-button",
+      "type": "interactive",
+      "accessibility": true
+    },
+    {
+      "name": "usa-tooltip",
+      "type": "overlay",
+      "accessibility": true
+    }
+  ]
+}

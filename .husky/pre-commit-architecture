@@ -1,0 +1,24 @@
+#!/bin/sh
+# Architecture validation pre-commit hook
+
+echo "🔍 Validating USWDS architecture compliance..."
+
+# Run architecture validation
+npm run validate:architecture
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ COMMIT BLOCKED: Architecture validation failed"
+  echo ""
+  echo "📖 Required reading:"
+  echo "   docs/USWDS_TRANSFORMATION_PATTERNS.md"
+  echo "   docs/ARCHITECTURE_VALIDATION_RULES.md"
+  echo ""
+  echo "🛠️  Quick fixes:"
+  echo "   npm run arch:guide  # Open architecture guide"
+  echo "   npm run arch:check  # Re-run validation"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Architecture validation passed"

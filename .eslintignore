@@ -1,0 +1,33 @@
+# Build output directories
+dist/
+coverage/
+coverage-storybook/
+storybook-static/
+.storybook-cache/
+
+# Node modules
+node_modules/
+
+# Cache directories
+.cache/
+.vite/
+
+# Generated and vendor files
+public/uswds-wrapper.js
+public/uswds.min.js
+src/assets/uswds.min.js
+
+# Configuration files that may have different standards
+.storybook/
+cypress/
+
+# Cypress files use special patterns that conflict with TypeScript ESLint
+cypress/**/*
+
+# Vitest config files (they use triple slash references which are flagged)
+vitest.config.ts
+vitest.*.config.ts
+
+# Test utilities that may have special patterns
+__tests__/test-*.ts
+**/*.test.ts

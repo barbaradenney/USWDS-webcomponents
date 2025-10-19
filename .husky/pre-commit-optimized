@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running fast pre-commit validation..."
+
+# Step 1: Essential linting (fast)
+echo "1/4 Running ESLint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint errors found. Fix them before committing."
+  exit 1
+fi
+
+# Step 2: TypeScript type checking (medium speed)
+echo "2/4 Running TypeScript checks..."
+npm run typecheck:fast || {
+  echo "⚠️  TypeScript warnings found. Consider fixing before committing."
+  echo "Use 'git commit --no-verify' to skip if urgent."
+}
+
+# Step 3: Story pattern validation (fast)
+echo "3/4 Validating Storybook patterns..."
+npm test -- __tests__/story-pattern-validation.test.ts --run
+if [ $? -ne 0 ]; then
+  echo "❌ Story pattern violations found. Fix them before committing."
+  echo "Common fixes:"
+  echo "  • Replace document.createElement() with insertAdjacentHTML()"
+  echo "  • Use string concatenation instead of unescaped template literals in script tags"
+  echo "  • Add render functions to interactive component stories"
+  exit 1
+fi
+
+# Step 4: Critical USWDS compliance only (fast subset)
+echo "4/4 Running critical USWDS checks..."
+npm run validate:critical:fast || {
+  echo "⚠️  USWDS compliance warnings found."
+  echo "Use 'npm run validate:full' to see all issues."
+  echo "Use 'git commit --no-verify' to skip if urgent story fixes."
+}
+
+echo "✅ Fast pre-commit validation passed!"
+echo "💡 Run 'npm run validate:full' before pushing for comprehensive validation."
