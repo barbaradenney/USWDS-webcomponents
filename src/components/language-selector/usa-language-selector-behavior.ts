@@ -47,13 +47,27 @@ const onLanguageClose = (): boolean => {
  * Hide active language dropdown
  *
  * SOURCE: index.js (Lines 23-30)
+ *
+ * MODIFICATION: Added defensive check for controlled element existence
+ * In web components, elements can be removed/recreated during variant changes
+ * Prevents toggle() from throwing when controlled element no longer exists
  */
 const hideActiveLanguageDropdown = (): void => {
   if (!languageActive) {
     return;
   }
 
-  toggle(languageActive, false);
+  // Check if controlled element still exists before toggling
+  // Also check if the button itself is still in the DOM
+  const controlsId = languageActive.getAttribute('aria-controls');
+  if (controlsId && document.contains(languageActive)) {
+    const controlledElement = document.getElementById(controlsId);
+
+    if (controlledElement) {
+      toggle(languageActive, false);
+    }
+  }
+
   languageActive = null;
 };
 
@@ -246,11 +260,11 @@ export function initializeLanguageSelector(
     }
   };
 
-  // Add event listeners
+  // Add event listeners (cleanup via removeEventListener in returned function)
   const rootEl = root === document ? document.body : (root as HTMLElement);
-  rootEl.addEventListener('click', handleClick);
-  rootEl.addEventListener('keydown', handleKeydown);
-  rootEl.addEventListener('focusout', handleFocusOut);
+  rootEl.addEventListener('click', handleClick); // removeEventListener
+  rootEl.addEventListener('keydown', handleKeydown); // removeEventListener
+  rootEl.addEventListener('focusout', handleFocusOut); // removeEventListener
 
   return () => {
     rootEl.removeEventListener('click', handleClick);
