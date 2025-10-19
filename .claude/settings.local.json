@@ -108,7 +108,8 @@
       "Bash(then cat .git/DISCOVERED_ISSUES.json)",
       "Bash(else echo \"No discovered issues\")",
       "Bash(gh --version)",
-      "Bash(gh auth status)"
+      "Bash(gh auth status)",
+      "Read(//dev/**)"
     ],
     "deny": [],
     "ask": []
