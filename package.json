@@ -1,6 +1,6 @@
 {
   "name": "uswds-webcomponents",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "U.S. Web Design System components as Web Components using Lit Element",
   "type": "module",
   "main": "dist/index.js",
