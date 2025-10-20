@@ -9,7 +9,14 @@ import { Meta } from '@storybook/blocks';
 
 ## Overview
 
-The USWDS Web Components library employs an extensive pre-commit validation system that runs **13 automated checks** before every commit. This system prevents regressions, enforces code quality, and ensures 100% USWDS compliance.
+The USWDS Web Components library employs an extensive pre-commit validation system with **11 validation stages** (containing 13+ automated checks) organized into **8 modular scripts**. This system prevents regressions, enforces code quality, and ensures 100% USWDS compliance.
+
+### Modular Architecture (Dec 2024)
+
+The pre-commit hook has been refactored into independently testable modules:
+- **Orchestrator**: `.husky/pre-commit` (~266 lines) - Lightweight coordinator
+- **Stage Modules**: `scripts/validation/stages/*.sh` - 8 focused validation modules
+- **Benefits**: Better maintainability, testability, and reusability in CI/CD
 
 ## 🎯 Goals
 
@@ -376,63 +383,131 @@ npm run validate      # Re-run validation
 
 ## 🔧 Configuration
 
-### Hook Configuration
-Pre-commit hooks configured in `.husky/pre-commit`:
+### Modular Hook Architecture
+
+Pre-commit validation orchestrated by `.husky/pre-commit` with modular stages:
 
 ```bash
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/usr/bin/env bash
 
-# 1. Repository organization cleanup
-node scripts/ci/cleanup-validator.cjs || exit 1
+# Orchestrator handles:
+# - Performance metrics tracking
+# - Smart commit type detection
+# - Environment variable setup
+# - Module execution
 
-# 2. Script organization validation
-node scripts/validate/validate-script-organization.js || exit 1
+STAGES_DIR="scripts/validation/stages"
 
-# 3. USWDS script tag validation
-node scripts/validate/validate-uswds-script-tag.js || exit 1
+# Run modular validation stages
+bash "$STAGES_DIR/00-discovered-issues.sh" || exit 1
+bash "$STAGES_DIR/01-repository-organization.sh" || exit 1
+bash "$STAGES_DIR/02-uswds-validation.sh" || exit 1
+bash "$STAGES_DIR/03-linting-and-quality.sh" || exit 1
+bash "$STAGES_DIR/04-component-tests.sh" || exit 1
+bash "$STAGES_DIR/05-test-expectations.sh" || exit 1
+bash "$STAGES_DIR/06-final-validations.sh" || exit 1
+bash "$STAGES_DIR/07-optional-validations.sh" || exit 1
 
-# 4. Layout forcing pattern validation
-node scripts/validate/validate-layout-forcing.js || exit 1
+# Display performance metrics
+# Save validation metrics to .git/validation-metrics.json
+```
 
-# 5. Component issue detection
-node scripts/validate/auto-detect-component-issues.js || exit 1
+### Validation Stage Modules
 
-# 6. USWDS compliance validation
-node scripts/validate/validate-uswds-compliance.cjs || exit 1
+**Stage 00: Discovered Issues**
+```bash
+scripts/validation/stages/00-discovered-issues.sh
+# Enforces discovered issues policy
+```
 
-# 7. Lint validation
-npm run lint || exit 1
+**Stage 01: Repository Organization**
+```bash
+scripts/validation/stages/01-repository-organization.sh
+# Repository cleanup + Script organization (stages 1/9, 1a/9)
+```
 
-# 8. TypeScript compilation
-npm run typecheck || exit 1
+**Stage 02: USWDS Validation**
+```bash
+scripts/validation/stages/02-uswds-validation.sh
+# USWDS compliance checks (stages 2/9, 2a/9, 3/9, 4/9, 4a/9, 4b/9)
+# - Script tag presence
+# - Layout forcing pattern
+# - Component issue detection
+# - USWDS compliance
+# - Custom class validation
+# - Custom CSS validation
+```
 
-# 9. Code quality review
-node scripts/validate/code-quality-review.cjs || exit 1
+**Stage 03: Linting and Quality**
+```bash
+scripts/validation/stages/03-linting-and-quality.sh
+# Code quality checks (stages 5/9, 6/9, 6a/9)
+# - Linting
+# - TypeScript compilation
+# - Code quality review
+```
 
-# 10. Component-specific validation (language-selector)
-MODIFIED_COMPONENTS="language-selector" npm run validate:story-styles
-MODIFIED_COMPONENTS="language-selector" node scripts/validate/validate-uswds-compliance.cjs
+**Stage 04: Component Tests**
+```bash
+scripts/validation/stages/04-component-tests.sh
+# Component validation and testing (stages 7/9, 7a/9, 7b/9)
+# - Component-specific validations
+# - Unit tests (parallel, fast failure)
+# - Cypress tests (parallel execution)
+```
 
-# 11. Test expectations validation
-node scripts/test/regression-test-validator.js || exit 1
+**Stage 05: Test Expectations**
+```bash
+scripts/validation/stages/05-test-expectations.sh
+# Test quality validation (stages 8/9, 8b/9, 8c/9, 8a/9)
+# - Test expectations
+# - Test skip policy
+# - Cypress patterns
+# - Regression tests
+```
 
-# 12. USWDS transformation validation
-node scripts/validate-uswds-transformation.js || exit 1
+**Stage 06: Final Validations**
+```bash
+scripts/validation/stages/06-final-validations.sh
+# Final checks (stages 9/10, 10/11, 11/11, 11a/11, 11b/11)
+# - USWDS transformation
+# - JavaScript integration
+# - Documentation sync
+# - Documentation hygiene
+# - Documentation placeholders
+```
 
-# 13. Component JavaScript integration
-node scripts/validate/validate-component-javascript.js || exit 1
-
-# 14. Documentation synchronization
-node scripts/docs/sync-storybook-docs.js || exit 1
-
-# Lint-staged (file-specific validation)
-npx lint-staged
+**Stage 07: Optional Validations**
+```bash
+scripts/validation/stages/07-optional-validations.sh
+# Opt-in features (CYPRESS_PRECOMMIT=1, BUNDLE_SIZE_PRECOMMIT=1, etc.)
+# - Full Cypress test suite
+# - Bundle size validation
+# - Smoke tests
 ```
 
 ### Selective Validation
-For faster iteration, run specific checks:
 
+**Run individual validation stages:**
+```bash
+# Run just linting and quality
+bash scripts/validation/stages/03-linting-and-quality.sh
+
+# Run just USWDS validation
+bash scripts/validation/stages/02-uswds-validation.sh
+
+# Run just component tests
+export MODIFIED_COMPONENTS="button"
+export MODIFIED_COMPONENT_COUNT=1
+export SKIP_TESTS=false
+bash scripts/validation/stages/04-component-tests.sh
+
+# Debug a specific stage with verbose output
+set -x
+bash scripts/validation/stages/03-linting-and-quality.sh
+```
+
+**Run traditional validation commands:**
 ```bash
 # Run just TypeScript check
 npm run typecheck
@@ -445,6 +520,41 @@ npm run validate:uswds
 
 # Run all validation
 npm run validate
+```
+
+## 🔄 Modular Architecture Benefits
+
+### Maintainability
+- **Focused Modules**: 8 modules (20-186 lines each) vs 741-line monolith
+- **Clear Purpose**: Each module has documented purpose and exit codes
+- **Easy Updates**: Modify specific validation without touching others
+
+### Testability
+- **Independent Testing**: Run and test individual stages
+- **Isolated Debugging**: Debug specific failures without full hook run
+- **Faster Iteration**: Test changes to one stage quickly
+
+### Reusability
+- **CI/CD Integration**: Use modules in GitHub Actions workflows
+- **Pre-push Hooks**: Reuse expensive checks before push
+- **Manual Validation**: Run specific stages on demand
+
+### Performance Tracking
+- **Stage Timing**: Millisecond-precision metrics per stage
+- **Historical Data**: JSON metrics saved to `.git/validation-metrics.json`
+- **Optimization Targets**: Identify slow stages for improvement
+
+**Example Performance Output:**
+```bash
+⏱️  Validation Performance:
+
+   Linting:                    5.42s
+   TypeScript:                 3.70s
+   Component unit tests:       2.15s
+   Cypress tests:             12.30s
+   ─────────────────────────────────
+   Tracked time:              23.57s
+   Total time:                   28s
 ```
 
 ## 📈 Benefits
