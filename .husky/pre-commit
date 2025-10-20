@@ -3,6 +3,24 @@
 echo "🎯 Running component-specific pre-commit validation..."
 echo ""
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Smart Commit Type Detection (NEW - skips unnecessary validations)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ALL_FILES=$(git diff --cached --name-only)
+CODE_FILES=$(echo "$ALL_FILES" | grep -E "\.(ts|js|tsx|jsx)$" | grep -v ".test.ts" | grep -v ".cy.ts" | wc -l | tr -d ' ')
+TEST_FILES=$(echo "$ALL_FILES" | grep -E "\.(test|cy)\.ts$" | wc -l | tr -d ' ')
+DOC_FILES=$(echo "$ALL_FILES" | grep -E "\.(md|mdx)$" | wc -l | tr -d ' ')
+TOTAL_FILES=$(echo "$ALL_FILES" | wc -l | tr -d ' ')
+
+# Detect commit type
+SKIP_TESTS=false
+if [ "$DOC_FILES" -gt 0 ] && [ "$CODE_FILES" -eq 0 ] && [ "$TEST_FILES" -eq 0 ]; then
+  echo "📝 Docs-only commit detected - skipping component tests"
+  SKIP_TESTS=true
+  echo ""
+fi
+
 # Get list of modified component files
 MODIFIED_COMPONENTS=$(git diff --cached --name-only | grep "src/components/" | grep -E "\.(ts|js)$" | grep -v ".test.ts" | grep -v ".stories.ts" | sed 's|src/components/||' | cut -d'/' -f1 | sort -u)
 MODIFIED_COMPONENT_COUNT=$(echo "$MODIFIED_COMPONENTS" | grep -v '^$' | wc -l | tr -d ' ')
@@ -222,50 +240,93 @@ else
   echo "   ⏭️  Skipped (no components modified)"
 fi
 
-# Component Cypress tests (NEW - runs Cypress tests for modified components)
-if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
-  echo "🎭 7a/9 Component Cypress tests..."
+# Component unit tests (NEW - fast failure for logic issues)
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ] && [ "$SKIP_TESTS" = false ]; then
+  echo "🧪 7a/9 Component unit tests..."
 
-  CYPRESS_TESTS_RUN=0
-  CYPRESS_FAILED=0
+  UNIT_TESTS_RUN=0
 
-  # Check each modified component for Cypress tests
   echo "$MODIFIED_COMPONENTS" | while read comp; do
     if [ -n "$comp" ]; then
-      # Check if component has Cypress tests
-      CYPRESS_TEST_FILE="src/components/$comp/usa-$comp.component.cy.ts"
-      if [ -f "$CYPRESS_TEST_FILE" ]; then
-        echo "   → Running $comp Cypress tests..."
-
-        # Run Cypress test for this specific component
-        if npx cypress run --component --spec "$CYPRESS_TEST_FILE" --quiet > /tmp/cypress-$comp.log 2>&1; then
-          # Count tests passed
-          TEST_COUNT=$(grep -c "✓" /tmp/cypress-$comp.log || echo "tests")
-          echo "   ✅ $comp: Cypress tests passed"
-          CYPRESS_TESTS_RUN=$((CYPRESS_TESTS_RUN + 1))
+      TEST_FILE="src/components/$comp/usa-$comp.test.ts"
+      if [ -f "$TEST_FILE" ]; then
+        echo "   → Testing $comp..."
+        if npm test -- "$TEST_FILE" --run > /dev/null 2>&1; then
+          echo "   ✅ $comp: unit tests passed"
+          UNIT_TESTS_RUN=$((UNIT_TESTS_RUN + 1))
         else
-          echo "   ❌ $comp: Cypress tests failed!"
+          echo "   ❌ $comp: unit tests failed!"
           echo ""
-          echo "   📋 Error log:"
-          tail -20 /tmp/cypress-$comp.log
-          echo ""
-          echo "   💡 Debug with: npx cypress open --component --spec $CYPRESS_TEST_FILE"
+          npm test -- "$TEST_FILE" --run
           exit 1
         fi
-
-        # Cleanup log
-        rm -f /tmp/cypress-$comp.log
       fi
     fi
   done
 
-  if [ "$CYPRESS_TESTS_RUN" -eq 0 ]; then
-    echo "   ⏭️  Skipped (modified components have no Cypress tests)"
-  else
-    echo "   ✅ Pass ($CYPRESS_TESTS_RUN component(s) tested)"
+  if [ "$UNIT_TESTS_RUN" -eq 0 ]; then
+    echo "   ⏭️  Skipped (no unit tests for modified components)"
   fi
+elif [ "$SKIP_TESTS" = true ]; then
+  echo "🧪 7a/9 Component unit tests..."
+  echo "   ⏭️  Skipped (docs-only commit)"
 else
-  echo "🎭 7a/9 Component Cypress tests..."
+  echo "🧪 7a/9 Component unit tests..."
+  echo "   ⏭️  Skipped (no components modified)"
+fi
+
+# Component Cypress tests (NEW - parallel execution for multiple components)
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ] && [ "$SKIP_TESTS" = false ]; then
+  echo "🎭 7b/9 Component Cypress tests..."
+
+  # Collect all Cypress test files
+  CYPRESS_SPECS=""
+  COMPONENT_WITH_TESTS=""
+
+  echo "$MODIFIED_COMPONENTS" | while read comp; do
+    if [ -n "$comp" ]; then
+      TEST_FILE="src/components/$comp/usa-$comp.component.cy.ts"
+      if [ -f "$TEST_FILE" ]; then
+        if [ -z "$CYPRESS_SPECS" ]; then
+          CYPRESS_SPECS="$TEST_FILE"
+          COMPONENT_WITH_TESTS="$comp"
+        else
+          CYPRESS_SPECS="$CYPRESS_SPECS,$TEST_FILE"
+          COMPONENT_WITH_TESTS="$COMPONENT_WITH_TESTS,$comp"
+        fi
+      fi
+    fi
+  done
+
+  if [ -n "$CYPRESS_SPECS" ]; then
+    COMPONENT_COUNT=$(echo "$CYPRESS_SPECS" | tr ',' '\n' | wc -l | tr -d ' ')
+
+    if [ "$COMPONENT_COUNT" -eq 1 ]; then
+      echo "   → Running Cypress tests for $COMPONENT_WITH_TESTS..."
+    else
+      echo "   → Running Cypress tests for $COMPONENT_COUNT components in parallel..."
+    fi
+
+    if npx cypress run --component --spec "$CYPRESS_SPECS" --quiet > /tmp/cypress-all.log 2>&1; then
+      echo "   ✅ Pass ($COMPONENT_COUNT component(s) tested)"
+    else
+      echo "   ❌ Cypress tests failed!"
+      echo ""
+      echo "   📋 Error log:"
+      tail -30 /tmp/cypress-all.log
+      echo ""
+      echo "   💡 Debug with: npx cypress open --component --spec $CYPRESS_SPECS"
+      exit 1
+    fi
+    rm -f /tmp/cypress-all.log
+  else
+    echo "   ⏭️  Skipped (modified components have no Cypress tests)"
+  fi
+elif [ "$SKIP_TESTS" = true ]; then
+  echo "🎭 7b/9 Component Cypress tests..."
+  echo "   ⏭️  Skipped (docs-only commit)"
+else
+  echo "🎭 7b/9 Component Cypress tests..."
   echo "   ⏭️  Skipped (no components modified)"
 fi
 
