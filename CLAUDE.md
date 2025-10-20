@@ -384,18 +384,22 @@ Automated checks run before every commit:
 7. Linting
 8. TypeScript compilation
 9. Code quality review
-   - 6a: Code quality review
-   - 6b: **AI code quality validation** (detects AI anti-patterns)
 10. Component-specific validations
-11. Test expectations
+11. **Component Cypress tests** (NEW - automatic integration testing)
+    - Runs Cypress tests for modified components
+    - Only tests components with `.component.cy.ts` files
+    - Catches integration issues before commit
+12. Test expectations
     - 8a: Component regression tests
     - 8b: Test skip policy enforcement
     - 8c: Cypress test pattern validation
-12. USWDS transformation validation
-13. Component JavaScript integration
-14. Documentation synchronization
+13. USWDS transformation validation
+14. Component JavaScript integration
+15. Documentation synchronization
     - 11a: **Documentation hygiene** (blocks uncategorized docs)
     - 11b: Documentation placeholders
+
+**Note**: AI code quality validation moved to post-commit (non-blocking) to prevent false positives from blocking valid commits.
 
 **Component Composition Validation** (included in #6):
 - Checks that components use web component tags (`<usa-search>`)
@@ -409,22 +413,38 @@ Automated checks run before every commit:
 - Prevents !important overrides and descendant selectors
 - See `scripts/validate/validate-no-custom-css.js` for details
 
+## Post-commit Validation
+
+Automated checks run **after** every commit (non-blocking):
+
+1. **Component documentation updates** - Auto-updates README, CHANGELOG, TESTING.md
+2. **AI code quality validation** (NEW - non-blocking feedback)
+   - Detects common AI anti-patterns
+   - Provides feedback without blocking commits
+   - Prevents false positives from disrupting workflow
+3. **Discovered issues tracking** - Tracks validation bypasses for follow-up
+
 ## AI Code Quality System
 
 **Ensures the cleanest, most efficient code possible by detecting common AI code generation anti-patterns.**
 
 ### Problem Solved
-AI code generation (Claude, GPT, Copilot) often creates patterns that work but are disliked by human developers. This system detects and blocks those patterns at commit time.
+AI code generation (Claude, GPT, Copilot) often creates patterns that work but are disliked by human developers. This system now runs **post-commit** to provide feedback without blocking valid commits.
+
+### Validation Timing
+- **Post-commit (current)**: Non-blocking, provides feedback after commit
+- **Rationale**: Pre-existing code can trigger false positives, blocking valid commits
+- **Benefit**: Allows progress while still highlighting issues for cleanup
 
 ### Common AI Anti-Patterns Detected
 
-**Blocked (Errors - commit fails):**
+**Errors (highlighted for cleanup):**
 - ❌ console.log/debugger statements left in code
 - ❌ Event listeners without cleanup (memory leaks)
 - ❌ setInterval/setTimeout without cleanup
 - ❌ Generic error messages ("Error", "Something went wrong")
 
-**Warned (Warnings - in strict mode):**
+**Warnings (suggestions):**
 - ⚠️ Over-commenting (obvious comments that restate code)
 - ⚠️ Overly verbose variable names (>20 chars)
 - ⚠️ Magic numbers without constants
@@ -437,10 +457,11 @@ AI code generation (Claude, GPT, Copilot) often creates patterns that work but a
 
 ### How It Works
 
-**1. Pre-Commit Validation (Stage 6b/9)**
-- Runs automatically on every commit
-- Blocks commit if errors found
-- Warns about code quality issues
+**1. Post-Commit Validation (Automatic)**
+- Runs automatically after every commit
+- Provides informational feedback
+- Does NOT block commits
+- Highlights issues for future cleanup
 
 **2. Manual Validation**
 ```bash
@@ -449,11 +470,10 @@ npm run validate:refactoring     # Check refactoring opportunities
 npm run validate:clean-code      # Run both
 ```
 
-**3. Bypass (not recommended)**
-```bash
-AI_QUALITY_STRICT=0 git commit -m "..."  # Bypass warnings
-CODE_REFACTOR_CHECK=1 git commit         # Enable refactoring analysis
-```
+**3. When to Act**
+- Review post-commit feedback
+- Fix highlighted issues in next commit
+- Use manual validation before committing for proactive checks
 
 ### Code Refactoring Analysis
 
