@@ -48,6 +48,7 @@ export class USAList extends USWDSBaseComponent {
   unstyled = false;
 
   private slottedContent: string = '';
+  private reorganizeTimer: number | null = null;
 
   // Light DOM is handled by USWDSBaseComponent
 
@@ -83,6 +84,12 @@ export class USAList extends USWDSBaseComponent {
 
   override updated(changedProperties: Map<string, unknown>) {
     super.updated(changedProperties);
+
+    // Guard: Don't manipulate DOM if component is not connected
+    if (!this.isConnected) {
+      return;
+    }
+
     if (changedProperties.has('type')) {
       // Set appropriate ARIA role if needed
       if (this.type === 'ordered') {
@@ -116,7 +123,12 @@ export class USAList extends USWDSBaseComponent {
 
     // If no list element yet, defer to next tick
     if (!listElement) {
-      setTimeout(() => this.reorganizeListItems(), 10);
+      // Clear any existing timer before setting a new one
+      if (this.reorganizeTimer !== null) {
+        clearTimeout(this.reorganizeTimer);
+      }
+      // Timer is cleaned up in disconnectedCallback() - prevents memory leaks
+      this.reorganizeTimer = window.setTimeout(() => this.reorganizeListItems(), 10);
       return;
     }
 
@@ -155,8 +167,12 @@ export class USAList extends USWDSBaseComponent {
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    // Note: USWDS lists are purely presentational with no JavaScript behavior
-    console.log('📋 List: Disconnected (presentational component, no cleanup needed)');
+
+    // Clear any pending reorganization timers
+    if (this.reorganizeTimer !== null) {
+      clearTimeout(this.reorganizeTimer);
+      this.reorganizeTimer = null;
+    }
   }
 
   // Use light DOM for USWDS compatibility

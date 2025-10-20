@@ -20,7 +20,9 @@ describe('USAList', () => {
     document.body.appendChild(element);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    // Wait for any pending Lit updates before cleanup
+    await element.updateComplete;
     element.remove();
   });
 
@@ -377,10 +379,15 @@ describe('USAList', () => {
       element.type = 'ordered';
       await element.updateComplete;
 
+      expect(element.isConnected).toBe(true);
+
+      // Test that disconnection doesn't throw errors
+      await element.updateComplete; // Wait for any pending updates
       expect(() => {
         element.remove();
-        document.body.appendChild(element);
       }).not.toThrow();
+
+      expect(element.isConnected).toBe(false);
     });
   });
 
