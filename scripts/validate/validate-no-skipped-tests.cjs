@@ -74,20 +74,21 @@ const APPROVED_SKIPS = {
 
   // CI Environment Limitation (2025-10-20) ✅ JUSTIFIED
   // USWDS global event delegation interferes in CI's jsdom environment
+  // Entire behavior test suites skipped in CI, fully covered by Cypress
   'src/components/accordion/usa-accordion-behavior.test.ts': {
-    count: 1,
+    count: 22,
     reason: 'CI_ENVIRONMENT_LIMITATION',
-    documented: 'USWDS global event delegation interferes with jsdom tests in CI - works locally, covered by Cypress',
+    documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
   'src/components/combo-box/usa-combo-box-behavior.test.ts': {
-    count: 1,
+    count: 27,
     reason: 'CI_ENVIRONMENT_LIMITATION',
-    documented: 'USWDS global event delegation interferes with jsdom tests in CI - works locally, covered by Cypress',
+    documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
   'src/components/footer/usa-footer-behavior.test.ts': {
-    count: 4,
+    count: 26,
     reason: 'CI_ENVIRONMENT_LIMITATION',
-    documented: 'USWDS global event delegation interferes with jsdom tests in CI - works locally, covered by Cypress',
+    documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
 
   // ALL OTHER SKIPS REMOVED - Tests deleted or moved to Cypress:

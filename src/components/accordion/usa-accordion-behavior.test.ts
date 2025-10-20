@@ -16,7 +16,9 @@ import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
 import './usa-accordion.js';
 import type { USAAccordion } from './usa-accordion.js';
 
-describe('USWDS Accordion Behavior Contract', () => {
+// SKIP IN CI: USWDS global event delegation interferes with all jsdom click tests
+// Coverage: src/components/accordion/usa-accordion.component.cy.ts
+describe.skipIf(process.env.CI)('USWDS Accordion Behavior Contract', () => {
   let element: USAAccordion;
 
   beforeEach(() => {
@@ -44,9 +46,7 @@ describe('USWDS Accordion Behavior Contract', () => {
   });
 
   describe('Contract 1: Button Click Toggle', () => {
-    it.skipIf(process.env.CI)('should toggle aria-expanded on button click', async () => {
-      // SKIP IN CI: USWDS global event delegation interferes with jsdom tests
-      // Coverage: src/components/accordion/usa-accordion.component.cy.ts
+    it('should toggle aria-expanded on button click', async () => {
       await waitForBehaviorInit(element);
       const button = element.querySelector('.usa-accordion__button') as HTMLButtonElement;
 

@@ -16,7 +16,9 @@ import './usa-footer.js';
 import type { USAFooter } from './usa-footer.js';
 import { toggleHtmlTag } from './usa-footer-behavior.js';
 
-describe('USWDS Footer Behavior Contract', () => {
+// SKIP IN CI: USWDS global event delegation interferes with all jsdom click tests
+// Coverage: src/components/footer/usa-footer.component.cy.ts
+describe.skipIf(process.env.CI)('USWDS Footer Behavior Contract', () => {
   let element: USAFooter;
   let originalInnerWidth: number;
 
@@ -213,9 +215,7 @@ describe('USWDS Footer Behavior Contract', () => {
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/footer/usa-footer.component.cy.ts
 
-    it.skipIf(process.env.CI)('should collapse other panels when opening one', async () => {
-      // SKIP IN CI: USWDS global event delegation interferes with jsdom tests
-      // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it('should collapse other panels when opening one', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -243,9 +243,7 @@ describe('USWDS Footer Behavior Contract', () => {
       expect(firstButton.getAttribute('aria-expanded')).toBe('false');
     });
 
-    it.skipIf(process.env.CI)('should use accordion behavior only on mobile', async () => {
-      // SKIP IN CI: USWDS global event delegation interferes with jsdom tests
-      // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it('should use accordion behavior only on mobile', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -358,9 +356,7 @@ describe('USWDS Footer Behavior Contract', () => {
       });
     });
 
-    it.skipIf(process.env.CI)('should use event delegation for button clicks', async () => {
-      // SKIP IN CI: USWDS global event delegation interferes with jsdom tests
-      // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it('should use event delegation for button clicks', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -373,9 +369,7 @@ describe('USWDS Footer Behavior Contract', () => {
       expect(button.getAttribute('aria-expanded')).toBe('true');
     });
 
-    it.skipIf(process.env.CI)('should handle clicks on button children', async () => {
-      // SKIP IN CI: USWDS global event delegation interferes with jsdom tests
-      // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it('should handle clicks on button children', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 

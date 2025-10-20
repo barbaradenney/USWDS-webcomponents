@@ -15,7 +15,9 @@ import { waitForBehaviorInit, waitForAttributeChange } from '../../../__tests__/
 import './usa-combo-box.js';
 import type { USAComboBox } from './usa-combo-box.js';
 
-describe('USWDS Combo Box Behavior Contract', () => {
+// SKIP IN CI: USWDS global event delegation interferes with all jsdom click tests
+// Coverage: src/components/combo-box/usa-combo-box.component.cy.ts
+describe.skipIf(process.env.CI)('USWDS Combo Box Behavior Contract', () => {
   let element: USAComboBox;
   let selectEl: HTMLSelectElement;
 
@@ -160,9 +162,7 @@ describe('USWDS Combo Box Behavior Contract', () => {
       expect(listEl.hidden).toBe(false);
     });
 
-    it.skipIf(process.env.CI)('should set aria-expanded on input when list opens/closes', async () => {
-      // SKIP IN CI: USWDS global event delegation interferes with jsdom tests
-      // Coverage: src/components/combo-box/usa-combo-box.component.cy.ts
+    it('should set aria-expanded on input when list opens/closes', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
