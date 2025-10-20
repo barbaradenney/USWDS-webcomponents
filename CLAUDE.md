@@ -443,6 +443,54 @@ Automated checks run before every commit:
 - Prevents !important overrides and descendant selectors
 - See `scripts/validate/validate-no-custom-css.js` for details
 
+### Performance Metrics Dashboard
+
+**NEW**: Real-time performance tracking for validation stages.
+
+**What It Shows**:
+```bash
+⏱️  Validation Performance:
+
+   Linting:                    5.42s
+   TypeScript:                 3.70s
+   Component unit tests:       2.15s
+   Cypress tests:             12.30s
+   ─────────────────────────────────
+   Tracked time:              23.57s
+   Total time:                   28s
+```
+
+**Features**:
+- Millisecond-precision timing for each validation stage
+- Tracked time vs total wall time comparison
+- Automatic metrics logging to `.git/validation-metrics.json`
+- Historical performance tracking for optimization
+- Bash 3.2 compatible (parallel arrays)
+- macOS compatible (Python-based timing)
+
+**Metrics File** (`.git/validation-metrics.json`):
+```json
+{
+  "timestamp": "2025-10-20 14:18:52",
+  "total_seconds": 28,
+  "tracked_milliseconds": 23570,
+  "commit_type": "code-commit",
+  "modified_components": 2,
+  "stages": {
+    "lint": 5420,
+    "typescript": 3700,
+    "unit_tests": 2150,
+    "cypress": 12300
+  }
+}
+```
+
+**Benefits**:
+- Identify slow validation stages
+- Data-driven performance optimization
+- Track performance improvements over time
+- Spot performance regressions quickly
+
 ## Post-commit Validation
 
 Automated checks run **after** every commit (non-blocking):
