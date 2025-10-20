@@ -92,6 +92,15 @@ export class USAInPageNavigation extends USWDSBaseComponent {
     this.sections = value as unknown as InPageNavSection[];
   }
 
+  // Alias for sections (alternative property name for compatibility)
+  @property({ type: Array, hasChanged: () => true })
+  get links(): InPageNavItem[] {
+    return this.sections as unknown as InPageNavItem[];
+  }
+  set links(value: InPageNavItem[]) {
+    this.sections = value as unknown as InPageNavSection[];
+  }
+
   // Store cleanup function from behavior
   private cleanup?: () => void;
 
@@ -195,10 +204,15 @@ export class USAInPageNavigation extends USWDSBaseComponent {
     return this.sections.map((section) => this.renderSectionItem(section));
   }
 
-  private renderSectionItem(section: InPageNavSection) {
+  private renderSectionItem(section: InPageNavSection | InPageNavItem) {
+    // Support both InPageNavSection (id/label) and InPageNavItem (text/href) formats
+    const item = section as any;
+    const href = item.href || `#${item.id}`;
+    const text = item.text || item.label || '';
+
     return html`
       <li class="usa-in-page-nav__item">
-        <a href="#${section.id}"> ${section.label} </a>
+        <a href="${href}" class="usa-in-page-nav__link"> ${text} </a>
       </li>
     `;
   }
