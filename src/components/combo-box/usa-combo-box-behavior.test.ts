@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
+import { waitForBehaviorInit, waitForAttributeChange } from '../../../__tests__/test-utils.js';
 import './usa-combo-box.js';
 import type { USAComboBox } from './usa-combo-box.js';
 
@@ -169,15 +169,15 @@ describe('USWDS Combo Box Behavior Contract', () => {
 
       expect(inputEl.getAttribute('aria-expanded')).toBe('false');
 
+      // Open list and wait for aria-expanded to update
       toggleBtn.click();
-      await waitForBehaviorInit(element);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
+      await waitForAttributeChange(inputEl, 'aria-expanded', 'true');
 
       expect(inputEl.getAttribute('aria-expanded')).toBe('true');
 
+      // Close list and wait for aria-expanded to update
       toggleBtn.click();
-      await waitForBehaviorInit(element);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
+      await waitForAttributeChange(inputEl, 'aria-expanded', 'false');
 
       expect(inputEl.getAttribute('aria-expanded')).toBe('false');
     });

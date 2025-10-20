@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
+import { waitForBehaviorInit, waitForAttributeChange } from '../../../__tests__/test-utils.js';
 import './usa-footer.js';
 import type { USAFooter } from './usa-footer.js';
 import { toggleHtmlTag } from './usa-footer-behavior.js';
@@ -227,17 +227,15 @@ describe('USWDS Footer Behavior Contract', () => {
       const firstButton = buttons[0];
       const secondButton = buttons[1];
 
-      // Open first panel
+      // Open first panel and wait for aria-expanded to update
       firstButton.click();
-      await waitForBehaviorInit(element);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
+      await waitForAttributeChange(firstButton, 'aria-expanded', 'true');
 
       expect(firstButton.getAttribute('aria-expanded')).toBe('true');
 
-      // Open second panel
+      // Open second panel and wait for both buttons to update
       secondButton.click();
-      await waitForBehaviorInit(element);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
+      await waitForAttributeChange(secondButton, 'aria-expanded', 'true');
 
       expect(secondButton.getAttribute('aria-expanded')).toBe('true');
       expect(firstButton.getAttribute('aria-expanded')).toBe('false');

@@ -439,9 +439,9 @@ export function mockNavigation() {
 /**
  * Safe cleanup for component tests with timers
  * Use in afterEach for components that create timers
- * 
+ *
  * @param {HTMLElement} element - The element to remove
- * 
+ *
  * @example
  * afterEach(() => {
  *   safeCleanupWithTimers(element);
@@ -450,7 +450,7 @@ export function mockNavigation() {
 export function safeCleanupWithTimers(element) {
   // Clear timers first
   cleanupAfterTest();
-  
+
   // Then remove element
   if (element && element.remove) {
     try {
@@ -459,4 +459,38 @@ export function safeCleanupWithTimers(element) {
       // Element might already be removed
     }
   }
+}
+
+/**
+ * Wait for an attribute to change to a specific value
+ * More reliable than fixed timeouts for CI environments
+ *
+ * @param {HTMLElement} element - The element to watch
+ * @param {string} attribute - The attribute name to watch
+ * @param {string} expectedValue - The expected value
+ * @param {number} timeout - Maximum time to wait in milliseconds (default 2000)
+ * @param {number} pollInterval - How often to check in milliseconds (default 50)
+ * @returns {Promise<void>}
+ *
+ * @example
+ * button.click();
+ * await waitForAttributeChange(input, 'aria-expanded', 'true');
+ */
+export async function waitForAttributeChange(element, attribute, expectedValue, timeout = 2000, pollInterval = 50) {
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeout) {
+    const currentValue = element.getAttribute(attribute);
+    if (currentValue === expectedValue) {
+      return;
+    }
+    await new Promise(resolve => setTimeout(resolve, pollInterval));
+  }
+
+  // Timeout reached
+  const actualValue = element.getAttribute(attribute);
+  throw new Error(
+    `Timeout waiting for ${attribute} to be "${expectedValue}". ` +
+    `Current value: "${actualValue}" after ${timeout}ms`
+  );
 }
