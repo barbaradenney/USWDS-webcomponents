@@ -842,6 +842,41 @@ describe('USACharacterCount', () => {
       }
     });
 
+    it('should display different content in message vs status elements (regression test)', async () => {
+      // Regression test for duplicate label bug where both elements showed same text
+      element.maxlength = 500;
+      element.value = '';
+      await element.updateComplete;
+
+      const message = element.querySelector('.usa-character-count__message');
+      const status = element.querySelector('.usa-character-count__status');
+
+      // Message should show static informational text
+      expect(message?.textContent?.trim()).toBe('You can enter up to 500 characters');
+
+      // Status should show dynamic character count
+      expect(status?.textContent?.trim()).toBe('500 characters remaining');
+
+      // They should NOT be the same (prevents regression of duplicate label bug)
+      expect(message?.textContent?.trim()).not.toBe(status?.textContent?.trim());
+
+      // Test with some content to ensure message stays static
+      element.value = 'Test content';
+      await element.updateComplete;
+
+      const messageAfter = element.querySelector('.usa-character-count__message');
+      const statusAfter = element.querySelector('.usa-character-count__status');
+
+      // Message should still show static informational text (unchanged)
+      expect(messageAfter?.textContent?.trim()).toBe('You can enter up to 500 characters');
+
+      // Status should update to reflect new count
+      expect(statusAfter?.textContent?.trim()).toBe('488 characters remaining');
+
+      // They should still be different
+      expect(messageAfter?.textContent?.trim()).not.toBe(statusAfter?.textContent?.trim());
+    });
+
     // NOTE: USWDS message management and duplicate detection tests moved to Cypress
     // Reason: These tests expect USWDS to transform .usa-character-count__status into
     // .usa-character-count__status elements, which only happens in browser environment.
