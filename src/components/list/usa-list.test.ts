@@ -686,20 +686,21 @@ describe('USAList', () => {
         // Remove problematic role attribute for accessibility testing
         element.removeAttribute('role');
 
-        // Get the rendered list element
-        const listElement = element.querySelector('ul, ol');
-        expect(listElement).toBeTruthy();
+        // Clear existing slotted content by removing li elements from the component
+        // DO NOT use innerHTML = '' as it removes Lit's slot element
+        const existingLis = element.querySelectorAll('li');
+        existingLis.forEach(li => li.remove());
 
-        if (listElement) {
-          // Clear existing content and add test items directly to the list element
-          // This ensures proper accessibility structure for testing
-          listElement.innerHTML = '';
-          items.forEach((item) => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            listElement.appendChild(li);
-          });
-        }
+        // Add test items as children of the component (they'll be slotted into the list)
+        items.forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          element.appendChild(li);
+        });
+
+        // Force reorganization to move items into the list element
+        element.forceReorganize();
+        await element.updateComplete;
 
         await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
       };
@@ -747,17 +748,21 @@ describe('USAList', () => {
         // Remove problematic role attribute for accessibility testing
         element.removeAttribute('role');
 
-        const listElement = element.querySelector('ul, ol');
-        expect(listElement).toBeTruthy();
+        // Clear existing slotted content by removing li elements from the component
+        // DO NOT use innerHTML = '' as it removes Lit's slot element
+        const existingLis = element.querySelectorAll('li');
+        existingLis.forEach(li => li.remove());
 
-        if (listElement) {
-          listElement.innerHTML = '';
-          items.forEach((item) => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            listElement.appendChild(li);
-          });
-        }
+        // Add test items as children of the component (they'll be slotted into the list)
+        items.forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          element.appendChild(li);
+        });
+
+        // Force reorganization to move items into the list element
+        element.forceReorganize();
+        await element.updateComplete;
 
         await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
       };
@@ -787,58 +792,56 @@ describe('USAList', () => {
       // Remove the role="list" attribute that causes issues with nested content
       element.removeAttribute('role');
 
-      // Get the rendered list element and add properly nested content
-      const listElement = element.querySelector('ol');
-      expect(listElement).toBeTruthy();
+      // Clear existing slotted content by removing li elements from the component
+      // DO NOT use innerHTML = '' as it removes Lit's slot element
+      const existingLis = element.querySelectorAll('li');
+      existingLis.forEach(li => li.remove());
 
-      if (listElement) {
-        listElement.innerHTML = '';
+      // First list item with nested unordered list
+      const li1 = document.createElement('li');
+      li1.innerHTML = 'Primary application requirements';
+      const nestedUl = document.createElement('ul');
+      nestedUl.className = 'usa-list';
+      ['Completed Form SF-424', 'Budget narrative', 'Project timeline'].forEach((text) => {
+        const nestedLi = document.createElement('li');
+        nestedLi.textContent = text;
+        nestedUl.appendChild(nestedLi);
+      });
+      li1.appendChild(nestedUl);
+      element.appendChild(li1);
 
-        // First list item with nested unordered list
-        const li1 = document.createElement('li');
-        li1.innerHTML = 'Primary application requirements';
-        const nestedUl = document.createElement('ul');
-        nestedUl.className = 'usa-list';
-        ['Completed Form SF-424', 'Budget narrative', 'Project timeline'].forEach((text) => {
-          const nestedLi = document.createElement('li');
-          nestedLi.textContent = text;
-          nestedUl.appendChild(nestedLi);
-        });
-        li1.appendChild(nestedUl);
-        listElement.appendChild(li1);
+      // Second list item with nested ordered list
+      const li2 = document.createElement('li');
+      li2.innerHTML = 'Supporting documentation';
+      const nestedOl = document.createElement('ol');
+      nestedOl.className = 'usa-list';
+      ['Financial statements', 'Organizational chart', 'Letters of support'].forEach((text) => {
+        const nestedLi = document.createElement('li');
+        nestedLi.textContent = text;
+        nestedOl.appendChild(nestedLi);
+      });
+      li2.appendChild(nestedOl);
+      element.appendChild(li2);
 
-        // Second list item with nested ordered list
-        const li2 = document.createElement('li');
-        li2.innerHTML = 'Supporting documentation';
-        const nestedOl = document.createElement('ol');
-        nestedOl.className = 'usa-list';
-        ['Financial statements', 'Organizational chart', 'Letters of support'].forEach((text) => {
-          const nestedLi = document.createElement('li');
-          nestedLi.textContent = text;
-          nestedOl.appendChild(nestedLi);
-        });
-        li2.appendChild(nestedOl);
-        listElement.appendChild(li2);
+      // Third list item
+      const li3 = document.createElement('li');
+      li3.textContent = 'Submission deadlines and contact information';
+      element.appendChild(li3);
 
-        // Third list item
-        const li3 = document.createElement('li');
-        li3.textContent = 'Submission deadlines and contact information';
-        listElement.appendChild(li3);
-      }
+      // Force reorganization to move items into the list element
+      element.forceReorganize();
+      await element.updateComplete;
 
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
       // Test same nested content in unordered list
+      // The items are already added to the component, just change the type
       element.type = 'unordered';
       await element.updateComplete;
 
-      const unorderedListElement = element.querySelector('ul');
-      if (unorderedListElement && listElement) {
-        // Move the content to the new unordered list
-        while (listElement.firstChild) {
-          unorderedListElement.appendChild(listElement.firstChild);
-        }
-      }
+      // Force reorganization to move items into the new unordered list
+      element.forceReorganize();
+      await element.updateComplete;
 
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
     });
