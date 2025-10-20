@@ -182,6 +182,15 @@ export class USACharacterCount extends USWDSBaseComponent {
     }
   }
 
+  private getInitialMessage(): string {
+    // Static informational message shown before user starts typing
+    if (this.maxlength > 0) {
+      const characters = this.maxlength === 1 ? 'character' : 'characters';
+      return `You can enter up to ${this.maxlength} ${characters}`;
+    }
+    return '';
+  }
+
   private getCharacterCountMessage(): string {
     const currentLength = this.value.length;
 
@@ -339,15 +348,15 @@ export class USACharacterCount extends USWDSBaseComponent {
         ${this.renderHint()}
         ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
         ${this.renderField()}
-        <!-- Render both message (for USWDS) and status (for immediate display) -->
+        <!-- Initial informational message -->
         <span
           class="usa-character-count__message"
           id="${this.name}-info"
           aria-live="polite"
         >
-          ${this.getCharacterCountMessage()}
+          ${this.getInitialMessage()}
         </span>
-        <!-- This status element matches USWDS structure -->
+        <!-- Dynamic character count status -->
         <span
           class="usa-character-count__status usa-hint${this._isOverLimit ? ' usa-character-count__status--invalid' : ''}"
           id="${this.name}-status"
