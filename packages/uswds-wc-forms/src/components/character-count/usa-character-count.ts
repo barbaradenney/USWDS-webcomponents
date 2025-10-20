@@ -339,7 +339,7 @@ export class USACharacterCount extends USWDSBaseComponent {
         ${this.renderHint()}
         ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
         ${this.renderField()}
-        <!-- Render both message (for USWDS) and status (for immediate display) -->
+        <!-- Character count message (visible to users) -->
         <span
           class="usa-character-count__message"
           id="${this.name}-info"
@@ -347,13 +347,12 @@ export class USACharacterCount extends USWDSBaseComponent {
         >
           ${this.getCharacterCountMessage()}
         </span>
-        <!-- This status element matches USWDS structure -->
+        <!-- Character count status (for screen readers, references same message content) -->
         <span
           class="usa-character-count__status usa-hint${this._isOverLimit ? ' usa-character-count__status--invalid' : ''}"
           id="${this.name}-status"
           aria-hidden="true"
         >
-          ${this.getCharacterCountMessage()}
         </span>
         <span class="usa-sr-only usa-character-count__sr-status" aria-live="polite" aria-atomic="true">
           ${this.getCharacterCountMessage()}
