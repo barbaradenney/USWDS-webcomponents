@@ -182,15 +182,6 @@ export class USACharacterCount extends USWDSBaseComponent {
     }
   }
 
-  private getInitialMessage(): string {
-    // Static informational message shown before user starts typing
-    if (this.maxlength > 0) {
-      const characters = this.maxlength === 1 ? 'character' : 'characters';
-      return `You can enter up to ${this.maxlength} ${characters}`;
-    }
-    return '';
-  }
-
   private getCharacterCountMessage(): string {
     const currentLength = this.value.length;
 
@@ -198,23 +189,20 @@ export class USACharacterCount extends USWDSBaseComponent {
       return `${currentLength} characters`;
     }
 
-    const remaining = this.maxlength - currentLength;
-
-    // Zero case: "Character limit reached"
-    if (remaining === 0) {
-      return 'Character limit reached';
+    // Match USWDS behavior exactly
+    // When empty: "200 characters allowed"
+    // When typing: "195 characters left"
+    // When over: "5 characters over limit"
+    if (currentLength === 0) {
+      const characters = this.maxlength === 1 ? 'character' : 'characters';
+      return `${this.maxlength} ${characters} allowed`;
     }
 
-    // Over limit case: "6 characters over limit"
-    if (remaining < 0) {
-      const overBy = Math.abs(remaining);
-      const characters = overBy === 1 ? 'character' : 'characters';
-      return `${overBy} ${characters} over limit`;
-    }
+    const difference = Math.abs(this.maxlength - currentLength);
+    const characters = difference === 1 ? 'character' : 'characters';
+    const guidance = currentLength > this.maxlength ? 'over limit' : 'left';
 
-    // Normal case: "45 characters remaining"
-    const characters = remaining === 1 ? 'character' : 'characters';
-    return `${remaining} ${characters} remaining`;
+    return `${difference} ${characters} ${guidance}`;
   }
 
   // Public API methods
@@ -340,7 +328,7 @@ export class USACharacterCount extends USWDSBaseComponent {
       <div
         class="${containerClasses}"
         data-maxlength="${this.maxlength}"
-        data-enhanced="false"
+        data-enhanced="true"
       >
         <label class="usa-label" for="${this.name}">
           ${this.label} ${this.renderRequiredIndicator()}
@@ -348,23 +336,16 @@ export class USACharacterCount extends USWDSBaseComponent {
         ${this.renderHint()}
         ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
         ${this.renderField()}
-        <!-- Initial informational message -->
+        <!-- Character count message (visible to users) -->
         <span
           class="usa-character-count__message"
           id="${this.name}-info"
           aria-live="polite"
         >
-          ${this.getInitialMessage()}
-        </span>
-        <!-- Dynamic character count status -->
-        <span
-          class="usa-character-count__status usa-hint${this._isOverLimit ? ' usa-character-count__status--invalid' : ''}"
-          id="${this.name}-status"
-          aria-hidden="true"
-        >
           ${this.getCharacterCountMessage()}
         </span>
-        <span class="usa-sr-only usa-character-count__sr-status" aria-live="polite" aria-atomic="true">
+        <!-- Screen reader announcements (hidden from visual display) -->
+        <span class="usa-sr-only usa-character-count__sr-status" id="${this.name}-status" aria-live="polite" aria-atomic="true">
           ${this.getCharacterCountMessage()}
         </span>
       </div>

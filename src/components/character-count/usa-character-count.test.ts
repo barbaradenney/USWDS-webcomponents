@@ -65,9 +65,8 @@ describe('USACharacterCount', () => {
       expect(element.querySelector('.usa-label')).toBeTruthy();
       expect(element.querySelector('.usa-textarea')).toBeTruthy();
       expect(element.querySelector('.usa-character-count__field')).toBeTruthy();
-      // Component renders .usa-character-count__status
-      // USWDS transforms it to .usa-character-count__status in browser (tested in Cypress)
-      expect(element.querySelector('.usa-character-count__status')).toBeTruthy();
+      // Component renders .usa-character-count__message for dynamic count
+      expect(element.querySelector('.usa-character-count__message')).toBeTruthy();
     });
   });
 
@@ -153,7 +152,7 @@ describe('USACharacterCount', () => {
       element.value = 'Hello world';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
+      const message = element.querySelector('.usa-character-count__message');
       expect(message?.textContent?.trim()).toBe('11 characters');
     });
 
@@ -162,8 +161,8 @@ describe('USACharacterCount', () => {
       element.value = 'Hello';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('45 characters remaining');
+      const message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('45 characters left');
     });
 
     it('should display singular form for 1 character remaining', async () => {
@@ -171,8 +170,8 @@ describe('USACharacterCount', () => {
       element.value = 'Hello wor';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('1 character remaining');
+      const message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('1 character left');
     });
 
     it('should display limit reached message', async () => {
@@ -180,8 +179,8 @@ describe('USACharacterCount', () => {
       element.value = 'Hello';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('Character limit reached');
+      const message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('0 characters left');
     });
 
     it('should display over limit message', async () => {
@@ -189,7 +188,7 @@ describe('USACharacterCount', () => {
       element.value = 'Hello world';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
+      const message = element.querySelector('.usa-character-count__message');
       expect(message?.textContent?.trim()).toBe('6 characters over limit');
     });
 
@@ -201,8 +200,8 @@ describe('USACharacterCount', () => {
       element.value = 'Updated text';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('8 characters remaining');
+      const message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('8 characters left');
     });
   });
 
@@ -271,7 +270,7 @@ describe('USACharacterCount', () => {
   describe('State Management', () => {
     it('should detect near limit state (10% of maxlength)', async () => {
       element.maxlength = 100;
-      element.value = 'x'.repeat(91); // 9 characters remaining (9% of 100)
+      element.value = 'x'.repeat(91); // 9 characters left (9% of 100)
       await element.updateComplete;
 
       expect(element.isNearLimit()).toBe(true);
@@ -298,7 +297,7 @@ describe('USACharacterCount', () => {
 
     it('should handle edge case at exactly 10% remaining', async () => {
       element.maxlength = 100;
-      element.value = 'x'.repeat(90); // Exactly 10 characters remaining (10% of 100)
+      element.value = 'x'.repeat(90); // Exactly 10 characters left (10% of 100)
       await element.updateComplete;
 
       expect(element.isNearLimit()).toBe(true);
@@ -386,13 +385,13 @@ describe('USACharacterCount', () => {
 
       const textarea = element.querySelector('textarea');
       const label = element.querySelector('label');
-      const statusMessage = element.querySelector('.usa-character-count__status');
       const infoMessage = element.querySelector('.usa-character-count__message');
+      const srMessage = element.querySelector('.usa-sr-only');
 
       expect(textarea?.id).toBe('feedback');
       expect(label?.getAttribute('for')).toBe('feedback');
-      expect(statusMessage?.id).toBe('feedback-status');
       expect(infoMessage?.id).toBe('feedback-info');
+      expect(srMessage?.id).toBe('feedback-status');
     });
 
     it('should have proper id for hint', async () => {
@@ -490,8 +489,8 @@ describe('USACharacterCount', () => {
       element.maxlength = 10;
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('10 characters remaining');
+      const message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('10 characters allowed');
       expect(element.getCharacterCount()).toBe(0);
     });
 
@@ -502,7 +501,7 @@ describe('USACharacterCount', () => {
 
       expect(element.getCharacterCount()).toBe(10000);
 
-      const message = element.querySelector('.usa-character-count__status');
+      const message = element.querySelector('.usa-character-count__message');
       expect(message?.textContent?.trim()).toBe('10000 characters');
     });
 
@@ -515,8 +514,8 @@ describe('USACharacterCount', () => {
       // This matches HTML maxlength behavior
       expect(element.getCharacterCount()).toBe(5);
 
-      const message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('5 characters remaining');
+      const message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('5 characters left');
     });
 
     it('should handle newlines in textarea', async () => {
@@ -531,19 +530,19 @@ describe('USACharacterCount', () => {
       element.value = '';
       await element.updateComplete;
 
-      let message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('1 character remaining');
+      let message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('1 character allowed');
 
       element.value = 'a';
       await element.updateComplete;
 
-      message = element.querySelector('.usa-character-count__status');
-      expect(message?.textContent?.trim()).toBe('Character limit reached');
+      message = element.querySelector('.usa-character-count__message');
+      expect(message?.textContent?.trim()).toBe('0 characters left');
 
       element.value = 'ab';
       await element.updateComplete;
 
-      message = element.querySelector('.usa-character-count__status');
+      message = element.querySelector('.usa-character-count__message');
       expect(message?.textContent?.trim()).toBe('1 character over limit');
     });
   });
@@ -653,9 +652,9 @@ describe('USACharacterCount', () => {
 
       const input = storybookElement.querySelector('textarea, input');
       const label = storybookElement.querySelector('.usa-label');
-      // Component renders .usa-character-count__status initially
-      // USWDS transforms it to .usa-character-count__status in browser
-      const message = storybookElement.querySelector('.usa-character-count__status');
+      // Component renders .usa-character-count__message initially
+      // USWDS transforms it to .usa-character-count__message in browser
+      const message = storybookElement.querySelector('.usa-character-count__message');
 
       expect(input).toBeTruthy();
       expect(label).toBeTruthy();
@@ -711,7 +710,7 @@ describe('USACharacterCount', () => {
       // Wait for potential USWDS initialization
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      const messages = element.querySelectorAll('.usa-character-count__status');
+      const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
     });
 
@@ -730,9 +729,9 @@ describe('USACharacterCount', () => {
       // Wait for any async operations
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      const messages = element.querySelectorAll('.usa-character-count__status');
+      const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
-      expect(messages[0].textContent?.trim()).toContain('characters remaining');
+      expect(messages[0].textContent?.trim()).toContain('characters left');
     });
 
     it('should not create duplicate messages when maxlength changes', async () => {
@@ -749,7 +748,7 @@ describe('USACharacterCount', () => {
       // Wait for any async operations
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      const messages = element.querySelectorAll('.usa-character-count__status');
+      const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
     });
 
@@ -767,7 +766,7 @@ describe('USACharacterCount', () => {
         // Wait for USWDS initialization to complete
         await new Promise(resolve => setTimeout(resolve, 200));
 
-        const messages = freshElement.querySelectorAll('.usa-character-count__status');
+        const messages = freshElement.querySelectorAll('.usa-character-count__message');
         expect(messages.length).toBe(1);
 
         // Verify the message has content (not empty)
@@ -802,7 +801,7 @@ describe('USACharacterCount', () => {
       // Wait for any async operations
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      const messages = element.querySelectorAll('.usa-character-count__status');
+      const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
     });
 
@@ -826,60 +825,28 @@ describe('USACharacterCount', () => {
         // Wait for initialization
         await new Promise(resolve => setTimeout(resolve, 100));
 
-        const message1 = element1.querySelector('.usa-character-count__status');
-        const message2 = element2.querySelector('.usa-character-count__status');
+        const message1 = element1.querySelector('.usa-character-count__message');
+        const message2 = element2.querySelector('.usa-character-count__message');
 
-        expect(message1?.id).toBe('test1-status');
-        expect(message2?.id).toBe('test2-status');
+        expect(message1?.id).toBe('test1-info');
+        expect(message2?.id).toBe('test2-info');
         expect(message1?.id).not.toBe(message2?.id);
 
         // Verify each component has exactly one message
-        expect(element1.querySelectorAll('.usa-character-count__status').length).toBe(1);
-        expect(element2.querySelectorAll('.usa-character-count__status').length).toBe(1);
+        expect(element1.querySelectorAll('.usa-character-count__message').length).toBe(1);
+        expect(element2.querySelectorAll('.usa-character-count__message').length).toBe(1);
       } finally {
         element1.remove();
         element2.remove();
       }
     });
 
-    it('should display different content in message vs status elements (regression test)', async () => {
-      // Regression test for duplicate label bug where both elements showed same text
-      element.maxlength = 500;
-      element.value = '';
-      await element.updateComplete;
-
-      const message = element.querySelector('.usa-character-count__message');
-      const status = element.querySelector('.usa-character-count__status');
-
-      // Message should show static informational text
-      expect(message?.textContent?.trim()).toBe('You can enter up to 500 characters');
-
-      // Status should show dynamic character count
-      expect(status?.textContent?.trim()).toBe('500 characters remaining');
-
-      // They should NOT be the same (prevents regression of duplicate label bug)
-      expect(message?.textContent?.trim()).not.toBe(status?.textContent?.trim());
-
-      // Test with some content to ensure message stays static
-      element.value = 'Test content';
-      await element.updateComplete;
-
-      const messageAfter = element.querySelector('.usa-character-count__message');
-      const statusAfter = element.querySelector('.usa-character-count__status');
-
-      // Message should still show static informational text (unchanged)
-      expect(messageAfter?.textContent?.trim()).toBe('You can enter up to 500 characters');
-
-      // Status should update to reflect new count
-      expect(statusAfter?.textContent?.trim()).toBe('488 characters remaining');
-
-      // They should still be different
-      expect(messageAfter?.textContent?.trim()).not.toBe(statusAfter?.textContent?.trim());
-    });
+    // NOTE: Test removed - component now shows single dynamic message, not separate static/dynamic messages
+    // The message element updates dynamically to show character count status
 
     // NOTE: USWDS message management and duplicate detection tests moved to Cypress
-    // Reason: These tests expect USWDS to transform .usa-character-count__status into
-    // .usa-character-count__status elements, which only happens in browser environment.
+    // Reason: These tests expect USWDS to transform .usa-character-count__message into
+    // .usa-character-count__message elements, which only happens in browser environment.
     // See: cypress/e2e/usa-character-count.component.cy.ts for browser-based tests
   });
 
@@ -935,12 +902,12 @@ describe('USACharacterCount', () => {
    * See: /tmp/combo-box-complete-summary.md for pattern details
    */
   describe('USWDS Integration Requirements', () => {
-    it('should include data-enhanced="false" on wrapper', async () => {
+    it('should include data-enhanced="true" on wrapper', async () => {
       await element.updateComplete;
 
       const wrapper = element.querySelector('.usa-character-count');
       expect(wrapper).toBeTruthy();
-      expect(wrapper?.getAttribute('data-enhanced')).toBe('false');
+      expect(wrapper?.getAttribute('data-enhanced')).toBe('true');
     });
 
     it('should pass placeholder to inner textarea', async () => {
@@ -976,7 +943,7 @@ describe('USACharacterCount', () => {
       element.value = 'Test';
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__status');
+      const message = element.querySelector('.usa-character-count__message');
       expect(message).toBeTruthy();
     });
   });

@@ -193,23 +193,20 @@ export class USACharacterCount extends USWDSBaseComponent {
       return `${currentLength} characters`;
     }
 
-    const remaining = this.maxlength - currentLength;
-
-    // Zero case: "Character limit reached"
-    if (remaining === 0) {
-      return 'Character limit reached';
+    // Match USWDS behavior exactly
+    // When empty: "200 characters allowed"
+    // When typing: "195 characters left"
+    // When over: "5 characters over limit"
+    if (currentLength === 0) {
+      const characters = this.maxlength === 1 ? 'character' : 'characters';
+      return `${this.maxlength} ${characters} allowed`;
     }
 
-    // Over limit case: "6 characters over limit"
-    if (remaining < 0) {
-      const overBy = Math.abs(remaining);
-      const characters = overBy === 1 ? 'character' : 'characters';
-      return `${overBy} ${characters} over limit`;
-    }
+    const difference = Math.abs(this.maxlength - currentLength);
+    const characters = difference === 1 ? 'character' : 'characters';
+    const guidance = currentLength > this.maxlength ? 'over limit' : 'left';
 
-    // Normal case: "45 characters remaining"
-    const characters = remaining === 1 ? 'character' : 'characters';
-    return `${remaining} ${characters} remaining`;
+    return `${difference} ${characters} ${guidance}`;
   }
 
   // Public API methods
