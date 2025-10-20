@@ -49,6 +49,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Verify NPM Token
+        if: ${{ !github.event.inputs.dry_run }}
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "❌ NPM_TOKEN secret not configured!"
+            echo ""
+            echo "📝 To configure NPM_TOKEN:"
+            echo "   1. Create NPM access token: https://www.npmjs.com/settings/YOUR_USERNAME/tokens"
+            echo "   2. Go to: Repository Settings → Secrets and variables → Actions"
+            echo "   3. Create secret: NPM_TOKEN with your token"
+            echo ""
+            echo "💡 Or run with dry_run=true to skip NPM publishing"
+            exit 1
+          fi
+          echo "✅ NPM_TOKEN is configured"
+
       - name: Install dependencies
         run: npm ci
 

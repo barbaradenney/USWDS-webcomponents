@@ -25,16 +25,28 @@ This project follows [Semantic Versioning](https://semver.org/):
 - **MINOR** (0.x.0) - New features, backward compatible
 - **PATCH** (0.0.x) - Bug fixes, backward compatible
 
+**🚨 IMPORTANT: Always Use Automated Workflow**
+
+**The GitHub Actions automated release workflow is MANDATORY for all releases.** It ensures:
+- ✅ All tests pass before release
+- ✅ NPM package is ALWAYS published
+- ✅ GitHub release is ALWAYS created
+- ✅ Version bumps are consistent
+- ✅ No steps are missed
+
+**Manual releases are NOT supported** - they lead to inconsistent state (e.g., Git tags without NPM packages).
+
 **Current automation:**
 - ✅ Service Worker version auto-syncs with package.json
 - ✅ Bundle metrics auto-update during build
 - ✅ Documentation timestamps auto-update
 - ✅ Pre-commit validation enforces quality
-- ✅ **GitHub Actions automated release workflow (recommended)**
+- ✅ **NPM publishing (automatic in workflow)**
+- ✅ **GitHub release creation (automatic in workflow)**
 
 ---
 
-## Automated Release Workflow (Recommended)
+## Automated Release Workflow (REQUIRED)
 
 ### Overview
 
@@ -216,18 +228,67 @@ git pull origin main
 # Retry workflow
 ```
 
+### Republishing Missed Versions
+
+If a version was tagged in Git but not published to NPM (e.g., v1.0.1):
+
+**Step 1: Verify the missed version**
+```bash
+# Check Git tags
+git tag -l "v1.0.*"
+
+# Check NPM registry
+npm view uswds-webcomponents versions
+
+# Identify missing versions
+# Example: v1.0.1 exists in Git but not NPM
+```
+
+**Step 2: Republish using existing tag**
+```bash
+# Checkout the tagged version
+git checkout v1.0.1
+
+# Install dependencies
+npm ci
+
+# Build production bundle
+npm run build
+
+# Publish to NPM (requires NPM_TOKEN)
+npm publish --access public
+
+# Return to main branch
+git checkout main
+```
+
+**Step 3: Create GitHub release (if missing)**
+```bash
+# Create GitHub release for the existing tag
+gh release create v1.0.1 \
+  --title "v1.0.1" \
+  --notes "See CHANGELOG.md for details."
+```
+
+**Prevention:**
+- ✅ Always use the automated workflow for new releases
+- ✅ Workflow now includes NPM_TOKEN verification (fails fast if missing)
+- ✅ Dry run option available for testing without publishing
+
 ### When to Use Manual Process
 
-Use the manual process instead when:
-- 🔴 First-time setup (testing release process)
-- 🔴 NPM token not available
-- 🔴 Need custom release notes
-- 🔴 Debugging release issues
-- 🔴 Network/CI issues
+**❌ Manual process is DEPRECATED and NOT recommended.**
+
+The manual process is kept for reference only. Always use the automated workflow.
+
+Exceptions (rare):
+- 🔴 Republishing a missed version (see above)
+- 🔴 Emergency hotfix when CI is down
+- 🔴 Initial repository setup/testing
 
 ---
 
-## Manual Release Process
+## Manual Release Process (DEPRECATED)
 
 For situations where the automated workflow isn't appropriate, follow the manual process below.
 
