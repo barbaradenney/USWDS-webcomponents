@@ -372,6 +372,36 @@ See [docs/DOCUMENTATION_LIFECYCLE.md](docs/DOCUMENTATION_LIFECYCLE.md) for compl
 
 ## Pre-commit Validation
 
+### Modular Architecture
+
+**NEW**: Pre-commit hook refactored into independently testable modules (Dec 2024).
+
+**Structure**:
+```
+.husky/pre-commit                          # Lightweight orchestrator (~266 lines)
+scripts/validation/stages/
+├── 00-discovered-issues.sh               # Discovered issues enforcement
+├── 01-repository-organization.sh         # Repository cleanup
+├── 02-uswds-validation.sh                # USWDS compliance (6 substages)
+├── 03-linting-and-quality.sh             # Linting + TypeScript + Code quality
+├── 04-component-tests.sh                 # Component validations + Unit + Cypress
+├── 05-test-expectations.sh               # Test quality + Regression tests
+├── 06-final-validations.sh               # Documentation + JavaScript
+└── 07-optional-validations.sh            # Opt-in features
+```
+
+**Benefits**:
+- **Maintainability**: 8 focused modules instead of 741-line monolith
+- **Testability**: Run individual stages for debugging
+  ```bash
+  bash scripts/validation/stages/03-linting-and-quality.sh
+  ```
+- **Reusability**: Modules can be used in CI/CD pipelines
+- **Clarity**: Clear separation of concerns
+- **Performance**: Same performance metrics tracking
+
+**Orchestrator**: Handles environment setup, module execution, and performance reporting.
+
 ### Smart Commit Detection
 Automatically detects commit type and skips unnecessary validations:
 - **Docs-only commits**: Skips unit tests and Cypress tests (saves 15-30s)
