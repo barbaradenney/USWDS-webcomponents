@@ -5,6 +5,44 @@ All notable changes to the USWDS Web Components library will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-10-20
+
+### 🐛 Bug Fixes
+
+**Light DOM Slot Handling** - Fixed slotted content bugs across 5 components by migrating to proven light DOM slot pattern:
+- **summary-box**: Applied proven slot pattern, fixed 2 failing tests (39/39 tests passing)
+- **tag**: Migrated to proven pattern (52/52 tests passing)
+- **site-alert**: Migrated to proven pattern (57/57 tests passing)
+- **process-list**: Migrated with always-render-container fix (53/53 tests passing)
+- **side-navigation**: Migrated with always-render-container fix (36/36 tests passing)
+
+**Pattern Details**:
+- CSS hide rule for duplicate slotted elements: `:host > [slot] { display: none !important; }`
+- Manual slot projection in `moveSlottedContent()` method
+- DocumentFragment for safe DOM manipulation
+- Always render container elements to prevent HierarchyRequestError
+
+**Test Coverage**: 378/379 tests passing (99.7%) - Modal's 1 failure is pre-existing
+
+### 🔧 Improvements
+
+**Release Process Automation**:
+- Added NPM_TOKEN verification to release workflow (fails fast if missing)
+- Updated release documentation to emphasize automated workflow is REQUIRED
+- Added guide for republishing missed versions
+- Deprecated manual release process
+
+**Validation System**:
+- Fixed CSS validation to strip comments before parsing
+- Added exception for `:host > [slot]` selector (essential light DOM functionality)
+
+### 📚 Documentation
+
+- Updated RELEASE_PROCESS.md with mandatory automated workflow guidance
+- Added "Republishing Missed Versions" section
+- Clarified NPM token setup requirements
+- Improved release workflow troubleshooting
+
 ## [1.0.0] - 2025-10-18
 
 ### 🎉 Initial Release
