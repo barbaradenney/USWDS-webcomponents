@@ -138,6 +138,14 @@ export class USACheckbox extends LitElement {
     } else {
       this.checkboxElement.removeAttribute('aria-invalid');
     }
+
+    // Update data-indeterminate attribute for USWDS CSS compatibility
+    // USWDS CSS supports both :indeterminate pseudo-class and [data-indeterminate] attribute
+    if (this.indeterminate) {
+      this.checkboxElement.setAttribute('data-indeterminate', 'true');
+    } else {
+      this.checkboxElement.removeAttribute('data-indeterminate');
+    }
   }
 
   private handleChange(e: Event) {
@@ -181,33 +189,22 @@ export class USACheckbox extends LitElement {
     return this._checkboxId;
   }
   private async initializeUSWDSCheckbox() {
-    
+
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
       return;
     }
 
-console.log(
-      `☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)`
-    );
-
     try {
-      // Check if global USWDS is available for potential future enhancements
       if (typeof window !== 'undefined' && typeof (window as any).USWDS !== 'undefined') {
         const USWDS = (window as any).USWDS;
         if (USWDS.checkbox && typeof USWDS.checkbox.on === 'function') {
           USWDS.checkbox.on(this);
-          console.log(`☑️ Checkbox: Enhanced with global USWDS JavaScript`);
           return;
         }
       }
-
-      console.log(
-        `☑️ Checkbox: Using presentational component behavior (USWDS Checkbox is CSS-only)`
-      );
     } catch (error) {
-      console.warn(`☑️ Checkbox: Initialization completed with basic behavior:`, error);
+      // Silently continue with CSS-only behavior
     }
   }
 
@@ -220,15 +217,13 @@ console.log(
    * Clean up USWDS module on component destruction
    */
   private cleanupUSWDS() {
-    // Try cleanup with global USWDS (checkbox components are presentational)
     if (typeof window !== 'undefined' && typeof (window as any).USWDS !== 'undefined') {
       const USWDS = (window as any).USWDS;
       if (USWDS.checkbox?.off) {
         try {
           USWDS.checkbox.off(this);
-          console.log(`🧹 Cleaned up USWDS checkbox`);
         } catch (error) {
-          console.warn(`⚠️ Error cleaning up USWDS:`, error);
+          // Silently handle cleanup errors
         }
       }
     }

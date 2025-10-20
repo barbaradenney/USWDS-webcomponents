@@ -89,6 +89,14 @@ describe('USACheckbox', () => {
 
       const checkbox = element.querySelector('input[type="checkbox"]') as HTMLInputElement;
       expect(checkbox?.indeterminate).toBe(true);
+      // Verify data-indeterminate attribute is added for USWDS CSS compatibility
+      expect(checkbox?.getAttribute('data-indeterminate')).toBe('true');
+
+      // Verify attribute is removed when indeterminate is false
+      element.indeterminate = false;
+      await element.updateComplete;
+      expect(checkbox?.indeterminate).toBe(false);
+      expect(checkbox?.hasAttribute('data-indeterminate')).toBe(false);
     });
   });
 
