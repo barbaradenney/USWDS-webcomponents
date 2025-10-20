@@ -162,7 +162,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('45 characters left');
+      expect(message?.textContent?.trim()).toBe('45 characters remaining');
     });
 
     it('should display singular form for 1 character remaining', async () => {
@@ -171,7 +171,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('1 character left');
+      expect(message?.textContent?.trim()).toBe('1 character remaining');
     });
 
     it('should display limit reached message', async () => {
@@ -180,7 +180,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('0 characters left');
+      expect(message?.textContent?.trim()).toBe('Character limit reached');
     });
 
     it('should display over limit message', async () => {
@@ -201,7 +201,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('8 characters left');
+      expect(message?.textContent?.trim()).toBe('8 characters remaining');
     });
   });
 
@@ -490,7 +490,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('10 characters allowed');
+      expect(message?.textContent?.trim()).toBe('10 characters remaining');
       expect(element.getCharacterCount()).toBe(0);
     });
 
@@ -515,7 +515,7 @@ describe('USACharacterCount', () => {
       expect(element.getCharacterCount()).toBe(5);
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('5 characters left');
+      expect(message?.textContent?.trim()).toBe('5 characters remaining');
     });
 
     it('should handle newlines in textarea', async () => {
@@ -531,13 +531,13 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       let message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('1 character allowed');
+      expect(message?.textContent?.trim()).toBe('1 character remaining');
 
       element.value = 'a';
       await element.updateComplete;
 
       message = element.querySelector('.usa-character-count__message');
-      expect(message?.textContent?.trim()).toBe('0 characters left');
+      expect(message?.textContent?.trim()).toBe('Character limit reached');
 
       element.value = 'ab';
       await element.updateComplete;
@@ -731,7 +731,7 @@ describe('USACharacterCount', () => {
 
       const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
-      expect(messages[0].textContent?.trim()).toContain('characters left');
+      expect(messages[0].textContent?.trim()).toContain('characters remaining');
     });
 
     it('should not create duplicate messages when maxlength changes', async () => {

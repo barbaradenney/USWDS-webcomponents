@@ -190,19 +190,25 @@ export class USACharacterCount extends USWDSBaseComponent {
     }
 
     // Match USWDS behavior exactly
-    // When empty: "200 characters allowed"
-    // When typing: "195 characters left"
+    // When at limit: "Character limit reached"
+    // When under: "95 characters remaining"
     // When over: "5 characters over limit"
-    if (currentLength === 0) {
-      const characters = this.maxlength === 1 ? 'character' : 'characters';
-      return `${this.maxlength} ${characters} allowed`;
+    const difference = Math.abs(this.maxlength - currentLength);
+
+    // At limit exactly
+    if (currentLength === this.maxlength) {
+      return 'Character limit reached';
     }
 
-    const difference = Math.abs(this.maxlength - currentLength);
-    const characters = difference === 1 ? 'character' : 'characters';
-    const guidance = currentLength > this.maxlength ? 'over limit' : 'left';
+    // Over limit
+    if (currentLength > this.maxlength) {
+      const characters = difference === 1 ? 'character' : 'characters';
+      return `${difference} ${characters} over limit`;
+    }
 
-    return `${difference} ${characters} ${guidance}`;
+    // Under limit (remaining)
+    const characters = difference === 1 ? 'character' : 'characters';
+    return `${difference} ${characters} remaining`;
   }
 
   // Public API methods
@@ -336,9 +342,9 @@ export class USACharacterCount extends USWDSBaseComponent {
         ${this.renderHint()}
         ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
         ${this.renderField()}
-        <!-- Character count message (visible to users) -->
+        <!-- Character count status (matches USWDS structure) -->
         <span
-          class="usa-character-count__message"
+          class="usa-character-count__message usa-character-count__status${isOverLimit ? ' usa-character-count__status--invalid' : ''}"
           id="${this.name}-info"
           aria-live="polite"
         >
