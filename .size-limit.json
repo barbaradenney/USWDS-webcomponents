@@ -1,0 +1,47 @@
+{
+  "name": "USWDS Web Components - Bundle Size Limits",
+  "limits": [
+    {
+      "name": "Full Bundle (all components)",
+      "path": "dist/index.js",
+      "limit": "95 KB",
+      "gzip": true,
+      "brotli": false
+    },
+    {
+      "name": "Full Bundle (brotli)",
+      "path": "dist/index.js",
+      "limit": "70 KB",
+      "gzip": false,
+      "brotli": true
+    },
+    {
+      "name": "CSS Bundle (brotli)",
+      "path": "dist/uswds-webcomponents.css",
+      "limit": "30 KB",
+      "gzip": false,
+      "brotli": true
+    },
+    {
+      "name": "Individual Component (accordion)",
+      "path": "dist/components/accordion.js",
+      "limit": "3 KB",
+      "gzip": false,
+      "brotli": true
+    },
+    {
+      "name": "Individual Component (button)",
+      "path": "dist/components/button.js",
+      "limit": "2 KB",
+      "gzip": false,
+      "brotli": true
+    },
+    {
+      "name": "Individual Component (alert)",
+      "path": "dist/components/alert.js",
+      "limit": "2 KB",
+      "gzip": false,
+      "brotli": true
+    }
+  ]
+}
