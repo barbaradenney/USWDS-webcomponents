@@ -219,6 +219,7 @@ class AICodeQualityValidator {
       return staged
         .split('\n')
         .filter(f => f.match(/\.(ts|js|tsx|jsx)$/) && !f.includes('.test.') && !f.includes('.cy.'))
+        .filter(f => !f.startsWith('scripts/')) // Exclude CLI scripts (legitimate console output)
         .filter(f => fs.existsSync(f));
     } catch (e) {
       return [];

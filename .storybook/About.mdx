@@ -4,18 +4,158 @@ import { Meta } from '@storybook/blocks';
 
 # About USWDS Web Components
 
-> **Auto-generated on:** 2025-10-18
+> **Auto-generated on:** 2025-10-20
 > This documentation is automatically updated during the pre-commit process.
 
 > **🌐 Live Documentation:** [https://barbaradenney.github.io/USWDS-webcomponents/](https://barbaradenney.github.io/USWDS-webcomponents/)
 >
-> **📦 npm Package:** [https://www.npmjs.com/package/uswds-webcomponents](https://www.npmjs.com/package/uswds-webcomponents)
+> **📦 npm Organization:** [https://www.npmjs.com/org/uswds-wc](https://www.npmjs.com/org/uswds-wc)
 >
 > **🐙 GitHub:** [https://github.com/barbaramiles/USWDS-webcomponents](https://github.com/barbaramiles/USWDS-webcomponents)
 
 ## Overview
 
 USWDS Web Components is a production-ready library that converts all U.S. Web Design System (USWDS) components into modern, standards-compliant Web Components using Lit Element. This library provides a true 1:1 implementation of USWDS while offering the benefits of modern web component technology.
+
+## 📦 Monorepo Architecture
+
+The library is organized as a **category-based monorepo** with independent packages for optimal tree-shaking and bundle sizes. This architecture provides significant benefits for developers and enables seamless future growth.
+
+### Package Structure
+
+```
+@uswds-wc/
+├── core           # Base utilities and USWDS integration (required)
+├── forms          # 15 form components
+├── navigation     # 8 navigation components
+├── data-display   # 8 data display components
+├── feedback       # 5 feedback components
+├── actions        # 4 action components
+├── layout         # 4 layout components
+├── structure      # 1 structural component
+└── uswds-wc       # Meta package (all components)
+```
+
+### Key Benefits
+
+**🎯 Install Only What You Need**
+- Import specific categories instead of the entire library
+- 50-80% smaller bundle sizes for most applications
+- Faster page loads and better performance
+
+**🔄 Independent Package Versioning**
+- Update individual packages without affecting others
+- Bug fixes and features ship independently
+- Reduced risk when updating dependencies
+
+**📦 Better Browser Caching**
+- Each package caches independently
+- Updates to one category don't invalidate others
+- Improved caching efficiency across deployments
+
+**🚀 Optimized Tree-Shaking**
+- Modern bundlers can eliminate unused code more effectively
+- Category boundaries make dead code elimination easier
+- Smaller production bundles automatically
+
+**🔮 Future-Proof Architecture**
+- Easy to add new component categories
+- New packages don't impact existing ones
+- Supports specialized packages (e.g., @uswds-wc/experimental)
+
+### Installation Options
+
+**Category Packages (Recommended)**
+```bash
+# Install only the categories you need
+npm install @uswds-wc/forms @uswds-wc/actions lit
+
+# Or with pnpm (recommended)
+pnpm add @uswds-wc/forms @uswds-wc/actions lit
+```
+
+**Full Library (All Components)**
+```bash
+# Install everything via meta package
+npm install @uswds-wc lit
+```
+
+**Core + Specific Categories**
+```bash
+# Core is always required, add categories as needed
+npm install @uswds-wc/core @uswds-wc/navigation lit
+```
+
+### Usage Examples
+
+**Category-Based Imports (Optimal)**
+```javascript
+// Import from specific categories
+import { USAButton, USAButtonGroup } from '@uswds-wc/actions';
+import { USATextInput, USACheckbox } from '@uswds-wc/forms';
+import { USAAlert, USAModal } from '@uswds-wc/feedback';
+
+// Import USWDS styles
+import '@uswds-wc/core/styles.css';
+```
+
+**Meta Package Import (Convenience)**
+```javascript
+// Import from single meta package
+import { USAButton, USATextInput, USAAlert } from '@uswds-wc';
+import '@uswds-wc/core/styles.css';
+```
+
+**Individual Component Import (Maximum Optimization)**
+```javascript
+// Import specific components for absolute minimal bundle
+import { USAButton } from '@uswds-wc/actions/components/button';
+import '@uswds-wc/core/styles.css';
+```
+
+### Bundle Size Comparison
+
+| Import Strategy | Components | Bundle Size | Use Case |
+|----------------|-----------|-------------|----------|
+| Full library (`@uswds-wc`) | All 45 | ~475 KB | Prototyping, using many components |
+| Category packages | 5-15 | ~120-180 KB | Typical application |
+| Individual imports | 2-5 | ~50-80 KB | Minimal, focused applications |
+
+### Future Scalability
+
+The monorepo architecture enables seamless growth:
+
+**Adding New Components**
+- New components fit into existing categories
+- No breaking changes to existing packages
+- Users adopt at their own pace
+
+**New Component Categories**
+- Add specialized categories as needed (e.g., @uswds-wc/charts, @uswds-wc/maps)
+- Existing users unaffected
+- Clear organization as library grows
+
+**Experimental Features**
+- `@uswds-wc/experimental` package for beta features
+- Test new components without affecting stable packages
+- Smooth migration path to stable when ready
+
+**Specialized Packages**
+- Framework-specific helpers (e.g., @uswds-wc/react-helpers)
+- Testing utilities (e.g., @uswds-wc/test-utils)
+- Theme packages (e.g., @uswds-wc/themes)
+
+**Example Future Packages:**
+```
+@uswds-wc/
+├── forms           # Current
+├── navigation      # Current
+├── charts          # Future: Data visualization components
+├── maps            # Future: Geospatial components
+├── experimental    # Future: Beta features
+├── react-helpers   # Future: React-specific utilities
+└── themes          # Future: Pre-built theme packages
+```
 
 ## 🎯 Project Mission
 
@@ -185,35 +325,56 @@ Content structure and organization component.
 ## 📦 Package Information
 
 ### Distribution
-- **Package Name:** `uswds-webcomponents`
+- **Organization:** `@uswds-wc`
+- **Packages:** 9 independent packages (8 categories + 1 meta package)
 - **License:** MIT
 - **Package Format:** ES Modules (ESM)
 - **Bundle Format:** Optimized with tree-shaking
-- **TypeScript Definitions:** Included
+- **TypeScript Definitions:** Included in all packages
 
-### Installation
+### Installation Examples
+
+**Recommended: Category Packages**
 ```bash
-npm install uswds-webcomponents
+# Install specific categories
+npm install @uswds-wc/forms @uswds-wc/actions lit
+
+# Core package (required for styles)
+npm install @uswds-wc/core lit
 ```
 
-### Usage
+**Convenience: Meta Package**
+```bash
+# Install all components
+npm install @uswds-wc lit
+```
+
+### Usage Examples
+
+**Category-Based Imports (Best Performance)**
 ```javascript
-// Import all components
-import 'uswds-webcomponents';
+// Import from specific categories
+import { USAButton, USAButtonGroup } from '@uswds-wc/actions';
+import { USATextInput, USACheckbox } from '@uswds-wc/forms';
+import { USAAlert, USAModal } from '@uswds-wc/feedback';
 
-// Import by category (tree-shakeable)
-import 'uswds-webcomponents/forms';        // All 15 form components
-import 'uswds-webcomponents/navigation';   // All 8 navigation components
-import 'uswds-webcomponents/actions';      // All 4 action components
+// Import styles
+import '@uswds-wc/core/styles.css';
+```
 
+**Meta Package Import**
+```javascript
+// Import from meta package
+import { USAButton, USATextInput, USAAlert } from '@uswds-wc';
+import '@uswds-wc/core/styles.css';
+```
+
+**Individual Component Import (Maximum Optimization)**
+```javascript
 // Import individual components
-import 'uswds-webcomponents/components/button';
-import 'uswds-webcomponents/forms/text-input';
-import 'uswds-webcomponents/navigation/header';
-
-// Named imports for TypeScript
-import { USAButton, USAButtonGroup } from 'uswds-webcomponents/actions';
-import { USATextInput, USACheckbox } from 'uswds-webcomponents/forms';
+import { USAButton } from '@uswds-wc/actions/components/button';
+import { USATextInput } from '@uswds-wc/forms/components/text-input';
+import '@uswds-wc/core/styles.css';
 ```
 
 ## 🎯 100% USWDS Compliance Achievement

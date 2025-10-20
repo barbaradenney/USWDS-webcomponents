@@ -16,16 +16,18 @@ const allowedRootFiles = [
   'README.md', 'CLAUDE.md', 'CHANGELOG.md', 'LICENSE',
   'CONTRIBUTING.md', 'SECURITY.md', 'CODE_OF_CONDUCT.md', // Standard open source files
   '.project-metadata.json', '.templates', // Documentation generation system
-  'package.json', 'package-lock.json', 'renovate.json',
+  'package.json', 'package-lock.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'renovate.json',
   'tsconfig.json', 'tsconfig.build.json', 'tsconfig.node.json', 'tsconfig.test.json',
   'vite.config.ts', 'vitest.config.ts', 'vitest.storybook.config.ts',
   'playwright.config.ts', 'playwright.comprehensive.config.ts',
   'cypress.config.ts', 'lighthouserc.js', 'postcss.config.cjs', 'gulpfile.cjs',
+  'turbo.json', // Turborepo configuration
   '.gitignore', '.eslintrc.json', '.prettierrc', '.nvmrc', '.editorconfig',
   'node_modules', 'dist', 'coverage', 'debug', 'reports', 'scratch',
   '__tests__', 'assets', 'compliance', 'cypress', 'docs', 'eslint-rules',
   'public', 'sass', 'scripts', 'src', 'test-results', 'playwright-report', '.git',
-  '.husky', '.storybook', '.vscode', '.DS_Store', 'storybook-static', 'compliance-reports'
+  '.husky', '.storybook', '.vscode', '.DS_Store', 'storybook-static', 'compliance-reports',
+  '.changeset', 'packages', 'test-reports' // Monorepo directories
 ];
 
 rootFiles.forEach(file => {
@@ -37,7 +39,7 @@ rootFiles.forEach(file => {
     if (file.endsWith('.html')) {
       violations.push(`❌ HTML file in root: ${file} (should be in debug/ or component folder)`);
     }
-    if (file.endsWith('.json') && !['package.json', 'package-lock.json', 'renovate.json', 'tsconfig.json'].includes(file)) {
+    if (file.endsWith('.json') && !['package.json', 'package-lock.json', 'renovate.json', 'tsconfig.json', 'turbo.json'].includes(file)) {
       violations.push(`❌ JSON file in root: ${file} (should be in reports/)`);
     }
     if ((file.endsWith('.js') || file.endsWith('.sh')) && file.startsWith('test-')) {

@@ -118,7 +118,7 @@ function updateDocTimestamps(metrics) {
       let content = readFileSync(filepath, 'utf8');
 
       // Update auto-generated timestamp
-      const timestampRegex = /> \*\*Auto-generated on:\*\* \{new Date\(\)\.toISOString\(\)\.split\('T'\)\[0\]\}/g;
+      const timestampRegex = /> \*\*Auto-generated on:\*\* \d{4}-\d{2}-\d{2}/g;
       const newTimestamp = `> **Auto-generated on:** ${metrics.timestamp}`;
 
       if (content.match(timestampRegex)) {
