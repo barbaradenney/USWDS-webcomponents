@@ -87,6 +87,10 @@ export class USACharacterCount extends USWDSBaseComponent {
     super.connectedCallback();
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
+
+    // CRITICAL: Prevent USWDS character-count JavaScript from running
+    // The USWDS behavior manipulates DOM directly which conflicts with Lit
+    this.setAttribute('data-js-character-count', 'false');
   }
 
   override async firstUpdated(changedProperties: Map<string, any>) {
@@ -331,7 +335,7 @@ export class USACharacterCount extends USWDSBaseComponent {
       <div
         class="${containerClasses}"
         data-maxlength="${this.maxlength}"
-        data-enhanced="false"
+        data-enhanced="true"
       >
         <label class="usa-label" for="${this.name}">
           ${this.label} ${this.renderRequiredIndicator()}
