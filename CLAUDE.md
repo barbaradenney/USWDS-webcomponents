@@ -372,32 +372,62 @@ See [docs/DOCUMENTATION_LIFECYCLE.md](docs/DOCUMENTATION_LIFECYCLE.md) for compl
 
 ## Pre-commit Validation
 
+### Smart Commit Detection
+Automatically detects commit type and skips unnecessary validations:
+- **Docs-only commits**: Skips unit tests and Cypress tests (saves 15-30s)
+- **Component commits**: Runs full validation suite
+- **Core file commits**: Runs global validations
+
+### Validation Stages
+
 Automated checks run before every commit:
-1. Repository organization cleanup
-2. Script organization
-3. USWDS script tag validation
-4. Layout forcing pattern
-5. Component issue detection
-6. USWDS compliance (includes component composition validation)
+1. **Smart commit type detection** (NEW)
+2. Repository organization cleanup
+3. Script organization
+4. USWDS script tag validation
+5. Layout forcing pattern
+6. Component issue detection
+7. USWDS compliance (includes component composition validation)
    - 4a: Custom USWDS class validation
    - 4b: **Custom CSS validation** (ensures only :host styles)
-7. Linting
-8. TypeScript compilation
-9. Code quality review
-10. Component-specific validations
-11. **Component Cypress tests** (NEW - automatic integration testing)
-    - Runs Cypress tests for modified components
-    - Only tests components with `.component.cy.ts` files
-    - Catches integration issues before commit
-12. Test expectations
+8. Linting
+9. TypeScript compilation
+10. Code quality review
+11. Component-specific validations
+12. **Component unit tests** (7a/9 - NEW)
+    - Runs unit tests for modified components first
+    - Fast failure detection (~2s per component)
+    - Catches logic errors before Cypress
+13. **Component Cypress tests** (7b/9 - IMPROVED)
+    - Parallel execution for multiple components
+    - 3x faster for multi-component commits
+    - Full integration testing
+14. Test expectations
     - 8a: Component regression tests
     - 8b: Test skip policy enforcement
     - 8c: Cypress test pattern validation
-13. USWDS transformation validation
-14. Component JavaScript integration
-15. Documentation synchronization
+15. USWDS transformation validation
+16. Component JavaScript integration
+17. Documentation synchronization
     - 11a: **Documentation hygiene** (blocks uncategorized docs)
     - 11b: Documentation placeholders
+
+### Performance Optimizations
+
+**Unit Tests First** (NEW):
+- Runs unit tests before Cypress
+- Failure detection: 2s (unit) vs 15s (Cypress)
+- Better layered testing approach
+
+**Parallel Cypress** (IMPROVED):
+- Multiple components tested simultaneously
+- 3 components: 15s (parallel) vs 45s (serial)
+- 3x faster for multi-component commits
+
+**Smart Detection** (NEW):
+- Docs-only commits skip component tests
+- Saves 15-30s on documentation changes
+- Automatically enabled
 
 **Note**: AI code quality validation moved to post-commit (non-blocking) to prevent false positives from blocking valid commits.
 
