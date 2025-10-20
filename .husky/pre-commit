@@ -1,7 +1,54 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 echo "🎯 Running component-specific pre-commit validation..."
 echo ""
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Performance Metrics Tracking (NEW - measures validation performance)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VALIDATION_START=$(date +%s)
+METRICS_FILE=".git/validation-metrics.json"
+
+# Initialize stage timings (using parallel arrays for bash 3.2 compatibility)
+STAGE_IDS=()
+STAGE_NAMES=()
+STAGE_START_TIMES=()
+STAGE_DURATIONS=()
+
+# Helper function to find stage index by ID
+find_stage_index() {
+  local stage_id=$1
+  for i in "${!STAGE_IDS[@]}"; do
+    if [ "${STAGE_IDS[$i]}" = "$stage_id" ]; then
+      echo $i
+      return 0
+    fi
+  done
+  echo -1
+}
+
+# Helper function to start timing a stage
+start_stage() {
+  STAGE_ID=$1
+  STAGE_NAME=$2
+  STAGE_IDS+=("$STAGE_ID")
+  STAGE_NAMES+=("$STAGE_NAME")
+  # Use Python for millisecond precision (macOS date doesn't support %N)
+  STAGE_START_TIMES+=($(python3 -c "import time; print(int(time.time() * 1000))"))
+  STAGE_DURATIONS+=(0)  # placeholder
+}
+
+# Helper function to end timing a stage
+end_stage() {
+  STAGE_ID=$1
+  STAGE_END=$(python3 -c "import time; print(int(time.time() * 1000))")
+  INDEX=$(find_stage_index "$STAGE_ID")
+  if [ "$INDEX" -ge 0 ]; then
+    STAGE_START=${STAGE_START_TIMES[$INDEX]}
+    STAGE_DURATIONS[$INDEX]=$((STAGE_END - STAGE_START))
+  fi
+}
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Smart Commit Type Detection (NEW - skips unnecessary validations)
@@ -171,18 +218,22 @@ fi
 
 # Linting (fast, blocks bad code)
 echo "🔍 5/9 Linting..."
+start_stage "lint" "Linting"
 npm run lint > /dev/null 2>&1 || {
   echo "❌ Linting failed! Run: npm run lint"
   exit 1
 }
+end_stage "lint"
 echo "   ✅ Pass"
 
 # TypeScript (fast, blocks type errors)
 echo "📘 6/9 TypeScript compilation..."
+start_stage "typescript" "TypeScript"
 npm run typecheck > /dev/null 2>&1 || {
   echo "❌ TypeScript errors! Run: npm run typecheck"
   exit 1
 }
+end_stage "typescript"
 echo "   ✅ Pass"
 
 # Code Quality Review (NEW - validates code quality standards)
@@ -243,6 +294,7 @@ fi
 # Component unit tests (NEW - fast failure for logic issues)
 if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ] && [ "$SKIP_TESTS" = false ]; then
   echo "🧪 7a/9 Component unit tests..."
+  start_stage "unit_tests" "Component unit tests"
 
   UNIT_TESTS_RUN=0
 
@@ -267,6 +319,7 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ] && [ "$SKIP_TESTS" = false ]; then
   if [ "$UNIT_TESTS_RUN" -eq 0 ]; then
     echo "   ⏭️  Skipped (no unit tests for modified components)"
   fi
+  end_stage "unit_tests"
 elif [ "$SKIP_TESTS" = true ]; then
   echo "🧪 7a/9 Component unit tests..."
   echo "   ⏭️  Skipped (docs-only commit)"
@@ -278,6 +331,7 @@ fi
 # Component Cypress tests (NEW - parallel execution for multiple components)
 if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ] && [ "$SKIP_TESTS" = false ]; then
   echo "🎭 7b/9 Component Cypress tests..."
+  start_stage "cypress" "Cypress tests"
 
   # Collect all Cypress test files
   CYPRESS_SPECS=""
@@ -322,6 +376,7 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ] && [ "$SKIP_TESTS" = false ]; then
   else
     echo "   ⏭️  Skipped (modified components have no Cypress tests)"
   fi
+  end_stage "cypress"
 elif [ "$SKIP_TESTS" = true ]; then
   echo "🎭 7b/9 Component Cypress tests..."
   echo "   ⏭️  Skipped (docs-only commit)"
@@ -556,6 +611,77 @@ fi
 echo ""
 echo "✅ All checks passed!"
 echo ""
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Performance Metrics Dashboard
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VALIDATION_END=$(date +%s)
+TOTAL_TIME=$((VALIDATION_END - VALIDATION_START))
+
+# Display performance metrics if any stages were tracked
+if [ ${#STAGE_DURATIONS[@]} -gt 0 ]; then
+  echo "⏱️  Validation Performance:"
+  echo ""
+
+  # Display each tracked stage
+  TOTAL_TRACKED=0
+  for i in "${!STAGE_IDS[@]}"; do
+    duration_ms=${STAGE_DURATIONS[$i]}
+    duration_s=$(echo "scale=2; $duration_ms / 1000" | bc)
+    stage_name=${STAGE_NAMES[$i]}
+
+    # Format with padding for alignment
+    printf "   %-25s %6.2fs\n" "$stage_name:" "$duration_s"
+
+    TOTAL_TRACKED=$((TOTAL_TRACKED + duration_ms))
+  done
+
+  echo "   ─────────────────────────────────"
+  TOTAL_TRACKED_S=$(echo "scale=2; $TOTAL_TRACKED / 1000" | bc)
+  printf "   %-25s %6.2fs\n" "Tracked time:" "$TOTAL_TRACKED_S"
+  printf "   %-25s %6ds\n" "Total time:" "$TOTAL_TIME"
+  echo ""
+
+  # Save metrics to file for historical tracking
+  TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+  mkdir -p .git/metrics
+
+  # Create JSON entry
+  cat > "$METRICS_FILE.tmp" << EOF
+{
+  "timestamp": "$TIMESTAMP",
+  "total_seconds": $TOTAL_TIME,
+  "tracked_milliseconds": $TOTAL_TRACKED,
+  "commit_type": "$([ "$SKIP_TESTS" = true ] && echo "docs-only" || echo "code-commit")",
+  "modified_components": $MODIFIED_COMPONENT_COUNT,
+  "stages": {
+EOF
+
+  # Add each stage to JSON
+  FIRST=true
+  for i in "${!STAGE_IDS[@]}"; do
+    stage_id=${STAGE_IDS[$i]}
+    duration_ms=${STAGE_DURATIONS[$i]}
+    stage_name=${STAGE_NAMES[$i]}
+
+    if [ "$FIRST" = true ]; then
+      FIRST=false
+    else
+      echo "," >> "$METRICS_FILE.tmp"
+    fi
+
+    printf '    "%s": %d' "$stage_id" "$duration_ms" >> "$METRICS_FILE.tmp"
+  done
+
+  cat >> "$METRICS_FILE.tmp" << EOF
+
+  }
+}
+EOF
+
+  mv "$METRICS_FILE.tmp" "$METRICS_FILE"
+fi
 
 # Summary based on what was checked
 TOTAL_STAGES=11
