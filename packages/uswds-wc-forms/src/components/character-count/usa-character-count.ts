@@ -347,14 +347,8 @@ export class USACharacterCount extends USWDSBaseComponent {
         >
           ${this.getCharacterCountMessage()}
         </span>
-        <!-- Character count status (for screen readers, references same message content) -->
-        <span
-          class="usa-character-count__status usa-hint${this._isOverLimit ? ' usa-character-count__status--invalid' : ''}"
-          id="${this.name}-status"
-          aria-hidden="true"
-        >
-        </span>
-        <span class="usa-sr-only usa-character-count__sr-status" aria-live="polite" aria-atomic="true">
+        <!-- Screen reader announcements (hidden from visual display) -->
+        <span class="usa-sr-only usa-character-count__sr-status" id="${this.name}-status" aria-live="polite" aria-atomic="true">
           ${this.getCharacterCountMessage()}
         </span>
       </div>
