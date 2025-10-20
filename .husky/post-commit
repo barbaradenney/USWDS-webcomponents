@@ -214,3 +214,34 @@ if echo "$COMMIT_MESSAGE" | grep -q -i "no-verify"; then
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
 fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# AI Code Quality Validation (Post-Commit - Non-Blocking)
+# Moved from pre-commit to prevent false positives from blocking commits
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+echo ""
+echo "🤖 Running AI code quality validation (informational)..."
+echo ""
+
+# Run AI quality validation
+if node scripts/validate/ai-code-quality-validator.cjs 2>&1 | tee /tmp/ai-quality-report.txt; then
+  echo ""
+  echo "✅ No AI code quality issues detected"
+else
+  echo ""
+  echo "⚠️  AI Code Quality Issues Found (non-blocking)"
+  echo ""
+  cat /tmp/ai-quality-report.txt
+  echo ""
+  echo "💡 These issues don't block your commit but should be addressed:"
+  echo "   • Remove console.log statements"
+  echo "   • Clean up debugging code"
+  echo "   • Add cleanup to event listeners/timers"
+  echo "   • Use specific error messages"
+  echo ""
+  echo "📖 See: docs/AI_CODE_QUALITY_GUIDE.md"
+  echo ""
+fi
+
+rm -f /tmp/ai-quality-report.txt
