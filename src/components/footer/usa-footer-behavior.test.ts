@@ -230,12 +230,14 @@ describe('USWDS Footer Behavior Contract', () => {
       // Open first panel
       firstButton.click();
       await waitForBehaviorInit(element);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
 
       expect(firstButton.getAttribute('aria-expanded')).toBe('true');
 
       // Open second panel
       secondButton.click();
       await waitForBehaviorInit(element);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
 
       expect(secondButton.getAttribute('aria-expanded')).toBe('true');
       expect(firstButton.getAttribute('aria-expanded')).toBe('false');

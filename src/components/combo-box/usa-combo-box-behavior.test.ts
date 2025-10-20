@@ -171,11 +171,13 @@ describe('USWDS Combo Box Behavior Contract', () => {
 
       toggleBtn.click();
       await waitForBehaviorInit(element);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
 
       expect(inputEl.getAttribute('aria-expanded')).toBe('true');
 
       toggleBtn.click();
       await waitForBehaviorInit(element);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Additional wait for CI
 
       expect(inputEl.getAttribute('aria-expanded')).toBe('false');
     });
