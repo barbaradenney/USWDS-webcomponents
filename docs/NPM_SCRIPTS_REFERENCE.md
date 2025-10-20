@@ -52,13 +52,14 @@ Unit testing with Vitest.
 
 Linting, formatting, and quality checks.
 
-| Command                 | Description                      | Usage                            |
-| ----------------------- | -------------------------------- | -------------------------------- |
-| `npm run lint`          | Run ESLint on source files       | Check for code issues            |
-| `npm run lint:fix`      | Auto-fix ESLint issues           | Fix formatting and simple errors |
-| `npm run format`        | Format code with Prettier        | Apply consistent code style      |
-| `npm run format:check`  | Check formatting without changes | Verify code style compliance     |
-| `npm run quality:check` | Run tests + typecheck + lint     | **Pre-commit quality gate**      |
+| Command                      | Description                           | Usage                            |
+| ---------------------------- | ------------------------------------- | -------------------------------- |
+| `npm run lint`               | Run ESLint on source files            | Check for code issues            |
+| `npm run lint:fix`           | Auto-fix ESLint issues                | Fix formatting and simple errors |
+| `npm run format`             | Format code with Prettier             | Apply consistent code style      |
+| `npm run format:check`       | Check formatting without changes      | Verify code style compliance     |
+| `npm run quality:check`      | Run tests + typecheck + lint          | **Pre-commit quality gate**      |
+| `npm run validate:no-custom-css` | Validate pure USWDS CSS compliance | Prevent custom CSS in components |
 
 ### 🔬 E2E TESTING
 

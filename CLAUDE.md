@@ -379,21 +379,35 @@ Automated checks run before every commit:
 4. Layout forcing pattern
 5. Component issue detection
 6. USWDS compliance (includes component composition validation)
+   - 4a: Custom USWDS class validation
+   - 4b: **Custom CSS validation** (ensures only :host styles)
 7. Linting
 8. TypeScript compilation
 9. Code quality review
-10. **AI code quality validation** (detects AI anti-patterns)
-11. Component-specific validations
-12. Test expectations
-13. USWDS transformation validation
-14. Component JavaScript integration
-15. Documentation synchronization
-16. **Documentation hygiene** (blocks uncategorized docs)
+   - 6a: Code quality review
+   - 6b: **AI code quality validation** (detects AI anti-patterns)
+10. Component-specific validations
+11. Test expectations
+    - 8a: Component regression tests
+    - 8b: Test skip policy enforcement
+    - 8c: Cypress test pattern validation
+12. USWDS transformation validation
+13. Component JavaScript integration
+14. Documentation synchronization
+    - 11a: **Documentation hygiene** (blocks uncategorized docs)
+    - 11b: Documentation placeholders
 
 **Component Composition Validation** (included in #6):
 - Checks that components use web component tags (`<usa-search>`)
 - Detects inline HTML duplication (`class="usa-search"`)
 - Prevents architectural violations automatically
+
+**Custom CSS Validation** (stage 4b/9):
+- Enforces pure USWDS CSS compliance
+- Only allows :host styles for web component functionality
+- Blocks cosmetic CSS (colors, padding, margin, fonts)
+- Prevents !important overrides and descendant selectors
+- See `scripts/validate/validate-no-custom-css.js` for details
 
 ## AI Code Quality System
 
