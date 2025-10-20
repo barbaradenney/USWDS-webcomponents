@@ -204,12 +204,18 @@ describe('USASideNavigation', () => {
       element.items = [];
       await waitForUpdate(element);
 
+      // In light DOM pattern, slot elements are replaced with slotted content
+      // When no slotted content exists, the slot is removed
       const slot = element.querySelector('slot');
-      expect(slot).toBeTruthy();
+      expect(slot).toBeFalsy(); // Slot should be replaced/removed by moveSlottedContent()
 
-      // Should not render nav structure
+      // Nav container should always exist now
       const nav = element.querySelector('nav');
-      expect(nav).toBe(null);
+      expect(nav).toBeTruthy();
+
+      // But there should be no list items
+      const list = element.querySelector('.usa-sidenav');
+      expect(list).toBeFalsy();
     });
   });
 
@@ -352,8 +358,14 @@ describe('USASideNavigation', () => {
       const nav = element.querySelector('nav');
       const slot = element.querySelector('slot');
 
-      expect(nav).toBe(null);
-      expect(slot).toBeTruthy();
+      // Nav container always exists now to prevent hierarchy errors
+      expect(nav).toBeTruthy();
+      // Slot is removed by moveSlottedContent() in firstUpdated
+      expect(slot).toBeFalsy();
+
+      // But there should be no list
+      const list = element.querySelector('.usa-sidenav');
+      expect(list).toBeFalsy();
     });
 
     it('should handle items with empty subnav arrays', async () => {

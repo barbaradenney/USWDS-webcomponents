@@ -80,7 +80,13 @@ export class USAModal extends USWDSBaseComponent {
   @property({ type: Boolean, reflect: true })
   open = false;
 
-  // Slot content handling to prevent duplication
+  // ARCHITECTURE NOTE: Modal uses custom slot handling (not standard moveSlottedContent pattern)
+  // Reason: USWDS moves modal to document.body during transformation.
+  // We must wait for transformation, then apply slots to the moved DOM.
+  // Standard pattern assumes slots stay within component - doesn't work here.
+  // This custom implementation with mutation observers and retry logic is necessary.
+
+  // Slot content handling for custom modal pattern
   private slottedContent: string = '';
   private slotApplicationAttempts = 0;
   private maxSlotApplicationAttempts = 40; // 40 * 50ms = 2 seconds max

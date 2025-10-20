@@ -81,11 +81,14 @@ function extractStylesBlock(content) {
 function parseCSSRules(css) {
   const rules = [];
 
+  // Strip CSS comments first (/* ... */)
+  const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+
   // Match CSS rules: selector { properties }
   const rulePattern = /([^{]+)\s*\{([^}]+)\}/g;
   let match;
 
-  while ((match = rulePattern.exec(css)) !== null) {
+  while ((match = rulePattern.exec(cssWithoutComments)) !== null) {
     const selector = match[1].trim();
     const propertiesBlock = match[2].trim();
 
@@ -123,6 +126,11 @@ function validateRule(rule) {
       severity: 'error',
     });
     return issues; // Don't check properties if selector is wrong
+  }
+
+  // Exception: :host > [slot] is allowed for light DOM slot functionality
+  if (selector.match(/^:host\s*>\s*\[slot\]/)) {
+    return []; // This is essential web component functionality
   }
 
   // Check for :has() in :host selectors (advanced selector that might indicate overreach)

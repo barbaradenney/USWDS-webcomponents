@@ -439,9 +439,10 @@ describe('USASiteAlert', () => {
       const textContainer = element.querySelector('.usa-alert__text');
       expect(textContainer).toBeTruthy();
 
-      // Should render slot
+      // In light DOM pattern, slot elements are replaced with slotted content
+      // When no slotted content exists, the slot is removed leaving an empty container
       const slotElement = textContainer?.querySelector('slot');
-      expect(slotElement).toBeTruthy();
+      expect(slotElement).toBeFalsy(); // Slot should be replaced/removed by moveSlottedContent()
     });
 
     it('should handle complex HTML content in slot', async () => {

@@ -290,9 +290,10 @@ describe('USASummaryBox', () => {
       const textContainer = element.querySelector('.usa-summary-box__text');
       expect(textContainer).toBeTruthy();
 
-      // Should render slot instead of empty property content
+      // In light DOM pattern, slot elements are replaced with slotted content
+      // When no slotted content exists, the slot is removed leaving an empty container
       const slotElement = textContainer?.querySelector('slot');
-      expect(slotElement).toBeTruthy();
+      expect(slotElement).toBeFalsy(); // Slot should be replaced/removed by moveSlottedContent()
     });
 
     it('should handle whitespace-only content', async () => {
@@ -371,10 +372,11 @@ describe('USASummaryBox', () => {
       const heading = element.querySelector('.usa-summary-box__heading');
       expect(heading?.textContent).toBe('true');
 
-      // Boolean false gets coerced to empty string, so slot content is rendered instead
+      // Boolean false gets coerced to empty string, so slot is rendered initially
+      // In light DOM pattern, slot elements are replaced with slotted content by moveSlottedContent()
       const textContainer = element.querySelector('.usa-summary-box__text');
       const slotElement = textContainer?.querySelector('slot');
-      expect(slotElement).toBeTruthy();
+      expect(slotElement).toBeFalsy(); // Slot should be replaced/removed by moveSlottedContent()
     });
   });
 

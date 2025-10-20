@@ -36,6 +36,11 @@ export class USASideNavigation extends LitElement {
     :host {
       display: block;
     }
+
+    /* Hide slotted elements that appear as direct children (light DOM slot workaround) */
+    :host > [slot] {
+      display: none !important;
+    }
   `;
 
   @property({ type: Array })
@@ -44,7 +49,6 @@ export class USASideNavigation extends LitElement {
   @property({ type: String, attribute: 'aria-label' })
   override ariaLabel = 'Secondary navigation';
 
-  private slottedContent: string = '';
   private uswdsInitialized = false;
 
   // Use light DOM for USWDS compatibility
@@ -58,33 +62,44 @@ export class USASideNavigation extends LitElement {
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial light DOM content before render to prevent duplication
-    if (this.childNodes.length > 0 && this.items.length === 0) {
-      this.slottedContent = this.innerHTML;
-      this.innerHTML = '';
-    }
-
     this.initializeUSWDSSideNavigation();
   }
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
-    // Apply captured content using DOM manipulation
-    this.applySlottedContent();
+  override firstUpdated(changedProperties: Map<string, any>) {
+    super.firstUpdated(changedProperties);
+
+    // Move slotted content into their slot placeholders (light DOM slot workaround)
+    this.moveSlottedContent();
   }
 
-  private applySlottedContent() {
-    if (this.slottedContent) {
-      const slotElement = this.querySelector('slot');
-      if (slotElement && this.items.length === 0) {
-        // Parse content safely using DOMParser instead of innerHTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(`<div>${this.slottedContent}</div>`, 'text/html');
-        const tempDiv = doc.querySelector('div');
+  private moveSlottedContent() {
+    // In light DOM, slots don't automatically project content
+    // We need to manually move slotted elements into their slot locations
 
-        if (tempDiv) {
-          slotElement.replaceWith(...Array.from(tempDiv.childNodes));
-        }
+    // Handle default slot (elements without slot attribute)
+    const defaultSlot = this.querySelector('slot:not([name])');
+    if (defaultSlot) {
+      // Get all direct children that should go in the default slot
+      // Exclude: elements with slot attribute, STYLE tags, and navigation elements
+      const defaultSlottedElements = Array.from(this.children).filter(
+        (el) =>
+          !el.hasAttribute('slot') &&
+          el.tagName !== 'STYLE' &&
+          el.tagName !== 'NAV'
+      );
+
+      if (defaultSlottedElements.length > 0) {
+        // Create a document fragment to hold the slotted content
+        const fragment = document.createDocumentFragment();
+        defaultSlottedElements.forEach((el) => {
+          fragment.appendChild(el);
+        });
+
+        // Replace the slot with the fragment
+        defaultSlot.replaceWith(fragment);
+      } else {
+        // No default slot content, just remove the empty slot
+        defaultSlot.remove();
       }
     }
   }
@@ -153,13 +168,17 @@ export class USASideNavigation extends LitElement {
     return this.items.map((item) => this.renderNavItem(item));
   }
   override render() {
-    if (this.items.length === 0) return html`<slot></slot>`;
-
+    // Always render the container to avoid hierarchy errors with light DOM slots
     return html`
       <nav aria-label="${this.ariaLabel}">
-        <ul class="usa-sidenav usa-sidenav__list">
-          ${this.renderNavItems()}
-        </ul>
+        ${this.items.length === 0
+          ? html`<slot></slot>`
+          : html`
+            <ul class="usa-sidenav usa-sidenav__list">
+              ${this.renderNavItems()}
+            </ul>
+          `
+        }
       </nav>
     `;
   }

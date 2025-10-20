@@ -33,6 +33,11 @@ export class USAProcessList extends LitElement {
     :host {
       display: block;
     }
+
+    /* Hide slotted elements that appear as direct children (light DOM slot workaround) */
+    :host > [slot] {
+      display: none !important;
+    }
   `;
 
   @property({ type: Array })
@@ -40,8 +45,6 @@ export class USAProcessList extends LitElement {
 
   @property({ type: String })
   headingLevel = 'h4';
-
-  private slottedContent: string = '';
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
@@ -53,37 +56,43 @@ export class USAProcessList extends LitElement {
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
-
-    // Capture any initial light DOM content before render to prevent duplication
-    if (this.childNodes.length > 0 && this.items.length === 0) {
-      this.slottedContent = this.innerHTML;
-      this.innerHTML = '';
-    }
   }
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
+  override firstUpdated(changedProperties: Map<string, any>) {
+    super.firstUpdated(changedProperties);
 
-    // Apply slotted content if no items are provided
-    this.applySlottedContent();
+    // Move slotted content into their slot placeholders (light DOM slot workaround)
+    this.moveSlottedContent();
   }
 
-  private applySlottedContent() {
-    if (this.slottedContent && this.items.length === 0) {
-      // If no items provided, use slotted content (avoid innerHTML in light DOM)
-      const slotElement = this.querySelector('slot');
-      if (slotElement && slotElement.parentElement) {
-        // Create a temporary div to parse content safely
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = this.slottedContent;
+  private moveSlottedContent() {
+    // In light DOM, slots don't automatically project content
+    // We need to manually move slotted elements into their slot locations
 
-        // Move nodes from temp div to slot parent
-        while (tempDiv.firstChild) {
-          slotElement.parentElement.insertBefore(tempDiv.firstChild, slotElement);
-        }
+    // Handle default slot (elements without slot attribute)
+    const defaultSlot = this.querySelector('slot:not([name])');
+    if (defaultSlot) {
+      // Get all direct children that should go in the default slot
+      // Exclude: elements with slot attribute, STYLE tags, and elements already inside .usa-process-list
+      const defaultSlottedElements = Array.from(this.children).filter(
+        (el) =>
+          !el.hasAttribute('slot') &&
+          el.tagName !== 'STYLE' &&
+          !el.classList.contains('usa-process-list')
+      );
 
-        // Remove the slot element
-        slotElement.remove();
+      if (defaultSlottedElements.length > 0) {
+        // Create a document fragment to hold the slotted content
+        const fragment = document.createDocumentFragment();
+        defaultSlottedElements.forEach((el) => {
+          fragment.appendChild(el);
+        });
+
+        // Replace the slot with the fragment
+        defaultSlot.replaceWith(fragment);
+      } else {
+        // No default slot content, just remove the empty slot
+        defaultSlot.remove();
       }
     }
   }
@@ -132,13 +141,10 @@ export class USAProcessList extends LitElement {
     // Additional cleanup for event listeners would go here
   }
   override render() {
-    if (this.items.length === 0) {
-      return html`<slot></slot>`;
-    }
-
+    // Always render the container to avoid hierarchy errors with light DOM slots
     return html`
       <ol class="usa-process-list">
-        ${this.items.map((item) => this.renderProcessItem(item))}
+        ${this.items.length === 0 ? html`<slot></slot>` : this.items.map((item) => this.renderProcessItem(item))}
       </ol>
     `;
   }

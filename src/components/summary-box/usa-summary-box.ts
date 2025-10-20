@@ -27,6 +27,11 @@ export class USASummaryBox extends LitElement {
     :host {
       display: block;
     }
+
+    /* Hide slotted elements that appear as direct children (light DOM slot workaround) */
+    :host > [slot] {
+      display: none !important;
+    }
   `;
 
   @property({ type: String })
@@ -51,6 +56,62 @@ export class USASummaryBox extends LitElement {
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
+  }
+
+  override firstUpdated(changedProperties: Map<string, any>) {
+    // ARCHITECTURE: Script Tag Pattern
+    // USWDS is loaded globally via script tag in .storybook/preview-head.html
+    // Components just render HTML - USWDS enhances automatically via window.USWDS
+
+    super.firstUpdated(changedProperties);
+
+    // Move slotted content into their slot placeholders (light DOM slot workaround)
+    this.moveSlottedContent();
+  }
+
+  private moveSlottedContent() {
+    // In light DOM, slots don't automatically project content
+    // We need to manually move slotted elements into their slot locations
+
+    // Handle named slots first
+    const slottedElements = Array.from(this.querySelectorAll('[slot]'));
+    slottedElements.forEach((element) => {
+      const slotName = element.getAttribute('slot');
+      if (slotName) {
+        const slotElement = this.querySelector(`slot[name="${slotName}"]`);
+        if (slotElement) {
+          // Replace the slot element with the actual slotted content
+          slotElement.replaceWith(element);
+        }
+      }
+    });
+
+    // Handle default slot (elements without slot attribute)
+    const defaultSlot = this.querySelector('slot:not([name])');
+    if (defaultSlot) {
+      // Get all direct children that should go in the default slot
+      // Exclude: elements with slot attribute, STYLE tags, and elements already inside .usa-summary-box
+      const defaultSlottedElements = Array.from(this.children).filter(
+        (el) =>
+          !el.hasAttribute('slot') &&
+          el.tagName !== 'STYLE' &&
+          !el.classList.contains('usa-summary-box')
+      );
+
+      if (defaultSlottedElements.length > 0) {
+        // Create a document fragment to hold the slotted content
+        const fragment = document.createDocumentFragment();
+        defaultSlottedElements.forEach((el) => {
+          fragment.appendChild(el);
+        });
+
+        // Replace the slot with the fragment
+        defaultSlot.replaceWith(fragment);
+      } else {
+        // No default slot content, just remove the empty slot
+        defaultSlot.remove();
+      }
+    }
   }
 
   private renderHeading() {

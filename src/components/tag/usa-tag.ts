@@ -28,6 +28,11 @@ export class USATag extends LitElement {
     :host {
       display: inline-block;
     }
+
+    /* Hide slotted elements that appear as direct children (light DOM slot workaround) */
+    :host > [slot] {
+      display: none !important;
+    }
   `;
 
   @property({ type: String })
@@ -42,8 +47,6 @@ export class USATag extends LitElement {
   @property({ type: String })
   value = '';
 
-  private slottedContent: string = '';
-
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
     return this as any;
@@ -54,31 +57,43 @@ export class USATag extends LitElement {
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
-
-    // Capture any initial content before render
-    if (this.childNodes.length > 0 && !this.text) {
-      this.slottedContent = this.innerHTML;
-      this.innerHTML = '';
-    }
   }
 
-  override updated(changedProperties: Map<string, any>) {
-    super.updated(changedProperties);
+  override firstUpdated(changedProperties: Map<string, any>) {
+    super.firstUpdated(changedProperties);
 
-    // Apply captured content using DOM manipulation (avoids directive compatibility issues)
-    this.applySlottedContent();
+    // Move slotted content into their slot placeholders (light DOM slot workaround)
+    this.moveSlottedContent();
   }
 
-  private applySlottedContent() {
-    if (this.slottedContent && !this.text) {
-      const tagSpan = this.querySelector('.usa-tag');
-      if (tagSpan) {
-        // Clear existing content except remove button
-        const removeButton = tagSpan.querySelector('button');
-        tagSpan.innerHTML = this.slottedContent;
-        if (removeButton) {
-          tagSpan.appendChild(removeButton);
-        }
+  private moveSlottedContent() {
+    // In light DOM, slots don't automatically project content
+    // We need to manually move slotted elements into their slot locations
+
+    // Handle default slot (elements without slot attribute)
+    const defaultSlot = this.querySelector('slot:not([name])');
+    if (defaultSlot) {
+      // Get all direct children that should go in the default slot
+      // Exclude: elements with slot attribute, STYLE tags, and elements already inside .usa-tag
+      const defaultSlottedElements = Array.from(this.children).filter(
+        (el) =>
+          !el.hasAttribute('slot') &&
+          el.tagName !== 'STYLE' &&
+          !el.classList.contains('usa-tag')
+      );
+
+      if (defaultSlottedElements.length > 0) {
+        // Create a document fragment to hold the slotted content
+        const fragment = document.createDocumentFragment();
+        defaultSlottedElements.forEach((el) => {
+          fragment.appendChild(el);
+        });
+
+        // Replace the slot with the fragment
+        defaultSlot.replaceWith(fragment);
+      } else {
+        // No default slot content, just remove the empty slot
+        defaultSlot.remove();
       }
     }
   }
@@ -108,10 +123,6 @@ export class USATag extends LitElement {
     console.log('Tag: Cleanup complete (no USWDS JavaScript required)');
   }
 
-  private renderTagContent() {
-    return this.text ? this.text : html`<slot></slot>`;
-  }
-
   private renderRemoveButton() {
     if (!this.removable) return '';
 
@@ -136,7 +147,7 @@ export class USATag extends LitElement {
     // prettier-ignore
     return html`
       <span class="${tagClasses}">
-        ${this.renderTagContent()}
+        ${this.text ? this.text : html`<slot></slot>`}
         ${this.renderRemoveButton()}
       </span>
     `;

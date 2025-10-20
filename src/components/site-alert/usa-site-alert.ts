@@ -31,6 +31,11 @@ export class USASiteAlert extends LitElement {
     :host {
       display: block;
     }
+
+    /* Hide slotted elements that appear as direct children (light DOM slot workaround) */
+    :host > [slot] {
+      display: none !important;
+    }
   `;
 
   @property({ type: String })
@@ -65,8 +70,6 @@ export class USASiteAlert extends LitElement {
   @property({ type: String, attribute: 'close-label' })
   closeLabel = 'Close';
 
-  private slottedContent: string = '';
-
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
     return this as any;
@@ -77,65 +80,58 @@ export class USASiteAlert extends LitElement {
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
+  }
 
-    // Capture any initial light DOM content before render to prevent duplication
-    if (this.childNodes.length > 0 && !this.content) {
-      this.slottedContent = this.innerHTML;
-      this.innerHTML = '';
-    }
+  override firstUpdated(changedProperties: Map<string, any>) {
+    super.firstUpdated(changedProperties);
+
+    // Move slotted content into their slot placeholders (light DOM slot workaround)
+    this.moveSlottedContent();
   }
 
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    // Apply captured content using DOM manipulation (avoids directive compatibility issues)
-    this.applySlottedContent();
-  }
-
-  private applySlottedContent() {
-    if (this.slottedContent && !this.content) {
+    // Update content via textContent when content property changes
+    if (changedProperties.has('content') && this.content) {
       const textElement = this.querySelector('.usa-alert__text');
       if (textElement) {
-        // Clear existing content except slot safely
-        const slot = textElement.querySelector('slot');
-        if (slot) {
-          // Create temp div to parse content safely
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = this.slottedContent;
-
-          // Replace slot with parsed content
-          while (tempDiv.firstChild) {
-            textElement.insertBefore(tempDiv.firstChild, slot);
-          }
-          slot.remove();
-        } else {
-          // Clear and add content safely
-          while (textElement.firstChild) {
-            textElement.removeChild(textElement.firstChild);
-          }
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = this.slottedContent;
-          while (tempDiv.firstChild) {
-            textElement.appendChild(tempDiv.firstChild);
-          }
-        }
-      }
-    }
-
-    // Apply content property if provided (safely)
-    if (this.content) {
-      const textElement = this.querySelector('.usa-alert__text');
-      if (textElement) {
-        // Clear and set content safely
-        while (textElement.firstChild) {
-          textElement.removeChild(textElement.firstChild);
-        }
         textElement.textContent = this.content;
       }
     }
   }
 
+  private moveSlottedContent() {
+    // In light DOM, slots don't automatically project content
+    // We need to manually move slotted elements into their slot locations
 
+    // Handle default slot (elements without slot attribute)
+    const defaultSlot = this.querySelector('slot:not([name])');
+    if (defaultSlot) {
+      // Get all direct children that should go in the default slot
+      // Exclude: elements with slot attribute, STYLE tags, and elements already inside .usa-site-alert
+      const defaultSlottedElements = Array.from(this.children).filter(
+        (el) =>
+          !el.hasAttribute('slot') &&
+          el.tagName !== 'STYLE' &&
+          !el.classList.contains('usa-site-alert')
+      );
+
+      if (defaultSlottedElements.length > 0) {
+        // Create a document fragment to hold the slotted content
+        const fragment = document.createDocumentFragment();
+        defaultSlottedElements.forEach((el) => {
+          fragment.appendChild(el);
+        });
+
+        // Replace the slot with the fragment
+        defaultSlot.replaceWith(fragment);
+      } else {
+        // No default slot content, just remove the empty slot
+        defaultSlot.remove();
+      }
+    }
+  }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
@@ -151,9 +147,6 @@ export class USASiteAlert extends LitElement {
       console.warn('📋 SiteAlert: Cleanup failed:', error);
     }
     // Additional cleanup for event listeners would go here
-  }
-  private renderAlertText() {
-    return this.content ? this.content : html`<slot></slot>`;
   }
 
   override render() {
@@ -174,7 +167,7 @@ export class USASiteAlert extends LitElement {
           <div class="usa-alert__body">
             <h3 class="usa-alert__heading">${this.heading}</h3>
             <div class="usa-alert__text">
-              ${this.renderAlertText()}
+              ${this.content ? this.content : html`<slot></slot>`}
             </div>
           </div>
         </div>
