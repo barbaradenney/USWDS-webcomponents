@@ -132,16 +132,18 @@ export const WithSuffix: Story = {
   },
 };
 
-export const WithBothPrefixAndSuffix: Story = {
-  args: {
-    label: 'Website URL',
-    prefix: 'https://',
-    suffix: '.com',
-    type: 'url',
-    placeholder: 'example',
-    hint: 'Enter your website domain',
-  },
-};
+// NOTE: USWDS does not support using both prefix AND suffix simultaneously
+// The component is designed for "Input Prefix OR Suffix" - use one or the other
+// export const WithBothPrefixAndSuffix: Story = {
+//   args: {
+//     label: 'Website URL',
+//     prefix: 'https://',
+//     suffix: '.com',
+//     type: 'url',
+//     placeholder: 'example',
+//     hint: 'Enter your website domain',
+//   },
+// };
 
 export const WithPrefixIcon: Story = {
   args: {
@@ -233,8 +235,8 @@ export const PercentageRate: Story = {
 export const InteractiveDemo: Story = {
   name: 'Interactive Prefix/Suffix Demo',
   render: () => {
-    const handleInputChange = (e: any) => {
-      console.log('Input changed:', e.detail);
+    const handleInputChange = (_e: any) => {
+      // Event handler for demo
     };
 
     return html`

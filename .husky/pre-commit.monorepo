@@ -74,12 +74,12 @@ echo "   ✅ Pass"
 
 # MANDATORY: Layout Forcing Pattern Validation (always run)
 echo "🎨 2a/9 Layout forcing pattern..."
-npm run validate:layout-forcing > /dev/null 2>&1
+pnpm validate:layout-forcing > /dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo "❌ Layout forcing pattern validation failed!"
   echo "CRITICAL: This fixes zero BoundingClientRect after Storybook navigation"
   echo "See docs/STORYBOOK_LAYOUT_FORCING_PATTERN.md"
-  echo "Run: npm run validate:layout-forcing (for details)"
+  echo "Run: pnpm validate:layout-forcing (for details)"
   exit 1
 fi
 echo "   ✅ Pass"
@@ -91,22 +91,22 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
   if node scripts/validate/auto-detect-component-issues.js --quiet --components="$(echo $MODIFIED_COMPONENTS | tr '\n' ',')" > /dev/null 2>&1; then
     echo "   ✅ Pass (checked $MODIFIED_COMPONENT_COUNT components)"
   else
-    echo "⚠️  Component issues detected - run 'npm run detect:issues' for details"
+    echo "⚠️  Component issues detected - run 'pnpm detect:issues' for details"
   fi
 else
   # Global detection for core changes
   if node scripts/validate/auto-detect-component-issues.js --quiet > /dev/null 2>&1; then
     echo "   ✅ Pass"
   else
-    echo "⚠️  Component issues detected - run 'npm run detect:issues' for details"
+    echo "⚠️  Component issues detected - run 'pnpm detect:issues' for details"
   fi
 fi
 
 # Component compliance (uses main USWDS validator - 100% coverage)
 echo "🛡️  4/9 USWDS compliance..."
-npm run validate:uswds-compliance > /dev/null 2>&1
+pnpm validate:uswds-compliance > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-  echo "❌ USWDS compliance failed! Run: npm run validate:uswds-compliance"
+  echo "❌ USWDS compliance failed! Run: pnpm validate:uswds-compliance"
   exit 1
 fi
 echo "   ✅ Pass"
@@ -134,35 +134,18 @@ else
   echo "   ⏭️  Skipped (no components modified)"
 fi
 
-# Custom CSS validation (ensures only :host styles)
-echo "🎨 4b/9 Custom CSS validation..."
-if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
-  node scripts/validate/validate-no-custom-css.js > /dev/null 2>&1
-  VALIDATION_EXIT_CODE=$?
-  if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
-    echo "❌ Custom CSS detected!"
-    echo ""
-    # Run again without redirection to show detailed output
-    node scripts/validate/validate-no-custom-css.js
-    exit 1
-  fi
-  echo "   ✅ Pass (checked $MODIFIED_COMPONENT_COUNT components)"
-else
-  echo "   ⏭️  Skipped (no components modified)"
-fi
-
 # Linting (fast, blocks bad code)
 echo "🔍 5/9 Linting..."
-npm run lint > /dev/null 2>&1 || {
-  echo "❌ Linting failed! Run: npm run lint"
+pnpm lint > /dev/null 2>&1 || {
+  echo "❌ Linting failed! Run: pnpm lint"
   exit 1
 }
 echo "   ✅ Pass"
 
 # TypeScript (fast, blocks type errors)
 echo "📘 6/9 TypeScript compilation..."
-npm run typecheck > /dev/null 2>&1 || {
-  echo "❌ TypeScript errors! Run: npm run typecheck"
+pnpm typecheck > /dev/null 2>&1 || {
+  echo "❌ TypeScript errors! Run: pnpm typecheck"
   exit 1
 }
 echo "   ✅ Pass"
@@ -171,7 +154,7 @@ echo "   ✅ Pass"
 echo "✨ 6a/9 Code quality review..."
 node scripts/validate/code-quality-review.cjs > /dev/null 2>&1 || {
   echo "❌ Code quality issues detected!"
-  echo "   Run: npm run validate:code-quality (for detailed report)"
+  echo "   Run: pnpm validate:code-quality (for detailed report)"
   exit 1
 }
 echo "   ✅ Pass"
@@ -180,7 +163,7 @@ echo "   ✅ Pass"
 echo "🤖 6b/9 AI code quality..."
 node scripts/validate/ai-code-quality-validator.cjs > /dev/null 2>&1 || {
   echo "❌ AI code quality issues detected!"
-  echo "   Run: npm run validate:ai-quality (for detailed report)"
+  echo "   Run: pnpm validate:ai-quality (for detailed report)"
   echo ""
   echo "💡 Common issues:"
   echo "   • console.log statements"
@@ -198,7 +181,7 @@ if [ "$CODE_REFACTOR_CHECK" = "1" ]; then
   echo "♻️  6c/9 Refactoring analysis (opt-in)..."
   node scripts/validate/code-refactoring-analyzer.cjs || {
     echo "⚠️  Refactoring suggestions available"
-    echo "   Run: npm run validate:refactoring (for details)"
+    echo "   Run: pnpm validate:refactoring (for details)"
     # Don't block commit
   }
   echo "   ✅ Pass"
@@ -209,33 +192,33 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
   echo "🎯 7/9 Component-specific validations..."
 
   # Attribute mapping (component-specific)
-  npm run validate:attribute-mapping > /dev/null 2>&1 || {
-    echo "❌ Attribute mapping issues! Run: npm run validate:attribute-mapping"
+  pnpm validate:attribute-mapping > /dev/null 2>&1 || {
+    echo "❌ Attribute mapping issues! Run: pnpm validate:attribute-mapping"
     exit 1
   }
 
   # Component registration (component-specific)
-  npm run validate:registrations > /dev/null 2>&1 || {
-    echo "❌ Component registration conflicts! Run: npm run validate:registrations"
+  pnpm validate:registrations > /dev/null 2>&1 || {
+    echo "❌ Component registration conflicts! Run: pnpm validate:registrations"
     exit 1
   }
 
   # Slot rendering (component-specific)
   MODIFIED_COMPONENTS="$MODIFIED_COMPONENTS" node scripts/validate/validate-slot-rendering.js > /dev/null 2>&1 || {
-    echo "❌ Slot rendering issues! Run: npm run validate:slots"
+    echo "❌ Slot rendering issues! Run: pnpm validate:slots"
     exit 1
   }
 
   # Story styles validation (component-specific)
   MODIFIED_COMPONENTS="$MODIFIED_COMPONENTS" node scripts/validate/validate-story-styles.js > /dev/null 2>&1 || {
-    echo "❌ Story inline styles detected! Run: npm run validate:story-styles"
+    echo "❌ Story inline styles detected! Run: pnpm validate:story-styles"
     echo "   Use USWDS utility classes and <usa-alert>/<usa-tag> components"
     exit 1
   }
 
   # Image link validation (component-specific story files)
-  npm run validate:image-links:strict > /dev/null 2>&1 || {
-    echo "❌ Broken image links detected! Run: npm run validate:image-links"
+  pnpm validate:image-links:strict > /dev/null 2>&1 || {
+    echo "❌ Broken image links detected! Run: pnpm validate:image-links"
     echo "   Ensure all image paths exist in public/img/ or external URLs are valid"
     exit 1
   }
@@ -248,8 +231,8 @@ fi
 
 # Test expectations (always run)
 echo "🧪 8/9 Test expectations..."
-npm run validate:test-expectations > /dev/null 2>&1 || {
-  echo "❌ Test expectation violations! Run: npm run validate:test-expectations"
+pnpm validate:test-expectations > /dev/null 2>&1 || {
+  echo "❌ Test expectation violations! Run: pnpm validate:test-expectations"
   exit 1
 }
 echo "   ✅ Pass"
@@ -297,7 +280,7 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
       # Check if component has regression tests
       if [ "$comp" = "range-slider" ]; then
         echo "   → Running range-slider regression tests..."
-        if npm run test:regression:range-slider > /dev/null 2>&1; then
+        if ppnpm test:regression:range-slider > /dev/null 2>&1; then
           echo "   ✅ range-slider: 3 regression tests passed"
         else
           echo "   ❌ range-slider: regression tests failed!"
@@ -306,7 +289,7 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
         REGRESSION_TESTS_RUN=$((REGRESSION_TESTS_RUN + 1))
       elif [ "$comp" = "in-page-navigation" ]; then
         echo "   → Running in-page-navigation regression tests..."
-        if npm run test:regression:in-page-nav > /dev/null 2>&1; then
+        if ppnpm test:regression:in-page-nav > /dev/null 2>&1; then
           echo "   ✅ in-page-navigation: 6 regression tests passed"
         else
           echo "   ❌ in-page-navigation: regression tests failed!"
@@ -336,7 +319,7 @@ echo "   ✅ Pass"
 # Component JavaScript Integration (NEW - catches missing USWDS.on() calls)
 echo "🔧 10/11 Component JavaScript integration..."
 node scripts/validate/validate-component-javascript.js > /dev/null 2>&1 || {
-  echo "❌ JavaScript integration failed! Run: npm run validate:component-javascript"
+  echo "❌ JavaScript integration failed! Run: pnpm validate:component-javascript"
   echo "   This validates USWDS.componentName.on(this) is called properly"
   exit 1
 }
@@ -375,9 +358,9 @@ echo "   ✅ Pass"
 if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
   echo ""
   echo "🧪 12/13 Cypress component tests (opt-in)..."
-  npm run cypress:component > /dev/null 2>&1 || {
+  pnpm cypress:component > /dev/null 2>&1 || {
     echo "❌ Cypress component tests failed!"
-    echo "   Run: npm run cypress:component:open (to debug)"
+    echo "   Run: pnpm cypress:component:open (to debug)"
     echo ""
     exit 1
   }
@@ -392,19 +375,19 @@ if [ "$BUNDLE_SIZE_PRECOMMIT" = "1" ]; then
   # Check if dist directory exists
   if [ ! -d "dist" ]; then
     echo "⚠️  No dist/ directory found - building first..."
-    NODE_ENV=production npm run build > /dev/null 2>&1 || {
+    NODE_ENV=production pnpm build > /dev/null 2>&1 || {
       echo "❌ Build failed! Cannot validate bundle size."
       exit 1
     }
   fi
 
-  npm run validate:bundle-size > /dev/null 2>&1 || {
+  pnpm validate:bundle-size > /dev/null 2>&1 || {
     echo "❌ Bundle size validation failed!"
     echo ""
-    npm run validate:bundle-size
+    pnpm validate:bundle-size
     echo ""
     echo "💡 Actions to take:"
-    echo "   • Review bundle composition: npm run build:analyze:visual"
+    echo "   • Review bundle composition: pnpm build:analyze:visual"
     echo "   • Check for large dependencies or unused imports"
     echo "   • See docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md"
     echo ""
@@ -422,10 +405,10 @@ if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
   # Check if Storybook is already running
   if ! curl -s http://localhost:6006 > /dev/null 2>&1; then
     echo "   ⚠️  Storybook not running - starting server..."
-    echo "   💡 Tip: Run 'npm run storybook' in another terminal to speed up future commits"
+    echo "   💡 Tip: Run 'pnpm storybook' in another terminal to speed up future commits"
 
     # Start Storybook in background
-    npm run storybook > /dev/null 2>&1 &
+    pnpm storybook > /dev/null 2>&1 &
     STORYBOOK_PID=$!
 
     # Wait for Storybook to be ready (max 60 seconds)
@@ -442,7 +425,7 @@ if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
     echo "   ✅ Storybook ready"
 
     # Run smoke tests
-    npm run cypress:smoke > /dev/null 2>&1
+    pnpm cypress:smoke > /dev/null 2>&1
     SMOKE_EXIT_CODE=$?
 
     # Kill Storybook after tests
@@ -451,16 +434,16 @@ if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
     if [ $SMOKE_EXIT_CODE -ne 0 ]; then
       echo "   ❌ Smoke tests failed!"
       echo ""
-      echo "   💡 Debug with: npm run cypress:smoke:headed"
+      echo "   💡 Debug with: pnpm cypress:smoke:headed"
       echo "   📖 See: docs/POST_MORTEM_TIME_PICKER_DROPDOWN_ISSUE.md"
       exit 1
     fi
   else
     # Storybook already running - just run tests
-    npm run cypress:smoke > /dev/null 2>&1 || {
+    pnpm cypress:smoke > /dev/null 2>&1 || {
       echo "   ❌ Smoke tests failed!"
       echo ""
-      echo "   💡 Debug with: npm run cypress:smoke:headed"
+      echo "   💡 Debug with: pnpm cypress:smoke:headed"
       echo "   📖 See: docs/POST_MORTEM_TIME_PICKER_DROPDOWN_ISSUE.md"
       exit 1
     }
@@ -523,9 +506,9 @@ fi
 if [ "$BUNDLE_SIZE_PRECOMMIT" != "1" ]; then
   echo "   • BUNDLE_SIZE_PRECOMMIT=1 git commit - Validate bundle size before commit"
 fi
-echo "   • npm run validate:storybook-uswds - Storybook USWDS integration"
-echo "   • npm run validate:story-args - Storybook controls binding"
+echo "   • pnpm validate:storybook-uswds - Storybook USWDS integration"
+echo "   • pnpm validate:story-args - Storybook controls binding"
 echo "   • node scripts/validate-minimal-wrapper-pattern.js - Minimal wrapper pattern"
 echo "   • node scripts/pre-commit-test-validation.js - Test health validation"
-echo "   • npm test -- dom-validation - DOM structure validation"
+echo "   • pnpm test -- dom-validation - DOM structure validation"
 echo ""

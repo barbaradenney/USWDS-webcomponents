@@ -21,6 +21,8 @@
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "turbo build --filter='./packages/*' && changeset publish",
+    "release:version": "changeset version && pnpm install --lockfile-only",
+    "release:publish": "changeset publish",
 
     "// LEGACY SCRIPTS (For Compatibility During Migration)": "",
     "storybook": "storybook dev -p 6006",
