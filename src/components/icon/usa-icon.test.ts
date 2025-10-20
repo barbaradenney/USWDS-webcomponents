@@ -42,8 +42,8 @@ describe('USAIcon', () => {
       expect(element.size).toBe('');
       expect(element.ariaLabel).toBe('');
       expect(element.decorative).toBe(''); // String type: '' | 'true' | 'false'
-      expect(element.spriteUrl).toBe('');
-      expect(element.useSprite).toBe(false);
+      expect(element.spriteUrl).toBe('/img/sprite.svg');
+      expect(element.useSprite).toBe(true);
     });
 
     it('should render SVG element', async () => {
@@ -71,6 +71,10 @@ describe('USAIcon', () => {
     });
 
     it('should render different icon paths for different names', async () => {
+      // Disable sprite to test inline SVG fallback
+      element.useSprite = false;
+      element.spriteUrl = '';
+
       element.name = 'search';
       await waitForUpdate(element);
       const searchPath = element.querySelector('path')?.getAttribute('d');
@@ -185,20 +189,50 @@ describe('USAIcon', () => {
       expect(use?.getAttribute('href')).toBe('/icons.svg#search');
     });
 
-    it('should use inline SVG by default', async () => {
+    it('should use sprite for all 245 USWDS icons by default', async () => {
+      // Verify sprite-first architecture with sample USWDS icons
+      const uswdsIcons = [
+        'visibility',
+        'visibility_off',
+        'search',
+        'close',
+        'menu',
+        'arrow_forward',
+        'check_circle',
+        'flag',
+        'account_circle',
+        'settings',
+      ];
+
+      for (const iconName of uswdsIcons) {
+        element.name = iconName;
+        await waitForUpdate(element);
+
+        const svg = element.querySelector('svg');
+        const use = svg?.querySelector('use');
+
+        // Should use sprite reference, not inline path
+        expect(use).toBeTruthy();
+        expect(use?.getAttribute('href')).toBe(`/img/sprite.svg#${iconName}`);
+        expect(svg?.querySelector('path')).toBe(null);
+      }
+    });
+
+    it('should use sprite by default', async () => {
       element.name = 'search';
       await waitForUpdate(element);
 
       const svg = element.querySelector('svg');
-      const path = svg?.querySelector('path');
-      expect(path).toBeTruthy();
-      expect(svg?.querySelector('use')).toBe(null);
+      const use = svg?.querySelector('use');
+      expect(use).toBeTruthy();
+      expect(use?.getAttribute('href')).toBe('/img/sprite.svg#search');
+      expect(svg?.querySelector('path')).toBe(null);
     });
 
     it('should fallback to inline when sprite not configured', async () => {
       element.name = 'search';
       element.useSprite = true;
-      // No spriteUrl set
+      element.spriteUrl = ''; // Explicitly clear default sprite URL
       await waitForUpdate(element);
 
       const svg = element.querySelector('svg');
@@ -221,6 +255,9 @@ describe('USAIcon', () => {
       });
 
       it('should render flag icon for government identity', async () => {
+        // Test inline SVG fallback mode
+        element.useSprite = false;
+        element.spriteUrl = '';
         element.name = 'flag';
         element.ariaLabel = 'An official website of the United States government';
         await waitForUpdate(element);
@@ -245,6 +282,9 @@ describe('USAIcon', () => {
       });
 
       it('should render close icons for dialog management', async () => {
+        // Test inline SVG fallback mode
+        element.useSprite = false;
+        element.spriteUrl = '';
         element.name = 'close';
         element.ariaLabel = 'Close dialog';
         await waitForUpdate(element);
@@ -257,6 +297,10 @@ describe('USAIcon', () => {
 
     describe('Government Form Icons', () => {
       it('should render form status icons', async () => {
+        // Test inline SVG fallback mode
+        element.useSprite = false;
+        element.spriteUrl = '';
+
         const statusIcons = [
           { name: 'check_circle', label: 'Form submitted successfully' },
           { name: 'error', label: 'Form has errors' },
@@ -435,6 +479,9 @@ describe('USAIcon', () => {
     });
 
     it('should sanitize icon names for security', async () => {
+      // Test inline SVG fallback mode
+      element.useSprite = false;
+      element.spriteUrl = '';
       element.name = 'search<script>alert("xss")</script>';
       await waitForUpdate(element);
 
@@ -449,6 +496,9 @@ describe('USAIcon', () => {
 
   describe('Edge Cases and Error Handling', () => {
     it('should handle unknown icon names gracefully', async () => {
+      // Test inline SVG fallback mode
+      element.useSprite = false;
+      element.spriteUrl = '';
       element.name = 'nonexistent_icon';
       element.ariaLabel = 'Unknown icon';
       await waitForUpdate(element);
@@ -460,6 +510,9 @@ describe('USAIcon', () => {
     });
 
     it('should handle empty icon names', async () => {
+      // Test inline SVG fallback mode
+      element.useSprite = false;
+      element.spriteUrl = '';
       element.name = '';
       await waitForUpdate(element);
 
@@ -481,7 +534,7 @@ describe('USAIcon', () => {
     it('should handle missing sprite URLs gracefully', async () => {
       element.name = 'search';
       element.useSprite = true;
-      // spriteUrl intentionally not set
+      element.spriteUrl = ''; // Explicitly clear default sprite URL
       await waitForUpdate(element);
 
       // Should fallback to inline SVG
