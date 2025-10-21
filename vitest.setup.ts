@@ -5,8 +5,6 @@
 
 import { beforeEach, afterEach } from 'vitest';
 import { Canvas } from 'canvas';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 // Clean up DOM between tests to prevent interference
 beforeEach(() => {
@@ -22,8 +20,10 @@ beforeEach(() => {
   document.body.className = '';
   document.body.style.cssText = '';
 
-  // NOTE: Do NOT delete window.USWDS - it's loaded once globally and shared across all tests
-  // This matches the Script Tag Pattern where USWDS is loaded via <script> tag
+  // Clear any global USWDS state
+  if ((window as any).USWDS) {
+    delete (window as any).USWDS;
+  }
 });
 
 afterEach(() => {
@@ -46,8 +46,13 @@ afterEach(() => {
   document.documentElement.className = '';
   document.documentElement.style.cssText = '';
 
-  // NOTE: Do NOT delete window.USWDS - it's loaded once globally and shared across all tests
-  // This matches the Script Tag Pattern where USWDS is loaded via <script> tag
+  // Clear any global USWDS state (multiple approaches)
+  if ((window as any).USWDS) {
+    delete (window as any).USWDS;
+  }
+  if ('USWDS' in window) {
+    delete (window as any).USWDS;
+  }
 
   // Clear any Lit-related global state
   if ((window as any).__litReactiveElementVersions) {
@@ -304,12 +309,5 @@ if (!HTMLFormElement.prototype.requestSubmit) {
     this.dispatchEvent(submitEvent);
   };
 }
-
-// Load USWDS JavaScript globally for all tests
-// IMPORTANT: This must be AFTER all mocks are set up, as USWDS runs immediately
-// This makes window.USWDS available, matching the Script Tag Pattern used in Storybook
-const uswdsPath = join(__dirname, 'node_modules/@uswds/uswds/dist/js/uswds.js');
-const uswdsScript = readFileSync(uswdsPath, 'utf-8');
-eval(uswdsScript);
 
 console.info('✅ Vitest test environment setup complete');
