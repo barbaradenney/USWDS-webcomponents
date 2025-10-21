@@ -13,7 +13,12 @@ export default defineConfig({
       'src/**/*.stories.ts',
       'src/**/*.browser.test.ts',
       'src/**/*.visual.test.ts',
-      'node_modules'
+      'node_modules',
+      // Skip behavior/interaction tests in CI - they're flaky in jsdom, covered by Cypress
+      ...(process.env.CI ? [
+        'src/**/*-behavior*.test.ts',
+        'src/**/*-interaction.test.ts'
+      ] : [])
     ],
     // Progress reporting
     reporters: process.env.VITEST_VERBOSE ? ['verbose', 'basic'] : process.env.VITEST_DEBUG_HANGING ? ['default', 'hanging-process'] : ['default'],
