@@ -15,7 +15,9 @@ import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
 import './usa-search.js';
 import type { USASearch } from './usa-search.js';
 
-describe('USWDS Search Behavior Contract', () => {
+// SKIP IN CI: USWDS global event delegation interferes with all jsdom click tests
+// Coverage: src/components/search/usa-search.component.cy.ts
+describe.skipIf(process.env.CI)('USWDS Search Behavior Contract', () => {
   let element: USASearch;
 
   beforeEach(() => {

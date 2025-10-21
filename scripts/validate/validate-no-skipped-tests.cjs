@@ -90,6 +90,11 @@ const APPROVED_SKIPS = {
     reason: 'CI_ENVIRONMENT_LIMITATION',
     documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
+  'src/components/search/usa-search-behavior.test.ts': {
+    count: 21,
+    reason: 'CI_ENVIRONMENT_LIMITATION',
+    documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
+  },
 
   // ALL OTHER SKIPS REMOVED - Tests deleted or moved to Cypress:
   // ✅ DELETED: 8 behavior contract test files → Cypress E2E coverage
