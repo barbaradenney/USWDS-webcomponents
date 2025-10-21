@@ -237,17 +237,7 @@ const componentCssMap = {
     'usa-memorable-date__month',
     'usa-memorable-date__year',
   ],
-  menu: [
-    'usa-nav',
-    'usa-nav__primary',
-    'usa-nav__primary-item',
-    'usa-nav__link',
-    'usa-nav__submenu',
-    'usa-nav__submenu-item',
-    'usa-nav__submenu-link',
-    'usa-nav__close',
-    'usa-menu-btn',
-  ],
+  // menu: Removed - component not implemented yet
   modal: [
     'usa-modal',
     'usa-modal__content',
@@ -285,7 +275,7 @@ const componentCssMap = {
     'usa-search--small',
     'usa-search--big',
   ],
-  section: ['usa-section', 'usa-section--dark', 'usa-section--light'],
+  // section: Removed - component not implemented yet
   select: [
     'usa-select',
     'usa-select--small',

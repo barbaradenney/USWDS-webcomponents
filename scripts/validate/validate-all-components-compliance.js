@@ -172,11 +172,7 @@ const USWDS_HTML_PATTERNS = {
     structure: ['usa-memorable-date', 'usa-form-group'],
     requiredAttributes: ['aria-describedby']
   },
-  menu: {
-    structure: ['usa-nav__primary', 'usa-nav__primary-item', 'usa-nav__link'],
-    alternativeStructures: ['usa-sidenav', 'usa-sidenav__item', 'usa-sidenav__link'],
-    requiredAttributes: ['role="navigation"', 'aria-label']
-  },
+  // menu: Removed - component not implemented yet
   pagination: {
     structure: ['usa-pagination', 'usa-pagination__list', 'usa-pagination__item'],
     requiredAttributes: ['aria-label', 'role="navigation"']
@@ -199,9 +195,7 @@ const USWDS_HTML_PATTERNS = {
     structure: ['usa-search', 'usa-search__input', 'usa-search__submit'],
     requiredAttributes: ['role="search"', 'aria-label']
   },
-  section: {
-    structure: ['usa-section']
-  },
+  // section: Removed - component not implemented yet
   select: {
     structure: ['usa-form-group', 'usa-label', 'usa-select'],
     requiredAttributes: ['for', 'id', 'name']
