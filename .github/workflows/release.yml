@@ -189,7 +189,9 @@ jobs:
           git add public/service-worker.js 2>/dev/null || true
           git add test-reports/service-worker-version.json 2>/dev/null || true
           git add test-reports/optimization-summary.json 2>/dev/null || true
-          git commit -m "chore: release ${{ steps.bump.outputs.new_version }}"
+
+          # Skip pre-commit hook - validation already run in workflow
+          HUSKY=0 git commit -m "chore: release ${{ steps.bump.outputs.new_version }}"
 
           # Create git tag
           git tag ${{ steps.bump.outputs.new_version }} -m "Release ${{ steps.bump.outputs.new_version }}"
