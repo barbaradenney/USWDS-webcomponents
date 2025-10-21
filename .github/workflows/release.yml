@@ -50,7 +50,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Verify NPM Token
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
         run: |
           if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
             echo "❌ NPM_TOKEN secret not configured!"
@@ -199,14 +199,14 @@ jobs:
           echo "✅ Version commit and tag created"
 
       - name: Push changes and tags
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
         run: |
           git push origin main
           git push origin ${{ steps.bump.outputs.new_version }}
           echo "✅ Pushed version commit and tag"
 
       - name: Publish to NPM
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
         run: |
           echo "📦 Publishing to NPM..."
 
@@ -222,7 +222,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Verify NPM package
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
         run: |
           echo "🔍 Verifying NPM package..."
           sleep 10  # Wait for NPM to propagate
@@ -230,7 +230,7 @@ jobs:
           echo "✅ Package verified on NPM"
 
       - name: Create GitHub Release
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -242,7 +242,7 @@ jobs:
           prerelease: ${{ github.event.inputs.version == 'prerelease' }}
 
       - name: Upload release artifacts
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
         uses: actions/upload-artifact@v4
         with:
           name: release-artifacts-${{ steps.bump.outputs.version_number }}
@@ -252,7 +252,7 @@ jobs:
             release-notes.md
 
       - name: Dry run summary
-        if: ${{ github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run == 'true' || github.event.inputs.dry_run == true }}
         run: |
           echo "🏃 DRY RUN SUMMARY"
           echo "================"
@@ -269,7 +269,7 @@ jobs:
           echo "✅ Ready for real release"
 
       - name: Success summary
-        if: ${{ !github.event.inputs.dry_run && success() }}
+        if: ${{ (github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true) && success() }}
         run: |
           echo "🎉 RELEASE SUCCESSFUL"
           echo "===================="
