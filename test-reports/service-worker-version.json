@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-10-19T05:15:29.889Z",
-  "packageVersion": "1.0.0",
+  "timestamp": "2025-10-21T06:11:35.967Z",
+  "packageVersion": "1.0.2",
   "serviceWorkerUpdated": false,
   "cachePrefix": "uswds-wc",
   "cacheNames": [
-    "uswds-wc-static-v1.0.0",
-    "uswds-wc-uswds-v1.0.0",
-    "uswds-wc-assets-v1.0.0",
-    "uswds-wc-runtime-v1.0.0"
+    "uswds-wc-static-v1.0.2",
+    "uswds-wc-uswds-v1.0.2",
+    "uswds-wc-assets-v1.0.2",
+    "uswds-wc-runtime-v1.0.2"
   ]
 }
