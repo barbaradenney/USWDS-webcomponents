@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import './index.ts';
+import '../icon/index.ts';
 import type { USATooltip } from './usa-tooltip.js';
 
 const meta: Meta<USATooltip> = {
@@ -118,9 +119,7 @@ export const OnIconButton: Story = {
         @tooltip-hide="${() => console.log('Tooltip hidden')}"
       >
         <button type="button" class="usa-button usa-button--unstyled padding-105 text-center" aria-label="Help">
-          <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-            <use xlink:href="#svg-help"></use>
-          </svg>
+          <usa-icon name="help" decorative="true"></usa-icon>
         </button>
       </usa-tooltip>
       <input type="email" id="sample-input" class="usa-input" />
@@ -311,21 +310,7 @@ export const FormHelp: Story = {
             class="usa-button usa-button--unstyled padding-105 text-center"
             aria-label="More information about tax ID requirement"
           >
-            <svg
-              class="usa-icon usa-icon--size-3"
-              aria-hidden="true"
-              focusable="false"
-              role="img"
-            >
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
-              <path
-                d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-              />
-              <circle cx="12" cy="17" r="1" fill="currentColor" />
-            </svg>
+            <usa-icon name="help" size="3" decorative="true"></usa-icon>
           </button>
         </usa-tooltip>
       </label>
@@ -379,21 +364,7 @@ export const BudgetAllocationHelp: Story = {
             class="usa-button usa-button--unstyled padding-105 text-center"
             aria-label="Budget allocation help"
           >
-            <svg
-              class="usa-icon"
-              aria-hidden="true"
-              focusable="false"
-              role="img"
-            >
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
-              <path
-                d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-              />
-              <circle cx="12" cy="17" r="1" fill="currentColor" />
-            </svg>
+            <usa-icon name="help" decorative="true"></usa-icon>
           </button>
         </usa-tooltip>
       </div>
@@ -499,21 +470,7 @@ export const EmergencyContactInfo: Story = {
               class="usa-button usa-button--unstyled padding-105 text-center"
               aria-label="Emergency contact information help"
             >
-              <svg
-                class="usa-icon"
-                aria-hidden="true"
-                focusable="false"
-                role="img"
-              >
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
-                <path
-                  d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  fill="none"
-                />
-                <circle cx="12" cy="17" r="1" fill="currentColor" />
-              </svg>
+              <usa-icon name="help" decorative="true"></usa-icon>
             </button>
           </usa-tooltip>
         </div>
