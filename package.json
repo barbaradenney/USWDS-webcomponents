@@ -161,6 +161,7 @@
     "validate:code-quality": "node scripts/validate/code-quality-review.cjs",
     "validate:ai-quality": "node scripts/validate/ai-code-quality-validator.cjs",
     "validate:refactoring": "node scripts/validate/code-refactoring-analyzer.cjs",
+    "validate:icon-names": "node scripts/validate/validate-icon-names.cjs",
     "validate:clean-code": "npm run validate:ai-quality && npm run validate:refactoring",
     "validate:layout-forcing": "node scripts/validate/validate-layout-forcing.js",
     "validate:story-styles": "node scripts/validate/validate-story-styles.js",

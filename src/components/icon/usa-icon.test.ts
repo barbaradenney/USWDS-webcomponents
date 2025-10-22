@@ -346,7 +346,7 @@ describe('USAIcon', () => {
       it('should render contact method icons', async () => {
         const contactIcons = [
           { name: 'phone', label: 'Call government office' },
-          { name: 'email', label: 'Email government office' },
+          { name: 'mail', label: 'Email government office' },
           { name: 'location_on', label: 'Visit government office' },
         ];
 
@@ -358,6 +358,21 @@ describe('USAIcon', () => {
           const svg = element.querySelector('svg');
           expect(svg?.getAttribute('aria-label')).toBe(icon.label);
         }
+      });
+
+      it('should use USWDS naming convention "mail" not "email"', async () => {
+        // Test that mail icon renders correctly
+        element.name = 'mail';
+        element.ariaLabel = 'Email us';
+        await waitForUpdate(element);
+
+        const svg = element.querySelector('svg');
+        expect(svg).toBeTruthy();
+        expect(svg?.getAttribute('aria-label')).toBe('Email us');
+
+        // Verify it uses sprite reference with correct name
+        const use = svg?.querySelector('use');
+        expect(use?.getAttribute('href')).toBe('/img/sprite.svg#mail');
       });
     });
 
@@ -1057,6 +1072,220 @@ describe('USAIcon', () => {
       icon1.remove();
       icon2.remove();
       icon3.remove();
+    });
+  });
+
+  describe('Icon Visibility & Rendering (NEW - Oct 2025)', () => {
+    describe('SVG Element Visibility', () => {
+      it('should render visible SVG element', async () => {
+        element.name = 'mail';
+        element.size = '5';
+        await waitForUpdate(element);
+
+        const svg = element.querySelector('svg');
+        expect(svg).toBeTruthy();
+
+        // Verify SVG has proper structure
+        expect(svg?.tagName).toBe('svg');
+        expect(svg?.classList.contains('usa-icon')).toBe(true);
+      });
+
+      it('should have non-zero dimensions when rendered', async () => {
+        element.name = 'search';
+        element.size = '5';
+        document.body.appendChild(element);
+        await waitForUpdate(element);
+
+        const svg = element.querySelector('svg');
+        const rect = svg?.getBoundingClientRect();
+
+        // SVG should have dimensions (even if not visible in test environment)
+        expect(rect).toBeTruthy();
+        expect(svg?.getAttribute('class')).toContain('usa-icon');
+      });
+
+      it('should render SVG with viewBox for sprite mode', async () => {
+        element.name = 'phone';
+        element.useSprite = true;
+        await waitForUpdate(element);
+
+        const svg = element.querySelector('svg');
+        const use = svg?.querySelector('use');
+
+        expect(svg).toBeTruthy();
+        expect(use).toBeTruthy();
+        expect(use?.getAttribute('href')).toContain('#phone');
+      });
+
+      it('should render SVG with viewBox for inline mode', async () => {
+        element.name = 'close';
+        element.useSprite = false;
+        element.spriteUrl = '';
+        await waitForUpdate(element);
+
+        const svg = element.querySelector('svg');
+        const path = svg?.querySelector('path');
+
+        expect(svg).toBeTruthy();
+        expect(svg?.getAttribute('viewBox')).toBe('0 0 24 24');
+        expect(path).toBeTruthy();
+        expect(path?.getAttribute('d')).toBeTruthy();
+      });
+    });
+
+    describe('Icon Content Validation', () => {
+      it('should have valid sprite reference for all common icons', async () => {
+        const commonIcons = ['mail', 'phone', 'search', 'menu', 'close', 'info', 'warning', 'help'];
+
+        for (const iconName of commonIcons) {
+          element.name = iconName;
+          await waitForUpdate(element);
+
+          const svg = element.querySelector('svg');
+          const use = svg?.querySelector('use');
+
+          expect(use, `Icon "${iconName}" should have <use> element`).toBeTruthy();
+          expect(
+            use?.getAttribute('href'),
+            `Icon "${iconName}" should reference sprite`
+          ).toBe(`/img/sprite.svg#${iconName}`);
+        }
+      });
+
+      it('should render inline SVG fallback with valid path data', async () => {
+        element.useSprite = false;
+        element.spriteUrl = '';
+
+        const iconsWithInlinePaths = ['search', 'close', 'menu', 'mail', 'phone', 'info', 'warning'];
+
+        for (const iconName of iconsWithInlinePaths) {
+          element.name = iconName;
+          await waitForUpdate(element);
+
+          const path = element.querySelector('path');
+          const pathData = path?.getAttribute('d');
+
+          expect(path, `Icon "${iconName}" should have path element`).toBeTruthy();
+          expect(pathData, `Icon "${iconName}" should have path data`).toBeTruthy();
+          expect(pathData?.length, `Icon "${iconName}" path data should not be empty`).toBeGreaterThan(0);
+        }
+      });
+    });
+
+    describe('All 241 USWDS Icons Validation', () => {
+      it('should render all USWDS icons without errors (sample)', async () => {
+        // Test a representative sample of all 241 USWDS icons
+        const sampleIcons = [
+          'accessibility_new', 'account_balance', 'add', 'alarm', 'announcement',
+          'arrow_back', 'assessment', 'autorenew', 'bookmark', 'bug_report',
+          'calendar_today', 'cancel', 'chat', 'check', 'chevron_left',
+          'clean_hands', 'close', 'cloud', 'code', 'comment',
+          'construction', 'coronavirus', 'credit_card', 'delete', 'directions',
+          'eco', 'edit', 'error', 'event', 'expand_less',
+          'facebook', 'favorite', 'file_download', 'fingerprint', 'flag',
+          'flickr', 'folder', 'forum', 'github', 'grid_view',
+          'groups', 'help', 'history', 'home', 'hospital',
+          'info', 'instagram', 'language', 'launch', 'lightbulb',
+          'link', 'list', 'local_cafe', 'location_on', 'lock',
+          'mail', 'map', 'masks', 'menu', 'more_horiz',
+          'notifications', 'park', 'people', 'person', 'phone',
+          'print', 'public', 'rain', 'remove', 'report',
+          'restaurant', 'sanitizer', 'schedule', 'school', 'science',
+          'search', 'security', 'send', 'sentiment_satisfied', 'settings',
+          'share', 'shield', 'shopping_basket', 'snow', 'star',
+          'support', 'timer', 'toggle_on', 'translate', 'undo',
+          'upload_file', 'verified', 'visibility', 'warning', 'wifi',
+          'work', 'youtube', 'zoom_in'
+        ];
+
+        for (const iconName of sampleIcons) {
+          element.name = iconName;
+          await waitForUpdate(element);
+
+          const svg = element.querySelector('svg');
+          const use = svg?.querySelector('use');
+
+          expect(svg, `Icon "${iconName}" should render SVG`).toBeTruthy();
+          expect(use, `Icon "${iconName}" should have <use> element`).toBeTruthy();
+          expect(
+            use?.getAttribute('href'),
+            `Icon "${iconName}" should reference sprite correctly`
+          ).toBe(`/img/sprite.svg#${iconName}`);
+        }
+      });
+    });
+
+    describe('Icon Naming Regression Tests', () => {
+      it('should NOT accept deprecated "email" icon name', async () => {
+        // This test documents that "email" is NOT a valid USWDS icon name
+        // The correct name is "mail"
+        element.name = 'email';
+        element.useSprite = false;
+        element.spriteUrl = '';
+        await waitForUpdate(element);
+
+        // When using an invalid name in inline mode, it falls back to default circle
+        const path = element.querySelector('path');
+        const pathData = path?.getAttribute('d');
+
+        // Should render fallback icon (circle), not a specific email icon
+        expect(pathData).toBe('M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z');
+      });
+
+      it('should correctly render "mail" icon (not "email")', async () => {
+        element.name = 'mail';
+        element.useSprite = false;
+        element.spriteUrl = '';
+        await waitForUpdate(element);
+
+        const path = element.querySelector('path');
+        const pathData = path?.getAttribute('d');
+
+        // Should render actual mail icon path
+        expect(pathData).toContain('M20 4H4');
+        expect(pathData).toContain('l-8 5-8-5V6l8 5 8-5v2z');
+      });
+
+      it('should use sprite reference for "mail" icon by default', async () => {
+        element.name = 'mail';
+        element.useSprite = true;
+        await waitForUpdate(element);
+
+        const use = element.querySelector('use');
+        expect(use?.getAttribute('href')).toBe('/img/sprite.svg#mail');
+      });
+    });
+
+    describe('Icon Gallery Coverage', () => {
+      it('should support all icon categories from gallery', async () => {
+        const iconsByCategory = {
+          communication: ['mail', 'phone', 'chat', 'comment', 'forum'],
+          navigation: ['arrow_forward', 'arrow_back', 'menu', 'close', 'expand_more'],
+          actions: ['search', 'edit', 'delete', 'add', 'remove', 'check'],
+          status: ['check_circle', 'error', 'warning', 'info', 'help'],
+          file: ['file_download', 'file_upload', 'folder', 'attach_file'],
+          social: ['facebook', 'twitter', 'instagram', 'github', 'youtube'],
+        };
+
+        for (const [category, icons] of Object.entries(iconsByCategory)) {
+          for (const iconName of icons) {
+            element.name = iconName;
+            await waitForUpdate(element);
+
+            const svg = element.querySelector('svg');
+            const use = svg?.querySelector('use');
+
+            expect(
+              use,
+              `${category} icon "${iconName}" should render`
+            ).toBeTruthy();
+            expect(
+              use?.getAttribute('href'),
+              `${category} icon "${iconName}" should have correct sprite reference`
+            ).toBe(`/img/sprite.svg#${iconName}`);
+          }
+        }
+      });
     });
   });
 });

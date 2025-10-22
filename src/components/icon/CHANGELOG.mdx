@@ -7,6 +7,35 @@ All notable changes to the icon component will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-10-21
+
+### Fixed
+
+- **BREAKING**: Renamed `email` icon to `mail` to match USWDS naming conventions
+  - Updated `usa-icon.ts` inline SVG paths: `email:` → `mail:`
+  - Updated all story examples and demos to use `mail` instead of `email`
+  - Applied fix to both `src/` and `packages/` directories for consistency
+
+### Added
+
+- **Icon Gallery Enhancement**: Now displays all 241 USWDS icons (previously showed only 21)
+  - Complete `allUSWDSIcons` array extracted from sprite file
+  - Updated Icon Gallery story to show full USWDS icon set
+  - Improved documentation distinguishing built-in vs sprite-based icons
+
+- **Icon Name Validation System**:
+  - New validation script: `scripts/validate/validate-icon-names.cjs`
+  - Automatically checks all icon references against USWDS sprite file
+  - Added to pre-commit hook (stage 4c/9) to prevent future naming mismatches
+  - New npm script: `npm run validate:icon-names`
+  - Provides helpful suggestions for misspelled icon names
+
+### Documentation
+
+- Updated icon README with USWDS naming conventions
+- Added migration guide for `email` → `mail` change
+- Documented all 241 available USWDS icon names
+
 ## [1.0.0] - 2025-10-18
 
 ### Added

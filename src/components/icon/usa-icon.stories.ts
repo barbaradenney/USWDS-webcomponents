@@ -42,7 +42,7 @@ Icons can be rendered either as inline SVGs or using an external sprite file for
         'help',
         'flag',
         'phone',
-        'email',
+        'mail',
         'location_on',
         'expand_more',
         'expand_less',
@@ -485,7 +485,7 @@ export const ContactIcons: Story = {
     <div class="icon-category-grid">
       ${[
         { name: 'phone', label: 'Phone' },
-        { name: 'email', label: 'Email' },
+        { name: 'mail', label: 'Email' },
         { name: 'location_on', label: 'Location' },
       ].map((icon) => html`
         <div
@@ -695,28 +695,28 @@ export const OrganizationBanner: Story = {
 const availableIcons = [
   'search', 'close', 'menu', 'arrow_forward', 'arrow_back',
   'arrow_upward', 'arrow_downward', 'check_circle', 'error', 'warning',
-  'info', 'help', 'flag', 'phone', 'email',
+  'info', 'help', 'flag', 'phone', 'mail',
   'location_on', 'expand_more', 'expand_less', 'settings', 'file_download',
   'cancel'
 ];
 
-// Note: USWDS 3.x includes 243 total icons. For the complete icon set,
-// use the sprite file method with useSprite and spriteUrl properties.
+// Complete list of all 241 USWDS icons available via sprite file
+const allUSWDSIcons = ['accessibility_new', 'accessible_forward', 'account_balance', 'account_box', 'account_circle', 'add', 'add_circle', 'add_circle_outline', 'alarm', 'alternate_email', 'announcement', 'api', 'arrow_back', 'arrow_downward', 'arrow_drop_down', 'arrow_drop_up', 'arrow_forward', 'arrow_upward', 'assessment', 'attach_file', 'attach_money', 'autorenew', 'backpack', 'bathtub', 'bedding', 'bookmark', 'bug_report', 'build', 'calendar_today', 'campaign', 'camping', 'cancel', 'chat', 'check', 'check_box_outline_blank', 'check_circle', 'check_circle_outline', 'checkroom', 'chevron_left', 'chevron_right', 'clean_hands', 'close', 'closed_caption', 'clothes', 'cloud', 'code', 'comment', 'connect_without_contact', 'construction', 'construction_worker', 'contact_page', 'content_copy', 'coronavirus', 'credit_card', 'deck', 'delete', 'device_thermostat', 'directions', 'directions_bike', 'directions_bus', 'directions_car', 'directions_walk', 'do_not_disturb', 'do_not_touch', 'drag_handle', 'eco', 'edit', 'electrical_services', 'emoji_events', 'error', 'error_outline', 'event', 'expand_less', 'expand_more', 'facebook', 'fast_forward', 'fast_rewind', 'favorite', 'favorite_border', 'file_download', 'file_present', 'file_upload', 'filter_alt', 'filter_list', 'fingerprint', 'first_page', 'flag', 'flickr', 'flight', 'flooding', 'folder', 'folder_open', 'format_quote', 'format_size', 'forum', 'github', 'grid_view', 'group_add', 'groups', 'hearing', 'help', 'help_outline', 'highlight_off', 'history', 'home', 'hospital', 'hotel', 'hourglass_empty', 'hurricane', 'identification', 'image', 'info', 'info_outline', 'insights', 'instagram', 'keyboard', 'label', 'language', 'last_page', 'launch', 'lightbulb', 'lightbulb_outline', 'link', 'link_off', 'list', 'local_cafe', 'local_fire_department', 'local_gas_station', 'local_grocery_store', 'local_hospital', 'local_laundry_service', 'local_library', 'local_offer', 'local_parking', 'local_pharmacy', 'local_police', 'local_taxi', 'location_city', 'location_on', 'lock', 'lock_open', 'lock_outline', 'login', 'logout', 'loop', 'mail', 'mail_outline', 'map', 'masks', 'medical_services', 'menu', 'military_tech', 'more_horiz', 'more_vert', 'my_location', 'navigate_before', 'navigate_far_before', 'navigate_far_next', 'navigate_next', 'near_me', 'notifications', 'notifications_active', 'notifications_none', 'notifications_off', 'park', 'people', 'person', 'pets', 'phone', 'photo_camera', 'print', 'priority_high', 'public', 'push_pin', 'radio_button_unchecked', 'rain', 'reduce_capacity', 'remove', 'report', 'restaurant', 'rss_feed', 'safety_divider', 'sanitizer', 'save_alt', 'schedule', 'school', 'science', 'search', 'security', 'send', 'sentiment_dissatisfied', 'sentiment_neutral', 'sentiment_satisfied', 'sentiment_satisfied_alt', 'sentiment_very_dissatisfied', 'settings', 'severe_weather', 'share', 'shield', 'shopping_basket', 'snow', 'soap', 'social_distance', 'sort_arrow', 'spellcheck', 'star', 'star_half', 'star_outline', 'store', 'support', 'support_agent', 'text_fields', 'thumb_down_alt', 'thumb_up_alt', 'timer', 'toggle_off', 'toggle_on', 'topic', 'tornado', 'translate', 'trending_down', 'trending_up', 'twitter', 'undo', 'unfold_less', 'unfold_more', 'update', 'upload_file', 'verified', 'verified_user', 'visibility', 'visibility_off', 'volume_off', 'warning', 'wash', 'wifi', 'work', 'youtube', 'zoom_in', 'zoom_out', 'zoom_out_map'];
 
 export const IconGallery: Story = {
-  name: 'Available Icons (Built-in)',
+  name: 'All USWDS Icons',
   parameters: {
     controls: { disable: true },
     docs: {
       description: {
         story: `
-Gallery of ${availableIcons.length} commonly used USWDS icons with built-in SVG paths.
+Gallery of all ${allUSWDSIcons.length} USWDS icons from the official sprite file.
 Click on any icon name to copy it to your clipboard for easy use in your code.
 
-**Note:** USWDS 3.x includes 243 total icons. This gallery shows the icons with built-in inline SVG support.
-For the complete icon set, use the \`useSprite\` property with a USWDS sprite file.
+**Note:** This gallery displays all icons using the \`useSprite\` property with the USWDS sprite file.
+Only ${availableIcons.length} icons have built-in inline SVG fallbacks for offline/demo use.
 
-See the [USWDS Icon Documentation](https://designsystem.digital.gov/components/icon/) for the complete icon list.
+See the [USWDS Icon Documentation](https://designsystem.digital.gov/components/icon/) for complete details.
         `,
       },
     },
@@ -792,23 +792,23 @@ See the [USWDS Icon Documentation](https://designsystem.digital.gov/components/i
       <p class="margin-0">
         <strong>💡 Tip:</strong> Click any icon to copy its name to your clipboard.
         <br />
-        <strong>Built-in icons:</strong> ${availableIcons.length} icons with inline SVG support
+        <strong>Total USWDS icons:</strong> ${allUSWDSIcons.length} icons available via sprite file (shown below)
         <br />
-        <strong>Total USWDS icons:</strong> 243 icons available via sprite file
+        <strong>Built-in inline SVG fallbacks:</strong> ${availableIcons.length} common icons
       </p>
     </div>
 
     <div class="usa-alert usa-alert--info usa-alert--slim margin-bottom-2">
       <div class="usa-alert__body">
         <p class="usa-alert__text">
-          For the complete set of 243 USWDS icons, use the <code>useSprite</code> property with a USWDS sprite file.
-          See the <a href="https://designsystem.digital.gov/components/icon/" target="_blank" rel="noopener">USWDS Icon Documentation</a> for details.
+          All ${allUSWDSIcons.length} USWDS icons are displayed below using the <code>useSprite</code> property with the USWDS sprite file.
+          See the <a href="https://designsystem.digital.gov/components/icon/" target="_blank" rel="noopener">USWDS Icon Documentation</a> for complete details.
         </p>
       </div>
     </div>
 
     <div class="icon-gallery">
-      ${availableIcons.map((iconName) => html`
+      ${allUSWDSIcons.map((iconName) => html`
         <div
           class="icon-item"
           @click=${() => {
@@ -821,7 +821,7 @@ See the [USWDS Icon Documentation](https://designsystem.digital.gov/components/i
           }}
           title="Click to copy '${iconName}'"
         >
-          <usa-icon name="${iconName}" size="5" aria-label="${iconName}"></usa-icon>
+          <usa-icon name="${iconName}" size="5" aria-label="${iconName}" use-sprite="true"></usa-icon>
           <span class="icon-name">${iconName}</span>
         </div>
       `)}

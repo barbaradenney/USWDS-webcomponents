@@ -12,6 +12,7 @@
 #          - USWDS compliance (4/9)
 #          - Custom USWDS class validation (4a/9)
 #          - Custom CSS validation (4b/9)
+#          - Icon name validation (4c/9)
 #
 # Required environment variables:
 #   MODIFIED_COMPONENT_COUNT - Number of modified components
@@ -111,3 +112,16 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
 else
   echo "   ⏭️  Skipped (no components modified)"
 fi
+
+# Stage 4c/9: Icon name validation
+echo "🎨 4c/9 Icon name validation..."
+node scripts/validate/validate-icon-names.cjs > /dev/null 2>&1
+VALIDATION_EXIT_CODE=$?
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+  echo "❌ Invalid icon names detected!"
+  echo ""
+  # Run again without redirection to show detailed output
+  node scripts/validate/validate-icon-names.cjs
+  exit 1
+fi
+echo "   ✅ Pass"
