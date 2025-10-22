@@ -105,6 +105,12 @@ Comprehensive maintenance tooling for repository health and optimization.
 **Repository Health:**
 - `npm run health:check` - Quick health dashboard (tests, linting, TypeScript, bundle size, etc.)
 
+**Documentation Links:**
+- `npm run validate:doc-links` - Check for broken documentation links
+- `npm run validate:doc-links:fix` - Interactive fix with prompts for each broken link
+- `npm run validate:doc-links:fix:auto` - Auto-fix all links without prompts
+- `npm run validate:doc-links:fix:preview` - Preview fixes without saving (dry-run)
+
 **Changelog:**
 - `npm run changelog:generate` - Generate CHANGELOG.md from conventional commits
 - `npm run changelog:commit` - Generate and stage for commit
