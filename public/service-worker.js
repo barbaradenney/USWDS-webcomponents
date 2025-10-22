@@ -2,12 +2,12 @@
  * USWDS Web Components - Service Worker
  *
  * Optimized caching strategy for USWDS components and assets.
- * Auto-generated on: 2025-10-21
- * Version: 1.0.2
+ * Auto-generated on: 2025-10-22
+ * Version: 1.1.0
  */
 
 // Cache versioning - automatically invalidates old caches
-const CACHE_VERSION = '1.0.2';
+const CACHE_VERSION = '1.1.0';
 const CACHE_PREFIX = 'uswds-wc';
 
 // Cache names for different asset types
