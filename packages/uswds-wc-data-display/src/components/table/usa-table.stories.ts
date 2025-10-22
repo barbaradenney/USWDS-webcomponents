@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import './index.ts';
+import '../icon/index.ts';
 import type { USATable, TableRow } from './usa-table.js';
 
 const meta: Meta<USATable> = {
@@ -405,15 +406,7 @@ export const EmptyState: Story = {
     <usa-table caption="${args.caption}" .headers=${args.headers} .data=${args.data}>
       <div slot="empty">
         <div class="text-center padding-2">
-          <svg
-            class="usa-icon usa-icon--size-5 text-base-lighter margin-bottom-1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
-            />
-          </svg>
+          <usa-icon name="assessment" size="5" class="text-base-lighter margin-bottom-1" decorative="true"></usa-icon>
           <h3 class="margin-y-1 text-base-darker">No data available</h3>
           <p class="text-base text-base">There are currently no records to display.</p>
           <button class="usa-button usa-button--outline">Add New Record</button>
