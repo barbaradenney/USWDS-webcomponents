@@ -539,7 +539,7 @@
     "testing:health:auto": "node scripts/testing-health-monitor.js --auto-heal",
     "testing:verify": "npm run testing:health && npm run validate:all",
     "// REPOSITORY HEALTH": "",
-    "health:check": "node scripts/health-check.js",
+    "health:check": "node scripts/validate/health-check.js",
     "health": "npm run health:check",
     "// COMMIT HELPERS": "",
     "commit": "node scripts/commit-helper.js",
