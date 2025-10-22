@@ -1,0 +1,54 @@
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Only run for regular commits (not merges, amends, etc.)
+if [ "$COMMIT_SOURCE" = "" ]; then
+  BRANCH_NAME=$(git branch --show-current)
+
+  # Extract issue number from branch name (e.g., "feat/123-add-modal")
+  ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '[0-9]+' | head -1)
+
+  # Extract component from branch (e.g., "feat/modal-redesign" -> "modal")
+  COMPONENT=$(echo "$BRANCH_NAME" | sed -E 's/^[^/]+\/?([a-z-]+).*/\1/')
+
+  # Detect type from branch name
+  if echo "$BRANCH_NAME" | grep -q "^feat/"; then
+    TYPE="feat"
+  elif echo "$BRANCH_NAME" | grep -q "^fix/"; then
+    TYPE="fix"
+  elif echo "$BRANCH_NAME" | grep -q "^docs/"; then
+    TYPE="docs"
+  elif echo "$BRANCH_NAME" | grep -q "^refactor/"; then
+    TYPE="refactor"
+  elif echo "$BRANCH_NAME" | grep -q "^test/"; then
+    TYPE="test"
+  elif echo "$BRANCH_NAME" | grep -q "^style/"; then
+    TYPE="style"
+  elif echo "$BRANCH_NAME" | grep -q "^chore/"; then
+    TYPE="chore"
+  else
+    # Default type for main/master/develop
+    TYPE="chore"
+  fi
+
+  # Pre-fill commit message
+  if [ -n "$COMPONENT" ] && [ "$COMPONENT" != "$BRANCH_NAME" ] && [ "$COMPONENT" != "main" ] && [ "$COMPONENT" != "master" ] && [ "$COMPONENT" != "develop" ]; then
+    echo "$TYPE($COMPONENT): " > "$COMMIT_MSG_FILE"
+  else
+    echo "$TYPE: " > "$COMMIT_MSG_FILE"
+  fi
+
+  # Add issue reference if found
+  if [ -n "$ISSUE_NUMBER" ]; then
+    echo "" >> "$COMMIT_MSG_FILE"
+    echo "Closes #$ISSUE_NUMBER" >> "$COMMIT_MSG_FILE"
+  fi
+
+  # Add template
+  echo "" >> "$COMMIT_MSG_FILE"
+  echo "# What changed:" >> "$COMMIT_MSG_FILE"
+  echo "# - " >> "$COMMIT_MSG_FILE"
+  echo "#" >> "$COMMIT_MSG_FILE"
+  echo "# Why:" >> "$COMMIT_MSG_FILE"
+  echo "# - " >> "$COMMIT_MSG_FILE"
+fi

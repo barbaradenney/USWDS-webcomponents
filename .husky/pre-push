@@ -1,0 +1,55 @@
+echo "🚀 Pre-push validation..."
+
+# 1. Check for force push to protected branches
+BRANCH=$(git branch --show-current)
+PROTECTED_BRANCHES="main|master|develop"
+
+if echo "$BRANCH" | grep -qE "^($PROTECTED_BRANCHES)$"; then
+  # Check if this is a force push
+  while read local_ref local_sha remote_ref remote_sha; do
+    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+      # Deleting a branch
+      echo "❌ Deleting protected branch $BRANCH is not allowed!"
+      exit 1
+    fi
+
+    # Check if this is a force push (non-fast-forward)
+    if [ "$remote_sha" != "0000000000000000000000000000000000000000" ]; then
+      # Check if local is ancestor of remote (fast-forward)
+      if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+        echo "❌ Force push to protected branch detected!"
+        echo "   Branch: $BRANCH"
+        echo "   This could overwrite team members' work."
+        read -p "Are you SURE you want to force push? (yes/NO): " confirm </dev/tty
+        if [ "$confirm" != "yes" ]; then
+          echo "❌ Push cancelled"
+          exit 1
+        fi
+      fi
+    fi
+  done
+fi
+
+# 2. Run full test suite (faster than waiting for CI to fail)
+echo "🧪 Running full test suite..."
+npm test -- --run --silent || {
+  echo "❌ Tests failed! Fix before pushing."
+  echo "   Or use: git push --no-verify (not recommended)"
+  exit 1
+}
+
+# 3. Verify TypeScript compiles
+echo "📘 Verifying TypeScript..."
+npm run typecheck || {
+  echo "❌ TypeScript errors detected"
+  exit 1
+}
+
+# 4. Verify linting passes
+echo "🔍 Verifying linting..."
+npm run lint || {
+  echo "❌ Linting errors detected"
+  exit 1
+}
+
+echo "✅ Pre-push checks passed!"

@@ -668,6 +668,121 @@ This system ensures you commit **clean, efficient, maintainable code** that huma
 
 **Result**: Better code quality, fewer review comments, more maintainable codebase.
 
+## Additional Git Hooks
+
+Beyond pre-commit and post-commit, the project uses additional Git hooks for workflow optimization:
+
+### `pre-push` Hook (HIGH PRIORITY)
+
+**Purpose:** Final safety check before code reaches the remote repository
+
+**What it does:**
+- Prevents force push to protected branches (main/master/develop)
+- Runs full test suite
+- Verifies TypeScript compilation
+- Validates linting passes
+
+**Why it's important:**
+- Catches issues if pre-commit was bypassed with `--no-verify`
+- Prevents broken builds from reaching CI/CD
+- Saves 5-10 minutes waiting for CI to fail
+- Protects team from broken code
+
+**Time:** ~30-60 seconds (worth it to avoid CI failures)
+
+**Skip if needed:** `git push --no-verify`
+
+### `post-merge` Hook (MEDIUM PRIORITY)
+
+**Purpose:** Ensures environment stays in sync after pulling changes
+
+**What it does:**
+- Detects `package.json` changes, prompts for `npm install`
+- Detects USWDS version changes
+- Checks for `.env.example` updates
+- Clears Storybook cache if `.storybook/` changed
+- Suggests rebuild if many files changed
+
+**Why it's important:**
+- Never forget to run `npm install` after pulling
+- Prevents "works on my machine" issues
+- Smooth team collaboration
+
+**Time:** <2 seconds (just checks, installs optional)
+
+**Auto-install:** `AUTO_INSTALL_DEPS=1 git pull`
+
+### `prepare-commit-msg` Hook (MEDIUM PRIORITY)
+
+**Purpose:** Auto-populates commit message with helpful context
+
+**What it does:**
+- Detects commit type from branch name (`feat/`, `fix/`, `docs/`, etc.)
+- Extracts component name from branch
+- Extracts issue number from branch name
+- Pre-fills commit message template
+
+**Why it's important:**
+- Saves time typing repetitive info
+- Ensures consistent commit message format
+- Auto-links to issues
+
+**Time:** <1 second
+
+**Example:**
+```bash
+# Branch: feat/123-modal-redesign
+# Auto-generates:
+feat(modal):
+
+Closes #123
+
+# What changed:
+# -
+
+# Why:
+# -
+```
+
+### Testing Hooks
+
+Test hooks without triggering Git operations:
+
+```bash
+npm run hooks:test:pre-push          # Test pre-push hook
+npm run hooks:test:post-merge        # Test post-merge hook
+npm run hooks:test:prepare-commit-msg # Test prepare-commit-msg hook
+npm run hooks:test:all               # Test all hooks
+```
+
+### Configuration
+
+**Disable hooks temporarily:**
+```bash
+# Skip pre-push for emergency
+git push --no-verify
+
+# Skip all hooks for commit
+git commit --no-verify
+
+# Disable hook temporarily
+chmod -x .husky/pre-push
+
+# Re-enable
+chmod +x .husky/pre-push
+```
+
+**Environment variables:**
+```bash
+# Auto-install dependencies after merge
+AUTO_INSTALL_DEPS=1 git pull
+```
+
+### See Also
+
+- [docs/GIT_HOOKS_COMPREHENSIVE_GUIDE.md](docs/GIT_HOOKS_COMPREHENSIVE_GUIDE.md) - Complete guide to all Git hooks
+- `.husky/` - Hook implementations
+
 ## Code Quality & Architecture Review
 
 Automated architectural analysis ensures clean code:

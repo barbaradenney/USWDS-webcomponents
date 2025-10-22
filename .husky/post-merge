@@ -1,0 +1,49 @@
+echo "🔄 Post-merge checks..."
+
+# 1. Check if package.json changed
+if git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -q 'package.json'; then
+  echo "📦 package.json changed - dependencies may be outdated"
+  echo "   Recommended: npm install"
+
+  # Auto-install if flag is set
+  if [ "$AUTO_INSTALL_DEPS" = "1" ]; then
+    echo "🔧 Auto-installing dependencies..."
+    npm install
+  else
+    read -p "Install now? (Y/n): " install </dev/tty
+    if [ "$install" != "n" ] && [ "$install" != "N" ]; then
+      npm install
+    fi
+  fi
+fi
+
+# 2. Check if USWDS version changed
+if git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -q 'package.json'; then
+  USWDS_CHANGED=$(git diff ORIG_HEAD HEAD -- package.json | grep '@uswds/uswds')
+  if [ -n "$USWDS_CHANGED" ]; then
+    echo "⚠️  USWDS version changed!"
+    echo "   Recommended: npm run uswds:sync"
+  fi
+fi
+
+# 3. Check if .env.example changed
+if git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -q '.env.example'; then
+  echo "⚠️  .env.example changed - check your .env file"
+  echo "   New variables may be required"
+fi
+
+# 4. Suggest rebuilding if major changes
+CHANGED_FILES=$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | wc -l)
+if [ "$CHANGED_FILES" -gt 20 ]; then
+  echo "📦 Many files changed ($CHANGED_FILES)"
+  echo "   Consider: npm run build"
+fi
+
+# 5. Clear Storybook cache if .storybook/ changed
+if git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -q '.storybook/'; then
+  echo "📚 Storybook configuration changed"
+  echo "   Clearing cache..."
+  rm -rf node_modules/.cache/storybook
+fi
+
+echo "✅ Post-merge checks complete"
