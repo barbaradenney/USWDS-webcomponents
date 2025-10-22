@@ -74,6 +74,24 @@ jobs:
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
 
+      - name: Check documentation truthfulness
+        id: doc-truth
+        run: |
+          echo "## 🔍 Documentation Truthfulness Check" >> $GITHUB_STEP_SUMMARY
+
+          # Run documentation truthfulness validator
+          if npm run docs:validate:truth 2>&1 | tee doc-truth.log; then
+            echo "✅ All documentation content is accurate" >> $GITHUB_STEP_SUMMARY
+            echo "docs_accurate=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Documentation accuracy issues found:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 doc-truth.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "docs_accurate=false" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
       - name: Check for unused code
         id: unused-code
         run: |
@@ -172,6 +190,7 @@ jobs:
       - name: Create maintenance issue
         if: steps.doc-links.outputs.has_broken_links == 'true' ||
             steps.doc-sync.outputs.docs_synced == 'false' ||
+            steps.doc-truth.outputs.docs_accurate == 'false' ||
             steps.unused-code.outputs.has_unused_code == 'true' ||
             steps.bundle-size.outputs.bundle_exceeded == 'true' ||
             steps.outdated-deps.outputs.has_outdated == 'true'
@@ -181,6 +200,7 @@ jobs:
             const date = new Date().toISOString().split('T')[0];
             const hasDocLinks = '${{ steps.doc-links.outputs.has_broken_links }}' === 'true';
             const docsSynced = '${{ steps.doc-sync.outputs.docs_synced }}' === 'false';
+            const docsAccurate = '${{ steps.doc-truth.outputs.docs_accurate }}' === 'false';
             const hasUnusedCode = '${{ steps.unused-code.outputs.has_unused_code }}' === 'true';
             const bundleExceeded = '${{ steps.bundle-size.outputs.bundle_exceeded }}' === 'true';
             const hasOutdated = '${{ steps.outdated-deps.outputs.has_outdated }}' === 'true';
@@ -202,6 +222,13 @@ jobs:
               body += `  - Critical docs (README, About.mdx, package.json) have inconsistencies\n`;
               body += `  - Run \`npm run docs:check-sync\` to see details\n`;
               body += `  - Update package.json first (source of truth), then sync other docs\n\n`;
+            }
+
+            if (docsAccurate) {
+              body += `- 🔍 **Documentation Content Inaccurate**\n`;
+              body += `  - Documentation content doesn't match actual implementation\n`;
+              body += `  - Run \`npm run docs:validate:truth\` to see details\n`;
+              body += `  - Update documentation to reflect actual code, scripts, and features\n\n`;
             }
 
             if (hasUnusedCode) {
@@ -261,6 +288,7 @@ jobs:
 
           if [ "${{ steps.doc-links.outputs.has_broken_links }}" == "true" ] ||
              [ "${{ steps.doc-sync.outputs.docs_synced }}" == "false" ] ||
+             [ "${{ steps.doc-truth.outputs.docs_accurate }}" == "false" ] ||
              [ "${{ steps.unused-code.outputs.has_unused_code }}" == "true" ] ||
              [ "${{ steps.bundle-size.outputs.bundle_exceeded }}" == "true" ] ||
              [ "${{ steps.outdated-deps.outputs.has_outdated }}" == "true" ]; then
