@@ -532,6 +532,111 @@ Automated checks run **after** every commit (non-blocking):
    - Prevents false positives from disrupting workflow
 3. **Discovered issues tracking** - Tracks validation bypasses for follow-up
 
+### Post-commit Automated Cleanup (Opt-In)
+
+Post-commit can automatically fix common code quality issues. All cleanup features are **opt-in** via environment variables:
+
+#### **ESLint Auto-Fix** 🔧
+
+Automatically fixes auto-fixable linting errors after commit.
+
+```bash
+# Enable for one commit
+AUTO_FIX_LINT=1 git commit -m "feat: add feature"
+
+# Or use npm script
+npm run commit:fix-lint
+```
+
+**What it does:**
+- Runs `eslint --fix` on modified TypeScript/JavaScript files
+- Only applies safe, auto-fixable changes
+- Creates automatic commit with fixes
+
+**Use when:** You want linting errors fixed automatically
+
+#### **Prettier Auto-Format** 🎨
+
+Automatically formats code with Prettier after commit.
+
+```bash
+# Enable for one commit
+AUTO_FORMAT=1 git commit -m "feat: add feature"
+
+# Or use npm script
+npm run commit:format
+```
+
+**What it does:**
+- Runs Prettier on all modified files
+- Ensures consistent code formatting
+- Creates automatic commit with formatting changes
+
+**Use when:** You want consistent formatting without manual effort
+
+#### **Cache Cleanup** 🧹
+
+Automatically clears stale caches after commit.
+
+```bash
+# Enable for one commit
+AUTO_CLEANUP_CACHE=1 git commit -m "feat: add feature"
+
+# Or use npm script
+npm run commit:clean-cache
+```
+
+**What it does:**
+- Clears `node_modules/.cache`
+- Clears Storybook cache
+- Clears Vite cache
+- Reports space freed
+
+**Use when:** You suspect cache issues or want to free space
+
+#### **Smart Cleanup (All Features)** ✨
+
+Enable all cleanup features at once.
+
+```bash
+# Enable everything
+AUTO_CLEANUP=1 git commit -m "feat: add feature"
+
+# Or use npm script
+npm run commit:cleanup
+```
+
+**What it does:**
+- Runs ESLint auto-fix
+- Runs Prettier auto-format
+- Clears all caches
+- Creates single commit with all changes
+
+**Use when:** You want the cleanest possible code automatically
+
+#### Manual Cleanup
+
+You can also run cleanup manually without committing:
+
+```bash
+npm run cleanup:lint          # Fix linting errors
+npm run cleanup:format        # Format code with Prettier
+npm run cleanup:cache         # Clear caches
+```
+
+#### Configuration
+
+**Disable cleanup for one commit:**
+```bash
+SKIP_AUTO_CLEANUP=1 git commit -m "feat: add feature"
+```
+
+**Default behavior:**
+- Cleanup is **off by default** (opt-in)
+- Only runs when explicitly enabled
+- Creates separate commits for cleanup changes
+- Provides detailed reporting of what was cleaned
+
 ## AI Code Quality System
 
 **Ensures the cleanest, most efficient code possible by detecting common AI code generation anti-patterns.**

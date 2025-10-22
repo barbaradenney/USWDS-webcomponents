@@ -47,8 +47,40 @@ Optimizing the development workflow with strategic Git hooks.
 - README updates
 - Testing documentation
 - AI code quality feedback
+- **Automated code cleanup (opt-in)**
+  - ESLint auto-fix
+  - Prettier auto-format
+  - Cache cleanup
 
 **Time:** ~15 seconds (non-blocking)
+
+#### Post-commit Automated Cleanup
+
+**NEW**: Post-commit can automatically fix common code quality issues. All features are opt-in:
+
+**Enable cleanup for one commit:**
+```bash
+AUTO_FIX_LINT=1 git commit -m "feat: add feature"  # Fix linting errors
+AUTO_FORMAT=1 git commit -m "feat: add feature"    # Format with Prettier
+AUTO_CLEANUP_CACHE=1 git commit -m "feat: add feature"  # Clear caches
+AUTO_CLEANUP=1 git commit -m "feat: add feature"   # Enable all cleanup
+```
+
+**Or use npm scripts:**
+```bash
+npm run commit:fix-lint      # Commit + auto-fix linting
+npm run commit:format        # Commit + auto-format
+npm run commit:clean-cache   # Commit + clear caches
+npm run commit:cleanup       # Commit + all cleanup
+```
+
+**Benefits:**
+- ✅ Automatically fixes linting errors
+- ✅ Ensures consistent code formatting
+- ✅ Clears stale caches
+- ✅ Non-blocking (runs after commit succeeds)
+- ✅ Creates separate commit for cleanup changes
+- ✅ Detailed reporting of what was cleaned
 
 ---
 

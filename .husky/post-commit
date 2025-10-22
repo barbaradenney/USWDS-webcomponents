@@ -245,3 +245,175 @@ else
 fi
 
 rm -f /tmp/ai-quality-report.txt
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Automated Code Cleanup (Opt-In)
+# Environment variables to enable:
+#   AUTO_FIX_LINT=1      - Auto-fix ESLint errors
+#   AUTO_FORMAT=1        - Auto-format with Prettier
+#   AUTO_CLEANUP_CACHE=1 - Clear stale caches
+#   AUTO_CLEANUP=1       - Enable all cleanup features
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CLEANUP_PERFORMED=false
+
+# Check if any cleanup is enabled
+if [ "$AUTO_CLEANUP" = "1" ] || [ "$AUTO_FIX_LINT" = "1" ] || [ "$AUTO_FORMAT" = "1" ] || [ "$AUTO_CLEANUP_CACHE" = "1" ]; then
+  echo ""
+  echo "🧹 Post-commit: Running automated cleanup..."
+  echo ""
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 1. ESLint Auto-Fix
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+if [ "$AUTO_CLEANUP" = "1" ] || [ "$AUTO_FIX_LINT" = "1" ]; then
+  echo "🔧 ESLint Auto-Fix: Fixing auto-fixable linting errors..."
+
+  # Get modified TypeScript/JavaScript files from the last commit
+  MODIFIED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH | grep -E '\.(ts|tsx|js|jsx)$' | grep -v node_modules || true)
+
+  if [ -n "$MODIFIED_FILES" ]; then
+    # Run ESLint with --fix on modified files
+    echo "$MODIFIED_FILES" | xargs npx eslint --fix --quiet || true
+
+    # Check if any files were modified
+    if ! git diff --quiet --exit-code; then
+      echo "  ✅ Auto-fixed linting errors"
+      git add .
+      CLEANUP_PERFORMED=true
+      LINT_FIXED=true
+    else
+      echo "  ℹ️  No auto-fixable linting errors found"
+    fi
+  else
+    echo "  ℹ️  No TypeScript/JavaScript files modified"
+  fi
+
+  echo ""
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 2. Prettier Auto-Format
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+if [ "$AUTO_CLEANUP" = "1" ] || [ "$AUTO_FORMAT" = "1" ]; then
+  echo "🎨 Prettier Auto-Format: Ensuring consistent code formatting..."
+
+  # Get modified files from the last commit (exclude generated files)
+  MODIFIED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH | grep -E '\.(ts|tsx|js|jsx|css|scss|json|md)$' | grep -v -E '(node_modules|dist|build|coverage|\.next)' || true)
+
+  if [ -n "$MODIFIED_FILES" ]; then
+    # Run Prettier with --write on modified files
+    echo "$MODIFIED_FILES" | xargs npx prettier --write --ignore-unknown || true
+
+    # Check if any files were modified
+    if ! git diff --quiet --exit-code; then
+      echo "  ✅ Auto-formatted code with Prettier"
+      git add .
+      CLEANUP_PERFORMED=true
+      PRETTIER_FORMATTED=true
+    else
+      echo "  ℹ️  Code already properly formatted"
+    fi
+  else
+    echo "  ℹ️  No formattable files modified"
+  fi
+
+  echo ""
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 3. Cache Cleanup
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+if [ "$AUTO_CLEANUP" = "1" ] || [ "$AUTO_CLEANUP_CACHE" = "1" ]; then
+  echo "🧹 Cache Cleanup: Removing stale caches..."
+
+  SPACE_FREED=0
+
+  # Clear node_modules/.cache
+  if [ -d "node_modules/.cache" ]; then
+    CACHE_SIZE=$(du -sk node_modules/.cache | cut -f1)
+    rm -rf node_modules/.cache
+    SPACE_FREED=$((SPACE_FREED + CACHE_SIZE))
+    echo "  ✅ Cleared node_modules/.cache ($(echo "scale=2; $CACHE_SIZE/1024" | bc)MB)"
+  fi
+
+  # Clear Storybook cache
+  if [ -d "node_modules/.cache/storybook" ]; then
+    SB_CACHE_SIZE=$(du -sk node_modules/.cache/storybook 2>/dev/null | cut -f1 || echo "0")
+    rm -rf node_modules/.cache/storybook
+    SPACE_FREED=$((SPACE_FREED + SB_CACHE_SIZE))
+    echo "  ✅ Cleared Storybook cache ($(echo "scale=2; $SB_CACHE_SIZE/1024" | bc)MB)"
+  fi
+
+  # Clear Vite cache
+  if [ -d "node_modules/.vite" ]; then
+    VITE_CACHE_SIZE=$(du -sk node_modules/.vite 2>/dev/null | cut -f1 || echo "0")
+    rm -rf node_modules/.vite
+    SPACE_FREED=$((SPACE_FREED + VITE_CACHE_SIZE))
+    echo "  ✅ Cleared Vite cache ($(echo "scale=2; $VITE_CACHE_SIZE/1024" | bc)MB)"
+  fi
+
+  if [ "$SPACE_FREED" -gt 0 ]; then
+    echo "  💾 Total space freed: $(echo "scale=2; $SPACE_FREED/1024" | bc)MB"
+    CACHE_CLEANED=true
+  else
+    echo "  ℹ️  No caches to clean"
+  fi
+
+  echo ""
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Commit Cleanup Changes
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+if [ "$CLEANUP_PERFORMED" = true ]; then
+  echo "📝 Committing automated cleanup changes..."
+
+  # Build commit message based on what was cleaned
+  CLEANUP_MSG="chore: automated code cleanup"
+  CLEANUP_DETAILS=""
+
+  if [ "$LINT_FIXED" = true ]; then
+    CLEANUP_DETAILS="${CLEANUP_DETAILS}- Auto-fixed ESLint errors\n"
+  fi
+
+  if [ "$PRETTIER_FORMATTED" = true ]; then
+    CLEANUP_DETAILS="${CLEANUP_DETAILS}- Auto-formatted code with Prettier\n"
+  fi
+
+  if [ "$CACHE_CLEANED" = true ]; then
+    CLEANUP_DETAILS="${CLEANUP_DETAILS}- Cleared stale caches\n"
+  fi
+
+  # Create cleanup commit
+  git commit --no-verify -m "$CLEANUP_MSG
+
+Automated cleanup performed post-commit:
+$CLEANUP_DETAILS
+Original commit: $COMMIT_HASH
+
+To disable: SKIP_AUTO_CLEANUP=1 git commit
+
+🤖 Generated by post-commit hook"
+
+  echo "✅ Cleanup changes committed"
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "🎉 Post-commit cleanup summary:"
+  if [ "$LINT_FIXED" = true ]; then
+    echo "  ✅ ESLint errors auto-fixed"
+  fi
+  if [ "$PRETTIER_FORMATTED" = true ]; then
+    echo "  ✅ Code auto-formatted"
+  fi
+  if [ "$CACHE_CLEANED" = true ]; then
+    echo "  ✅ Caches cleaned"
+  fi
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+fi
