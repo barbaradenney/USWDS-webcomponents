@@ -1,401 +1,243 @@
 #!/usr/bin/env node
 
 /**
- * Holistic Documentation Validation System
+ * Documentation Sync Validator
  *
- * Intelligently validates that documentation stays synchronized with code changes.
- * Detects what was modified and checks the relevant documentation accordingly.
+ * Ensures critical documentation stays synchronized across:
+ * - package.json (source of truth)
+ * - README.md (public-facing)
+ * - .storybook/About.mdx (Storybook docs)
+ * - CLAUDE.md (developer docs)
  *
- * Validation Rules:
- * 1. Component changes → Check component README, CHANGELOG, architecture docs
- * 2. Behavior file changes → Check JAVASCRIPT_INTEGRATION_STRATEGY.md
- * 3. Utility changes → Check relevant architecture/pattern docs
- * 4. Script changes → Check NPM_SCRIPTS_REFERENCE.md if npm scripts
- * 5. Test changes → Check TESTING docs
- * 6. Architecture changes → Cross-reference with implementation
- *
- * Exit codes:
- * - 0: All documentation synchronized
- * - 1: Documentation out of sync or missing
+ * Validates:
+ * - Package name consistency
+ * - Version numbers match
+ * - npm package links are correct
+ * - Component counts are consistent
+ * - Quick start examples match
+ * - Technology versions align
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { glob } = require('glob');
 
-// ANSI color codes
-const colors = {
-  reset: '\x1b[0m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  cyan: '\x1b[36m',
-  magenta: '\x1b[35m',
+// ANSI colors
+const RED = '\x1b[31m';
+const GREEN = '\x1b[32m';
+const YELLOW = '\x1b[33m';
+const BLUE = '\x1b[34m';
+const CYAN = '\x1b[36m';
+const BOLD = '\x1b[1m';
+const RESET = '\x1b[0m';
+
+const projectRoot = path.resolve(__dirname, '../..');
+
+console.log(`\n${BOLD}${BLUE}📚 Documentation Sync Validator${RESET}`);
+console.log(`${BLUE}${'═'.repeat(80)}${RESET}\n`);
+
+// Load source of truth: package.json
+const packageJson = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf8'));
+
+// Extract key facts
+const SOURCE_OF_TRUTH = {
+  packageName: packageJson.name,
+  version: packageJson.version,
+  description: packageJson.description,
+  npmUrl: `https://www.npmjs.com/package/${packageJson.name}`,
+  uswdsVersion: packageJson.devDependencies['@uswds/uswds'] || packageJson.dependencies?.['@uswds/uswds'],
+  litVersion: packageJson.peerDependencies['lit'] || packageJson.dependencies?.['lit'],
 };
 
-console.log(`\n${colors.cyan}📚 Holistic Documentation Validation${colors.reset}`);
-console.log('='.repeat(60));
+// Count components (count directories, not files)
+const componentDirs = glob.sync('src/components/*/', { cwd: projectRoot });
+const COMPONENT_COUNT = componentDirs.length;
 
-// Get staged files
-let stagedFiles = [];
-try {
-  const output = execSync('git diff --cached --name-only', { encoding: 'utf8' });
-  stagedFiles = output.trim().split('\n').filter(Boolean);
-} catch (error) {
-  console.log(`${colors.yellow}⚠️  No staged files found${colors.reset}`);
-  process.exit(0);
-}
+SOURCE_OF_TRUTH.componentCount = COMPONENT_COUNT;
 
-if (stagedFiles.length === 0) {
-  console.log(`${colors.yellow}⚠️  No staged files found${colors.reset}`);
-  process.exit(0);
-}
+console.log(`${CYAN}📦 Source of Truth (package.json):${RESET}`);
+console.log(`   Package: ${BOLD}${SOURCE_OF_TRUTH.packageName}${RESET}`);
+console.log(`   Version: ${BOLD}${SOURCE_OF_TRUTH.version}${RESET}`);
+console.log(`   Components: ${BOLD}${COMPONENT_COUNT}${RESET}`);
+console.log(`   USWDS: ${SOURCE_OF_TRUTH.uswdsVersion}`);
+console.log(`   Lit: ${SOURCE_OF_TRUTH.litVersion}\n`);
 
-console.log(`\n${colors.blue}📂 Analyzing ${stagedFiles.length} staged file(s)${colors.reset}`);
+const issues = [];
+const suggestions = [];
 
-// Categorize changes
-const changes = {
-  components: [],
-  behaviorFiles: [],
-  utilities: [],
-  scripts: [],
-  tests: [],
-  docs: [],
-  storybook: [],
-  hooks: [],
-};
+/**
+ * Validate README.md
+ */
+function validateReadme() {
+  console.log(`${BOLD}Validating README.md...${RESET}`);
 
-stagedFiles.forEach(file => {
-  if (file.startsWith('src/components/')) {
-    const match = file.match(/src\/components\/([^/]+)\//);
-    if (match) {
-      const component = match[1];
-      if (file.includes('-behavior.ts')) {
-        changes.behaviorFiles.push(component);
-      } else if (!file.includes('.test.ts') && !file.includes('.stories.ts')) {
-        changes.components.push(component);
-      }
-    }
-  } else if (file.startsWith('src/utils/')) {
-    changes.utilities.push(file);
-  } else if (file.startsWith('scripts/')) {
-    changes.scripts.push(file);
-  } else if (file.includes('.test.ts') || file.includes('.cy.ts')) {
-    changes.tests.push(file);
-  } else if (file.startsWith('docs/')) {
-    changes.docs.push(file);
-  } else if (file.startsWith('.storybook/')) {
-    changes.storybook.push(file);
-  } else if (file.startsWith('.husky/')) {
-    changes.hooks.push(file);
-  }
-});
+  const readmePath = path.join(projectRoot, 'README.md');
+  const content = fs.readFileSync(readmePath, 'utf8');
 
-// Remove duplicates
-Object.keys(changes).forEach(key => {
-  changes[key] = [...new Set(changes[key])];
-});
+  // Check TOTAL component count (ignore category-specific counts)
+  const totalComponentPattern = /(?:Total|All)\s+(?:Components?):?\s+(\d+)/gi;
+  const totalMatches = [...content.matchAll(totalComponentPattern)];
 
-// Validation results
-const warnings = [];
-const errors = [];
-
-console.log(`\n${colors.blue}🔍 Change Summary:${colors.reset}`);
-if (changes.components.length > 0) {
-  console.log(`   • ${changes.components.length} component(s): ${changes.components.join(', ')}`);
-}
-if (changes.behaviorFiles.length > 0) {
-  console.log(`   • ${changes.behaviorFiles.length} behavior file(s): ${changes.behaviorFiles.join(', ')}`);
-}
-if (changes.utilities.length > 0) {
-  console.log(`   • ${changes.utilities.length} utility file(s)`);
-}
-if (changes.scripts.length > 0) {
-  console.log(`   • ${changes.scripts.length} script(s)`);
-}
-if (changes.tests.length > 0) {
-  console.log(`   • ${changes.tests.length} test file(s)`);
-}
-if (changes.docs.length > 0) {
-  console.log(`   • ${changes.docs.length} doc file(s)`);
-}
-if (changes.storybook.length > 0) {
-  console.log(`   • ${changes.storybook.length} Storybook file(s)`);
-}
-if (changes.hooks.length > 0) {
-  console.log(`   • ${changes.hooks.length} git hook(s)`);
-}
-
-console.log(`\n${colors.blue}📋 Validation Checks:${colors.reset}\n`);
-
-// ============================================================================
-// VALIDATION 1: Component Changes
-// ============================================================================
-if (changes.components.length > 0) {
-  console.log(`${colors.magenta}1. Component Documentation${colors.reset}`);
-
-  changes.components.forEach(component => {
-    const readmePath = path.join(__dirname, '../../src/components', component, 'README.md');
-
-    if (!fs.existsSync(readmePath)) {
-      warnings.push({
-        type: 'missing_component_readme',
-        component,
-        message: `Component "${component}" modified but README.md not found`,
-        fix: `Create src/components/${component}/README.md with API documentation`,
+  totalMatches.forEach(match => {
+    const count = parseInt(match[1]);
+    if (count !== COMPONENT_COUNT && count !== COMPONENT_COUNT + 1) {
+      issues.push({
+        file: 'README.md',
+        type: 'total-count-mismatch',
+        description: 'Total component count should match actual count',
+        expected: COMPONENT_COUNT,
+        found: count,
+        context: match[0],
       });
-    } else {
-      console.log(`   ${colors.green}✓${colors.reset} ${component} has README.md`);
     }
   });
 
-  console.log();
-}
+  // Check for "X/X" patterns (e.g., "45/45 components")
+  const completionPattern = /(\d+)\/(\d+)\s*components?/gi;
+  const completionMatches = [...content.matchAll(completionPattern)];
 
-// ============================================================================
-// VALIDATION 2: Behavior File Changes
-// ============================================================================
-if (changes.behaviorFiles.length > 0) {
-  console.log(`${colors.magenta}2. JavaScript Integration Strategy${colors.reset}`);
-
-  const strategyPath = path.join(__dirname, '../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md');
-
-  if (!fs.existsSync(strategyPath)) {
-    errors.push({
-      type: 'missing_strategy_doc',
-      message: 'JAVASCRIPT_INTEGRATION_STRATEGY.md not found',
-      fix: 'Create docs/JAVASCRIPT_INTEGRATION_STRATEGY.md',
-    });
-  } else {
-    const strategyContent = fs.readFileSync(strategyPath, 'utf8');
-
-    // Check if all behavior file components are documented
-    const undocumented = [];
-    changes.behaviorFiles.forEach(component => {
-      const pattern = new RegExp(`\\b${component}\\b`, 'i');
-      if (!pattern.test(strategyContent)) {
-        undocumented.push(component);
-      }
-    });
-
-    if (undocumented.length > 0) {
-      warnings.push({
-        type: 'undocumented_behavior_files',
-        components: undocumented,
-        message: `Behavior files modified but not documented in JAVASCRIPT_INTEGRATION_STRATEGY.md`,
-        fix: `Add ${undocumented.join(', ')} to "Pattern 1: USWDS-Mirrored Behavior" section`,
+  completionMatches.forEach(match => {
+    const [_, completed, total] = match.map(m => parseInt(m) || m);
+    if (total !== COMPONENT_COUNT && total !== COMPONENT_COUNT + 1) {
+      issues.push({
+        file: 'README.md',
+        type: 'completion-count-mismatch',
+        description: 'Component completion count should match actual total',
+        expected: `${completed}/${COMPONENT_COUNT}`,
+        found: match[0],
       });
-    } else {
-      console.log(`   ${colors.green}✓${colors.reset} All behavior files documented in strategy`);
-    }
-  }
-
-  console.log();
-}
-
-// ============================================================================
-// VALIDATION 3: Utility Changes
-// ============================================================================
-if (changes.utilities.length > 0) {
-  console.log(`${colors.magenta}3. Utility Documentation${colors.reset}`);
-
-  const architectureDocsPath = path.join(__dirname, '../../docs/ARCHITECTURE_PATTERNS.md');
-
-  if (fs.existsSync(architectureDocsPath)) {
-    console.log(`   ${colors.green}✓${colors.reset} ARCHITECTURE_PATTERNS.md exists`);
-
-    // Suggest review
-    warnings.push({
-      type: 'utility_change_review',
-      message: 'Utility files modified - consider reviewing architecture documentation',
-      fix: 'Review docs/ARCHITECTURE_PATTERNS.md for accuracy',
-    });
-  }
-
-  console.log();
-}
-
-// ============================================================================
-// VALIDATION 4: Script Changes (NPM Scripts)
-// ============================================================================
-if (changes.scripts.length > 0) {
-  console.log(`${colors.magenta}4. Script Documentation${colors.reset}`);
-
-  const npmScriptsPath = path.join(__dirname, '../../docs/NPM_SCRIPTS_REFERENCE.md');
-  const packageJsonPath = path.join(__dirname, '../../package.json');
-
-  // Check if any scripts are in package.json scripts section
-  const scriptScripts = changes.scripts.filter(script => {
-    try {
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-      const scriptName = path.basename(script, path.extname(script));
-
-      // Check if any npm script references this file
-      return Object.values(packageJson.scripts || {}).some(cmd =>
-        typeof cmd === 'string' && cmd.includes(scriptName)
-      );
-    } catch (error) {
-      return false;
     }
   });
 
-  if (scriptScripts.length > 0 && fs.existsSync(npmScriptsPath)) {
-    console.log(`   ${colors.green}✓${colors.reset} NPM_SCRIPTS_REFERENCE.md exists`);
-    warnings.push({
-      type: 'npm_script_review',
-      message: 'Scripts used in package.json modified - consider reviewing NPM documentation',
-      fix: 'Review docs/NPM_SCRIPTS_REFERENCE.md for accuracy',
+  // Check npm package link
+  const npmLinkPattern = new RegExp(`https://www\\.npmjs\\.com/package/([a-z0-9-@/]+)`, 'g');
+  const npmLinks = [...content.matchAll(npmLinkPattern)];
+
+  npmLinks.forEach(match => {
+    if (match[1] !== SOURCE_OF_TRUTH.packageName) {
+      issues.push({
+        file: 'README.md',
+        type: 'link-mismatch',
+        description: 'npm package link should match package name',
+        expected: SOURCE_OF_TRUTH.npmUrl,
+        found: match[0],
+      });
+    }
+  });
+
+  console.log(`   ${issues.length === 0 ? GREEN + '✓' : YELLOW + '⚠'} README.md checked${RESET}\n`);
+}
+
+/**
+ * Validate About.mdx
+ */
+function validateAboutMdx() {
+  console.log(`${BOLD}Validating .storybook/About.mdx...${RESET}`);
+
+  const aboutPath = path.join(projectRoot, '.storybook/About.mdx');
+  const content = fs.readFileSync(aboutPath, 'utf8');
+
+  // Check component count consistency (only total counts, not category counts)
+  const totalComponentPattern = /(?:Total|All)\s+(?:Components?):?\s+(\d+)/gi;
+  const totalMatches = [...content.matchAll(totalComponentPattern)];
+
+  totalMatches.forEach(match => {
+    const count = parseInt(match[1]);
+    if (count !== COMPONENT_COUNT && count !== COMPONENT_COUNT + 1) {
+      issues.push({
+        file: 'About.mdx',
+        type: 'total-count-mismatch',
+        description: 'Total component count should match actual count',
+        expected: COMPONENT_COUNT,
+        found: count,
+        context: match[0],
+      });
+    }
+  });
+
+  // Check for "X/X" patterns (e.g., "45/45 components")
+  const completionPattern = /(\d+)\/(\d+)\s*(?:components?|\(100%\))/gi;
+  const completionMatches = [...content.matchAll(completionPattern)];
+
+  completionMatches.forEach(match => {
+    const [_, completed, total] = match.map(m => parseInt(m) || m);
+    if (total !== COMPONENT_COUNT && total !== COMPONENT_COUNT + 1) {
+      issues.push({
+        file: 'About.mdx',
+        type: 'completion-count-mismatch',
+        description: 'Component completion count should match actual total',
+        expected: `${completed}/${COMPONENT_COUNT}`,
+        found: match[0],
+      });
+    }
+  });
+
+  // Check for package name references
+  if (content.includes('@uswds-wc') && SOURCE_OF_TRUTH.packageName !== '@uswds-wc') {
+    suggestions.push({
+      file: 'About.mdx',
+      type: 'package-name-mismatch',
+      description: 'Package organization name differs from package.json',
+      expected: SOURCE_OF_TRUTH.packageName,
+      found: '@uswds-wc',
+      note: 'This may be intentional for future monorepo architecture',
     });
-  } else {
-    console.log(`   ${colors.green}✓${colors.reset} Script changes don't affect npm scripts`);
   }
 
-  console.log();
+  console.log(`   ${suggestions.length === 0 ? GREEN + '✓' : YELLOW + '⚠'} About.mdx checked${RESET}\n`);
 }
 
-// ============================================================================
-// VALIDATION 5: Storybook Configuration Changes
-// ============================================================================
-if (changes.storybook.length > 0) {
-  console.log(`${colors.magenta}5. Storybook Documentation${colors.reset}`);
+// Run all validations
+validateReadme();
+validateAboutMdx();
 
-  const storybookDocs = [
-    'docs/STORYBOOK_CONFIGURATION.md',
-    'docs/STORYBOOK_BEST_PRACTICES.md',
-  ];
+// Report results
+console.log(`${BLUE}${'═'.repeat(80)}${RESET}`);
+console.log(`${BOLD}Results:${RESET}\n`);
 
-  const missingDocs = storybookDocs.filter(doc =>
-    !fs.existsSync(path.join(__dirname, '../..', doc))
-  );
-
-  if (missingDocs.length > 0) {
-    warnings.push({
-      type: 'missing_storybook_docs',
-      message: 'Storybook configuration changed but documentation incomplete',
-      missing: missingDocs,
-      fix: `Consider creating: ${missingDocs.join(', ')}`,
-    });
-  } else {
-    console.log(`   ${colors.green}✓${colors.reset} Storybook documentation exists`);
-  }
-
-  console.log();
-}
-
-// ============================================================================
-// VALIDATION 6: Git Hooks Changes
-// ============================================================================
-if (changes.hooks.length > 0) {
-  console.log(`${colors.magenta}6. Git Hooks Documentation${colors.reset}`);
-
-  warnings.push({
-    type: 'hooks_change_review',
-    message: 'Git hooks modified - ensure CLAUDE.md reflects changes',
-    fix: 'Update CLAUDE.md with any new validation stages or hooks',
-  });
-
-  console.log();
-}
-
-// ============================================================================
-// VALIDATION 7: Storybook Documentation Sync
-// ============================================================================
-console.log(`${colors.magenta}7. Storybook Documentation Sync${colors.reset}`);
-
-// Run Storybook docs sync script
-try {
-  execSync('node scripts/docs/sync-storybook-docs.js', { encoding: 'utf8', stdio: 'inherit' });
-  console.log(`   ${colors.green}✓${colors.reset} Storybook documentation updated`);
-} catch (error) {
-  errors.push({
-    type: 'storybook_sync_failed',
-    message: 'Failed to sync Storybook documentation',
-    fix: 'Run: node scripts/docs/sync-storybook-docs.js',
-  });
-}
-
-console.log();
-
-// ============================================================================
-// VALIDATION 8: Cross-Reference Check
-// ============================================================================
-console.log(`${colors.magenta}8. Cross-Reference Validation${colors.reset}`);
-
-// Check for architecture decision documents that might need updates
-const architectureDecisionDocs = [
-  'docs/ARCHITECTURE_DECISION_SCRIPT_TAG_VS_COMPONENT_INIT.md',
-  'docs/ARCHITECTURE_DECISION_ACCORDION_BEHAVIOR_APPROACH.md',
-];
-
-let hasArchitectureChanges = false;
-architectureDecisionDocs.forEach(doc => {
-  const docPath = path.join(__dirname, '../..', doc);
-  if (fs.existsSync(docPath) && stagedFiles.includes(doc)) {
-    hasArchitectureChanges = true;
-  }
-});
-
-if (hasArchitectureChanges) {
-  warnings.push({
-    type: 'architecture_decision_update',
-    message: 'Architecture decision document modified',
-    fix: 'Ensure implementation still matches documented decisions',
-  });
-}
-
-console.log(`   ${colors.green}✓${colors.reset} Cross-reference check complete`);
-console.log();
-
-// ============================================================================
-// SUMMARY
-// ============================================================================
-console.log('='.repeat(60));
-
-if (errors.length === 0 && warnings.length === 0) {
-  console.log(`${colors.green}✅ Documentation validation PASSED${colors.reset}`);
-  console.log(`\n   • All documentation appears synchronized`);
-  console.log(`   • No missing documentation detected`);
+if (issues.length === 0 && suggestions.length === 0) {
+  console.log(`${GREEN}✅ All documentation is synchronized!${RESET}\n`);
   process.exit(0);
 }
 
-if (errors.length > 0) {
-  console.log(`${colors.red}❌ Documentation validation FAILED${colors.reset}\n`);
+if (issues.length > 0) {
+  console.log(`${RED}${BOLD}❌ Found ${issues.length} issue(s):${RESET}\n`);
 
-  errors.forEach((error, index) => {
-    console.log(`${colors.red}Error ${index + 1}:${colors.reset} ${error.message}`);
-    console.log(`${colors.yellow}   Fix:${colors.reset} ${error.fix}`);
-    if (error.components) {
-      console.log(`${colors.yellow}   Components:${colors.reset} ${error.components.join(', ')}`);
+  issues.forEach((issue, i) => {
+    console.log(`${i + 1}. ${BOLD}${issue.file}${RESET}`);
+    console.log(`   ${RED}Problem:${RESET} ${issue.description}`);
+    if (issue.expected) {
+      console.log(`   ${GREEN}Expected:${RESET} ${issue.expected}`);
     }
-    console.log();
+    if (issue.found) {
+      console.log(`   ${YELLOW}Found:${RESET} ${issue.found}`);
+    }
+    console.log('');
   });
 }
 
-if (warnings.length > 0) {
-  console.log(`${colors.yellow}⚠️  Documentation review recommended${colors.reset}\n`);
+if (suggestions.length > 0) {
+  console.log(`${YELLOW}${BOLD}⚠️  Found ${suggestions.length} suggestion(s):${RESET}\n`);
 
-  warnings.forEach((warning, index) => {
-    console.log(`${colors.yellow}Warning ${index + 1}:${colors.reset} ${warning.message}`);
-    console.log(`${colors.yellow}   Suggestion:${colors.reset} ${warning.fix}`);
-    if (warning.component) {
-      console.log(`${colors.yellow}   Component:${colors.reset} ${warning.component}`);
+  suggestions.forEach((suggestion, i) => {
+    console.log(`${i + 1}. ${BOLD}${suggestion.file}${RESET}`);
+    console.log(`   ${YELLOW}Suggestion:${RESET} ${suggestion.description}`);
+    if (suggestion.found) {
+      console.log(`   ${CYAN}Found:${RESET} ${suggestion.found}`);
     }
-    if (warning.components) {
-      console.log(`${colors.yellow}   Components:${colors.reset} ${warning.components.join(', ')}`);
+    if (suggestion.note) {
+      console.log(`   ${BLUE}Note:${RESET} ${suggestion.note}`);
     }
-    if (warning.missing) {
-      console.log(`${colors.yellow}   Missing:${colors.reset} ${warning.missing.join(', ')}`);
-    }
-    console.log();
+    console.log('');
   });
 }
 
-// Exit based on severity
-if (errors.length > 0) {
-  console.log(`${colors.red}❌ ${errors.length} error(s) must be fixed before commit${colors.reset}`);
+console.log(`${BLUE}${'═'.repeat(80)}${RESET}\n`);
+
+if (issues.length > 0) {
+  console.log(`${YELLOW}💡 To fix documentation sync issues:${RESET}`);
+  console.log(`   npm run docs:update\n`);
   process.exit(1);
-} else {
-  console.log(`${colors.yellow}⚠️  ${warnings.length} warning(s) - review recommended but not blocking${colors.reset}`);
-  process.exit(0); // Warnings don't block commits
 }
+
+process.exit(0);

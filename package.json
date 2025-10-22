@@ -523,6 +523,7 @@
     "docs:help": "echo 'USWDS Web Components Documentation:' && echo '📚 README.md - Project overview' && echo '🤖 CLAUDE.md - Complete development guidelines' && echo '📖 docs/ - Implementation guides' && echo '🧪 npm run test - REQUIRED before commit' && echo '🎨 npm run storybook - Visual testing'",
     "docs:validate": "node scripts/validate-docs.js",
     "docs:sync": "node scripts/sync-component-docs.js",
+    "docs:check-sync": "node scripts/validate/validate-documentation-sync.cjs",
     "docs:auto-update": "node scripts/auto-update-docs.js",
     "docs:update-optimization": "node scripts/build/auto-update-optimization-docs.js",
     "// CHANGELOG MANAGEMENT": "",

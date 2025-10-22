@@ -56,6 +56,24 @@ jobs:
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
 
+      - name: Check documentation synchronization
+        id: doc-sync
+        run: |
+          echo "## 📋 Documentation Synchronization Check" >> $GITHUB_STEP_SUMMARY
+
+          # Run documentation sync validator
+          if npm run docs:check-sync 2>&1 | tee doc-sync.log; then
+            echo "✅ All critical documentation is synchronized" >> $GITHUB_STEP_SUMMARY
+            echo "docs_synced=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Documentation synchronization issues found:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 doc-sync.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "docs_synced=false" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
       - name: Check for unused code
         id: unused-code
         run: |
@@ -153,6 +171,7 @@ jobs:
 
       - name: Create maintenance issue
         if: steps.doc-links.outputs.has_broken_links == 'true' ||
+            steps.doc-sync.outputs.docs_synced == 'false' ||
             steps.unused-code.outputs.has_unused_code == 'true' ||
             steps.bundle-size.outputs.bundle_exceeded == 'true' ||
             steps.outdated-deps.outputs.has_outdated == 'true'
@@ -161,6 +180,7 @@ jobs:
           script: |
             const date = new Date().toISOString().split('T')[0];
             const hasDocLinks = '${{ steps.doc-links.outputs.has_broken_links }}' === 'true';
+            const docsSynced = '${{ steps.doc-sync.outputs.docs_synced }}' === 'false';
             const hasUnusedCode = '${{ steps.unused-code.outputs.has_unused_code }}' === 'true';
             const bundleExceeded = '${{ steps.bundle-size.outputs.bundle_exceeded }}' === 'true';
             const hasOutdated = '${{ steps.outdated-deps.outputs.has_outdated }}' === 'true';
@@ -175,6 +195,13 @@ jobs:
               body += `- 🔗 **Broken Documentation Links**\n`;
               body += `  - Run \`npm run validate:doc-links:fix\` to fix interactively\n`;
               body += `  - Or run \`npm run validate:doc-links:fix:auto\` to auto-fix\n\n`;
+            }
+
+            if (docsSynced) {
+              body += `- 📋 **Documentation Out of Sync**\n`;
+              body += `  - Critical docs (README, About.mdx, package.json) have inconsistencies\n`;
+              body += `  - Run \`npm run docs:check-sync\` to see details\n`;
+              body += `  - Update package.json first (source of truth), then sync other docs\n\n`;
             }
 
             if (hasUnusedCode) {
@@ -233,6 +260,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ steps.doc-links.outputs.has_broken_links }}" == "true" ] ||
+             [ "${{ steps.doc-sync.outputs.docs_synced }}" == "false" ] ||
              [ "${{ steps.unused-code.outputs.has_unused_code }}" == "true" ] ||
              [ "${{ steps.bundle-size.outputs.bundle_exceeded }}" == "true" ] ||
              [ "${{ steps.outdated-deps.outputs.has_outdated }}" == "true" ]; then
