@@ -1,0 +1,242 @@
+name: 🔧 Monthly Maintenance
+
+on:
+  schedule:
+    # First day of every month at 9 AM UTC
+    - cron: '0 9 1 * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  monthly-maintenance:
+    name: Monthly Repository Maintenance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run health check
+        id: health
+        run: |
+          echo "## 🏥 Repository Health Check" >> $GITHUB_STEP_SUMMARY
+          npm run health:check || true
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Validate documentation links
+        id: doc-links
+        run: |
+          echo "## 🔗 Documentation Link Validation" >> $GITHUB_STEP_SUMMARY
+
+          # Run validation and capture output
+          if npm run validate:doc-links 2>&1 | tee doc-links.log; then
+            echo "✅ All documentation links are valid" >> $GITHUB_STEP_SUMMARY
+            echo "has_broken_links=false" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Broken documentation links found:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 doc-links.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "has_broken_links=true" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check for unused code
+        id: unused-code
+        run: |
+          echo "## 🧹 Unused Code Detection" >> $GITHUB_STEP_SUMMARY
+
+          if npm run cleanup:unused 2>&1 | tee unused-code.log; then
+            echo "✅ No unused code detected" >> $GITHUB_STEP_SUMMARY
+            echo "has_unused_code=false" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Unused code detected:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -30 unused-code.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "has_unused_code=true" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Analyze component usage
+        id: component-analytics
+        run: |
+          echo "## 📊 Component Usage Analytics" >> $GITHUB_STEP_SUMMARY
+
+          npm run analytics:components 2>&1 | tee component-analytics.log
+
+          # Extract summary statistics
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -A 20 "Summary Statistics" component-analytics.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check bundle sizes
+        id: bundle-size
+        run: |
+          echo "## 📦 Bundle Size Check" >> $GITHUB_STEP_SUMMARY
+
+          # Build first
+          npm run build || true
+
+          if npm run validate:bundle-size 2>&1 | tee bundle-size.log; then
+            echo "✅ All bundles within performance budgets" >> $GITHUB_STEP_SUMMARY
+            echo "bundle_exceeded=false" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Bundle size budget exceeded:" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -20 bundle-size.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "bundle_exceeded=true" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check outdated dependencies
+        id: outdated-deps
+        run: |
+          echo "## 📦 Dependency Status" >> $GITHUB_STEP_SUMMARY
+
+          # Check for outdated dependencies
+          OUTDATED=$(npm outdated --json || echo "{}")
+          OUTDATED_COUNT=$(echo "$OUTDATED" | jq 'length')
+
+          if [ "$OUTDATED_COUNT" -eq 0 ]; then
+            echo "✅ All dependencies are up to date" >> $GITHUB_STEP_SUMMARY
+            echo "has_outdated=false" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Found $OUTDATED_COUNT outdated dependencies" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            npm outdated >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "has_outdated=true" >> $GITHUB_OUTPUT
+            echo "outdated_count=$OUTDATED_COUNT" >> $GITHUB_OUTPUT
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check cache size
+        id: cache-size
+        run: |
+          echo "## 💾 Cache Status" >> $GITHUB_STEP_SUMMARY
+
+          if [ -d "node_modules/.cache" ]; then
+            CACHE_SIZE=$(du -sh node_modules/.cache | cut -f1)
+            echo "Cache size: $CACHE_SIZE" >> $GITHUB_STEP_SUMMARY
+
+            # Warn if cache is over 100MB
+            CACHE_KB=$(du -sk node_modules/.cache | cut -f1)
+            if [ "$CACHE_KB" -gt 102400 ]; then
+              echo "⚠️ Cache is large, consider cleanup" >> $GITHUB_STEP_SUMMARY
+              echo "cache_large=true" >> $GITHUB_OUTPUT
+            else
+              echo "✅ Cache size is reasonable" >> $GITHUB_STEP_SUMMARY
+              echo "cache_large=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "✅ No cache directory found" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create maintenance issue
+        if: steps.doc-links.outputs.has_broken_links == 'true' ||
+            steps.unused-code.outputs.has_unused_code == 'true' ||
+            steps.bundle-size.outputs.bundle_exceeded == 'true' ||
+            steps.outdated-deps.outputs.has_outdated == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            const hasDocLinks = '${{ steps.doc-links.outputs.has_broken_links }}' === 'true';
+            const hasUnusedCode = '${{ steps.unused-code.outputs.has_unused_code }}' === 'true';
+            const bundleExceeded = '${{ steps.bundle-size.outputs.bundle_exceeded }}' === 'true';
+            const hasOutdated = '${{ steps.outdated-deps.outputs.has_outdated }}' === 'true';
+            const outdatedCount = '${{ steps.outdated-deps.outputs.outdated_count }}' || '0';
+
+            let body = `## 🔧 Monthly Maintenance Report - ${date}\n\n`;
+            body += `The automated monthly maintenance check has identified some items that need attention:\n\n`;
+
+            body += `### Issues Found\n\n`;
+
+            if (hasDocLinks) {
+              body += `- 🔗 **Broken Documentation Links**\n`;
+              body += `  - Run \`npm run validate:doc-links:fix\` to fix interactively\n`;
+              body += `  - Or run \`npm run validate:doc-links:fix:auto\` to auto-fix\n\n`;
+            }
+
+            if (hasUnusedCode) {
+              body += `- 🧹 **Unused Code Detected**\n`;
+              body += `  - Run \`npm run cleanup:unused\` to see details\n`;
+              body += `  - Remove unused dependencies, exports, and files\n\n`;
+            }
+
+            if (bundleExceeded) {
+              body += `- 📦 **Bundle Size Budget Exceeded**\n`;
+              body += `  - Run \`npm run validate:bundle-size\` to see details\n`;
+              body += `  - Consider code splitting or removing large dependencies\n\n`;
+            }
+
+            if (hasOutdated) {
+              body += `- 📦 **Outdated Dependencies** (${outdatedCount} packages)\n`;
+              body += `  - Run \`npm outdated\` to see list\n`;
+              body += `  - Update with \`npm update\` or individually\n\n`;
+            }
+
+            body += `### Actions to Take\n\n`;
+            body += `1. Review the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for detailed output\n`;
+            body += `2. Address each issue listed above\n`;
+            body += `3. Close this issue when maintenance is complete\n\n`;
+
+            body += `### Quick Commands\n\n`;
+            body += `\`\`\`bash\n`;
+            body += `# Fix documentation links\n`;
+            body += `npm run validate:doc-links:fix\n\n`;
+            body += `# Clean up unused code\n`;
+            body += `npm run cleanup:unused\n\n`;
+            body += `# Update dependencies\n`;
+            body += `npm update\n\n`;
+            body += `# Check bundle sizes\n`;
+            body += `npm run validate:bundle-size\n`;
+            body += `\`\`\`\n\n`;
+
+            body += `---\n`;
+            body += `🤖 *Automated by monthly maintenance workflow*`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔧 Monthly Maintenance - ${date}`,
+              body: body,
+              labels: ['maintenance', 'automated', 'monthly']
+            });
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.doc-links.outputs.has_broken_links }}" == "true" ] ||
+             [ "${{ steps.unused-code.outputs.has_unused_code }}" == "true" ] ||
+             [ "${{ steps.bundle-size.outputs.bundle_exceeded }}" == "true" ] ||
+             [ "${{ steps.outdated-deps.outputs.has_outdated }}" == "true" ]; then
+            echo "⚠️ **Action Required**: Maintenance issue created" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ **Repository is healthy**: No maintenance issues found" >> $GITHUB_STEP_SUMMARY
+          fi

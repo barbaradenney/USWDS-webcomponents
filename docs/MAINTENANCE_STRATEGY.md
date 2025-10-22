@@ -416,14 +416,21 @@ jobs:
 - ✅ Performance benchmarks
 - ⏳ **NEW: Health report generated**
 
-### Monthly (Manual - 30 min)
-- Review GitHub Actions logs for failures
-- Check for major dependency updates
-- Review and close stale issues
-- Update USWDS if new version available
-- Review bundle size trends
-- **NEW: Run `npm run cleanup:unused`**
-- **NEW: Run `npm run cleanup:deps`**
+### Monthly (Automated + 15 min manual)
+- ✅ **AUTOMATED** - Monthly maintenance workflow runs automatically (1st of each month)
+  - Health check dashboard
+  - Documentation link validation (with auto-fix suggestions)
+  - Unused code detection
+  - Component usage analytics
+  - Bundle size validation
+  - Outdated dependency check
+  - Creates GitHub issue if action needed
+- **MANUAL** - Review maintenance issue and apply fixes:
+  - `npm run validate:doc-links:fix` - Fix broken documentation links
+  - `npm run cleanup:unused` - Remove unused code
+  - `npm update` - Update dependencies
+  - Review and close stale issues
+  - Update USWDS if new version available
 
 ### Quarterly (Manual - 2 hours)
 - Audit accessibility compliance
