@@ -29,7 +29,7 @@ A lightweight web component library that wraps the official U.S. Web Design Syst
 **Before working on any component**, read these essential guides:
 
 1. **[USWDS Integration Guide](docs/USWDS_INTEGRATION_GUIDE.md)** - 📖 **REQUIRED READING**
-2. **[Architecture Validation Rules](docs/ARCHITECTURE_VALIDATION_RULES.md)** - 🤖 Automated enforcement
+2. **[Architecture Validation Rules](docs/archived/ARCHITECTURE_VALIDATION_RULES.md)** - 🤖 Automated enforcement
 3. **[Component Guidelines](CLAUDE.md#component-development-pattern)** - 📋 Development process
 
 ### Quick Architecture Validation
@@ -98,7 +98,7 @@ The compliance checker automatically stays current with USWDS releases:
 - 🚫 **Zero False Positives**: Eliminates compliance errors from outdated class lists
 - 🤖 **Zero Maintenance**: Runs automatically in background with detailed reporting
 
-> **Note**: The automation runs silently unless updates are needed. See [USWDS Class Automation](docs/USWDS_CLASS_AUTOMATION.md) for details.
+> **Note**: The automation runs silently unless updates are needed. See [USWDS Class Automation](docs/archived/USWDS_CLASS_AUTOMATION.md) for details.
 
 ### **Anti-Pattern Prevention**
 
@@ -554,9 +554,9 @@ export class USAComponent extends LitElement {
 ### For Developers
 
 - **[CLAUDE.md](CLAUDE.md)** - Complete development guidelines and AI instructions
-- **[USWDS JavaScript References](docs/USWDS_JAVASCRIPT_REFERENCES.md)** - Official USWDS documentation standards ✨ **NEW**
+- **[USWDS JavaScript References](docs/archived/USWDS_JAVASCRIPT_REFERENCES.md)** - Official USWDS documentation standards
 - [Component Development Guide](docs/COMPONENT_DEVELOPMENT_GUIDE.md) - How to create components
-- [Component Checklist](docs/COMPONENT_CHECKLIST.md) - Quality checklist for components
+- Component Checklist - See component templates in docs/COMPONENT_TEMPLATES.md
 - [Debugging Guide](docs/DEBUGGING_GUIDE.md) - Troubleshooting help
 
 ### Documentation Maintenance
@@ -599,7 +599,7 @@ npm run docs:outdated        # Find documentation needing updates
 
 ### Key Guidelines for New Components
 
-1. **Follow USWDS documentation standards**: See [USWDS JavaScript References](docs/USWDS_JAVASCRIPT_REFERENCES.md) for required JSDoc patterns
+1. **Follow USWDS documentation standards**: See [USWDS JavaScript References](docs/archived/USWDS_JAVASCRIPT_REFERENCES.md) for required JSDoc patterns
 2. **Start with USWDS documentation**: Review the official USWDS component docs first
 3. **Use the generator**: `npm run generate:component [name] [type]`
 4. **Apply USWDS classes directly**: Don't recreate styles
@@ -698,7 +698,7 @@ import { USAButton } from '@uswds/web-components';
 
 ### **Performance Documentation**
 
-- [Complete Performance Guide](./docs/PERFORMANCE_GUIDE.md) - Comprehensive optimization documentation
+- [Complete Performance Guide](./docs/archived/PERFORMANCE_GUIDE.md) - Comprehensive optimization documentation
 - [Migration Guide](./docs/PERFORMANCE_MIGRATION.md) - Upgrade to performance features
 
 ## 🧪 Testing & Automation

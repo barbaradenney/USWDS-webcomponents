@@ -924,12 +924,12 @@ See [docs/CODE_QUALITY_ARCHITECTURAL_REVIEW.md](docs/CODE_QUALITY_ARCHITECTURAL_
 ## Important Documentation References
 
 - [USWDS Integration Guide](docs/USWDS_INTEGRATION_GUIDE.md) - Complete USWDS patterns
-- [USWDS Compliance Methodology](docs/USWDS_COMPLIANCE_METHODOLOGY.md) - Structural requirements
-- [USWDS JavaScript Debugging Protocol](docs/USWDS_JAVASCRIPT_DEBUGGING_PROTOCOL.md) - Systematic debugging
+- [USWDS Compliance Methodology](docs/archived/USWDS_COMPLIANCE_METHODOLOGY.md) - Structural requirements
+- [USWDS JavaScript Debugging Protocol](docs/archived/USWDS_JAVASCRIPT_DEBUGGING_PROTOCOL.md) - Systematic debugging
 - [Testing Guide](docs/TESTING_GUIDE.md) - Complete testing documentation
 - [Component Templates](docs/COMPONENT_TEMPLATES.md) - Reusable templates
 - [Debugging Guide](docs/DEBUGGING_GUIDE.md) - Troubleshooting
-- [Storybook Best Practices](docs/STORYBOOK_BEST_PRACTICES.md) - Story patterns
+- [Storybook Best Practices](docs/archived/STORYBOOK_BEST_PRACTICES.md) - Story patterns
 - [Lit + USWDS Integration Patterns](docs/LIT_USWDS_INTEGRATION_PATTERNS.md) - Critical patterns
 
 ## Troubleshooting
