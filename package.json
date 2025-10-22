@@ -390,8 +390,6 @@
     "test:smoke": "playwright test --project chromium --grep 'smoke|critical'",
     "test:accessibility": "playwright test --project accessibility-chrome --grep 'accessibility|a11y|aria'",
     "test:bundle-size": "node scripts/bundle-size-test.js",
-    "validate:bundle-size": "node scripts/validate/check-bundle-size.js",
-    "validate:bundle-size:strict": "node scripts/validate/check-bundle-size.js --strict",
     "// INTEGRATION TESTING": "",
     "// COMPREHENSIVE TESTING (Phase 4)": "",
     "test:comprehensive": "node scripts/test-orchestrator.js",
