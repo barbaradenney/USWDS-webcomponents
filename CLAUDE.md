@@ -99,6 +99,29 @@ See [docs/TESTING_GUIDE.md](docs/TESTING_GUIDE.md) for complete testing document
 
 See [docs/COMPONENT_TEMPLATES.md](docs/COMPONENT_TEMPLATES.md) for templates.
 
+### Maintenance & Automation
+Comprehensive maintenance tooling for repository health and optimization.
+
+**Repository Health:**
+- `npm run health:check` - Quick health dashboard (tests, linting, TypeScript, bundle size, etc.)
+
+**Changelog:**
+- `npm run changelog:generate` - Generate CHANGELOG.md from conventional commits
+- `npm run changelog:commit` - Generate and stage for commit
+
+**Performance:**
+- `npm run validate:bundle-size` - Check bundle sizes against performance budgets
+
+**Code Cleanup:**
+- `npm run cleanup:unused` - Detect unused code, dependencies, and exports
+- `npm run optimize:imports` - Analyze and optimize import patterns
+- `npm run analytics:components` - Component usage analytics and insights
+
+**Full Suite:**
+- `npm run maintenance:full` - Run all maintenance checks
+
+See [docs/MAINTENANCE_STRATEGY.md](docs/MAINTENANCE_STRATEGY.md) for complete automation guide.
+
 ## Architecture
 
 ### Directory Structure
