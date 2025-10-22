@@ -53,13 +53,7 @@ const DOC_PATTERNS = [
   'README.md',
 ];
 
-// Known URL replacements for broken links
-const URL_REPLACEMENTS = {
-  'https://barbaradenney.github.io/USWDS-webcomponents/': 'https://github.com/barbaramiles/USWDS-webcomponents',
-  'https://www.npmjs.com/org/uswds-wc': 'Coming soon to npm',
-  'https://esm.sh/@uswds-wc': 'https://cdn.jsdelivr.net/npm/@uswds-wc/+esm',
-  'https://keepachangelog.com/)': 'https://keepachangelog.com/', // Remove trailing paren
-};
+// This was removed - we now prompt for ALL fixes instead of auto-replacing URLs
 
 console.log(`\n${BOLD}${BLUE}🔗 Documentation Link Validator${RESET}`);
 console.log(`${BLUE}${'═'.repeat(80)}${RESET}\n`);
@@ -134,9 +128,9 @@ function findSimilarFiles(targetFile) {
 }
 
 /**
- * Auto-fix a broken link
+ * Suggest fixes for a broken link (no auto-fixing)
  */
-function autoFixLink(filePath, link, brokenReason) {
+function suggestFixesForLink(filePath, link, brokenReason) {
   const fixes = [];
 
   // Pattern 1: File moved to docs/archived/
@@ -146,11 +140,12 @@ function autoFixLink(filePath, link, brokenReason) {
 
     if (fs.existsSync(fullPath)) {
       fixes.push({
-        type: 'auto',
-        description: 'File moved to archived/',
+        type: 'suggest',
+        description: 'File found in archived/ directory',
         oldUrl: link.url,
         newUrl: archivedPath,
-        confidence: 'high',
+        confidence: 'suggest',
+        reason: 'Exact filename match in docs/archived/',
       });
     }
   }
@@ -162,11 +157,12 @@ function autoFixLink(filePath, link, brokenReason) {
 
     if (fs.existsSync(fullPath)) {
       fixes.push({
-        type: 'auto',
-        description: 'Remove leading ./',
+        type: 'suggest',
+        description: 'Remove leading ./ from path',
         oldUrl: link.url,
         newUrl: fixedPath,
-        confidence: 'high',
+        confidence: 'suggest',
+        reason: 'File exists without leading ./',
       });
     }
   }
@@ -178,58 +174,78 @@ function autoFixLink(filePath, link, brokenReason) {
 
     if (fs.existsSync(path.resolve(projectRoot, withMd))) {
       fixes.push({
-        type: 'auto',
+        type: 'suggest',
         description: 'Add .md extension',
         oldUrl: link.url,
         newUrl: withMd,
-        confidence: 'high',
+        confidence: 'suggest',
+        reason: 'File exists with .md extension',
       });
     } else if (fs.existsSync(path.resolve(projectRoot, withMdx))) {
       fixes.push({
-        type: 'auto',
+        type: 'suggest',
         description: 'Add .mdx extension',
         oldUrl: link.url,
         newUrl: withMdx,
-        confidence: 'high',
+        confidence: 'suggest',
+        reason: 'File exists with .mdx extension',
       });
     }
   }
 
-  // Pattern 4: Known URL replacements
-  if (URL_REPLACEMENTS[link.url]) {
-    fixes.push({
-      type: 'auto',
-      description: 'Known URL replacement',
-      oldUrl: link.url,
-      newUrl: URL_REPLACEMENTS[link.url],
-      confidence: 'high',
-    });
-  }
-
-  // Pattern 5: Trailing punctuation in URLs
+  // Pattern 4: Trailing punctuation in URLs
   const trailingPuncMatch = link.url.match(/^(https?:\/\/[^)]+)([)]+)$/);
   if (trailingPuncMatch) {
     fixes.push({
-      type: 'auto',
-      description: 'Remove trailing parenthesis',
+      type: 'suggest',
+      description: 'Remove trailing punctuation',
       oldUrl: link.url,
       newUrl: trailingPuncMatch[1],
-      confidence: 'high',
+      confidence: 'suggest',
+      reason: 'URL has trailing parenthesis',
+    });
+  }
+
+  // Pattern 5: Trailing quote in URLs
+  const trailingQuoteMatch = link.url.match(/^(https?:\/\/[^']+)([']+)$/);
+  if (trailingQuoteMatch) {
+    fixes.push({
+      type: 'suggest',
+      description: 'Remove trailing quote',
+      oldUrl: link.url,
+      newUrl: trailingQuoteMatch[1],
+      confidence: 'suggest',
+      reason: 'URL has trailing quote',
     });
   }
 
   // Pattern 6: Find similar files
-  if (brokenReason === 'file-not-found' && fixes.length === 0) {
+  if (brokenReason === 'file-not-found') {
     const similar = findSimilarFiles(link.url);
 
     if (similar.exact.length > 0) {
       similar.exact.forEach(file => {
         fixes.push({
           type: 'suggest',
-          description: `Similar file found: ${file}`,
+          description: `Found matching filename in different location`,
           oldUrl: link.url,
           newUrl: file,
-          confidence: 'medium',
+          confidence: 'suggest',
+          reason: `File exists at: ${file}`,
+        });
+      });
+    }
+
+    // Also suggest similar files if no exact matches
+    if (similar.exact.length === 0 && similar.similar.length > 0) {
+      similar.similar.slice(0, 3).forEach(file => {
+        fixes.push({
+          type: 'suggest',
+          description: `Similar filename found`,
+          oldUrl: link.url,
+          newUrl: file,
+          confidence: 'low',
+          reason: `Similar: ${file}`,
         });
       });
     }
@@ -242,10 +258,13 @@ function autoFixLink(filePath, link, brokenReason) {
  * Prompt user to choose a fix
  */
 async function promptForFix(filePath, link, suggestedFixes) {
+  // In auto-yes mode, skip prompting but still show what would be done
   if (AUTO_YES && suggestedFixes.length > 0) {
-    // In auto-yes mode, use first high-confidence fix
-    const highConfidence = suggestedFixes.find(f => f.confidence === 'high');
-    return highConfidence || suggestedFixes[0];
+    console.log(`\n${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}`);
+    console.log(`${BOLD}Auto-yes mode:${RESET} Would prompt for: ${filePath}:${link.line}`);
+    console.log(`${BOLD}Link:${RESET} ${RED}${link.url}${RESET}`);
+    console.log(`${YELLOW}Skipping in auto-yes mode - use interactive mode to fix${RESET}`);
+    return null; // Skip in auto-yes mode - require manual review
   }
 
   const rl = readline.createInterface({
@@ -255,20 +274,23 @@ async function promptForFix(filePath, link, suggestedFixes) {
 
   console.log(`\n${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}`);
   console.log(`${BOLD}Broken link in:${RESET} ${filePath}:${link.line}`);
-  console.log(`${BOLD}Link text:${RESET} ${link.text}`);
-  console.log(`${BOLD}Link URL:${RESET} ${RED}${link.url}${RESET}`);
+  console.log(`${BOLD}Link text:${RESET} "${link.text}"`);
+  console.log(`${BOLD}Current URL:${RESET} ${RED}${link.url}${RESET}`);
   console.log('');
 
   if (suggestedFixes.length > 0) {
-    console.log(`${GREEN}Suggested fixes:${RESET}`);
+    console.log(`${GREEN}💡 Suggested fixes:${RESET}`);
     suggestedFixes.forEach((fix, i) => {
       console.log(`  ${i + 1}. ${fix.description}`);
-      console.log(`     ${CYAN}${fix.newUrl}${RESET} [${fix.confidence}]`);
+      console.log(`     ${CYAN}→ ${fix.newUrl}${RESET}`);
+      if (fix.reason) {
+        console.log(`     ${BLUE}Reason: ${fix.reason}${RESET}`);
+      }
     });
-    console.log(`  ${suggestedFixes.length + 1}. Skip this link`);
-    console.log(`  ${suggestedFixes.length + 2}. Enter custom URL`);
+    console.log(`  ${suggestedFixes.length + 1}. Enter custom URL (you decide)`);
+    console.log(`  ${suggestedFixes.length + 2}. Skip this link`);
   } else {
-    console.log(`${YELLOW}No automatic fixes found${RESET}`);
+    console.log(`${YELLOW}No automatic suggestions available${RESET}`);
     console.log(`  1. Enter custom URL`);
     console.log(`  2. Skip this link`);
   }
@@ -280,20 +302,27 @@ async function promptForFix(filePath, link, suggestedFixes) {
       if (choice >= 1 && choice <= suggestedFixes.length) {
         rl.close();
         resolve(suggestedFixes[choice - 1]);
-      } else if (choice === suggestedFixes.length + 1) {
-        rl.close();
-        resolve(null); // Skip
-      } else if (choice === suggestedFixes.length + 2 || (suggestedFixes.length === 0 && choice === 1)) {
-        rl.question(`${BOLD}Enter new URL: ${RESET}`, customUrl => {
+      } else if (choice === suggestedFixes.length + 1 || (suggestedFixes.length === 0 && choice === 1)) {
+        // Enter custom URL
+        rl.question(`${BOLD}Enter new URL (or leave blank to skip): ${RESET}`, customUrl => {
           rl.close();
-          resolve({
-            type: 'manual',
-            description: 'Custom URL',
-            oldUrl: link.url,
-            newUrl: customUrl.trim(),
-            confidence: 'manual',
-          });
+          const trimmed = customUrl.trim();
+          if (trimmed) {
+            resolve({
+              type: 'manual',
+              description: 'Custom URL (your choice)',
+              oldUrl: link.url,
+              newUrl: trimmed,
+              confidence: 'manual',
+            });
+          } else {
+            resolve(null); // Skip
+          }
         });
+      } else if (choice === suggestedFixes.length + 2 || (suggestedFixes.length === 0 && choice === 2)) {
+        // Skip
+        rl.close();
+        resolve(null);
       } else {
         console.log(`${RED}Invalid choice. Skipping.${RESET}`);
         rl.close();
@@ -337,7 +366,7 @@ async function validateFile(filePath) {
       console.log(`   ${link.url}`);
 
       if (FIX_MODE) {
-        const suggestedFixes = autoFixLink(filePath, link, 'file-not-found');
+        const suggestedFixes = suggestFixesForLink(filePath, link, 'file-not-found');
 
         if (suggestedFixes.length > 0) {
           console.log(`   ${GREEN}💡 ${suggestedFixes.length} fix(es) available${RESET}`);

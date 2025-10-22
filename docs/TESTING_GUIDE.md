@@ -410,6 +410,6 @@ Before committing layout-heavy components:
 ## Further Reading
 
 - [TESTING_LAYOUT_VISUAL_REGRESSIONS.md](./TESTING_LAYOUT_VISUAL_REGRESSIONS.md) - Layout testing methodology
-- [TESTING_INFRASTRUCTURE_ENHANCEMENT.md](./TESTING_INFRASTRUCTURE_ENHANCEMENT.md) - Enhanced testing features
+- [TESTING_INFRASTRUCTURE_ENHANCEMENT.md](docs/archived/TESTING_INFRASTRUCTURE_ENHANCEMENT.md) - Enhanced testing features
 - [DEBUGGING_GUIDE.md](./DEBUGGING_GUIDE.md) - Troubleshooting test failures
 - [Component README files](../src/components/) - Component-specific testing notes
