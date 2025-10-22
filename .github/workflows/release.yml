@@ -151,15 +151,20 @@ jobs:
           EOF
 
           if [ -f "test-reports/optimization-summary.json" ]; then
-            BUNDLE_TOTAL=$(jq -r '.bundle.total' test-reports/optimization-summary.json)
-            BUNDLE_GZIP=$(jq -r '.bundle.gzipped' test-reports/optimization-summary.json)
+            PACKAGE_SIZE=$(jq -r '.package.totalSize' test-reports/optimization-summary.json)
+            COMPONENT_COUNT=$(jq -r '.package.componentCount' test-reports/optimization-summary.json)
+            ENTRY_POINT=$(jq -r '.bundle.entryPoint' test-reports/optimization-summary.json)
+            ENTRY_GZIP=$(jq -r '.bundle.entryPointGzipped' test-reports/optimization-summary.json)
             CSS_REDUCTION=$(jq -r '.css.averageReduction' test-reports/optimization-summary.json)
 
             cat >> release-notes.md <<EOF
-          - **Bundle Size:** ${BUNDLE_TOTAL} (${BUNDLE_GZIP} gzipped)
+          - **Package Size:** ${PACKAGE_SIZE} (tree-shakeable)
+          - **Entry Point:** ${ENTRY_POINT} (${ENTRY_GZIP} gzipped)
           - **CSS Optimization:** ${CSS_REDUCTION} average reduction
           - **Service Worker:** v${VERSION_NUMBER}
-          - **Components:** 46 USWDS-compliant components
+          - **Components:** ${COMPONENT_COUNT} USWDS-compliant components
+
+          > 📦 Users only download components they import thanks to tree-shaking optimization
 
           EOF
           fi

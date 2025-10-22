@@ -1,9 +1,23 @@
 {
-  "timestamp": "2025-10-22T05:51:41.159Z",
+  "timestamp": "2025-10-22T06:03:54.454Z",
+  "package": {
+    "totalSize": "17.1 MB",
+    "treeShakeable": true,
+    "componentCount": 45
+  },
   "bundle": {
-    "total": "2 KB",
-    "gzipped": "1 KB",
-    "componentCount": 3
+    "entryPoint": "2 KB",
+    "entryPointGzipped": "1 KB",
+    "categories": {
+      "forms": 0,
+      "navigation": 0,
+      "layout": 0,
+      "feedback": 0,
+      "actions": 0,
+      "data-display": 0,
+      "structure": 0
+    },
+    "componentBundleCount": 12
   },
   "css": {
     "averageReduction": "94.9%",

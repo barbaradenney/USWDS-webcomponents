@@ -35,14 +35,23 @@ The USWDS Web Components library implements comprehensive bundle optimization st
 
 ### Production Build Sizes
 ```
+Total Package: 17.1 MB (tree-shakeable)
+Components: 45 USWDS components
+
 dist/
-├── index.js           2 KB  (1 KB gzipped)  - All components
-├── components/
-│   ├── accordion.js           0 KB
-│   ├── alert.js               0 KB
-│   ├── button.js              0 KB
-│   └── ... (-2 more)
+├── index.js           2 KB  (1 KB gzipped)  - Entry point
+├── Category bundles/
+│   ├── forms/index.js          0 KB
+│   ├── navigation/index.js     0 KB
+│   ├── layout/index.js         0 KB
+│   ├── feedback/index.js       0 KB
+│   ├── actions/index.js        0 KB
+│   ├── data-display/index.js   0 KB
+│   ├── structure/index.js      0 KB
+├── Component bundles  12 files (with content hashing)
 └── styles.css         380 KB  (45 KB gzipped)  - USWDS CSS
+
+Note: Users only download components they import (tree-shaking optimization)
 ```
 
 ### Component Size Distribution

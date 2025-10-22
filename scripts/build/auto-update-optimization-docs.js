@@ -37,38 +37,82 @@ console.log(`${colors.cyan}📊 Auto-Updating Optimization Documentation${colors
  */
 function getBundleSizes() {
   const metrics = {
-    total: null,
-    gzipped: null,
-    components: {},
+    totalPackageSize: null,
+    totalPackageGzipped: null,
+    entryPoint: {
+      size: null,
+      gzipped: null,
+    },
+    categories: {},
+    componentBundles: {},
+    componentCount: 0,
   };
 
-  // Main bundle
-  const indexPath = join(ROOT_DIR, 'dist/index.js');
+  const distDir = join(ROOT_DIR, 'dist');
+
+  if (!existsSync(distDir)) {
+    return metrics;
+  }
+
+  // Calculate total package size (all files in dist/)
+  try {
+    const output = execSync(`du -sk "${distDir}"`, { encoding: 'utf8' });
+    const sizeKB = parseInt(output.split('\t')[0]);
+    metrics.totalPackageSize = (sizeKB / 1024).toFixed(1); // Convert to MB
+  } catch (e) {
+    console.warn('Could not calculate total package size');
+  }
+
+  // Count actual components from source
+  const srcComponentsDir = join(ROOT_DIR, 'src/components');
+  if (existsSync(srcComponentsDir)) {
+    metrics.componentCount = readdirSync(srcComponentsDir).filter(f => {
+      const stat = statSync(join(srcComponentsDir, f));
+      return stat.isDirectory();
+    }).length;
+  }
+
+  // Entry point (re-export file)
+  const indexPath = join(distDir, 'index.js');
   if (existsSync(indexPath)) {
     const stats = statSync(indexPath);
-    metrics.total = Math.round(stats.size / 1024);
+    metrics.entryPoint.size = Math.round(stats.size / 1024);
 
-    // Get gzipped size
     try {
       const gzipSize = execSync(`gzip -c "${indexPath}" | wc -c`, { encoding: 'utf8' });
-      metrics.gzipped = Math.round(parseInt(gzipSize.trim()) / 1024);
+      metrics.entryPoint.gzipped = Math.round(parseInt(gzipSize.trim()) / 1024);
     } catch (e) {
       // Gzip might not be available
     }
   }
 
-  // Component sizes
-  const componentsDir = join(ROOT_DIR, 'dist/components');
-  if (existsSync(componentsDir)) {
-    const files = readdirSync(componentsDir).filter(f => f.endsWith('.js'));
+  // Category bundle sizes (forms, navigation, layout, etc.)
+  const categories = ['forms', 'navigation', 'layout', 'feedback', 'actions', 'data-display', 'structure'];
+  categories.forEach(category => {
+    const categoryPath = join(distDir, category, 'index.js');
+    if (existsSync(categoryPath)) {
+      const stats = statSync(categoryPath);
+      metrics.categories[category] = Math.round(stats.size / 1024);
+    }
+  });
 
-    files.forEach(file => {
-      const filePath = join(componentsDir, file);
-      const stats = statSync(filePath);
-      const componentName = file.replace('.js', '').replace('usa-', '');
-      metrics.components[componentName] = Math.round(stats.size / 1024);
-    });
-  }
+  // Component bundles with hashed names (usa-*.js in dist/ root)
+  const distFiles = readdirSync(distDir);
+  const componentBundles = distFiles.filter(f =>
+    f.startsWith('usa-') &&
+    f.endsWith('.js') &&
+    !f.endsWith('.map') &&
+    !f.endsWith('.br') &&
+    !f.endsWith('.gz')
+  );
+
+  componentBundles.forEach(file => {
+    const filePath = join(distDir, file);
+    const stats = statSync(filePath);
+    // Extract component name from hashed filename (e.g., usa-accordion-CFz7rmUE.js -> accordion)
+    const componentName = file.split('-').slice(1, -1).join('-');
+    metrics.componentBundles[componentName] = Math.round(stats.size / 1024);
+  });
 
   return metrics;
 }
@@ -120,19 +164,26 @@ function updateBundleOptimizationDocs(bundleMetrics, cssMetrics) {
     let updated = false;
 
     // Update Production Build Sizes section
-    if (bundleMetrics.total && bundleMetrics.gzipped) {
+    if (bundleMetrics.totalPackageSize && bundleMetrics.entryPoint.size) {
       const buildSizesRegex = /### Production Build Sizes\n```[\s\S]*?```/;
+
+      const categoryEntries = Object.entries(bundleMetrics.categories)
+        .map(([name, size]) => `│   ├── ${name}/index.js${' '.repeat(Math.max(1, 15 - name.length))}${size} KB`)
+        .join('\n');
+
       const newBuildSizes = `### Production Build Sizes
 \`\`\`
+Total Package: ${bundleMetrics.totalPackageSize} MB (tree-shakeable)
+Components: ${bundleMetrics.componentCount} USWDS components
+
 dist/
-├── index.js           ${bundleMetrics.total} KB  (${bundleMetrics.gzipped} KB gzipped)  - All components
-├── components/
-${Object.entries(bundleMetrics.components)
-  .slice(0, 5)
-  .map(([name, size]) => `│   ├── ${name}.js${' '.repeat(Math.max(1, 20 - name.length))}${size} KB`)
-  .join('\n')}
-│   └── ... (${Object.keys(bundleMetrics.components).length - 5} more)
+├── index.js           ${bundleMetrics.entryPoint.size} KB  (${bundleMetrics.entryPoint.gzipped} KB gzipped)  - Entry point
+├── Category bundles/
+${categoryEntries}
+├── Component bundles  ${Object.keys(bundleMetrics.componentBundles).length} files (with content hashing)
 └── styles.css         380 KB  (45 KB gzipped)  - USWDS CSS
+
+Note: Users only download components they import (tree-shaking optimization)
 \`\`\``;
 
       if (content.match(buildSizesRegex)) {
@@ -195,10 +246,16 @@ ${Object.entries(bundleMetrics.components)
 function generateMetricsSummary(bundleMetrics, cssMetrics) {
   const summary = {
     timestamp: new Date().toISOString(),
+    package: {
+      totalSize: bundleMetrics.totalPackageSize ? `${bundleMetrics.totalPackageSize} MB` : 'N/A',
+      treeShakeable: true,
+      componentCount: bundleMetrics.componentCount,
+    },
     bundle: {
-      total: bundleMetrics.total ? `${bundleMetrics.total} KB` : 'N/A',
-      gzipped: bundleMetrics.gzipped ? `${bundleMetrics.gzipped} KB` : 'N/A',
-      componentCount: Object.keys(bundleMetrics.components).length,
+      entryPoint: bundleMetrics.entryPoint.size ? `${bundleMetrics.entryPoint.size} KB` : 'N/A',
+      entryPointGzipped: bundleMetrics.entryPoint.gzipped ? `${bundleMetrics.entryPoint.gzipped} KB` : 'N/A',
+      categories: bundleMetrics.categories,
+      componentBundleCount: Object.keys(bundleMetrics.componentBundles).length,
     },
     css: cssMetrics ? {
       averageReduction: cssMetrics.averageReduction,
@@ -228,9 +285,12 @@ async function main() {
   console.log(`${colors.blue}📦 Gathering bundle metrics...${colors.reset}`);
   const bundleMetrics = getBundleSizes();
 
-  if (bundleMetrics.total) {
-    console.log(`   Total: ${bundleMetrics.total} KB (${bundleMetrics.gzipped} KB gzipped)`);
-    console.log(`   Components: ${Object.keys(bundleMetrics.components).length}`);
+  if (bundleMetrics.totalPackageSize) {
+    console.log(`   Total Package: ${bundleMetrics.totalPackageSize} MB (tree-shakeable)`);
+    console.log(`   Components: ${bundleMetrics.componentCount}`);
+    console.log(`   Entry Point: ${bundleMetrics.entryPoint.size} KB (${bundleMetrics.entryPoint.gzipped} KB gzipped)`);
+    console.log(`   Category Bundles: ${Object.keys(bundleMetrics.categories).length}`);
+    console.log(`   Component Bundles: ${Object.keys(bundleMetrics.componentBundles).length}`);
   } else {
     console.log(`${colors.yellow}   ⚠️  No dist/ directory found - run npm run build first${colors.reset}`);
   }
@@ -255,9 +315,10 @@ async function main() {
 
   // Print summary
   console.log(`${colors.blue}Summary:${colors.reset}`);
-  console.log(`  Bundle: ${summary.bundle.total} (${summary.bundle.gzipped} gzipped)`);
+  console.log(`  Package: ${summary.package.totalSize} (tree-shakeable)`);
+  console.log(`  Entry Point: ${summary.bundle.entryPoint} (${summary.bundle.entryPointGzipped} gzipped)`);
   console.log(`  CSS Optimization: ${summary.css ? summary.css.averageReduction + ' reduction' : 'Not run'}`);
-  console.log(`  Components: ${summary.bundle.componentCount}`);
+  console.log(`  Components: ${summary.package.componentCount}`);
   console.log(`  Optimizations:`);
   console.log(`    - CSS Tree-Shaking: ${summary.optimizations.cssTreeShaking ? '✓' : '✗'}`);
   console.log(`    - Service Worker: ${summary.optimizations.serviceWorker ? '✓' : '✗'}`);
