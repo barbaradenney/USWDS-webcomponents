@@ -1,0 +1,680 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Documentation/Pre-Push System" />
+
+# Pre-Push Validation System
+
+> **Auto-generated on:** 2025-10-22
+> This documentation is automatically updated during the pre-commit process.
+
+## Overview
+
+The Pre-Push Hook acts as the **final safety gate** before code reaches the remote repository. It runs comprehensive validation to prevent broken builds from reaching CI/CD and protects the team from integration issues.
+
+### The Git Hook Workflow
+
+```
+Developer Workflow:
+┌─────────────┐      ┌──────────────┐      ┌────────────┐
+│  git commit │  →   │ Pre-Commit   │  →   │ git push   │
+│             │      │ Validation   │      │            │
+└─────────────┘      └──────────────┘      └────────────┘
+                             ↓                     ↓
+                      ┌──────────────┐      ┌────────────┐
+                      │ Post-Commit  │      │ Pre-Push   │
+                      │ Updates      │      │ Validation │ ← You are here
+                      └──────────────┘      └────────────┘
+                                                   ↓
+                                            ┌────────────┐
+                                            │   Remote   │
+                                            │ Repository │
+                                            └────────────┘
+```
+
+## 🎯 Purpose
+
+### Quality Gate
+
+- **Last line of defense** - Catches issues missed by pre-commit
+- **CI/CD protection** - Prevents broken builds from reaching pipelines
+- **Team protection** - Ensures code quality before sharing with team
+- **Time saver** - 60 seconds locally vs 5-10 minutes waiting for CI to fail
+
+### Safety Features
+
+- **Force push protection** - Prevents accidental overwrites of protected branches
+- **Branch deletion protection** - Blocks deletion of main/master/develop
+- **Confirmation prompts** - Requires explicit "yes" for dangerous operations
+- **Fast-forward verification** - Ensures safe merge history
+
+## 🔍 Validation Stages
+
+The pre-push hook runs **4 comprehensive validation stages** to ensure code quality:
+
+### Stage 1: Force Push Protection
+
+**Purpose:** Prevent destructive git operations on protected branches
+
+**Protected Branches:**
+- `main` - Production code
+- `master` - Production code (alternative name)
+- `develop` - Integration branch
+
+**What It Checks:**
+1. **Branch Deletion** - Blocks deletion of protected branches
+2. **Force Push Detection** - Identifies non-fast-forward pushes
+3. **History Rewriting** - Detects attempts to rewrite shared history
+4. **Team Impact** - Warns about potential data loss
+
+**Example Scenarios:**
+
+```bash
+# ❌ Attempting to delete main branch
+git push origin --delete main
+# → "❌ Deleting protected branch main is not allowed!"
+
+# ❌ Force pushing to main
+git push origin main --force
+# → "❌ Force push to protected branch detected!"
+#    "This could overwrite team members' work."
+#    "Are you SURE you want to force push? (yes/NO):"
+
+# ✅ Normal push (fast-forward)
+git push origin feature/new-component
+# → Proceeds to next validation stage
+```
+
+**Safety Confirmation:**
+
+If force push is detected, you'll be prompted:
+
+```bash
+❌ Force push to protected branch detected!
+   Branch: main
+   This could overwrite team members' work.
+Are you SURE you want to force push? (yes/NO):
+```
+
+- Type exactly `yes` to proceed
+- Any other input (including `y`, `Y`, `YES`) cancels the push
+- Default is `NO` - safest option
+
+### Stage 2: Full Test Suite
+
+**Purpose:** Ensure all tests pass before code reaches the team
+
+**What It Runs:**
+```bash
+npm test -- --run --silent
+```
+
+**Test Coverage:**
+- ✅ **2301 Unit Tests** - All component logic
+- ✅ **Integration Tests** - Component interactions
+- ✅ **Accessibility Tests** - axe-core validation
+- ✅ **USWDS Compliance Tests** - Structural validation
+
+**Example Output:**
+
+```bash
+🧪 Running full test suite...
+
+✓ src/components/button/usa-button.test.ts (15 tests)
+✓ src/components/alert/usa-alert.test.ts (12 tests)
+✓ src/components/modal/usa-modal.test.ts (23 tests)
+...
+
+✅ 2301/2301 tests passed
+```
+
+**On Failure:**
+
+```bash
+❌ Tests failed! Fix before pushing.
+   Or use: git push --no-verify (not recommended)
+
+Failed tests:
+  • src/components/modal/usa-modal.test.ts
+    - Modal should close on escape key (line 45)
+    - Modal should trap focus (line 67)
+
+Fix the failing tests and try again.
+```
+
+**Why This Matters:**
+- Catches test failures before CI runs
+- Prevents breaking builds for the entire team
+- Saves 5-10 minutes waiting for CI feedback
+- Maintains 100% test passing rate
+
+### Stage 3: TypeScript Compilation
+
+**Purpose:** Verify all TypeScript code compiles without errors
+
+**What It Runs:**
+```bash
+npm run typecheck
+```
+
+**What It Checks:**
+- ✅ **Type Safety** - All variables, parameters, and return types
+- ✅ **Type Compatibility** - Ensures types match across files
+- ✅ **Import Resolution** - Verifies all imports are type-safe
+- ✅ **Configuration** - Uses `tsconfig.json` settings
+
+**Example Output:**
+
+```bash
+📘 Verifying TypeScript...
+
+✅ TypeScript compilation successful
+   No errors found in 245 files
+```
+
+**On Failure:**
+
+```bash
+❌ TypeScript errors detected
+
+src/components/button/usa-button.ts:45:7
+  Type 'string | undefined' is not assignable to type 'string'
+
+src/components/modal/usa-modal.ts:78:15
+  Property 'closeModal' does not exist on type 'USAModal'
+
+Fix these errors before pushing.
+```
+
+**Common Errors Caught:**
+- Missing type annotations
+- Incorrect property types
+- Undefined variable access
+- Import path errors
+- Generic type mismatches
+
+### Stage 4: Linting Validation
+
+**Purpose:** Ensure code meets style and quality standards
+
+**What It Runs:**
+```bash
+npm run lint
+```
+
+**What It Checks:**
+- ✅ **Code Style** - ESLint rules compliance
+- ✅ **Best Practices** - JavaScript/TypeScript conventions
+- ✅ **Accessibility** - a11y-related code patterns
+- ✅ **Lit Patterns** - Web component best practices
+- ✅ **Import Order** - Consistent import organization
+
+**Example Output:**
+
+```bash
+🔍 Verifying linting...
+
+✅ All files pass linting
+   245 files checked, 0 errors
+```
+
+**On Failure:**
+
+```bash
+❌ Linting errors detected
+
+src/components/button/usa-button.ts
+  23:15  error  'onClick' is defined but never used  @typescript-eslint/no-unused-vars
+  45:7   error  Missing semicolon                    @typescript-eslint/semi
+
+src/components/modal/usa-modal.ts
+  67:3   warning  Unexpected console statement        no-console
+
+Fix these issues or run 'npm run lint:fix' to auto-fix where possible.
+```
+
+**Auto-Fix Available:**
+
+Many linting errors can be automatically fixed:
+
+```bash
+npm run lint:fix
+```
+
+Then retry your push.
+
+## ⏱️ Performance
+
+### Typical Execution Times
+
+```
+Stage 1: Force Push Protection     <1 second
+Stage 2: Full Test Suite            25-45 seconds
+Stage 3: TypeScript Compilation      3-8 seconds
+Stage 4: Linting Validation          2-5 seconds
+────────────────────────────────────────────────
+Total:                               30-60 seconds
+```
+
+**Worth It Because:**
+- ✅ Prevents 5-10 minute CI build failures
+- ✅ Catches issues before team is affected
+- ✅ Maintains repository quality
+- ✅ Saves developer time across the team
+
+### Optimization Tips
+
+**For Faster Pushes:**
+
+1. **Run tests during development:**
+   ```bash
+   npm test -- --watch
+   ```
+   Fix failures as you code, not before push
+
+2. **Use TypeScript editor integration:**
+   - VSCode shows errors in real-time
+   - Fix type issues while coding
+
+3. **Enable auto-save with lint:**
+   - Prettier extension formats on save
+   - Fewer lint errors at push time
+
+4. **Push smaller, focused commits:**
+   - Smaller changesets = faster validation
+   - Easier to debug failures
+
+## 🚨 When Pre-Push Fails
+
+### Step-by-Step Resolution
+
+**1. Identify the Failing Stage**
+
+The hook will clearly indicate which stage failed:
+
+```bash
+🚀 Pre-push validation...
+✅ Force push protection passed
+🧪 Running full test suite...
+❌ Tests failed! Fix before pushing.   ← Failed here
+```
+
+**2. Review the Error Messages**
+
+Scroll up to see detailed error output:
+
+```bash
+FAIL src/components/modal/usa-modal.test.ts
+  ● Modal › should close on escape key
+
+    Expected: modal to be hidden
+    Received: modal still visible
+```
+
+**3. Fix the Issues Locally**
+
+```bash
+# For test failures
+npm test -- src/components/modal/usa-modal.test.ts
+
+# For TypeScript errors
+npm run typecheck
+
+# For linting errors
+npm run lint:fix
+```
+
+**4. Commit Fixes (If Needed)**
+
+```bash
+git add .
+git commit -m "fix: resolve modal escape key handling"
+```
+
+**5. Retry Push**
+
+```bash
+git push
+```
+
+### Common Failures and Solutions
+
+**Test Failures:**
+
+```bash
+Problem: Tests pass locally but fail in pre-push
+Solution: Clear test cache and retry
+  npm run test:clear-cache
+  npm test
+```
+
+**TypeScript Errors:**
+
+```bash
+Problem: Types work in editor but fail in pre-push
+Solution: Restart TypeScript server
+  # In VSCode: Cmd+Shift+P → "TypeScript: Restart TS Server"
+  npm run typecheck
+```
+
+**Linting Errors:**
+
+```bash
+Problem: Linting errors after merge
+Solution: Auto-fix formatting issues
+  npm run lint:fix
+  git add .
+  git commit -m "style: fix linting errors"
+```
+
+## 🛠️ Configuration
+
+### Bypassing Pre-Push (Emergency Only)
+
+**When to Use:**
+
+- ⚠️ Emergency hotfix required immediately
+- ⚠️ CI is down and you need to push anyway
+- ⚠️ False positive in validation (rare)
+
+**How to Bypass:**
+
+```bash
+git push --no-verify
+```
+
+**⚠️ WARNING:** This skips ALL validation. Use with extreme caution.
+
+**Best Practice:**
+
+If you must bypass:
+
+1. Document why in your commit message
+2. Create a follow-up task to fix the issue
+3. Notify the team via Slack/email
+4. Fix the underlying problem ASAP
+
+**Example:**
+
+```bash
+# Emergency bypass
+git push --no-verify
+
+# Immediately create follow-up
+git checkout -b fix/address-validation-issue
+# Fix the issue properly
+git push  # This time with validation
+```
+
+### Customizing Protected Branches
+
+**Location:** `.husky/pre-push`
+
+**Current Configuration:**
+
+```bash
+PROTECTED_BRANCHES="main|master|develop"
+```
+
+**To Add More Protected Branches:**
+
+```bash
+# Add 'staging' and 'production' to protected branches
+PROTECTED_BRANCHES="main|master|develop|staging|production"
+```
+
+**To Remove Protection:**
+
+```bash
+# Only protect main
+PROTECTED_BRANCHES="main"
+```
+
+### Disabling Specific Stages
+
+**Temporary Disable:**
+
+```bash
+# Edit .husky/pre-push and comment out the stage
+
+# Disable test suite (not recommended!)
+# npm test -- --run --silent || {
+#   echo "❌ Tests failed! Fix before pushing."
+#   exit 1
+# }
+```
+
+**⚠️ Not Recommended:** This weakens quality gates. Only do this for specific, documented reasons.
+
+## 📊 Success Metrics
+
+### What This Hook Prevents
+
+**Based on project history:**
+
+- ✅ **Zero broken builds** - No failed CI runs from test failures
+- ✅ **100% type safety** - No TypeScript errors in main branch
+- ✅ **Consistent code style** - All code follows linting rules
+- ✅ **No force push accidents** - Protected branches remain safe
+
+### Developer Impact
+
+**Time Saved:**
+
+```
+Without Pre-Push:
+  Push → Wait for CI (5-10 min) → See failure → Fix → Push again → Wait again
+  Total: 15-25 minutes per failure
+
+With Pre-Push:
+  Pre-push catches issue (60 sec) → Fix → Push → CI passes
+  Total: 2-5 minutes per issue
+
+Time Saved: 10-20 minutes per caught issue
+```
+
+**Quality Benefits:**
+
+- 📈 **Faster feedback** - Issues caught immediately
+- 📈 **Fewer reverts** - Bad code never reaches remote
+- 📈 **Team confidence** - Know pushed code is quality
+- 📈 **Cleaner git history** - No "fix CI" commits
+
+## 🔗 Integration with Other Hooks
+
+### Git Hook Workflow
+
+```
+1. Developer makes changes
+   ↓
+2. git commit
+   ↓
+3. PRE-COMMIT HOOK ✓
+   - Repository organization
+   - USWDS compliance
+   - Code quality
+   - Component tests
+   ↓
+4. POST-COMMIT HOOK ✓
+   - Update documentation
+   - AI code quality check
+   - Auto-cleanup (optional)
+   ↓
+5. git push
+   ↓
+6. PRE-PUSH HOOK ✓  ← You are here
+   - Force push protection
+   - Full test suite
+   - TypeScript check
+   - Linting validation
+   ↓
+7. Remote Repository
+   ↓
+8. CI/CD Pipeline
+   - Additional checks
+   - Build & Deploy
+```
+
+### Relationship to Other Hooks
+
+**Pre-Commit vs Pre-Push:**
+
+| Aspect | Pre-Commit | Pre-Push |
+|--------|-----------|----------|
+| **When** | Before each commit | Before push to remote |
+| **Scope** | Changed files only | All committed code |
+| **Speed** | Fast (~5-15 sec) | Comprehensive (~30-60 sec) |
+| **Purpose** | Catch local issues | Prevent team disruption |
+| **Bypass** | Common during dev | Rare, emergency only |
+
+**Why Both?**
+
+- **Pre-commit** - Fast feedback during development
+- **Pre-push** - Comprehensive check before sharing
+- **Together** - Maximum quality with minimal friction
+
+## 🆘 Troubleshooting
+
+### Hook Not Running
+
+**Problem:** Pre-push hook doesn't execute
+
+**Solutions:**
+
+```bash
+# 1. Check hook permissions
+ls -la .husky/pre-push
+# Should show: -rwxr-xr-x (executable)
+
+# 2. Make executable if needed
+chmod +x .husky/pre-push
+
+# 3. Verify Husky installation
+npm run prepare
+
+# 4. Test hook manually
+.husky/pre-push
+```
+
+### Hook Runs Too Slow
+
+**Problem:** Pre-push takes too long
+
+**Solutions:**
+
+```bash
+# 1. Check test performance
+npm test -- --reporter=verbose
+# Look for slow tests
+
+# 2. Clear caches
+npm run test:clear-cache
+rm -rf node_modules/.cache
+
+# 3. Update dependencies
+npm update
+
+# 4. Check system resources
+# Close memory-intensive apps
+```
+
+### False Positives
+
+**Problem:** Hook fails but code is actually correct
+
+**Troubleshooting:**
+
+```bash
+# 1. Run each check independently
+npm test
+npm run typecheck
+npm run lint
+
+# 2. Check for stale cache
+npm run clean
+npm install
+
+# 3. Verify git state
+git status
+git log -1
+
+# 4. Check for merge conflicts
+git diff --check
+```
+
+**If truly a false positive:**
+
+```bash
+# Document and bypass
+git push --no-verify
+
+# Then file issue
+# Create issue at: github.com/barbaradenney/USWDS-webcomponents/issues
+```
+
+## 📚 Related Documentation
+
+- [Pre-Commit System](./PreCommitSystem.mdx) - Validation before commits
+- [Post-Commit System](./PostCommitSystem.mdx) - Updates after commits
+- [CLAUDE.md](../CLAUDE.md) - Complete development guidelines
+- [Testing Guide](../docs/guides/TESTING_GUIDE.md) - Test suite documentation
+
+## 🎓 Best Practices
+
+### DO ✅
+
+- **Run tests during development** - Don't wait for pre-push
+- **Fix issues immediately** - Address validation failures right away
+- **Keep commits small** - Easier to validate and debug
+- **Use editor integration** - Catch TypeScript/lint errors while coding
+- **Trust the hook** - It's protecting you and your team
+
+### DON'T ❌
+
+- **Don't bypass routinely** - `--no-verify` should be rare
+- **Don't ignore failures** - Every error is real and important
+- **Don't push without testing** - Pre-push is not a substitute for local testing
+- **Don't force push to main** - Protect shared branches
+- **Don't disable checks** - They exist for good reasons
+
+### Pro Tips 💡
+
+**1. Test Before Committing**
+
+```bash
+# Watch mode during development
+npm test -- --watch
+
+# Run full suite before committing
+npm test && git commit
+```
+
+**2. Use Git Aliases**
+
+```bash
+# ~/.gitconfig
+[alias]
+  pushv = "!git push"  # v = verified (runs pre-push)
+  pushn = "push --no-verify"  # n = no-verify (emergency)
+```
+
+**3. Monitor Hook Performance**
+
+```bash
+# Time the pre-push hook
+time git push
+
+# Check validation metrics
+cat .git/validation-metrics.json
+```
+
+**4. Integrate with CI**
+
+The pre-push hook runs the same checks as CI:
+- ✅ Faster feedback locally
+- ✅ Reduces CI queue time
+- ✅ Fewer failed builds
+- ✅ Happier developers
+
+---
+
+**This hook is your friend. It prevents problems before they affect your team. Trust it, don't fight it.** 🚀
