@@ -524,6 +524,7 @@
     "docs:validate": "node scripts/validate-docs.js",
     "docs:sync": "node scripts/sync-component-docs.js",
     "docs:check-sync": "node scripts/validate/validate-documentation-sync.cjs",
+    "docs:validate:truth": "node scripts/validate/validate-documentation-truthfulness.cjs",
     "docs:auto-update": "node scripts/auto-update-docs.js",
     "docs:update-optimization": "node scripts/build/auto-update-optimization-docs.js",
     "// CHANGELOG MANAGEMENT": "",
