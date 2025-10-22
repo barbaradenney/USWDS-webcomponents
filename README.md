@@ -30,7 +30,7 @@ A lightweight web component library that wraps the official U.S. Web Design Syst
 
 1. **[USWDS Integration Guide](docs/USWDS_INTEGRATION_GUIDE.md)** - 📖 **REQUIRED READING**
 2. **[Architecture Validation Rules](docs/archived/ARCHITECTURE_VALIDATION_RULES.md)** - 🤖 Automated enforcement
-3. **[Component Guidelines](CLAUDE.md#component-development-pattern)** - 📋 Development process
+3. **[Component Guidelines](CLAUDE.md#component-development)** - 📋 Development process
 
 ### Quick Architecture Validation
 ```bash
