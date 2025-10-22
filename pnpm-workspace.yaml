@@ -1,5 +1,2 @@
 packages:
-  # All packages under packages/
   - 'packages/*'
-  # Documentation site
-  - 'apps/*'

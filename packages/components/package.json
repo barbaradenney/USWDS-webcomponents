@@ -1,0 +1,78 @@
+{
+  "name": "@uswds-wc/components",
+  "version": "1.1.0",
+  "description": "U.S. Web Design System components as Web Components using Lit Element",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./components/*": {
+      "import": "./dist/components/*.js",
+      "types": "./dist/components/*.d.ts"
+    },
+    "./forms": {
+      "import": "./dist/forms/index.js",
+      "types": "./dist/forms/index.d.ts"
+    },
+    "./navigation": {
+      "import": "./dist/navigation/index.js",
+      "types": "./dist/navigation/index.d.ts"
+    },
+    "./data-display": {
+      "import": "./dist/data-display/index.js",
+      "types": "./dist/data-display/index.d.ts"
+    },
+    "./feedback": {
+      "import": "./dist/feedback/index.js",
+      "types": "./dist/feedback/index.d.ts"
+    },
+    "./actions": {
+      "import": "./dist/actions/index.js",
+      "types": "./dist/actions/index.d.ts"
+    },
+    "./layout": {
+      "import": "./dist/layout/index.js",
+      "types": "./dist/layout/index.d.ts"
+    },
+    "./structure": {
+      "import": "./dist/structure/index.js",
+      "types": "./dist/structure/index.d.ts"
+    },
+    "./css/*": "./dist/css/*.css",
+    "./styles.css": "./src/styles/styles.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "lit": "^3.0.0"
+  },
+  "keywords": [
+    "uswds",
+    "design-system",
+    "web-components",
+    "lit",
+    "government",
+    "accessibility",
+    "a11y"
+  ],
+  "author": "Barbara Miles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents/issues"
+  },
+  "homepage": "https://github.com/barbaradenney/USWDS-webcomponents/tree/main/packages/components#readme"
+}
