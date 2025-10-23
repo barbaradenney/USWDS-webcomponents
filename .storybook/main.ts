@@ -39,6 +39,9 @@ const config: StorybookConfig = {
     check: false,
   },
   viteFinal: async (config) => {
+    // Set Vite root to project root for monorepo support
+    config.root = resolve(__dirname, '..');
+
     // Ensure proper module resolution for monorepo
     config.resolve = config.resolve || {};
     config.resolve.alias = {
@@ -67,6 +70,13 @@ const config: StorybookConfig = {
     // Remove external configuration to allow bundling
     config.build = config.build || {};
     config.build.rollupOptions = config.build.rollupOptions || {};
+
+    // Add alias for rollup build phase to handle CSS imports
+    config.build.rollupOptions.alias = config.build.rollupOptions.alias || {};
+    config.build.rollupOptions.alias['@uswds-wc/core/styles.css'] = resolve(
+      __dirname,
+      '../packages/uswds-wc-core/src/styles/styles.css'
+    );
 
     // CRITICAL: CommonJS handling for USWDS modules in Storybook
     config.build.commonjsOptions = config.build.commonjsOptions || {};
@@ -114,6 +124,9 @@ const config: StorybookConfig = {
     // Enhance development server settings for faster iteration
     config.server.fs = config.server.fs || {};
     config.server.fs.strict = false; // Allow serving files outside root
+    config.server.fs.allow = config.server.fs.allow || [];
+    // Add packages directory to allowed serve paths for monorepo
+    config.server.fs.allow.push(resolve(__dirname, '../packages'));
     config.server.watch = config.server.watch || {};
     if (typeof config.server.watch === 'object') {
       config.server.watch.usePolling = false; // Use native file watching for performance
