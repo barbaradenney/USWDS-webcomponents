@@ -265,7 +265,7 @@ export async function testLiveRegionAnnouncements(element, expectedMessages) {
  */
 export async function testARIAAccessibility(container, options = {}) {
   const {
-    testLiveRegions = true,
+    testLiveRegions: _testLiveRegions = true, // eslint-disable-line @typescript-eslint/no-unused-vars
     testRoleState = true,
     testNameRole = true,
     testRelationships = true

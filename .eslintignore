@@ -16,6 +16,8 @@ node_modules/
 public/uswds-wrapper.js
 public/uswds.min.js
 src/assets/uswds.min.js
+packages/components/src/assets/**
+**/*.min.js
 
 # Configuration files that may have different standards
 .storybook/

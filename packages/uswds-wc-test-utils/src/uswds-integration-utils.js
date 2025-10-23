@@ -44,10 +44,10 @@ export function isUSWDSLoaded() {
 /**
  * Get USWDS component instance
  * @param {HTMLElement} element - Element to get instance for
- * @param {string} componentName - USWDS component name
+ * @param {string} _componentName - USWDS component name (unused - for API compatibility)
  * @returns {Object|null} USWDS component instance or null
  */
-export function getUSWDSInstance(element, componentName) {
+export function getUSWDSInstance(element, _componentName) {
   if (!isUSWDSLoaded()) {
     return null;
   }

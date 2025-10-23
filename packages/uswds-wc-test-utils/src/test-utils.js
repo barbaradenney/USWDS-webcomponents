@@ -127,11 +127,11 @@ export function validateComponentJavaScript(componentPath, componentName) {
 
 /**
  * Run USWDS transformation tests
- * @param {HTMLElement} element - The element to test
- * @param {string} componentType - Type of component
+ * @param {HTMLElement} _element - The element to test (unused - for API compatibility)
+ * @param {string} _componentType - Type of component (unused - for API compatibility)
  * @returns {Promise<Object>} Test results
  */
-export async function runUSWDSTransformationTests(element, componentType) {
+export async function runUSWDSTransformationTests(_element, _componentType) {
   // Minimal implementation - return passing results
   // This was part of the removed test infrastructure
   return {
@@ -371,9 +371,9 @@ export async function assertSlottedContentWorks(element, slotNameOrConfigs, cont
 export function cleanupAfterTest() {
   // Clear all timers - requires vitest to be available
   try {
-    if (typeof global !== 'undefined' && global.vi) {
-      global.vi.clearAllTimers();
-      global.vi.useRealTimers();
+    if (typeof globalThis !== 'undefined' && globalThis.vi) {
+      globalThis.vi.clearAllTimers();
+      globalThis.vi.useRealTimers();
     }
   } catch (e) {
     // Ignore if vi not available

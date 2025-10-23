@@ -17,8 +17,8 @@
 export async function testKeyboardNavigation(container, options = {}) {
   const {
     shortcuts = [],
-    testEscapeKey = true,
-    testArrowKeys = true,
+    testEscapeKey: _testEscapeKey = true, // eslint-disable-line @typescript-eslint/no-unused-vars
+    testArrowKeys: _testArrowKeys = true, // eslint-disable-line @typescript-eslint/no-unused-vars
     allowNonFocusable = false
   } = options;
 
@@ -31,7 +31,7 @@ export async function testKeyboardNavigation(container, options = {}) {
   }
 
   // Test shortcuts if provided
-  for (const shortcut of shortcuts) {
+  for (const _shortcut of shortcuts) { // eslint-disable-line @typescript-eslint/no-unused-vars
     // Shortcuts are expected to work (detailed testing in individual tests)
   }
 

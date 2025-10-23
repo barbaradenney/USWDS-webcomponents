@@ -128,7 +128,7 @@ export function hasVisibleFocusIndicator(element) {
 export async function testFocusManagement(container, options = {}) {
   const {
     testFocusTrap: shouldTestFocusTrap = false,
-    testFocusRestore = false,
+    testFocusRestore: _testFocusRestore = false, // eslint-disable-line @typescript-eslint/no-unused-vars
     testFocusOrder = true
   } = options;
 

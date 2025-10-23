@@ -170,9 +170,9 @@ export function testLabelInName(container) {
 export async function testPointerAccessibility(container, options = {}) {
   const {
     minTargetSize = 44,
-    testCancellation = true,
+    testCancellation: _testCancellation = true, // eslint-disable-line @typescript-eslint/no-unused-vars
     testLabelInName: shouldTestLabelInName = true,
-    testMultiPointGestures = true
+    testMultiPointGestures: _testMultiPointGestures = true // eslint-disable-line @typescript-eslint/no-unused-vars
   } = options;
 
   const errors = [];

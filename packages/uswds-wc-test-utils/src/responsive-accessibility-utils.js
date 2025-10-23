@@ -16,8 +16,8 @@ export async function testResponsiveAccessibility(element, viewports, testFn) {
 
   for (const viewport of viewports) {
     // Set viewport size (in test environment, we just track it)
-    const originalWidth = window.innerWidth;
-    const originalHeight = window.innerHeight;
+    const _originalWidth = window.innerWidth; // eslint-disable-line @typescript-eslint/no-unused-vars
+    const _originalHeight = window.innerHeight; // eslint-disable-line @typescript-eslint/no-unused-vars
 
     // Note: Actual viewport resizing doesn't work in JSDOM
     // This is mainly for documentation/structure
@@ -63,10 +63,10 @@ export const VIEWPORTS = {
 /**
  * Test text resize up to percentage (WCAG 1.4.4)
  * @param {Element} element - Element to test
- * @param {number} percentage - Zoom percentage (e.g., 200 for 200%)
+ * @param {number} _percentage - Zoom percentage (e.g., 200 for 200%) (unused - simplified implementation)
  * @returns {Object} Test result with violations
  */
-export function testTextResize(element, percentage = 200) {
+export function testTextResize(element, _percentage = 200) {
   // Simplified implementation for test environment
   // In real browser, would test actual zoom behavior
   const violations = [];
