@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import '../../../__tests__/test-utils.js';
+import '@uswds-wc/test-utils/test-utils.js';
 import './usa-tooltip.js';
 import type { USATooltip } from './usa-tooltip.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { quickUSWDSComplianceTest } from '../../../__tests__/uswds-compliance-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USATooltip', () => {
   let element: USATooltip;

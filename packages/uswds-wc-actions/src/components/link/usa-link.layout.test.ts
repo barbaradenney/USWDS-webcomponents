@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../link/index.ts';
 import type { USALink } from './usa-link.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USALink Layout Tests', () => {
   let element: USALink;

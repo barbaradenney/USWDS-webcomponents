@@ -45,6 +45,7 @@ export class USASideNavigation extends LitElement {
   override ariaLabel = 'Secondary navigation';
 
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
   private uswdsInitialized = false;
 
   // Use light DOM for USWDS compatibility
@@ -58,8 +59,9 @@ export class USASideNavigation extends LitElement {
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial light DOM content before render to prevent duplication
-    if (this.childNodes.length > 0 && this.items.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based items AND custom slotted navigation
+    if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
     }
@@ -74,9 +76,10 @@ export class USASideNavigation extends LitElement {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent) {
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
       const slotElement = this.querySelector('slot');
-      if (slotElement && this.items.length === 0) {
+      if (slotElement) {
         // Parse content safely using DOMParser instead of innerHTML
         const parser = new DOMParser();
         const doc = parser.parseFromString(`<div>${this.slottedContent}</div>`, 'text/html');
@@ -84,6 +87,7 @@ export class USASideNavigation extends LitElement {
 
         if (tempDiv) {
           slotElement.replaceWith(...Array.from(tempDiv.childNodes));
+          this.slottedContentApplied = true;
         }
       }
     }

@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../textarea/index.ts';
 import type { USATextarea } from './usa-textarea.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USATextarea Layout Tests', () => {
   let element: USATextarea;

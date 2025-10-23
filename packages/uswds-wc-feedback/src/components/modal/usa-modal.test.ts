@@ -6,17 +6,17 @@ import {
   assertAccessibilityAttributes,
   assertDOMStructure,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   testKeyboardNavigation,
   testFocusTrap,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
   testFocusManagement,
   testInitialFocus,
@@ -24,25 +24,25 @@ import {
   testFocusIndicators,
   testProgrammaticFocus,
   testFocusTrap as testFocusTrapAdvanced,
-} from '../../../__tests__/focus-management-utils.js';
+} from '@uswds-wc/test-utils/focus-management-utils.js';
 import {
   testPointerAccessibility,
   testTargetSize,
   testLabelInName,
-} from '../../../__tests__/touch-pointer-utils.js';
+} from '@uswds-wc/test-utils/touch-pointer-utils.js';
 import {
   testARIAAccessibility,
   testARIARoles,
   testAccessibleName,
   testARIARelationships,
   testLiveRegionAnnouncements,
-} from '../../../__tests__/aria-screen-reader-utils.js';
+} from '@uswds-wc/test-utils/aria-screen-reader-utils.js';
 import {
   testTextResize,
   testReflow,
   testTextSpacing,
   testMobileAccessibility,
-} from '../../../__tests__/responsive-accessibility-utils.js';
+} from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
 
 describe('USAModal', () => {
   let element: USAModal;

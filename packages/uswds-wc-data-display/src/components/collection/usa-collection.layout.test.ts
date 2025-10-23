@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../collection/index.ts';
 import type { USACollection } from './usa-collection.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USACollection Layout Tests', () => {
   let element: USACollection;

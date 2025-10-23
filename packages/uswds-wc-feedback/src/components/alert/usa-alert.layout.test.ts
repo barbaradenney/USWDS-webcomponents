@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../alert/index.ts';
 import type { USAAlert } from './usa-alert.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAAlert Layout Tests', () => {
   let element: USAAlert;

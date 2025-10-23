@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../memorable-date/index.ts';
 import type { USAMemorableDate } from './usa-memorable-date.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAMemorableDate Layout Tests', () => {
   let element: USAMemorableDate;

@@ -4,18 +4,18 @@ import type { USAFileInput } from './usa-file-input.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   waitForUpdate, waitForBehaviorInit, testPropertyChanges,
   validateComponentJavaScript,
   runUSWDSTransformationTests,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
   testActivationKeys,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USAFileInput', () => {
   let element: USAFileInput;

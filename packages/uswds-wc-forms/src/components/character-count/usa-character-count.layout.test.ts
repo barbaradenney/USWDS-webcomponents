@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../character-count/index.ts';
 import type { USACharacterCount } from './usa-character-count.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USACharacterCount Layout Tests', () => {
   let element: USACharacterCount;

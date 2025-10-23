@@ -4,8 +4,8 @@ import type { USADateRangePicker } from '../date-range-picker/usa-date-range-pic
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { validateComponentJavaScript, waitForUpdate } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { validateComponentJavaScript, waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USADateRangePicker', () => {
   let element: USADateRangePicker;

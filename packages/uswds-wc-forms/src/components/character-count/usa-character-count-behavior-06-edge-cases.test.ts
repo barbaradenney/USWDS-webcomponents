@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
+import { waitForBehaviorInit } from '@uswds-wc/test-utils/test-utils.js';
 import './usa-character-count.js';
 import type { USACharacterCount } from './usa-character-count.js';
 

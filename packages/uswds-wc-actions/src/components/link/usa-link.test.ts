@@ -4,17 +4,17 @@ import type { USALink } from './usa-link.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
   testPointerAccessibility,
   testTargetSize,
   testLabelInName,
-} from '../../../__tests__/touch-pointer-utils.js';
+} from '@uswds-wc/test-utils/touch-pointer-utils.js';
 
 describe('USALink', () => {
   let element: USALink;

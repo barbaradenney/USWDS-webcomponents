@@ -4,18 +4,18 @@ import type { USAIcon } from './usa-icon.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   waitForUpdate,
   testPropertyChanges,
   assertAccessibilityAttributes,
   assertDOMStructure,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USAIcon', () => {
   let element: USAIcon;

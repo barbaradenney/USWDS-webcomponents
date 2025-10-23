@@ -4,7 +4,7 @@ import type { USAComboBox } from './usa-combo-box.js';
 import {
   waitForUpdate,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * Regression Tests for Combo Box Functionality

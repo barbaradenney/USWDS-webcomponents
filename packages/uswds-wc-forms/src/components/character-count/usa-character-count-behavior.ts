@@ -12,8 +12,8 @@
  * DO NOT add custom logic. ALL changes must come from USWDS source updates.
  */
 
-import { selectOrMatches } from '../../utils/select-or-matches.js';
-import { debounce } from '../../utils/debounce.js';
+import { selectOrMatches } from '@uswds-wc/core';
+import { debounce } from '@uswds-wc/core';
 
 /**
  * Constants from USWDS

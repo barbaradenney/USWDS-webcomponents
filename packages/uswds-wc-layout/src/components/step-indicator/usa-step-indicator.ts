@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { initializeUSWDSComponent, cleanupUSWDSComponent } from '../../utils/uswds-loader.js';
+import { loadUSWDSModule } from '@uswds-wc/core';
 
 // Import official USWDS compiled CSS
 import '@uswds-wc/core/styles.css';
@@ -71,6 +71,7 @@ export class USAStepIndicator extends LitElement {
   override ariaLabel = 'Step indicator';
 
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
@@ -80,8 +81,9 @@ export class USAStepIndicator extends LitElement {
   override connectedCallback() {
     super.connectedCallback?.();
 
-    // Capture any initial content before render
-    if (this.childNodes.length > 0 && this.steps.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based steps AND custom slotted content
+    if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
     }
@@ -116,12 +118,14 @@ export class USAStepIndicator extends LitElement {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent) {
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
       const slotElement = this.querySelector('slot');
-      if (slotElement && this.steps.length === 0) {
+      if (slotElement) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = this.slottedContent;
         slotElement.replaceWith(...Array.from(tempDiv.childNodes));
+        this.slottedContentApplied = true;
       }
     }
   }
@@ -215,7 +219,13 @@ export class USAStepIndicator extends LitElement {
       }
 
       // Let USWDS handle the component using standard loader
-      this.uswdsModule = await initializeUSWDSComponent(element, 'step-indicator');
+      this.uswdsModule = await loadUSWDSModule('step-indicator');
+
+      // Initialize the loaded module on the element
+      if (this.uswdsModule && typeof this.uswdsModule.on === 'function') {
+        this.uswdsModule.on(element);
+      }
+
       console.log('✅ USWDS step indicator initialized successfully');
     } catch (error) {
       console.warn('🔧 Step Indicator: USWDS integration failed:', error);
@@ -224,8 +234,10 @@ export class USAStepIndicator extends LitElement {
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    // Clean up USWDS module using standardized loader
-    cleanupUSWDSComponent(this, this.uswdsModule);
+    // Clean up USWDS module
+    if (this.uswdsModule && typeof this.uswdsModule.off === 'function') {
+      this.uswdsModule.off(this);
+    }
     this.uswdsModule = null;
   }
   private renderHeader() {

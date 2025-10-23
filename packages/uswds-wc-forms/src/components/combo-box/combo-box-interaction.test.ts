@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-combo-box.ts';
 import type { USAComboBox } from './usa-combo-box.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Combo Box JavaScript Interaction Testing', () => {
   let element: USAComboBox;

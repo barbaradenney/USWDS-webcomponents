@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../step-indicator/index.ts';
 import type { USAStepIndicator } from './usa-step-indicator.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAStepIndicator Layout Tests', () => {
   let element: USAStepIndicator;

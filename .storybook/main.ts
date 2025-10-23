@@ -4,10 +4,10 @@ import { resolve } from 'path';
 
 const config: StorybookConfig = {
   stories: [
-    // Pick up all stories in all subdirectories, including modal
-    '../src/**/*.stories.@(ts|mdx)',
+    // Pick up all stories from all packages
+    '../packages/**/src/**/*.stories.@(ts|mdx)',
     // Include component changelogs (version history)
-    '../src/components/*/CHANGELOG.mdx',
+    '../packages/**/src/components/*/CHANGELOG.mdx',
     // Note: TESTING.mdx files excluded - too technical for Storybook UI
     './*.mdx', // Include documentation files from .storybook directory
   ],
@@ -39,15 +39,18 @@ const config: StorybookConfig = {
     check: false,
   },
   viteFinal: async (config) => {
-    // Ensure proper module resolution
+    // Ensure proper module resolution for monorepo
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': '/src',
-      '@/components': '/src/components',
-      '@/styles': '/src/styles',
-      '@/utils': '/src/utils',
-      '@/types': '/src/types',
+      '@uswds-wc/core': resolve(__dirname, '../packages/uswds-wc-core/src'),
+      '@uswds-wc/actions': resolve(__dirname, '../packages/uswds-wc-actions/src'),
+      '@uswds-wc/forms': resolve(__dirname, '../packages/uswds-wc-forms/src'),
+      '@uswds-wc/navigation': resolve(__dirname, '../packages/uswds-wc-navigation/src'),
+      '@uswds-wc/data-display': resolve(__dirname, '../packages/uswds-wc-data-display/src'),
+      '@uswds-wc/feedback': resolve(__dirname, '../packages/uswds-wc-feedback/src'),
+      '@uswds-wc/layout': resolve(__dirname, '../packages/uswds-wc-layout/src'),
+      '@uswds-wc/structure': resolve(__dirname, '../packages/uswds-wc-structure/src'),
       // Resolve @storybook/blocks to addon-docs for MDX files
       '@storybook/blocks': resolve(
         __dirname,

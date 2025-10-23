@@ -4,18 +4,18 @@ import type { USAFooter, FooterLink, FooterSection } from './usa-footer.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   setupTestEnvironment,
   waitForUpdate,
   testPropertyChanges,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USAFooter', () => {
   let element: USAFooter;

@@ -87,10 +87,6 @@ export class USACharacterCount extends USWDSBaseComponent {
     super.connectedCallback();
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
-
-    // CRITICAL: Prevent USWDS character-count JavaScript from running
-    // The USWDS behavior manipulates DOM directly which conflicts with Lit
-    this.setAttribute('data-js-character-count', 'false');
   }
 
   override async firstUpdated(changedProperties: Map<string, any>) {
@@ -193,20 +189,23 @@ export class USACharacterCount extends USWDSBaseComponent {
       return `${currentLength} characters`;
     }
 
-    // Match USWDS behavior exactly
-    // When empty: "200 characters allowed"
-    // When typing: "195 characters left"
-    // When over: "5 characters over limit"
-    if (currentLength === 0) {
-      const characters = this.maxlength === 1 ? 'character' : 'characters';
-      return `${this.maxlength} ${characters} allowed`;
+    const remaining = this.maxlength - currentLength;
+
+    // Zero case: "Character limit reached"
+    if (remaining === 0) {
+      return 'Character limit reached';
     }
 
-    const difference = Math.abs(this.maxlength - currentLength);
-    const characters = difference === 1 ? 'character' : 'characters';
-    const guidance = currentLength > this.maxlength ? 'over limit' : 'left';
+    // Over limit case: "6 characters over limit"
+    if (remaining < 0) {
+      const overBy = Math.abs(remaining);
+      const characters = overBy === 1 ? 'character' : 'characters';
+      return `${overBy} ${characters} over limit`;
+    }
 
-    return `${difference} ${characters} ${guidance}`;
+    // Normal case: "45 characters remaining"
+    const characters = remaining === 1 ? 'character' : 'characters';
+    return `${remaining} ${characters} remaining`;
   }
 
   // Public API methods
@@ -332,7 +331,7 @@ export class USACharacterCount extends USWDSBaseComponent {
       <div
         class="${containerClasses}"
         data-maxlength="${this.maxlength}"
-        data-enhanced="true"
+        data-enhanced="false"
       >
         <label class="usa-label" for="${this.name}">
           ${this.label} ${this.renderRequiredIndicator()}
@@ -340,7 +339,7 @@ export class USACharacterCount extends USWDSBaseComponent {
         ${this.renderHint()}
         ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
         ${this.renderField()}
-        <!-- Character count message (visible to users) -->
+        <!-- Render both message (for USWDS) and status (for immediate display) -->
         <span
           class="usa-character-count__message"
           id="${this.name}-info"
@@ -348,8 +347,15 @@ export class USACharacterCount extends USWDSBaseComponent {
         >
           ${this.getCharacterCountMessage()}
         </span>
-        <!-- Screen reader announcements (hidden from visual display) -->
-        <span class="usa-sr-only usa-character-count__sr-status" id="${this.name}-status" aria-live="polite" aria-atomic="true">
+        <!-- This status element matches USWDS structure -->
+        <span
+          class="usa-character-count__status usa-hint${this._isOverLimit ? ' usa-character-count__status--invalid' : ''}"
+          id="${this.name}-status"
+          aria-hidden="true"
+        >
+          ${this.getCharacterCountMessage()}
+        </span>
+        <span class="usa-sr-only usa-character-count__sr-status" aria-live="polite" aria-atomic="true">
           ${this.getCharacterCountMessage()}
         </span>
       </div>

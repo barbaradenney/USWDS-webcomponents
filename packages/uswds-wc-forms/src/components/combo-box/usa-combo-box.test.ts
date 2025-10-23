@@ -4,13 +4,13 @@ import type { USAComboBox } from './usa-combo-box.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USAComboBox', () => {
   let element: USAComboBox;
@@ -756,7 +756,7 @@ describe('USAComboBox', () => {
 
     it('should support aria-describedby for hints (WCAG 4.1.2)', async () => {
       const { testARIARelationships } = await import(
-        '../../../__tests__/aria-screen-reader-utils.js'
+        '@uswds-wc/test-utils/aria-screen-reader-utils.js'
       );
 
       element.label = 'Select option';

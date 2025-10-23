@@ -12,8 +12,8 @@
  * DO NOT add custom logic. ALL changes must come from USWDS source updates.
  */
 
-import { FocusTrap } from '../../utils/focus-trap.js';
-import { toggle } from '../banner/usa-banner-behavior.js';
+import { FocusTrap } from '@uswds-wc/core';
+import { toggle } from '@uswds-wc/feedback';
 
 /**
  * Constants from USWDS

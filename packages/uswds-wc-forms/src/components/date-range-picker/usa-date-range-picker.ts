@@ -181,9 +181,6 @@ export class USADateRangePicker extends USWDSBaseComponent {
 
   private async initializeUSWDSDateRangePicker() {
     try {
-      // Use standardized USWDS loader utility for consistency with other components
-      const { initializeUSWDSComponent } = await import('../../utils/uswds-loader.js');
-
       await this.updateComplete;
 
       const dateRangePickerElement = this.querySelector('.usa-date-range-picker');
@@ -193,8 +190,14 @@ export class USADateRangePicker extends USWDSBaseComponent {
         return;
       }
 
-      // Let USWDS handle the date range picker using standard loader
-      this.uswdsModule = await initializeUSWDSComponent(dateRangePickerElement, 'date-range-picker');
+      // Use loadUSWDSModule for date range picker
+      const { loadUSWDSModule } = await import('@uswds-wc/core');
+      this.uswdsModule = await loadUSWDSModule('date-range-picker');
+
+      // Initialize the loaded module on the element
+      if (this.uswdsModule && typeof this.uswdsModule.on === 'function') {
+        this.uswdsModule.on(dateRangePickerElement);
+      }
 
       if (this.uswdsModule) {
         console.log('✅ USWDS date range picker initialized successfully');
@@ -314,10 +317,12 @@ export class USADateRangePicker extends USWDSBaseComponent {
 
   private async cleanupUSWDS() {
     try {
-      const { cleanupUSWDSComponent } = await import('../../utils/uswds-loader.js');
-      cleanupUSWDSComponent(this, this.uswdsModule);
+      // Cleanup USWDS module
+      if (this.uswdsModule && typeof this.uswdsModule.off === 'function') {
+        this.uswdsModule.off(this);
+      }
     } catch (error) {
-      console.warn('⚠️ Date Range Picker: Error importing cleanup utility:', error);
+      console.warn('⚠️ Date Range Picker: Cleanup error:', error);
     }
 
     this.uswdsModule = null;

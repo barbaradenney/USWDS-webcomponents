@@ -15,7 +15,10 @@
       "import": "./dist/utils/*.js",
       "types": "./dist/utils/*.d.ts"
     },
-    "./styles.css": "./dist/styles/styles.css"
+    "./styles.css": {
+      "import": "./src/styles/styles.css",
+      "default": "./dist/styles/styles.css"
+    }
   },
   "files": [
     "dist",

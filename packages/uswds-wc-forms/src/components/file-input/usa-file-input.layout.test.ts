@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../file-input/index.ts';
 import type { USAFileInput } from './usa-file-input.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAFileInput Layout Tests', () => {
   let element: USAFileInput;

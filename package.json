@@ -1,101 +1,31 @@
 {
-  "name": "uswds-webcomponents",
+  "name": "uswds-webcomponents-monorepo",
   "version": "1.1.0",
-  "description": "U.S. Web Design System components as Web Components using Lit Element",
+  "private": true,
+  "description": "USWDS Web Components Monorepo - Components, Patterns, and Templates",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./components/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./forms": {
-      "import": "./dist/forms/index.js",
-      "types": "./dist/forms/index.d.ts"
-    },
-    "./forms/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./navigation": {
-      "import": "./dist/navigation/index.js",
-      "types": "./dist/navigation/index.d.ts"
-    },
-    "./navigation/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./data-display": {
-      "import": "./dist/data-display/index.js",
-      "types": "./dist/data-display/index.d.ts"
-    },
-    "./data-display/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./feedback": {
-      "import": "./dist/feedback/index.js",
-      "types": "./dist/feedback/index.d.ts"
-    },
-    "./feedback/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./actions": {
-      "import": "./dist/actions/index.js",
-      "types": "./dist/actions/index.d.ts"
-    },
-    "./actions/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./layout": {
-      "import": "./dist/layout/index.js",
-      "types": "./dist/layout/index.d.ts"
-    },
-    "./layout/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./structure": {
-      "import": "./dist/structure/index.js",
-      "types": "./dist/structure/index.d.ts"
-    },
-    "./structure/*": {
-      "import": "./dist/components/*.js",
-      "types": "./dist/components/*.d.ts"
-    },
-    "./css/*": "./dist/css/*.css",
-    "./styles.css": "./src/styles/styles.css"
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   },
-  "files": [
-    "dist",
-    "src",
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md"
-  ],
   "scripts": {
+    "// WORKSPACE COMMANDS": "",
+    "dev": "pnpm --filter @uswds-wc/core dev",
+    "build": "pnpm -r build",
+    "build:core": "pnpm --filter @uswds-wc/core build",
+    "build:all": "pnpm -r build",
+    "test": "vitest run",
+    "test:all": "npm run test:ci && npm run test:storybook:ci",
     "// DEVELOPMENT": "",
-    "dev": "vite",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "storybook:clean": "rm -rf node_modules/.cache/storybook node_modules/.vite storybook-static && echo '✅ Storybook cache cleared. Run npm run storybook to restart.'",
     "// BUILD & COMPILE": "",
-    "build:css": "sass src/styles/styles.scss src/styles/styles.css --source-map --load-path=node_modules/@uswds/uswds/packages --load-path=node_modules && postcss src/styles/styles.css --replace --use autoprefixer",
-    "build:css:prod": "sass src/styles/styles.scss src/styles/styles.css --source-map --load-path=node_modules/@uswds/uswds/packages --load-path=node_modules && NODE_ENV=production postcss src/styles/styles.css --replace",
-    "build:css:watch": "sass src/styles/styles.scss src/styles/styles.css --source-map --load-path=node_modules/@uswds/uswds/packages --load-path=node_modules --watch",
-    "build": "npm run sw:sync && NODE_ENV=production npm run build:css:prod && npm run css:tree-shake && tsc && vite build && npm run docs:update-optimization",
-    "build:watch": "npm run build:css:watch & tsc && vite build --watch",
-    "build:optimized": "NODE_ENV=production npm run build:css && npm run css:tree-shake && tsc && vite build --config vite.config.optimized.ts",
-    "build:production": "npm run build:optimized",
-    "build-storybook": "npm run build:css && storybook build",
+    "build:css": "pnpm --filter @uswds-wc/core build:css",
+    "build:css:prod": "pnpm --filter @uswds-wc/core build:css",
+    "build:css:watch": "pnpm --filter @uswds-wc/core build:css -- --watch",
+    "build:watch": "pnpm -r build -- --watch",
+    "build-storybook": "pnpm --filter @uswds-wc/core build:css && storybook build",
     "// CSS TREE-SHAKING": "",
     "css:tree-shake": "node scripts/build/extract-component-css.js",
     "css:tree-shake:stats": "node scripts/build/extract-component-css.js --verbose",
@@ -191,7 +121,6 @@
     "generate:component:interactive": "node scripts/generate/component-generator.js --interactive",
     "generate:behavior-contract": "node scripts/generate-behavior-contract.js --component=",
     "// TESTING": "",
-    "test": "vitest run",
     "test:verbose": "VITEST_VERBOSE=1 vitest run",
     "test:by-component": "bash scripts/test/test-by-component.sh",
     "test:chunked": "bash scripts/test/test-by-component.sh",
@@ -209,7 +138,6 @@
     "test:storybook": "test-storybook",
     "test:storybook:ci": "test-storybook --ci",
     "test:storybook:coverage": "test-storybook --coverage",
-    "test:all": "npm run test:ci && npm run test:storybook:ci",
     "test:integration": "vitest __tests__/integration/**/*.test.ts",
     "test:user-flows": "vitest __tests__/integration/user-flow-scenarios.test.ts",
     "test:edge-cases": "vitest __tests__/integration/edge-case-scenarios.test.ts",
@@ -717,6 +645,7 @@
     "@storybook/addon-vitest": "^9.1.10",
     "@storybook/test-runner": "^0.23.0",
     "@storybook/web-components-vite": "^9.1.10",
+    "@types/minimatch": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@uswds/compile": "^1.1.0",
@@ -766,6 +695,7 @@
     "typescript": "^5.0.2",
     "vite": "^7.1.4",
     "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-dts": "^4.5.4",
     "vite-plugin-imagemin": "^0.6.1",
     "vitest": "^3.2.4",
     "wait-on": "^8.0.5"

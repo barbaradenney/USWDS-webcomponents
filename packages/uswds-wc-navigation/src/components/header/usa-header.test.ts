@@ -7,22 +7,22 @@ import {
   testPropertyChanges,
   validateComponentJavaScript,
   mockNavigation,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
   testFocusManagement,
   testFocusIndicators,
   testProgrammaticFocus,
   testSkipLinks,
-} from '../../../__tests__/focus-management-utils.js';
+} from '@uswds-wc/test-utils/focus-management-utils.js';
 
 describe('USAHeader', () => {
   let element: USAHeader;

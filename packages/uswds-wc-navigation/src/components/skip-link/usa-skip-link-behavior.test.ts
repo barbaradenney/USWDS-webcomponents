@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
+import { waitForBehaviorInit } from '@uswds-wc/test-utils/test-utils.js';
 import './usa-skip-link.js';
 import type { USASkipLink } from './usa-skip-link.js';
 

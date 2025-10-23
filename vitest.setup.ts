@@ -4,7 +4,8 @@
  */
 
 import { beforeEach, afterEach } from 'vitest';
-import { Canvas } from 'canvas';
+// Mock canvas for JSDOM testing (avoids native dependency issues)
+// import { Canvas } from 'canvas';
 
 // Clean up DOM between tests to prevent interference
 beforeEach(() => {
@@ -186,11 +187,53 @@ global.ResizeObserver = class ResizeObserver {
 
 // Setup Canvas for HTMLCanvasElement support in JSDOM
 // This fixes axe-core color contrast checking which requires canvas operations
+// Using a mock canvas context to avoid native dependency issues
 Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
   value: function (contextType: string) {
     if (contextType === '2d') {
-      const canvas = new Canvas(this.width || 300, this.height || 150);
-      return canvas.getContext('2d');
+      // Mock 2D canvas context for axe-core color contrast checking
+      return {
+        canvas: this,
+        fillStyle: '#000000',
+        strokeStyle: '#000000',
+        lineWidth: 1,
+        font: '10px sans-serif',
+        fillRect: () => {},
+        clearRect: () => {},
+        getImageData: (x: number, y: number, w: number, h: number) => ({
+          data: new Uint8ClampedArray(w * h * 4),
+          width: w,
+          height: h,
+        }),
+        putImageData: () => {},
+        createImageData: (w: number, h: number) => ({
+          data: new Uint8ClampedArray(w * h * 4),
+          width: w,
+          height: h,
+        }),
+        setTransform: () => {},
+        drawImage: () => {},
+        save: () => {},
+        restore: () => {},
+        beginPath: () => {},
+        closePath: () => {},
+        moveTo: () => {},
+        lineTo: () => {},
+        stroke: () => {},
+        fill: () => {},
+        arc: () => {},
+        rect: () => {},
+        clip: () => {},
+        quadraticCurveTo: () => {},
+        bezierCurveTo: () => {},
+        translate: () => {},
+        rotate: () => {},
+        scale: () => {},
+        transform: () => {},
+        measureText: (text: string) => ({ width: text.length * 7 }),
+        fillText: () => {},
+        strokeText: () => {},
+      };
     }
     return null;
   },

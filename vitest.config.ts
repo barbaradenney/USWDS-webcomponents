@@ -1,25 +1,49 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vitest/config';
+import { defineConfig, Plugin } from 'vitest/config';
 import { resolve } from 'path';
+
+// Plugin to stub CSS imports in tests
+function cssStubPlugin(): Plugin {
+  return {
+    name: 'css-stub',
+    resolveId(id) {
+      if (id.endsWith('.css')) {
+        return '\0' + id;
+      }
+    },
+    load(id) {
+      if (id.startsWith('\0') && id.endsWith('.css')) {
+        return 'export default {};';
+      }
+    },
+  };
+}
 
 // Main vitest configuration for unit tests
 export default defineConfig({
+  plugins: [cssStubPlugin()],
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['vitest.setup.ts'],
-    include: ['src/**/*.test.ts', '__tests__/**/*.test.ts', 'tests/**/*.test.js'],
+    include: ['packages/**/src/**/*.test.ts', '__tests__/**/*.test.ts', 'tests/**/*.test.js'],
     exclude: [
-      'src/**/*.stories.ts',
-      'src/**/*.browser.test.ts',
-      'src/**/*.visual.test.ts',
+      'packages/**/src/**/*.stories.ts',
+      'packages/**/src/**/*.browser.test.ts',
+      'packages/**/src/**/*.visual.test.ts',
       'node_modules',
       // Skip behavior/interaction tests in CI - they're flaky in jsdom, covered by Cypress
       ...(process.env.CI ? [
-        'src/**/*-behavior*.test.ts',
-        'src/**/*-interaction.test.ts'
+        'packages/**/src/**/*-behavior*.test.ts',
+        'packages/**/src/**/*-interaction.test.ts'
       ] : [])
     ],
+    // CSS handling in tests
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped',
+      },
+    },
     // Progress reporting
     reporters: process.env.VITEST_VERBOSE ? ['verbose', 'basic'] : process.env.VITEST_DEBUG_HANGING ? ['default', 'hanging-process'] : ['default'],
     // Show test names as they start (not just when they finish)
@@ -52,11 +76,19 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
-      '@/components': resolve(__dirname, 'src/components'),
-      '@/styles': resolve(__dirname, 'src/styles'),
-      '@/utils': resolve(__dirname, 'src/utils'),
-      '@/types': resolve(__dirname, 'src/types'),
+      // Package aliases for tests
+      '@uswds-wc/core': resolve(__dirname, 'packages/uswds-wc-core/src'),
+      '@uswds-wc/actions': resolve(__dirname, 'packages/uswds-wc-actions/src'),
+      '@uswds-wc/forms': resolve(__dirname, 'packages/uswds-wc-forms/src'),
+      '@uswds-wc/navigation': resolve(__dirname, 'packages/uswds-wc-navigation/src'),
+      '@uswds-wc/data-display': resolve(__dirname, 'packages/uswds-wc-data-display/src'),
+      '@uswds-wc/feedback': resolve(__dirname, 'packages/uswds-wc-feedback/src'),
+      '@uswds-wc/layout': resolve(__dirname, 'packages/uswds-wc-layout/src'),
+      '@uswds-wc/structure': resolve(__dirname, 'packages/uswds-wc-structure/src'),
+      '@uswds-wc/test-utils': resolve(__dirname, 'packages/uswds-wc-test-utils/src'),
+      // Mock CSS imports (not needed in unit tests)
+      '\\.css$': resolve(__dirname, '__mocks__/styleMock.js'),
+      '@uswds-wc/core/styles.css': resolve(__dirname, '__mocks__/styleMock.js'),
     },
   },
   // Optimize dependencies for testing

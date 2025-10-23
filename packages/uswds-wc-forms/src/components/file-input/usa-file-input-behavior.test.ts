@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
+import { waitForBehaviorInit } from '@uswds-wc/test-utils/test-utils.js';
 import './usa-file-input.js';
 import type { USAFileInput } from './usa-file-input.js';
 

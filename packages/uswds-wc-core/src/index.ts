@@ -7,6 +7,9 @@
 // Base Component
 export { USWDSBaseComponent } from './utils/base-component.js';
 
+// Types
+export * from './types/index.js';
+
 // Utilities
 export * from './utils/accessibility-helpers.js';
 export * from './utils/debounce.js';

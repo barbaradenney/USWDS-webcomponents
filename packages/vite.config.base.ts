@@ -1,5 +1,6 @@
 import { defineConfig, UserConfig } from 'vite';
 import { resolve } from 'path';
+import dts from 'vite-plugin-dts';
 
 /**
  * Base Vite configuration for USWDS Web Components packages
@@ -8,6 +9,14 @@ import { resolve } from 'path';
  */
 export function createPackageConfig(packageName: string, packageDir: string): UserConfig {
   return {
+    plugins: [
+      dts({
+        include: ['src/**/*'],
+        exclude: ['src/**/*.test.ts', 'src/**/*.cy.ts'],
+        outDir: 'dist',
+        insertTypesEntry: true,
+      }),
+    ],
     resolve: {
       alias: {
         '@': resolve(packageDir, 'src'),
@@ -37,8 +46,8 @@ export function createPackageConfig(packageName: string, packageDir: string): Us
           'lit/decorators.js',
           'lit/directive.js',
           'lit/directives/unsafe-html.js',
-          '@uswds-wc/core',
-          '@uswds-wc/actions', // For navigation package dependency
+          // External all @uswds-wc packages and their subpaths
+          /@uswds-wc\//,
         ],
         output: {
           globals: {

@@ -4,20 +4,20 @@ import type { USAAlert } from './usa-alert.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { quickUSWDSComplianceTest } from '../../../__tests__/uswds-compliance-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
   testARIAAccessibility,
   testARIARoles,
   testAccessibleName,
   testLiveRegionAnnouncements,
-} from '../../../__tests__/aria-screen-reader-utils.js';
+} from '@uswds-wc/test-utils/aria-screen-reader-utils.js';
 
 type AlertVariant = 'info' | 'warning' | 'error' | 'success' | 'emergency';
 
@@ -836,7 +836,7 @@ describe('USAAlert', () => {
 
   describe('Color/Contrast Accessibility (WCAG 1.4)', () => {
     it('should verify info variant has USWDS classes for contrast', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       element.variant = 'info';
       element.heading = 'Info Alert';
@@ -893,7 +893,7 @@ describe('USAAlert', () => {
     });
 
     it('should calculate contrast correctly for alert text', async () => {
-      const { calculateContrastRatio } = await import('../../../__tests__/contrast-utils.js');
+      const { calculateContrastRatio } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       // USWDS alert colors should have sufficient contrast
       // Test that our contrast calculator works correctly
@@ -908,7 +908,7 @@ describe('USAAlert', () => {
     });
 
     it('should verify alert heading has adequate contrast', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       element.heading = 'Alert Heading';
       element.text = 'Alert body text';

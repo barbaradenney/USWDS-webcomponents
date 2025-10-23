@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-footer.ts';
 import type { USAFooter } from './usa-footer.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Footer JavaScript Interaction Testing', () => {
   let element: USAFooter;

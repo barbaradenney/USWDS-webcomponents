@@ -131,19 +131,45 @@ See [docs/MAINTENANCE_STRATEGY.md](docs/MAINTENANCE_STRATEGY.md) for complete au
 ## Architecture
 
 ### Directory Structure
+
+**Monorepo Structure** (pnpm workspaces):
 ```
-src/
-├── components/          # Component implementations
-│   ├── button/
-│   │   ├── usa-button.ts
-│   │   ├── usa-button.stories.ts
-│   │   ├── usa-button.test.ts
-│   │   ├── README.mdx
+packages/
+├── uswds-wc-core/          # Core utilities and base components
+│   ├── src/
+│   │   ├── styles/          # USWDS compiled CSS
+│   │   ├── utils/           # Shared utilities
 │   │   └── index.ts
-├── styles/             # USWDS styles
-├── utils/              # Shared utilities
-└── index.ts           # Main entry with auto-registration
+│   └── package.json
+├── uswds-wc-actions/        # Action components (buttons, search, links)
+│   ├── src/components/
+│   │   ├── button/
+│   │   │   ├── usa-button.ts
+│   │   │   ├── usa-button.stories.ts
+│   │   │   ├── usa-button.test.ts
+│   │   │   ├── README.mdx
+│   │   │   └── index.ts
+│   │   └── ...
+│   └── package.json
+├── uswds-wc-forms/          # Form components
+├── uswds-wc-navigation/     # Navigation components
+├── uswds-wc-data-display/   # Data display components
+├── uswds-wc-feedback/       # Feedback components (alerts, modals)
+├── uswds-wc-layout/         # Layout components
+├── uswds-wc-structure/      # Structure components (accordion)
+└── uswds-wc-test-utils/     # Shared test utilities
 ```
+
+**Package Organization** (category-based):
+- `@uswds-wc/core` - Core utilities, base classes, USWDS CSS
+- `@uswds-wc/actions` - Buttons, links, search
+- `@uswds-wc/forms` - All form controls
+- `@uswds-wc/navigation` - Header, footer, breadcrumb, pagination
+- `@uswds-wc/data-display` - Cards, tables, lists, tags, icons
+- `@uswds-wc/feedback` - Alerts, banners, modals, tooltips
+- `@uswds-wc/layout` - Process list, step indicator, identifier
+- `@uswds-wc/structure` - Accordion
+- `@uswds-wc/test-utils` - Shared testing utilities
 
 ### 🏗️ MANDATORY: Script Tag Pattern
 
@@ -338,11 +364,13 @@ All changes must include:
 MANDATORY for all components:
 
 ### Requirements
-- Co-located at `src/components/[component]/usa-[component].stories.ts`
+- Co-located at `packages/[category]/src/components/[component]/usa-[component].stories.ts`
 - Default story with default values
 - Stories for all variants and states
 - Interactive controls for all properties
 - Layout: `padded` (consistent spacing)
+
+Example: `packages/uswds-wc-actions/src/components/button/usa-button.stories.ts`
 
 ### Story Template
 
@@ -351,13 +379,15 @@ See [docs/COMPONENT_TEMPLATES.md](docs/COMPONENT_TEMPLATES.md#storybook-story-te
 ## Documentation
 
 ### Component READMEs
-Each component has comprehensive documentation at `src/components/[component]/README.mdx`:
+Each component has comprehensive documentation at `packages/[category]/src/components/[component]/README.mdx`:
 - USWDS documentation links
 - Usage examples
 - Properties/attributes table
 - Events table
 - Accessibility features
 - Implementation notes
+
+Example: `packages/uswds-wc-actions/src/components/button/README.mdx`
 
 **ALWAYS check component READMEs first** before modifying or explaining components.
 

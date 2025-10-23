@@ -7,11 +7,11 @@ import {
   assertAccessibilityAttributes,
   assertDOMStructure,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 
 describe('USARangeSlider', () => {
   let element: USARangeSlider;

@@ -7,12 +7,12 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../button/index.ts';
 import '../icon/index.ts';
 import type { USAButton } from './usa-button.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   validateCSSClassString,
   validateAllCSSClasses,
   validateUSWDSClassPattern
-} from '../../../__tests__/css-class-utils.js';
+} from '@uswds-wc/test-utils/css-class-utils.js';
 
 describe('USAButton Layout Tests', () => {
   let element: USAButton;

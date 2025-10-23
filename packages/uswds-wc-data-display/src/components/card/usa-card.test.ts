@@ -4,20 +4,20 @@ import type { USACard } from './usa-card.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { quickUSWDSComplianceTest } from '../../../__tests__/uswds-compliance-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
 import {
   validateComponentJavaScript,
   testSlottedContent,
   assertSlottedContentWorks,
   mockNavigation,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testTextResize,
   testReflow,
   testTextSpacing,
   testMobileAccessibility,
-} from '../../../__tests__/responsive-accessibility-utils.js';
+} from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
 
 describe('USACard', () => {
   let element: USACard;

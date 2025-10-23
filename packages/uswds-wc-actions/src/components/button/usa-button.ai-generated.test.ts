@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '../../../__tests__/accessibility-utils.js';
+import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '@uswds-wc/test-utils/accessibility-utils.js';
 import './usa-button.js';
 import { USAButton } from './usa-button.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * 🤖 AI-Generated Test Suite

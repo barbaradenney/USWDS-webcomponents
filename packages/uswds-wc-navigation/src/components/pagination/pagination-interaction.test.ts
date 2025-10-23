@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-pagination.ts';
 import type { USAPagination } from './usa-pagination.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Pagination JavaScript Interaction Testing', () => {
   let element: USAPagination;

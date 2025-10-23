@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-date-picker.ts';
 import type { USADatePicker } from './usa-date-picker.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Date Picker JavaScript Interaction Testing', () => {
   let element: USADatePicker;

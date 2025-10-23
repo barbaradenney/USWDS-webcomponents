@@ -8,11 +8,11 @@ import {
   assertDOMStructure,
   validateComponentJavaScript,
   runUSWDSTransformationTests,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 
 describe('USATimePicker', () => {
   let element: USATimePicker;

@@ -65,6 +65,7 @@ export class USAFooter extends USWDSBaseComponent {
   sections: FooterSection[] = [];
 
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
 
   // Store cleanup function from behavior
   private cleanup?: () => void;
@@ -73,8 +74,9 @@ export class USAFooter extends USWDSBaseComponent {
     super.connectedCallback();
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial content before render
-    if (this.childNodes.length > 0 && this.sections.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based sections AND custom slotted content
+    if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
     }
@@ -110,12 +112,14 @@ export class USAFooter extends USWDSBaseComponent {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent) {
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
       const slotElement = this.querySelector('slot');
-      if (slotElement && this.sections.length === 0) {
+      if (slotElement) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = this.slottedContent;
         slotElement.replaceWith(...Array.from(tempDiv.childNodes));
+        this.slottedContentApplied = true;
       }
     }
   }

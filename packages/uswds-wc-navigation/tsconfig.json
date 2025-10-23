@@ -1,14 +1,18 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "types": [],
+    "skipLibCheck": true,
+    "noEmit": false,
+    "allowImportingTsExtensions": false
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts", "**/*.cy.ts"],
   "references": [
     { "path": "../uswds-wc-core" },
     { "path": "../uswds-wc-actions" }

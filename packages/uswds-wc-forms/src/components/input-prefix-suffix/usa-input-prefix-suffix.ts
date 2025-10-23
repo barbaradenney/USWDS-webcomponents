@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 // Import official USWDS compiled CSS
 import '@uswds-wc/core/styles.css';
 // Import usa-icon component for icon support
-import '../icon/index.js';
+import '@uswds-wc/data-display/components/icon';
 
 /**
  * USA Input Prefix/Suffix Web Component

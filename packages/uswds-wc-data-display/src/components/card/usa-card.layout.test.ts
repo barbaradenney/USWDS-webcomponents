@@ -6,11 +6,11 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../card/index.ts';
 import type { USACard } from './usa-card.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   validateCSSClassString,
   validateMediaElementClasses
-} from '../../../__tests__/css-class-utils.js';
+} from '@uswds-wc/test-utils/css-class-utils.js';
 
 describe('USACard Layout Tests', () => {
   let element: USACard;

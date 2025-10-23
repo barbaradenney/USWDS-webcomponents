@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import '../../../__tests__/test-utils.js';
+import '@uswds-wc/test-utils/test-utils.js';
 import './usa-language-selector.js';
 import type { USALanguageSelector, LanguageOption } from './usa-language-selector.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USALanguageSelector', () => {
   let element: USALanguageSelector;

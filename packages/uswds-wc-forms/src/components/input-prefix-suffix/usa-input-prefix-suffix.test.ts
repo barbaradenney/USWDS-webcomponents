@@ -1,18 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import '../../../__tests__/test-utils.js';
+import '@uswds-wc/test-utils/test-utils.js';
 import './usa-input-prefix-suffix.ts';
 import type { USAInputPrefixSuffix } from './usa-input-prefix-suffix.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testErrorIdentification,
   testLabelsOrInstructions,
   testErrorSuggestion,
   testFormErrorAccessibility,
-} from '../../../__tests__/form-error-utils.js';
+} from '@uswds-wc/test-utils/form-error-utils.js';
 
 describe('USAInputPrefixSuffix', () => {
   let element: USAInputPrefixSuffix;

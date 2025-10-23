@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../in-page-navigation/index.ts';
 import type { USAInPageNavigation } from './usa-in-page-navigation.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAInPageNavigation Layout Tests', () => {
   let element: USAInPageNavigation;

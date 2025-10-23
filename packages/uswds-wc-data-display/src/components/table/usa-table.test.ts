@@ -4,14 +4,14 @@ import type { USATable } from './usa-table.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testTextResize,
   testReflow,
   testTextSpacing,
   testMobileAccessibility,
-} from '../../../__tests__/responsive-accessibility-utils.js';
+} from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
 
 // Helper function to wait for USWDS initialization - MUST be at top level for all tests
 const waitForUSWDS = async (el: USATable) => {

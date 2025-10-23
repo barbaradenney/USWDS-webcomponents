@@ -156,7 +156,7 @@ export class USAPagination extends USWDSBaseComponent {
   private async initializeUSWDSPagination() {
     try {
       // Check if pagination is CSS-only before attempting to load
-      const { isCSSOnlyComponent } = await import('../../utils/uswds-loader.js');
+      const { isCSSOnlyComponent } = await import('@uswds-wc/core');
       if (isCSSOnlyComponent('pagination')) {
         console.log('✅ USWDS pagination is CSS-only, using web component behavior');
         // Pagination is CSS-only - no JavaScript behavior needed from USWDS
@@ -165,7 +165,7 @@ export class USAPagination extends USWDSBaseComponent {
       }
 
       // Use standardized USWDS loader utility for consistency with other components
-      const { initializeUSWDSComponent } = await import('../../utils/uswds-loader.js');
+      const { loadUSWDSModule } = await import('@uswds-wc/core');
 
       await this.updateComplete;
 
@@ -177,7 +177,12 @@ export class USAPagination extends USWDSBaseComponent {
       }
 
       // Let USWDS handle the pagination using standard loader
-      this.uswdsModule = await initializeUSWDSComponent(paginationElement, 'pagination');
+      this.uswdsModule = await loadUSWDSModule('pagination');
+
+      // Initialize the loaded module on the element
+      if (this.uswdsModule && typeof this.uswdsModule.on === 'function') {
+        this.uswdsModule.on(paginationElement);
+      }
 
       if (this.uswdsModule) {
         console.log('✅ USWDS pagination initialized successfully');

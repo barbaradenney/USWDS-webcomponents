@@ -4,12 +4,12 @@ import type { USASummaryBox } from '../summary-box/usa-summary-box.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   waitForUpdate,
   testPropertyChanges,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USASummaryBox', () => {
   let element: USASummaryBox;

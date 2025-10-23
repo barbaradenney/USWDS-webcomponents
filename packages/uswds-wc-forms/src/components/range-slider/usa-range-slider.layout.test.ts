@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../range-slider/index.ts';
 import type { USARangeSlider } from './usa-range-slider.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USARangeSlider Layout Tests', () => {
   let element: USARangeSlider;

@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../side-navigation/index.ts';
 import type { USASideNavigation } from './usa-side-navigation.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USASideNavigation Layout Tests', () => {
   let element: USASideNavigation;

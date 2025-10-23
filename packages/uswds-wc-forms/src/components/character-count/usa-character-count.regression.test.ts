@@ -4,7 +4,7 @@ import type { USACharacterCount } from './usa-character-count.js';
 import {
   waitForUpdate,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * Regression Tests for Character Count Component Interactive Functionality

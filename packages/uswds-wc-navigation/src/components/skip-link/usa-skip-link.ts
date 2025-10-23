@@ -101,14 +101,20 @@ export class USASkipLink extends USWDSBaseComponent {
     );
     try {
       // Use standardized USWDS loader utility for consistency with other components
-      const { initializeUSWDSComponent } = await import('../../utils/uswds-loader.js');
+      const { loadUSWDSModule } = await import('@uswds-wc/core');
 
       await this.updateComplete;
       const skipLinkElement = this.querySelector('.usa-skipnav');
 
       if (skipLinkElement) {
         // Let USWDS handle skip link clicks and focus management using standard loader
-        this.uswdsModule = await initializeUSWDSComponent(skipLinkElement, 'skipnav');
+        this.uswdsModule = await loadUSWDSModule('skipnav');
+
+        // Initialize the loaded module on the element
+        if (this.uswdsModule && typeof this.uswdsModule.on === 'function') {
+          this.uswdsModule.on(skipLinkElement);
+        }
+
         this.usingUSWDSEnhancement = true;
 
         console.log(
@@ -181,10 +187,12 @@ export class USASkipLink extends USWDSBaseComponent {
    */
   private async cleanupUSWDS() {
     try {
-      const { cleanupUSWDSComponent } = await import('../../utils/uswds-loader.js');
-      cleanupUSWDSComponent(this, this.uswdsModule);
+      // Cleanup USWDS module
+      if (this.uswdsModule && typeof this.uswdsModule.off === 'function') {
+        this.uswdsModule.off(this);
+      }
     } catch (error) {
-      console.warn('⚠️ Skip Link: Error importing cleanup utility:', error);
+      console.warn('⚠️ Skip Link: Cleanup error:', error);
     }
 
     this.uswdsModule = null;

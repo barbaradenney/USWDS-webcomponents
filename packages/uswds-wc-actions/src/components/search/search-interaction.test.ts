@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-search.ts';
 import type { USASearch } from './usa-search.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Search JavaScript Interaction Testing', () => {
   let element: USASearch;
