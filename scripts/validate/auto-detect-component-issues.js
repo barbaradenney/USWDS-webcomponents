@@ -76,8 +76,10 @@ class ComponentIssueDetector {
 
     const issueComponents = [];
 
+    // Call getAllComponentPaths() once instead of in a loop
+    const componentPaths = getAllComponentPaths();
+
     for (const componentName of cssOnlyComponents) {
-      const componentPaths = getAllComponentPaths();
       const componentDir = componentPaths.find(p => path.basename(p) === componentName);
       if (!componentDir) continue;
       const componentFile = path.join(componentDir, `usa-${componentName}.ts`);
@@ -159,8 +161,10 @@ class ComponentIssueDetector {
   async detectTestPerformanceIssues() {
     const issues = [];
 
-    // Check test file count
-    const testFiles = globSync('**/*.test.ts');
+    // Check test file count (exclude node_modules and other non-source directories)
+    const testFiles = globSync('packages/*/src/**/*.test.ts', {
+      ignore: ['**/node_modules/**', '**/dist/**', '**/.cache/**']
+    });
     const testFileCount = testFiles.length;
 
     if (testFileCount > 200) {
