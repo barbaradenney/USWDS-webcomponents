@@ -50,7 +50,8 @@ const SOURCE_OF_TRUTH = {
 };
 
 // Count components (count directories, not files)
-const componentDirs = glob.sync('src/components/*/', { cwd: projectRoot });
+// In monorepo: scan all packages/uswds-wc-*/src/components/*/
+const componentDirs = glob.sync('packages/uswds-wc-*/src/components/*/', { cwd: projectRoot });
 const COMPONENT_COUNT = componentDirs.length;
 
 SOURCE_OF_TRUTH.componentCount = COMPONENT_COUNT;

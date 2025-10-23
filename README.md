@@ -5,7 +5,7 @@ A lightweight web component library that wraps the official U.S. Web Design Syst
 ## 🔗 Quick Links
 
 - **📚 [Live Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)** - Interactive component documentation and examples
-- **📦 [npm Package](https://www.npmjs.com/package/uswds-webcomponents)** - Install via `npm install uswds-webcomponents`
+- **📦 [npm Package](https://www.npmjs.com/package/uswds-webcomponents-monorepo)** - Install via `npm install uswds-webcomponents-monorepo`
 - **🐙 [GitHub Repository](https://github.com/barbaramiles/USWDS-webcomponents)** - Source code and issues
 - **📖 [Component Catalog](docs/COMPONENTS.md)** - Complete reference of all 45 components
 
