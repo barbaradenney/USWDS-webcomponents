@@ -109,6 +109,15 @@ export class USADateRangePicker extends USWDSBaseComponent {
     }
   }
 
+  override firstUpdated(changedProperties: Map<string, any>) {
+    // ARCHITECTURE: Script Tag Pattern
+    // USWDS is loaded globally via script tag in .storybook/preview-head.html
+    // Components just render HTML - USWDS enhances automatically via window.USWDS
+
+    super.firstUpdated(changedProperties);
+    this.initializeUSWDSComponent();
+  }
+
   override disconnectedCallback() {
     super.disconnectedCallback();
     this.cleanupUSWDS();
