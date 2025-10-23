@@ -8,7 +8,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -153,7 +154,7 @@ async function validateOrphanedDocs() {
   console.log('🔍 Checking for orphaned documentation...\n');
   
   // Find all README files in components
-  const readmeFiles = await glob('src/components/*/README.md', { cwd: rootDir });
+  const readmeFiles = await glob('packages/*/src/components/*/README.md', { cwd: rootDir });
   const componentNames = readmeFiles.map(file => {
     const parts = file.split('/');
     return parts[parts.length - 2]; // component directory name

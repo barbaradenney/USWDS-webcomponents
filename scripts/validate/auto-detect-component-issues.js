@@ -11,8 +11,10 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { sync: globSync } = pkg;
 import path from 'path';
+import { getAllComponentPaths, getAllComponentNames } from '../utils/find-components.js';
 
 const ISSUES = {
   MISSING_REQUIRED_ELEMENTS: 'missing-required-elements',
@@ -31,7 +33,7 @@ class ComponentIssueDetector {
    * Detect components that might need ensureRequiredElements() method
    */
   async detectMissingRequiredElements() {
-    const componentFiles = await glob('src/components/*/usa-*.ts', {
+    const componentFiles = globSync('packages/*/src/components/*/usa-*.ts', {
       ignore: ['**/*.test.ts', '**/*.browser.test.ts', '**/*.spec.ts']
     });
     const issueComponents = [];
@@ -75,7 +77,10 @@ class ComponentIssueDetector {
     const issueComponents = [];
 
     for (const componentName of cssOnlyComponents) {
-      const componentFile = `src/components/${componentName}/usa-${componentName}.ts`;
+      const componentPaths = getAllComponentPaths();
+      const componentDir = componentPaths.find(p => path.basename(p) === componentName);
+      if (!componentDir) continue;
+      const componentFile = path.join(componentDir, `usa-${componentName}.ts`);
 
       if (existsSync(componentFile)) {
         const content = readFileSync(componentFile, 'utf-8');
@@ -102,7 +107,7 @@ class ComponentIssueDetector {
    * Detect potential double initialization patterns
    */
   async detectDoubleInitialization() {
-    const componentFiles = await glob('src/components/*/usa-*.ts', {
+    const componentFiles = globSync('packages/*/src/components/*/usa-*.ts', {
       ignore: ['**/*.test.ts', '**/*.browser.test.ts', '**/*.spec.ts']
     });
     const issueComponents = [];
@@ -155,7 +160,7 @@ class ComponentIssueDetector {
     const issues = [];
 
     // Check test file count
-    const testFiles = await glob('**/*.test.ts');
+    const testFiles = globSync('**/*.test.ts');
     const testFileCount = testFiles.length;
 
     if (testFileCount > 200) {
