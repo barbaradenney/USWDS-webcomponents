@@ -21,6 +21,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import pkg from 'glob';
+const { sync: globSync } = pkg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -75,23 +77,19 @@ function isException(line, violation) {
  * Validate a single story file
  */
 function validateStoryFile(componentName) {
-  const storyPath = path.join(
-    projectRoot,
-    'src',
-    'components',
-    componentName,
-    `usa-${componentName}.stories.ts`
-  );
+  // Find story file across all packages
+  const storyFiles = globSync(`packages/uswds-wc-*/src/components/*/usa-${componentName}.stories.ts`);
 
-  if (!fs.existsSync(storyPath)) {
+  if (storyFiles.length === 0) {
     results.warnings.push({
       component: componentName,
       issue: 'Story file not found',
-      path: storyPath,
+      path: `usa-${componentName}.stories.ts`,
     });
     return;
   }
 
+  const storyPath = storyFiles[0]; // Use first match
   const content = fs.readFileSync(storyPath, 'utf-8');
   const lines = content.split('\n');
   const violations = [];
@@ -142,13 +140,17 @@ function validateStoryFile(componentName) {
  * Get list of all components with story files
  */
 function getAllComponents() {
-  const componentsDir = path.join(projectRoot, 'src', 'components');
-  const components = fs.readdirSync(componentsDir);
+  // Scan all monorepo packages for components with story files
+  const storyPaths = globSync('packages/uswds-wc-*/src/components/*/usa-*.stories.ts');
 
-  return components.filter((component) => {
-    const storyPath = path.join(componentsDir, component, `usa-${component}.stories.ts`);
-    return fs.existsSync(storyPath);
-  });
+  // Extract component names from story paths
+  const components = storyPaths.map(storyPath => {
+    const match = storyPath.match(/usa-([a-z-]+)\.stories\.ts$/);
+    return match ? match[1] : null;
+  }).filter(Boolean);
+
+  // Return unique component names
+  return [...new Set(components)];
 }
 
 /**

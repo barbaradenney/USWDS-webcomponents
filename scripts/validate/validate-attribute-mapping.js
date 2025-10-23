@@ -19,8 +19,10 @@
 
 import { readdir, readFile } from 'fs/promises';
 import { join } from 'path';
+import pkg from 'glob';
+const { sync: globSync } = pkg;
 
-const COMPONENTS_DIR = 'src/components';
+const PACKAGES_DIR = 'packages';
 
 /**
  * Extract property decorators from component source
@@ -183,12 +185,16 @@ async function validateComponent(componentName, componentPath) {
 async function validateAllComponents() {
   console.log('🔍 Validating attribute mappings across all components...\n');
 
-  const componentDirs = await readdir(COMPONENTS_DIR);
+  // Scan all monorepo packages for components
+  const componentPaths = globSync('packages/uswds-wc-*/src/components/*/');
   const results = [];
   let totalIssues = 0;
 
-  for (const componentName of componentDirs) {
-    const componentPath = join(COMPONENTS_DIR, componentName);
+  for (const componentPathRelative of componentPaths) {
+    // Extract component name from path (e.g., packages/uswds-wc-forms/src/components/checkbox/ → checkbox)
+    const parts = componentPathRelative.split('/').filter(p => p);
+    const componentName = parts[parts.length - 1];
+    const componentPath = join(process.cwd(), componentPathRelative);
     const result = await validateComponent(componentName, componentPath);
 
     if (result.skipped) {
@@ -204,7 +210,7 @@ async function validateAllComponents() {
   // Report results
   if (totalIssues === 0) {
     console.log('✅ All attribute mappings are valid!\n');
-    console.log(`Validated ${componentDirs.length} components`);
+    console.log(`Validated ${componentPaths.length} components`);
     return true;
   }
 
