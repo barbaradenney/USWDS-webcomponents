@@ -43,6 +43,8 @@ const config: StorybookConfig = {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
+      // CSS import alias (must come before general @uswds-wc/core alias)
+      '@uswds-wc/core/styles.css': resolve(__dirname, '../packages/uswds-wc-core/src/styles/styles.css'),
       '@uswds-wc/core': resolve(__dirname, '../packages/uswds-wc-core/src'),
       '@uswds-wc/actions': resolve(__dirname, '../packages/uswds-wc-actions/src'),
       '@uswds-wc/forms': resolve(__dirname, '../packages/uswds-wc-forms/src'),
