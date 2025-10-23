@@ -29,14 +29,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@uswds-wc/core": "workspace:*",
     "@uswds-wc/actions": "workspace:*",
+    "@uswds-wc/core": "workspace:*",
     "@uswds-wc/feedback": "workspace:*"
   },
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "lit": "^3.0.0"
+  },
   "keywords": [
     "uswds",
     "web-components",

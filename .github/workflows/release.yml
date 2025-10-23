@@ -37,12 +37,17 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Configure Git
         run: |
@@ -66,18 +71,18 @@ jobs:
           echo "✅ NPM_TOKEN is configured"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run pre-release validation
         timeout-minutes: 15
         run: |
           echo "🔍 Running pre-release validation..."
-          npm run lint
-          npm run typecheck
-          # Note: npm test skipped in release workflow
+          pnpm run lint
+          pnpm run typecheck
+          # Note: pnpm test skipped in release workflow
           # Tests run comprehensively in CI/CD pipeline before manual release trigger
           # This prevents jsdom navigation errors from blocking valid releases
-          npm run validate:uswds-compliance
+          pnpm run validate:uswds-compliance
           echo "✅ All validations passed"
 
       - name: Determine version bump
@@ -108,7 +113,7 @@ jobs:
         id: bump
         run: |
           # Bump version in package.json and create git tag
-          NEW_VERSION=$(npm version ${{ steps.version.outputs.version_type }} ${{ steps.version.outputs.prerelease_tag }} --no-git-tag-version)
+          NEW_VERSION=$(pnpm version ${{ steps.version.outputs.version_type }} ${{ steps.version.outputs.prerelease_tag }} --no-git-tag-version)
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "version_number=${NEW_VERSION#v}" >> $GITHUB_OUTPUT
           echo "✅ Version bumped to $NEW_VERSION"
@@ -116,19 +121,19 @@ jobs:
       - name: Sync service worker version
         run: |
           echo "🔄 Syncing service worker version..."
-          npm run sw:sync
+          pnpm run sw:sync
           echo "✅ Service worker version synced"
 
       - name: Build production bundle
         run: |
           echo "🏗️ Building production bundle..."
-          npm run build
+          pnpm run build
           echo "✅ Production build complete"
 
       - name: Validate bundle size
         run: |
           echo "📦 Validating bundle size..."
-          npm run validate:bundle-size || echo "⚠️ Bundle size validation warning (non-blocking)"
+          pnpm run validate:bundle-size || echo "⚠️ Bundle size validation warning (non-blocking)"
 
       - name: Generate release notes
         id: release_notes
@@ -143,7 +148,7 @@ jobs:
           ## 📦 Installation
 
           \`\`\`bash
-          npm install uswds-webcomponents@${VERSION_NUMBER}
+          pnpm install uswds-webcomponents@${VERSION_NUMBER}
           \`\`\`
 
           ## 📊 Bundle Metrics
@@ -222,7 +227,7 @@ jobs:
             NPM_TAG="latest"
           fi
 
-          npm publish --tag $NPM_TAG --access public
+          pnpm publish --tag $NPM_TAG --access public
           echo "✅ Published to NPM with tag: $NPM_TAG"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -232,7 +237,7 @@ jobs:
         run: |
           echo "🔍 Verifying NPM package..."
           sleep 10  # Wait for NPM to propagate
-          npm info uswds-webcomponents@${{ steps.bump.outputs.version_number }}
+          pnpm view uswds-webcomponents@${{ steps.bump.outputs.version_number }}
           echo "✅ Package verified on NPM"
 
       - name: Create GitHub Release

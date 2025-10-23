@@ -1,0 +1,54 @@
+{
+  "$schema": "https://unpkg.com/syncpack@13.0.4/dist/schema.json",
+  "versionGroups": [
+    {
+      "label": "Use workspace protocol for internal dependencies",
+      "dependencies": ["@uswds-wc/**"],
+      "dependencyTypes": ["prod", "dev"],
+      "pinVersion": "workspace:*"
+    },
+    {
+      "label": "Use range for peer dependencies",
+      "dependencyTypes": ["peer"],
+      "range": "^"
+    }
+  ],
+  "semverGroups": [
+    {
+      "label": "Use ^ for all dependencies except internal",
+      "dependencies": ["**"],
+      "dependencyTypes": ["prod", "dev"],
+      "range": "^"
+    }
+  ],
+  "sortFirst": [
+    "name",
+    "version",
+    "description",
+    "type",
+    "main",
+    "module",
+    "types",
+    "exports",
+    "files",
+    "scripts",
+    "dependencies",
+    "peerDependencies",
+    "devDependencies",
+    "keywords",
+    "author",
+    "license",
+    "repository",
+    "homepage",
+    "bugs"
+  ],
+  "sortAz": [
+    "contributors",
+    "dependencies",
+    "devDependencies",
+    "keywords",
+    "peerDependencies",
+    "resolutions",
+    "scripts"
+  ]
+}

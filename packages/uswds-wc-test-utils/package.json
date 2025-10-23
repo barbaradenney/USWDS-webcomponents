@@ -23,8 +23,8 @@
     "@uswds-wc/core": "workspace:*"
   },
   "peerDependencies": {
-    "vitest": "^3.0.0",
-    "@vitest/expect": "^3.0.0"
+    "@vitest/expect": "^3.0.0",
+    "vitest": "^3.0.0"
   },
   "keywords": [
     "uswds",
@@ -39,5 +39,9 @@
     "type": "git",
     "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
     "directory": "packages/uswds-wc-test-utils"
+  },
+  "devDependencies": {
+    "@vitest/expect": "^3.0.0",
+    "vitest": "^3.2.4"
   }
 }

@@ -36,28 +36,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: 📦 Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build Project
-        run: npm run build
+        run: pnpm run build
 
       - name: 🔍 Validate Vite Configuration
         run: |
           echo "Checking Vite module aliases and optimization..."
-          npm run validate:transformations
+          pnpm run validate:transformations
 
       - name: 🌐 Test Browser Transformation
         run: |
           echo "Testing transformation in real browser environment..."
-          npm run dev &
+          pnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10  # Wait for dev server to start
 
           # Test browser transformation
-          npm run validate:transformations:browser || BROWSER_TEST_FAILED=1
+          pnpm run validate:transformations:browser || BROWSER_TEST_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
@@ -71,12 +71,12 @@ jobs:
       - name: 🧪 Run Transformation Tests
         run: |
           echo "Running component transformation tests..."
-          npm test -- __tests__/uswds-transformation.test.ts || true
+          pnpm test -- __tests__/uswds-transformation.test.ts || true
 
       - name: 🎭 Test in Storybook Environment
         run: |
           echo "Starting Storybook and testing transformations..."
-          npm run build-storybook
+          pnpm run build-storybook
           npx http-server storybook-static -p 6006 &
           sleep 10
 
@@ -93,7 +93,7 @@ jobs:
           echo "" >> transformation-report.md
 
           # Run validation and capture output
-          npm run validate:transformations 2>&1 | tee validation-output.txt || true
+          pnpm run validate:transformations 2>&1 | tee validation-output.txt || true
 
           # Extract summary
           grep -A 100 "Validation Results:" validation-output.txt >> transformation-report.md || true
@@ -110,7 +110,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "Generating comprehensive PR comment with Phase 2 validation..."
-          npm run test:pr-comment || true
+          pnpm run test:pr-comment || true
 
       - name: 💬 Comment on PR
         if: github.event_name == 'pull_request'
@@ -159,10 +159,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: 📦 Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🧪 Test Combo Box Specifically
         run: |
@@ -178,7 +178,7 @@ jobs:
 
             // Start dev server
             const { exec } = await import('child_process');
-            const server = exec('npm run dev');
+            const server = exec('pnpm run dev');
             await new Promise(resolve => setTimeout(resolve, 5000));
 
             try {
@@ -249,23 +249,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: 📦 Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build Project
-        run: npm run build
+        run: pnpm run build
 
       - name: 🌐 Cross-Browser Validation
         run: |
           echo "Testing transformations across browsers..."
-          npm run dev &
+          pnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10
 
           # Run cross-browser tests
-          npm run test:cross-browser || CROSS_BROWSER_FAILED=1
+          pnpm run test:cross-browser || CROSS_BROWSER_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
@@ -279,13 +279,13 @@ jobs:
       - name: 📸 Visual Regression Testing
         run: |
           echo "Creating visual baselines and checking for regressions..."
-          npm run dev &
+          pnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10
 
           # Run visual regression tests
-          npm run test:visual:baseline || true
-          npm run test:visual:regression || VISUAL_FAILED=1
+          pnpm run test:visual:baseline || true
+          pnpm run test:visual:regression || VISUAL_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
@@ -299,12 +299,12 @@ jobs:
       - name: ⚡ Performance Monitoring
         run: |
           echo "Monitoring component transformation performance..."
-          npm run dev &
+          pnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10
 
           # Run performance monitoring
-          npm run test:performance:monitor || PERFORMANCE_FAILED=1
+          pnpm run test:performance:monitor || PERFORMANCE_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true

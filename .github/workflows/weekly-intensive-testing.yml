@@ -47,19 +47,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run flaky test detection
         run: |
           RUNS=${{ github.event.inputs.flaky_runs || '10' }}
-          npm run test:flaky-detection -- --runs=$RUNS --verbose
+          pnpm run test:flaky-detection -- --runs=$RUNS --verbose
         continue-on-error: true
 
       - name: Upload flaky test report
@@ -123,20 +128,25 @@ ${report.tests.map((test, i) => `${i + 1}. **${test.name}**
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Install Stryker mutation testing
-        run: npm install --save-dev @stryker-mutator/core @stryker-mutator/vitest-runner
+        run: pnpm install --save-dev @stryker-mutator/core @stryker-mutator/vitest-runner
 
       - name: Run mutation testing
-        run: npm run test:mutation
+        run: pnpm run test:mutation
         continue-on-error: true
 
       - name: Upload mutation report
@@ -201,14 +211,19 @@ The mutation testing score is below the recommended threshold. This indicates th
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Check for baseline contracts
         id: check-baseline
@@ -221,11 +236,11 @@ The mutation testing score is below the recommended threshold. This indicates th
 
       - name: Generate baseline if missing
         if: steps.check-baseline.outputs.baseline_exists == 'false'
-        run: npm run test:contracts:generate
+        run: pnpm run test:contracts:generate
 
       - name: Validate contracts
         if: steps.check-baseline.outputs.baseline_exists == 'true'
-        run: npm run test:contracts:validate
+        run: pnpm run test:contracts:validate
         continue-on-error: true
 
       - name: Upload contract reports
@@ -273,20 +288,25 @@ The mutation testing score is below the recommended threshold. This indicates th
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Start Storybook
-        run: npm run storybook &
+        run: pnpm run storybook &
         env:
           CI: true
 
@@ -304,11 +324,11 @@ The mutation testing score is below the recommended threshold. This indicates th
 
       - name: Create baseline if missing
         if: steps.check-baseline.outputs.baseline_exists == 'false'
-        run: npm run test:performance:baseline
+        run: pnpm run test:performance:baseline
 
       - name: Compare performance
         if: steps.check-baseline.outputs.baseline_exists == 'true'
-        run: npm run test:performance:compare
+        run: pnpm run test:performance:compare
         continue-on-error: true
 
       - name: Upload performance reports

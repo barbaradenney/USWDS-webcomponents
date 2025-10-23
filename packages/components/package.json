@@ -108,5 +108,8 @@
     "build": "cd ../.. && npm run build",
     "test": "cd ../.. && npm test",
     "storybook": "cd ../.. && npm run storybook"
+  },
+  "devDependencies": {
+    "lit": "^3.0.0"
   }
 }
