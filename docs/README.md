@@ -108,6 +108,22 @@ Essential documentation for new developers:
   - Timing regression testing
   - Flaky test detection
 
+#### CI/CD & DevOps
+- **[CI/CD Workflows Guide](CI_CD_WORKFLOWS.md)** - Complete CI/CD reference (NEW!)
+  - All 30 GitHub Actions workflows documented
+  - Workflow categories and organization
+  - Performance optimizations (Turborepo caching)
+  - Required secrets and configuration
+  - Troubleshooting guide
+  - Workflow execution matrix
+
+- **[CI/CD Improvements Roadmap](CI_CD_IMPROVEMENTS_TODO.md)** - CI/CD enhancement tracking
+  - Completed improvements (Phases 1-3)
+  - Dependabot, security, and contribution setup
+  - Code coverage and Changesets configuration
+  - Performance budgets and accessibility reporting
+  - Turborepo remote caching implementation
+
 ---
 
 ## 🏗️ Architecture Decisions
@@ -207,6 +223,8 @@ Component-specific behavior contracts, regression prevention, and troubleshootin
 - **Optimize performance** → [Performance Guide](guides/PERFORMANCE_GUIDE.md)
 - **Prevent regressions** → [Regression Prevention Guide](guides/REGRESSION_PREVENTION_GUIDE.md)
 - **Understand code quality review** → [Code Quality Architectural Review](CODE_QUALITY_ARCHITECTURAL_REVIEW.md)
+- **Understand CI/CD workflows** → [CI/CD Workflows Guide](CI_CD_WORKFLOWS.md)
+- **Set up CI/CD infrastructure** → [CI/CD Improvements Roadmap](CI_CD_IMPROVEMENTS_TODO.md)
 
 ---
 
@@ -267,6 +285,27 @@ Component-specific behavior contracts, regression prevention, and troubleshootin
 
 ## 📈 Recent Updates
 
+### October 2025 - CI/CD Infrastructure Complete (Phases 1-3)
+
+**Complete CI/CD Transformation** - Enterprise-grade automation:
+
+- **30 GitHub Actions workflows** fully operational
+- **50-70% faster CI** with Turborepo remote caching
+- **Automated accessibility reporting** on every PR
+- **Performance budgets enforced** (bundle size, Lighthouse, Core Web Vitals)
+- **Code coverage tracking** configured (Codecov)
+- **Automated versioning** with Changesets
+- **Dependency automation** with Dependabot (weekly + daily security)
+- **Comprehensive documentation**:
+  - [CI/CD Workflows Guide](CI_CD_WORKFLOWS.md) - All 30 workflows documented
+  - [CI/CD Improvements Roadmap](CI_CD_IMPROVEMENTS_TODO.md) - Phase tracking
+  - [CONTRIBUTING.md](../CONTRIBUTING.md) - Developer onboarding
+  - [SECURITY.md](../.github/SECURITY.md) - Vulnerability reporting
+
+See [CI_CD_IMPROVEMENTS_TODO.md](CI_CD_IMPROVEMENTS_TODO.md) for complete implementation details.
+
+---
+
 ### October 2025 - Documentation Consolidation (Phase 2 Complete)
 
 - **55% reduction** in docs files (148 → 66 core files)
@@ -287,7 +326,7 @@ See [CONSOLIDATION_SUMMARY.md](CONSOLIDATION_SUMMARY.md) for full details.
 
 ---
 
-**Last Updated**: 2025-10-07 (Phase 2 Complete)
-**Total Active Docs**: 66 essential files (including 8 consolidated guides)
+**Last Updated**: 2025-10-24 (CI/CD Infrastructure Complete)
+**Total Active Docs**: 68 essential files (including 8 consolidated guides + 2 CI/CD guides)
 **Archived Docs**: 171+ files
 **Component Docs**: 8 files

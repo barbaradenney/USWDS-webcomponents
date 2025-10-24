@@ -1051,6 +1051,19 @@ npm run lint             # No linting errors allowed
 
 ## 🤝 Contributing
 
+**Complete Contributing Guide**: See [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- Development setup and prerequisites
+- Pull request process and requirements
+- Code standards and testing requirements
+- Versioning and release process (Changesets)
+- Commit message guidelines
+
+**CI/CD Documentation**: See [docs/CI_CD_WORKFLOWS.md](docs/CI_CD_WORKFLOWS.md) for:
+- All 30 GitHub Actions workflows explained
+- Required secrets and configuration
+- Troubleshooting guide for CI failures
+- Performance optimizations (Turborepo caching)
+
 ### Adding a New Component
 
 1. **Research**: Study the official USWDS component documentation
