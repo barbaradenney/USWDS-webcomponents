@@ -88,12 +88,18 @@ describe('Character Count DOM Structure Validation', () => {
       expect(input?.hasAttribute('aria-describedby')).toBe(true);
     });
 
-    it('should have status on message element', async () => {
+    it('should have correctly structured message element per USWDS spec', async () => {
       await element.updateComplete;
       await new Promise(resolve => setTimeout(resolve, 500));
 
       const message = element.querySelector('.usa-character-count__message');
-      expect(message?.hasAttribute('aria-live')).toBe(true);
+
+      // USWDS spec: message element should be hidden for backwards compatibility
+      // See: node_modules/@uswds/uswds/packages/usa-character-count/src/index.js line 189
+      expect(message?.classList.contains('usa-sr-only')).toBe(true);
+
+      // USWDS spec: aria-live should be REMOVED from message element (line 189)
+      expect(message?.hasAttribute('aria-live')).toBe(false);
     });
   });
 });

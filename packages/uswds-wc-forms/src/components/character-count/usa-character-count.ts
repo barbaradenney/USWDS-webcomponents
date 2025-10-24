@@ -339,11 +339,10 @@ export class USACharacterCount extends USWDSBaseComponent {
         ${this.renderHint()}
         ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
         ${this.renderField()}
-        <!-- Render both message (for USWDS) and status (for immediate display) -->
+        <!-- Render message element (hidden per USWDS spec for backwards compatibility) -->
         <span
-          class="usa-character-count__message"
+          class="usa-character-count__message usa-sr-only"
           id="${this.name}-info"
-          aria-live="polite"
         >
           ${this.getCharacterCountMessage()}
         </span>

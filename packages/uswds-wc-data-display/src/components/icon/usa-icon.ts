@@ -37,10 +37,10 @@ export class USAIcon extends LitElement {
   decorative: 'true' | 'false' | '' = '';
 
   @property({ type: String })
-  spriteUrl = '';
+  spriteUrl = '/img/sprite.svg';
 
   @property({ type: Boolean, reflect: true })
-  useSprite = false;
+  useSprite = true;
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {

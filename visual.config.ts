@@ -17,7 +17,7 @@ export default defineConfig({
     ['json', { outputFile: 'visual-test-results/results.json' }],
   ],
   use: {
-    baseURL: 'http://localhost:6007',
+    baseURL: 'http://localhost:6006',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -58,8 +58,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run storybook',
-    url: 'http://localhost:6007',
+    command: 'pnpm run storybook',
+    url: 'http://localhost:6006',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },

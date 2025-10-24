@@ -68,7 +68,7 @@ Fixes #
 - [ ] Component tests added/updated (Cypress, if interactive)
 - [ ] Accessibility tests added/updated (axe-core)
 - [ ] Tested in Storybook
-- [ ] All existing tests pass (`npm test`)
+- [ ] All existing tests pass (`pnpm test`)
 
 ### Manual Testing
 
@@ -121,8 +121,8 @@ Fixes #
 - [ ] Code follows project style guidelines
 - [ ] Self-review completed
 - [ ] No console.log or debug code left in
-- [ ] ESLint passes (`npm run lint`)
-- [ ] TypeScript compiles without errors (`npm run typecheck`)
+- [ ] ESLint passes (`pnpm run lint`)
+- [ ] TypeScript compiles without errors (`pnpm run typecheck`)
 - [ ] All pre-commit hooks pass
 
 ### Architecture
@@ -131,18 +131,18 @@ Fixes #
 - [ ] Follows Light DOM requirement
 - [ ] Minimal wrapper pattern (no custom CSS beyond essential host styles)
 - [ ] Uses composition from other USWDS components (not inline HTML duplication)
-- [ ] USWDS compliance validation passes (`npm run validate:uswds-compliance`)
+- [ ] USWDS compliance validation passes (`pnpm run validate:uswds-compliance`)
 
 ### Testing
 
-- [ ] All tests pass (`npm test`)
+- [ ] All tests pass (`pnpm test`)
 - [ ] Test coverage is adequate
 - [ ] No skipped tests without documentation
 - [ ] Regression tests added (if fixing a bug)
 
 ### Build
 
-- [ ] Project builds successfully (`npm run build`)
+- [ ] Project builds successfully (`pnpm run build`)
 - [ ] No build warnings
 - [ ] Bundle size impact is acceptable
 

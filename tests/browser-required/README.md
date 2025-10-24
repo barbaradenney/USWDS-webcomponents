@@ -47,30 +47,30 @@ Tests remaining browser-dependent functionality:
 
 ### Run all browser-required tests:
 ```bash
-npm run test:browser-required
+pnpm run test:browser-required
 ```
 
 ### Run specific component tests:
 ```bash
-npm run test:browser-required:time-picker
-npm run test:browser-required:tooltip
-npm run test:browser-required:modal
-npm run test:browser-required:comprehensive
+pnpm run test:browser-required:time-picker
+pnpm run test:browser-required:tooltip
+pnpm run test:browser-required:modal
+pnpm run test:browser-required:comprehensive
 ```
 
 ### Debug mode (opens browser):
 ```bash
-npm run test:browser-required:debug
+pnpm run test:browser-required:debug
 ```
 
 ### Headed mode (visible browser):
 ```bash
-npm run test:browser-required:headed
+pnpm run test:browser-required:headed
 ```
 
 ### Production-ready test suite:
 ```bash
-npm run test:production-ready
+pnpm run test:production-ready
 # Runs: unit tests + browser-required + storybook
 ```
 

@@ -42,14 +42,19 @@ Then use components in your HTML:
 </usa-alert>
 ```
 
-### Option 2: Individual Imports (Tree-Shakeable)
+### Option 2: Category Imports (Recommended)
 
-Import only the components you need for smaller bundle sizes:
+Import by category for a balance of convenience and bundle size:
 
 ```javascript
-// Import specific components
-import { USAButton } from 'uswds-webcomponents/components/button';
-import { USAAlert } from 'uswds-webcomponents/components/alert';
+// Import all components in a category
+import 'uswds-webcomponents/actions';      // Button, Link, Search, ButtonGroup
+import 'uswds-webcomponents/forms';        // All 15 form components
+import 'uswds-webcomponents/feedback';     // Alert, Modal, Tooltip, Banner, SiteAlert
+
+// Or import specific components (best for tree-shaking)
+import { USAButton } from 'uswds-webcomponents/actions';
+import { USAAlert } from 'uswds-webcomponents/feedback';
 
 // Components are automatically registered when imported
 ```
@@ -658,34 +663,44 @@ All USWDS Web Components are built with accessibility as a priority:
 
 ## 📦 Bundle Size Optimization
 
-### Tree Shaking with Individual Imports
+### Tree Shaking with Category Imports
 
-Import only the components you need to reduce bundle size:
+Import only the component categories you need to reduce bundle size:
 
 ```javascript
 // ❌ Imports all components (~475 KB)
 import 'uswds-webcomponents';
 
-// ✅ Import only what you need (~50-100 KB)
-import { USAButton } from 'uswds-webcomponents/components/button';
-import { USAAlert } from 'uswds-webcomponents/components/alert';
-import { USATextInput } from 'uswds-webcomponents/components/text-input';
+// ✅ Import by category (~50-150 KB depending on category)
+import 'uswds-webcomponents/actions';      // Button, Link, Search, ButtonGroup (~12 KB)
+import 'uswds-webcomponents/feedback';     // Alert, Modal, Tooltip, Banner, SiteAlert (~45 KB)
+import 'uswds-webcomponents/forms';        // All 15 form components (~120 KB)
+
+// ✅ Or import specific components (best tree-shaking)
+import { USAButton } from 'uswds-webcomponents/actions';
+import { USAAlert } from 'uswds-webcomponents/feedback';
+import { USATextInput } from 'uswds-webcomponents/forms';
 ```
 
 ### Lazy Loading Components
 
-Load components on-demand:
+Load component categories on-demand:
 
 ```javascript
-// Load component when needed
+// Load category when needed
+async function loadFeedbackComponents() {
+  await import('uswds-webcomponents/feedback');  // Loads Modal, Alert, Tooltip, etc.
+}
+
+// Or load specific component
 async function loadModal() {
-  const { USAModal } = await import('uswds-webcomponents/components/modal');
+  const { USAModal } = await import('uswds-webcomponents/feedback');
   return USAModal;
 }
 
 // Use in event handler
 document.querySelector('#open-modal-btn').addEventListener('click', async () => {
-  await loadModal();
+  await loadFeedbackComponents();
   document.querySelector('usa-modal').open = true;
 });
 ```
@@ -703,11 +718,11 @@ export default {
     rollupOptions: {
       output: {
         manualChunks: {
-          'uswds-core': ['uswds-webcomponents/components/button'],
-          'uswds-forms': [
-            'uswds-webcomponents/components/text-input',
-            'uswds-webcomponents/components/select',
-          ],
+          // Split by category for optimal caching
+          'uswds-actions': ['uswds-webcomponents/actions'],
+          'uswds-forms': ['uswds-webcomponents/forms'],
+          'uswds-feedback': ['uswds-webcomponents/feedback'],
+          'uswds-navigation': ['uswds-webcomponents/navigation'],
         },
       },
     },
@@ -790,6 +805,185 @@ function Component() {
   return <usa-button ref={ref}>Click me</usa-button>;
 }
 ```
+
+## 🛠️ Contributing & Development Setup
+
+This project uses a monorepo architecture with pnpm workspaces and Turborepo for optimal development experience.
+
+### Prerequisites
+
+```bash
+# Install pnpm globally (required)
+npm install -g pnpm
+```
+
+### Clone and Setup
+
+```bash
+# Clone repository
+git clone https://github.com/barbaramiles/USWDS-webcomponents.git
+cd USWDS-webcomponents
+
+# Install all dependencies (uses pnpm workspaces)
+pnpm install
+
+# Build all packages (uses Turborepo for parallel builds)
+pnpm run build
+```
+
+### Monorepo Structure
+
+The project is organized into category-based packages:
+
+```
+packages/
+├── uswds-wc-core/              # @uswds-wc/core - Base classes and utilities
+├── uswds-wc-actions/           # @uswds-wc/actions (4 components)
+├── uswds-wc-forms/             # @uswds-wc/forms (15 components)
+├── uswds-wc-navigation/        # @uswds-wc/navigation (8 components)
+├── uswds-wc-data-display/      # @uswds-wc/data-display (8 components)
+├── uswds-wc-feedback/          # @uswds-wc/feedback (5 components)
+├── uswds-wc-layout/            # @uswds-wc/layout (4 components)
+├── uswds-wc-structure/         # @uswds-wc/structure (1 component)
+└── uswds-wc/                   # Meta package (re-exports all)
+```
+
+### Development Commands
+
+```bash
+# Start Storybook for development (recommended)
+pnpm run storybook
+
+# Build all packages
+pnpm run build
+
+# Build specific package
+pnpm --filter @uswds-wc/actions build
+
+# Run all tests
+pnpm test
+
+# Run tests for specific package
+pnpm --filter @uswds-wc/forms test
+
+# Run visual regression tests
+pnpm run test:visual
+
+# Validate USWDS compliance
+pnpm run validate:uswds-compliance
+
+# Type checking
+pnpm run typecheck
+
+# Linting
+pnpm run lint
+```
+
+### Adding a New Component
+
+Components should be added to the appropriate category package:
+
+```bash
+# Navigate to appropriate package
+cd packages/uswds-wc-forms
+
+# Create component directory
+mkdir -p src/components/my-input
+
+# Add component files
+# - usa-my-input.ts (component implementation)
+# - usa-my-input.test.ts (unit tests)
+# - usa-my-input.stories.ts (Storybook stories)
+# - README.mdx (component documentation)
+
+# Export from package
+# Add to src/index.ts
+```
+
+### Testing Infrastructure
+
+The project includes comprehensive testing:
+
+- **Unit Tests**: Vitest for component logic and properties
+- **Component Tests**: Cypress for interactive behavior
+- **Visual Regression**: Playwright + Chromatic for UI consistency
+- **USWDS Compliance**: Automated validation of HTML structure and CSS classes
+- **Accessibility**: axe-core validation for WCAG 2.1 AA compliance
+
+```bash
+# Run all tests
+pnpm run test:run -- --all
+
+# Run unit tests only
+pnpm test
+
+# Run visual tests
+pnpm run test:visual
+
+# Create visual baselines
+pnpm run test:visual:baseline
+
+# Run USWDS compliance validation
+pnpm run validate:uswds-compliance
+```
+
+### Code Quality Tools
+
+Pre-commit hooks ensure code quality:
+
+- **Smart Commit Detection**: Automatically detects commit type (docs-only, code changes)
+- **USWDS Validation**: Verifies component structure matches USWDS patterns
+- **TypeScript**: Type checking on modified files
+- **ESLint**: Code quality and style checking
+- **Component Tests**: Runs tests for modified components
+- **Visual Testing**: Optional visual regression checks
+
+```bash
+# Run full validation suite
+pnpm run validate
+
+# Run specific validations
+pnpm run lint
+pnpm run typecheck
+pnpm run validate:uswds-compliance
+```
+
+### Pull Request Workflow
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/my-feature`
+3. Make your changes in appropriate package
+4. Write tests (unit, component, visual)
+5. Run validation: `pnpm run validate`
+6. Commit with conventional commits: `feat(button): add new variant`
+7. Push and create pull request
+
+### Conventional Commits
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/):
+
+```bash
+feat(button): add new outline variant
+fix(modal): resolve focus trap issue
+docs(readme): update installation instructions
+test(alert): add accessibility tests
+chore(deps): update USWDS to 3.13.0
+```
+
+**Types**: `feat`, `fix`, `docs`, `test`, `chore`, `refactor`, `perf`, `ci`, `build`
+
+**Scopes**: Component names (button, modal, alert) or package names
+
+### Development Best Practices
+
+1. **Follow USWDS patterns** - Check official USWDS source code
+2. **Write comprehensive tests** - Unit, component, accessibility
+3. **Document thoroughly** - Component READMEs, JSDoc comments
+4. **Use Light DOM** - No Shadow DOM (for USWDS CSS compatibility)
+5. **USWDS CSS only** - No custom styles beyond `:host` display
+6. **Accessibility first** - WCAG 2.1 AA compliance required
+
+See [CLAUDE.md](../CLAUDE.md) for complete development guidelines.
 
 ## 📚 Additional Resources
 

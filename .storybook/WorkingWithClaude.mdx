@@ -72,10 +72,10 @@ Explain how the [component-name] component works. Include:
 
 #### Generate a Component (Recommended)
 ```
-I need to create a new component called [component-name].
+I need to create a new component called [component-name] in package @uswds-wc/[package-name].
 Use the component generator to scaffold it with all required files.
 
-Command: npm run generate:component -- --interactive
+Command: pnpm run generate:component -- --interactive
 ```
 
 #### Manual Component Creation
@@ -594,69 +594,71 @@ Generate report with:
 ❌ "Build feature X"
 ✅ "Build feature X following this workflow: 1) Design, 2) Implement, 3) Test, 4) Document, 5) Validate. Let's start with step 1 design"
 
-## 🔧 Useful npm Commands
+## 🔧 Useful pnpm Commands
 
 ### Development
 ```bash
-npm run dev              # Start dev server
-npm run storybook        # Start Storybook (port 6006)
-npm run build            # Production build
-npm run build:css:prod   # Build production CSS
+pnpm run dev              # Start dev server
+pnpm run storybook        # Start Storybook (port 6006)
+pnpm run build            # Production build (all packages via Turborepo)
+pnpm run build:css:prod   # Build production CSS
+pnpm --filter @uswds-wc/forms build  # Build specific package
 ```
 
 ### Testing
 ```bash
-npm test                          # Unit tests (watch mode)
-npm run test:run                  # Run all unit tests once
-npm run test:run -- --all        # Run ALL tests (comprehensive)
-npm run test:run -- --unit       # Unit tests only
-npm run test:run -- --component  # Component tests only
-npm run test:run -- --e2e        # E2E tests only
-npm run test:coverage            # Generate coverage report
+pnpm test                          # Unit tests (watch mode)
+pnpm run test:run                  # Run all unit tests once
+pnpm run test:run -- --all        # Run ALL tests (comprehensive)
+pnpm run test:run -- --unit       # Unit tests only
+pnpm run test:run -- --component  # Component tests only
+pnpm run test:run -- --e2e        # E2E tests only
+pnpm run test:coverage            # Generate coverage report
+pnpm --filter @uswds-wc/forms test  # Test specific package
 ```
 
 ### Validation
 ```bash
-npm run validate                  # All validations
-npm run validate -- --uswds      # USWDS compliance only
-npm run validate:bundle-size     # Check bundle size
-npm run typecheck                # TypeScript validation
-npm run lint                     # ESLint validation
-npm run lint:fix                 # Auto-fix linting issues
+pnpm run validate                  # All validations
+pnpm run validate -- --uswds      # USWDS compliance only
+pnpm run validate:bundle-size     # Check bundle size
+pnpm run typecheck                # TypeScript validation
+pnpm run lint                     # ESLint validation
+pnpm run lint:fix                 # Auto-fix linting issues
 ```
 
 ### USWDS Management
 ```bash
-npm run uswds:sync               # Complete USWDS update workflow
-npm run uswds:check-updates      # Check for USWDS updates
-npm run uswds:validate           # Validate USWDS integration
+pnpm run uswds:sync               # Complete USWDS update workflow
+pnpm run uswds:check-updates      # Check for USWDS updates
+pnpm run uswds:validate           # Validate USWDS integration
 ```
 
 ### Component Generation
 ```bash
-npm run generate:component -- --interactive              # Interactive generation
-npm run generate:component -- --name=my-component        # Generate component
-npm run generate:component -- --name=my-component --type=form  # With type
+pnpm run generate:component -- --interactive              # Interactive generation (recommended)
+pnpm run generate:component -- --name=my-component        # Generate component
+pnpm run generate:component -- --name=my-component --type=form  # With type
 ```
 
 ### Documentation
 ```bash
-npm run docs:sync                # Sync Storybook documentation
-npm run docs:validate            # Validate documentation
-npm run build-storybook          # Build Storybook for deployment
+pnpm run docs:sync                # Sync Storybook documentation
+pnpm run docs:validate            # Validate documentation
+pnpm run build-storybook          # Build Storybook for deployment
 ```
 
 ### Utilities
 ```bash
-npm run clean                    # Clean build artifacts
-npm run clean:all                # Deep clean (includes node_modules)
-npm list                         # List installed packages
+pnpm run clean                    # Clean build artifacts
+pnpm run clean:all                # Deep clean (includes node_modules)
+pnpm list                         # List installed packages
 npx vite-bundle-visualizer       # Analyze bundle size (after build)
 ```
 
 ### Git Hooks
 ```bash
-npm run prepare                  # Install git hooks
+pnpm run prepare                  # Install git hooks
 git commit                       # Triggers pre-commit hooks (13 stages)
 ```
 

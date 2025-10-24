@@ -9,7 +9,14 @@ The `@uswds-wc/core` package provides the foundational building blocks for all U
 ## Installation
 
 ```bash
+# Using pnpm (recommended)
+pnpm add @uswds-wc/core lit
+
+# Using npm
 npm install @uswds-wc/core lit
+
+# Using yarn
+yarn add @uswds-wc/core lit
 ```
 
 **Note**: This package is typically installed as a dependency of other `@uswds-wc/*` packages and doesn't need to be installed directly unless you're building custom USWDS components.

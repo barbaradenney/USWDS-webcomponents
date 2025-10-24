@@ -60,9 +60,9 @@ git commit -m "feat(button): add new variant"
 - **Traceable**: Git history shows issue discovery → fix chain
 
 **Helper Commands:**
-- `npm run fix:discovered` - Show current discovered issues
-- `npm run validate` - Run all validations
-- `npm run validate:uswds-compliance` - USWDS compliance details
+- `pnpm run fix:discovered` - Show current discovered issues
+- `pnpm run validate` - Run all validations
+- `pnpm run validate:uswds-compliance` - USWDS compliance details
 
 ### Never Weaken Validation
 ❌ NEVER make validation less strict, non-blocking, or skip checks
@@ -75,27 +75,33 @@ Web components library converting USWDS components to custom elements using Lit.
 ## Essential Commands
 
 ### Development
-- `npm run dev` - Start development server
-- `npm run storybook` - Start Storybook (port 6006)
-- `npm run build` - Build for production
+- `pnpm run dev` - Start development server
+- `pnpm run storybook` - Start Storybook (port 6006)
+- `pnpm run build` - Build for production (all packages via Turborepo)
+
+### Monorepo Commands
+- `pnpm install` - Install all dependencies (uses workspaces)
+- `pnpm --filter @uswds-wc/forms build` - Build specific package
+- `pnpm --filter @uswds-wc/actions test` - Test specific package
 
 ### Testing
 See [docs/TESTING_GUIDE.md](docs/TESTING_GUIDE.md) for complete testing documentation.
 
 **Quick commands:**
-- `npm test` - Run unit tests
-- `npm run test:run` - Consolidated test orchestrator (recommended)
-- `npm run validate` - Run all validations
-- `npm run lint` - Check code quality
-- `npm run typecheck` - Verify TypeScript
+- `pnpm test` - Run unit tests (all packages)
+- `pnpm run test:run` - Consolidated test orchestrator (recommended)
+- `pnpm run test:visual` - Visual regression tests (Playwright)
+- `pnpm run validate` - Run all validations
+- `pnpm run lint` - Check code quality
+- `pnpm run typecheck` - Verify TypeScript
 
 ### USWDS Management
-- `npm run uswds:sync` - Complete USWDS update workflow
-- `npm run validate -- --uswds` - Validate USWDS compliance
+- `pnpm run uswds:sync` - Complete USWDS update workflow
+- `pnpm run validate -- --uswds` - Validate USWDS compliance
 
 ### Code Generation
-- `npm run generate:component -- --name=my-component` - Generate new component
-- `npm run generate:component -- --interactive` - Interactive generation
+- `pnpm run generate:component -- --name=my-component` - Generate new component
+- `pnpm run generate:component -- --interactive` - Interactive generation
 
 See [docs/COMPONENT_TEMPLATES.md](docs/COMPONENT_TEMPLATES.md) for templates.
 
@@ -103,28 +109,28 @@ See [docs/COMPONENT_TEMPLATES.md](docs/COMPONENT_TEMPLATES.md) for templates.
 Comprehensive maintenance tooling for repository health and optimization.
 
 **Repository Health:**
-- `npm run health:check` - Quick health dashboard (tests, linting, TypeScript, bundle size, etc.)
+- `pnpm run health:check` - Quick health dashboard (tests, linting, TypeScript, bundle size, etc.)
 
 **Documentation Links:**
-- `npm run validate:doc-links` - Check for broken documentation links
-- `npm run validate:doc-links:fix` - Interactive fix with prompts for each broken link
-- `npm run validate:doc-links:fix:auto` - Auto-fix all links without prompts
-- `npm run validate:doc-links:fix:preview` - Preview fixes without saving (dry-run)
+- `pnpm run validate:doc-links` - Check for broken documentation links
+- `pnpm run validate:doc-links:fix` - Interactive fix with prompts for each broken link
+- `pnpm run validate:doc-links:fix:auto` - Auto-fix all links without prompts
+- `pnpm run validate:doc-links:fix:preview` - Preview fixes without saving (dry-run)
 
 **Changelog:**
-- `npm run changelog:generate` - Generate CHANGELOG.md from conventional commits
-- `npm run changelog:commit` - Generate and stage for commit
+- `pnpm run changelog:generate` - Generate CHANGELOG.md from conventional commits
+- `pnpm run changelog:commit` - Generate and stage for commit
 
 **Performance:**
-- `npm run validate:bundle-size` - Check bundle sizes against performance budgets
+- `pnpm run validate:bundle-size` - Check bundle sizes against performance budgets
 
 **Code Cleanup:**
-- `npm run cleanup:unused` - Detect unused code, dependencies, and exports
-- `npm run optimize:imports` - Analyze and optimize import patterns
-- `npm run analytics:components` - Component usage analytics and insights
+- `pnpm run cleanup:unused` - Detect unused code, dependencies, and exports
+- `pnpm run optimize:imports` - Analyze and optimize import patterns
+- `pnpm run analytics:components` - Component usage analytics and insights
 
 **Full Suite:**
-- `npm run maintenance:full` - Run all maintenance checks
+- `pnpm run maintenance:full` - Run all maintenance checks
 
 See [docs/MAINTENANCE_STRATEGY.md](docs/MAINTENANCE_STRATEGY.md) for complete automation guide.
 
@@ -260,13 +266,14 @@ See [docs/ARCHITECTURE_PATTERNS.md](docs/ARCHITECTURE_PATTERNS.md#component-comp
 ### ALWAYS Do
 ✅ Follow Script Tag Pattern for USWDS loading
 ✅ Use official USWDS CSS classes directly
-✅ Import `../../styles/styles.css` (compiled USWDS CSS)
+✅ Import `@uswds-wc/core/styles.css` (compiled USWDS CSS from core package)
 ✅ Use Light DOM (automatic with USWDSBaseComponent)
 ✅ Write comprehensive tests (MANDATORY)
 ✅ Let USWDS handle ALL styling and behavior
 ✅ Check component READMEs first for documentation
-✅ Run tests before committing: `npm test && npm run typecheck && npm run lint`
+✅ Run tests before committing: `pnpm test && pnpm run typecheck && pnpm run lint`
 ✅ **Use web components for composition** - Compose from other USWDS components instead of duplicating HTML
+✅ **Add components to correct category package** - See monorepo structure below
 
 ### NEVER Do
 ❌ Remove or modify USWDS script tag in `.storybook/preview-head.html`
@@ -305,8 +312,14 @@ See [docs/ARCHITECTURE_PATTERNS.md](docs/ARCHITECTURE_PATTERNS.md#component-comp
 
 Use the component generator:
 ```bash
-npm run generate:component -- --interactive
+pnpm run generate:component -- --interactive
 ```
+
+**Important**: Generated components should be moved to the appropriate package:
+- Forms → `packages/uswds-wc-forms/src/components/`
+- Actions → `packages/uswds-wc-actions/src/components/`
+- Navigation → `packages/uswds-wc-navigation/src/components/`
+- See Architecture section for full package list
 
 ### Manual Development
 
@@ -344,9 +357,10 @@ See [docs/TESTING_GUIDE.md](docs/TESTING_GUIDE.md) for complete documentation.
 
 ### Quick Testing
 ```bash
-npm test                              # Unit tests
-npm run test:run -- --all            # All tests
-npm run validate                      # All validations
+pnpm test                              # Unit tests (all packages)
+pnpm run test:run -- --all            # All tests
+pnpm run test:visual                   # Visual regression tests
+pnpm run validate                      # All validations
 ```
 
 ### Test Requirements

@@ -175,6 +175,86 @@ npm run test:storybook        # Run story tests
 npm run test:storybook:ci     # CI mode
 ```
 
+### 6. Visual Regression Testing ⭐ NEW
+
+Automated visual testing to catch appearance bugs and USWDS compliance issues:
+
+```bash
+# Playwright Visual Tests
+npm run test:visual                # Run all visual tests
+npm run test:visual:baseline       # Update visual baselines
+npm run test:visual:ui             # Interactive UI mode
+npm run test:visual:components     # Component-specific tests
+npm run test:visual:headed         # Run with visible browser
+
+# Cross-Browser Testing
+npm run test:cross-browser         # All browsers
+npm run test:cross-browser:chromium # Chrome only
+npm run test:cross-browser:firefox  # Firefox only
+npm run test:cross-browser:webkit   # Safari only
+npm run test:cross-browser:mobile   # Mobile browsers
+
+# Chromatic Visual Testing
+npm run chromatic                  # Run Chromatic
+npm run chromatic:ci               # CI mode
+npm run chromatic:build            # Build and run
+```
+
+**What Visual Tests Catch:**
+- ✅ Icon rendering (sprite vs inline SVG)
+- ✅ USWDS structure compliance (aria-live placement, CSS classes)
+- ✅ Component appearance changes
+- ✅ Cross-browser visual consistency
+- ✅ Layout shifts and CSS regressions
+- ✅ Accessibility visual indicators
+
+**Real Bugs Caught:**
+1. Icon sprite regression - Icons reverted to inline SVG (Oct 22, 2025)
+2. Character count aria-live bug - Wrong element had aria-live (Oct 23, 2025)
+3. Table sorting visual feedback - Missing indicators
+
+**Visual Test Types:**
+
+**Component Visual Tests** (`tests/visual/components/`):
+```typescript
+// Example: Icon visual regression test
+test('should render icons from sprite file', async ({ page }) => {
+  await page.goto('http://localhost:6006/?path=/story/data-display-icon--default');
+
+  const icon = page.locator('usa-icon').first();
+  const useElement = icon.locator('use');
+
+  // Validate sprite-first architecture
+  await expect(useElement).toBeVisible();
+  const href = await useElement.getAttribute('href');
+  expect(href).toMatch(/^\/img\/sprite\.svg#/);
+
+  // Take visual snapshot
+  await expect(icon).toHaveScreenshot('icon-default.png');
+});
+```
+
+**USWDS Compliance Tests** (`tests/visual/uswds-compliance.spec.ts`):
+```typescript
+// Example: Character count USWDS structure validation
+test('CRITICAL: message element structure per USWDS spec', async ({ page }) => {
+  const message = component.locator('.usa-character-count__message');
+
+  // FAIL CONDITION: Message should NOT have aria-live
+  const ariaLive = await message.getAttribute('aria-live');
+  expect(ariaLive).toBeNull();
+
+  // PASS CONDITION: Should have usa-sr-only class
+  await expect(message).toHaveClass(/usa-sr-only/);
+});
+```
+
+**Documentation:**
+- **Visual Testing Guide**: `docs/VISUAL_TESTING_GUIDE.md` - Complete guide
+- **Chromatic Setup**: `docs/CHROMATIC_SETUP_GUIDE.md` - Cloud visual testing
+- **Test Improvements**: `TEST_IMPROVEMENT_SUMMARY.md` - Bug analysis
+- **Infrastructure Integration**: `TESTING_INFRASTRUCTURE_INTEGRATION_SUMMARY.md`
+
 ## Comprehensive Testing Infrastructure
 
 Complete test suite with consolidated reporting:
