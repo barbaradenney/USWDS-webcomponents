@@ -595,7 +595,11 @@
     "deps:check": "syncpack list-mismatches",
     "deps:fix": "syncpack fix-mismatches",
     "deps:list": "syncpack list",
-    "deps:format": "syncpack format"
+    "deps:format": "syncpack format",
+    "// BUNDLE SIZE MONITORING": "",
+    "size": "size-limit",
+    "size:packages": "size-limit --json",
+    "size:why": "size-limit --why"
   },
   "keywords": [
     "uswds",
@@ -646,6 +650,7 @@
     "@manypkg/cli": "^0.25.1",
     "@octokit/rest": "^22.0.0",
     "@playwright/test": "^1.55.0",
+    "@size-limit/file": "^11.2.0",
     "@storybook/addon-a11y": "^9.1.10",
     "@storybook/addon-coverage": "^2.0.0",
     "@storybook/addon-docs": "^9.1.10",
@@ -697,6 +702,7 @@
     "rollup-plugin-visualizer": "^6.0.4",
     "sass": "^1.92.1",
     "serve": "^14.2.5",
+    "size-limit": "^11.2.0",
     "start-server-and-test": "^2.0.13",
     "storybook": "^9.1.10",
     "storybook-addon-designs": "^6.3.1",

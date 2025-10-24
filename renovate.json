@@ -1,10 +1,34 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":dependencyDashboard", ":semanticCommitTypeAll(chore)"],
+  "extends": [
+    "config:base",
+    ":dependencyDashboard",
+    ":semanticCommitTypeAll(chore)",
+    ":preserveSemverRanges",
+    "group:monorepos"
+  ],
   "timezone": "America/New_York",
   "schedule": ["after 10pm on sunday"],
   "labels": ["dependencies", "automated"],
+  "pnpm": {
+    "minimumReleaseAge": "3 days",
+    "supportPolicy": ["current"]
+  },
   "packageRules": [
+    {
+      "description": "Internal workspace packages - update together",
+      "matchPackagePatterns": ["^@uswds-wc/"],
+      "labels": ["workspace-packages"],
+      "groupName": "workspace packages",
+      "automerge": false,
+      "prPriority": 1,
+      "enabled": false
+    },
+    {
+      "description": "Workspace protocol dependencies - preserve workspace:*",
+      "matchDepTypes": ["workspace"],
+      "enabled": false
+    },
     {
       "description": "USWDS core package - requires careful testing",
       "matchPackageNames": ["@uswds/uswds"],
@@ -58,7 +82,7 @@
       }
     }
   ],
-  "postUpdateOptions": ["npmDedupe"],
+  "postUpdateOptions": ["pnpmDedupe"],
   "prConcurrentLimit": 3,
   "prCreation": "not-pending",
   "commitMessagePrefix": "chore(deps):",
@@ -80,6 +104,15 @@
   "prBodyColumns": ["Package", "Type", "Update", "Change", "USWDS Impact"],
   "ignoreDeps": [],
   "enabledManagers": ["npm"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": ["schedule:weekly"],
+    "commitMessageAction": "Update",
+    "commitMessageTopic": "pnpm lockfile",
+    "prBodyDefinitions": {
+      "Change": "Lockfile maintenance"
+    }
+  },
   "rangeStrategy": "auto",
   "separateMajorMinor": true,
   "separateMinorPatch": false,

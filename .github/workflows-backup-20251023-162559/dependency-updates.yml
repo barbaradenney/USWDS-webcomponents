@@ -1,0 +1,394 @@
+name: Automated Dependency Updates
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+    inputs:
+      update_type:
+        description: 'Type of updates to perform'
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - 'patch'
+          - 'minor'
+          - 'major'
+          - 'all'
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+    outputs:
+      has-updates: ${{ steps.check.outputs.has-updates }}
+      update-summary: ${{ steps.check.outputs.update-summary }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for outdated dependencies
+        id: check
+        run: |
+          # Check for outdated packages
+          OUTDATED=$(npm outdated --json || echo '{}')
+
+          # Count packages that need updates
+          UPDATE_COUNT=$(echo "$OUTDATED" | jq 'length')
+
+          if [ "$UPDATE_COUNT" -gt 0 ]; then
+            echo "has-updates=true" >> $GITHUB_OUTPUT
+            echo "Found $UPDATE_COUNT packages that can be updated"
+
+            # Generate update summary
+            SUMMARY=$(echo "$OUTDATED" | jq -r 'to_entries[] | "\(.key): \(.value.current) → \(.value.latest)"' | head -10)
+            echo "update-summary<<EOF" >> $GITHUB_OUTPUT
+            echo "$SUMMARY" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "has-updates=false" >> $GITHUB_OUTPUT
+            echo "All dependencies are up to date"
+          fi
+
+      - name: Security audit
+        run: |
+          echo "Running security audit..."
+          npm audit --audit-level moderate --json > audit-results.json || true
+
+          # Check if there are any vulnerabilities
+          VULN_COUNT=$(jq '.metadata.vulnerabilities.total' audit-results.json 2>/dev/null || echo "0")
+
+          if [ "$VULN_COUNT" -gt 0 ]; then
+            echo "⚠️ Found $VULN_COUNT security vulnerabilities"
+            echo "Running npm audit fix..."
+            npm audit fix --dry-run
+          else
+            echo "✅ No security vulnerabilities found"
+          fi
+
+  update-dependencies:
+    needs: check-dependencies
+    if: needs.check-dependencies.outputs.has-updates == 'true'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        update-type:
+          - name: "patch"
+            flag: "--target patch"
+            branch: "deps/automated-patch-updates"
+          - name: "minor"
+            flag: "--target minor"
+            branch: "deps/automated-minor-updates"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Configure Git
+        run: |
+          git config user.name "dependency-updater[bot]"
+          git config user.email "dependency-updater[bot]@github.com"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create update branch
+        run: |
+          git checkout -b ${{ matrix.update-type.branch }}
+
+      - name: Update dependencies (${{ matrix.update-type.name }})
+        run: |
+          echo "Updating ${{ matrix.update-type.name }} dependencies..."
+
+          # Use npm-check-updates for more control
+          npx npm-check-updates ${{ matrix.update-type.flag }} --upgrade
+
+          # Install updated dependencies
+          npm install
+
+      - name: Run tests after updates
+        run: |
+          echo "Running tests to ensure updates don't break functionality..."
+
+          # Run comprehensive tests
+          npm run test:ci || {
+            echo "❌ Tests failed after dependency updates"
+            exit 1
+          }
+
+          # Run type checking
+          npm run typecheck || {
+            echo "❌ Type checking failed after dependency updates"
+            exit 1
+          }
+
+          # Run linting
+          npm run lint || {
+            echo "❌ Linting failed after dependency updates"
+            exit 1
+          }
+
+      - name: Check bundle size impact
+        run: |
+          echo "Analyzing bundle size impact..."
+
+          # Run build optimization to check bundle sizes
+          npm run build:optimize || {
+            echo "⚠️ Build optimization failed, but continuing..."
+          }
+
+      - name: Generate change summary
+        id: changes
+        run: |
+          # Get list of changed packages
+          CHANGED_PACKAGES=$(git diff --name-only package.json package-lock.json)
+
+          if [ -n "$CHANGED_PACKAGES" ]; then
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+
+            # Generate detailed change summary
+            echo "📦 **Dependency Updates (${{ matrix.update-type.name }})**" > update-summary.md
+            echo "" >> update-summary.md
+
+            # Get the actual changes from package.json
+            if git diff --exit-code package.json > /dev/null; then
+              echo "No changes to package.json" >> update-summary.md
+            else
+              echo "### Changed Dependencies:" >> update-summary.md
+              echo "\`\`\`diff" >> update-summary.md
+              git diff package.json | grep -E '^[+-].*".*":' | head -20 >> update-summary.md
+              echo "\`\`\`" >> update-summary.md
+            fi
+
+            echo "" >> update-summary.md
+            echo "### Testing Results:" >> update-summary.md
+            echo "- ✅ Unit tests: Passed" >> update-summary.md
+            echo "- ✅ Type checking: Passed" >> update-summary.md
+            echo "- ✅ Linting: Passed" >> update-summary.md
+
+            # Check if bundle analysis exists
+            if [ -f "reports/build/build-optimization-summary.md" ]; then
+              echo "- ✅ Bundle analysis: Completed" >> update-summary.md
+            else
+              echo "- ⚠️ Bundle analysis: Skipped" >> update-summary.md
+            fi
+          else
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.changes.outputs.has-changes == 'true'
+        run: |
+          git add .
+          git commit -m "deps: automated ${{ matrix.update-type.name }} dependency updates
+
+          🤖 Automated dependency updates for ${{ matrix.update-type.name }} versions
+
+          - All tests passing ✅
+          - Type checking passed ✅
+          - Linting passed ✅
+
+          Generated by dependency-updater workflow"
+
+      - name: Push changes
+        if: steps.changes.outputs.has-changes == 'true'
+        run: |
+          git push origin ${{ matrix.update-type.branch }} --force
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.has-changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head ${{ matrix.update-type.branch }} --json number --jq '.[0].number' 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Updating existing PR #$EXISTING_PR"
+            gh pr edit $EXISTING_PR --body-file update-summary.md
+          else
+            echo "Creating new pull request"
+            gh pr create \
+              --title "🤖 Automated ${{ matrix.update-type.name }} dependency updates" \
+              --body-file update-summary.md \
+              --label "dependencies" \
+              --label "automated" \
+              --base main \
+              --head ${{ matrix.update-type.branch }}
+          fi
+
+  security-updates:
+    needs: check-dependencies
+    runs-on: ubuntu-latest
+    if: always() # Run regardless of dependency check results
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Configure Git
+        run: |
+          git config user.name "security-updater[bot]"
+          git config user.email "security-updater[bot]@github.com"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for security vulnerabilities
+        id: security-check
+        run: |
+          echo "Running security audit..."
+
+          # Run audit and capture results
+          npm audit --audit-level moderate --json > audit-results.json || AUDIT_EXIT_CODE=$?
+
+          # Check if there are any vulnerabilities
+          VULN_COUNT=$(jq '.metadata.vulnerabilities.total' audit-results.json 2>/dev/null || echo "0")
+
+          if [ "$VULN_COUNT" -gt 0 ]; then
+            echo "has-vulnerabilities=true" >> $GITHUB_OUTPUT
+            echo "vulnerability-count=$VULN_COUNT" >> $GITHUB_OUTPUT
+
+            # Get vulnerability details
+            VULN_DETAILS=$(jq -r '.vulnerabilities | to_entries[] | "\(.key): \(.value.severity) (\(.value.via | if type == "array" then join(", ") else . end))"' audit-results.json 2>/dev/null | head -10)
+
+            echo "vulnerability-details<<EOF" >> $GITHUB_OUTPUT
+            echo "$VULN_DETAILS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "has-vulnerabilities=false" >> $GITHUB_OUTPUT
+            echo "✅ No security vulnerabilities found"
+          fi
+
+      - name: Apply security fixes
+        if: steps.security-check.outputs.has-vulnerabilities == 'true'
+        run: |
+          echo "Applying security fixes..."
+
+          # Create security fix branch
+          git checkout -b security/automated-security-fixes
+
+          # Apply security fixes
+          npm audit fix
+
+          # Check if any files were changed
+          if ! git diff --exit-code; then
+            echo "Security fixes applied, running tests..."
+
+            # Install updated dependencies
+            npm install
+
+            # Run tests to ensure fixes don't break functionality
+            npm run test:ci
+            npm run typecheck
+            npm run lint
+
+            # Commit changes
+            git add .
+            git commit -m "security: automated security vulnerability fixes
+
+            🔒 Automated security fixes applied
+
+            Fixed ${{ steps.security-check.outputs.vulnerability-count }} vulnerabilities:
+            ${{ steps.security-check.outputs.vulnerability-details }}
+
+            - All tests passing ✅
+            - Type checking passed ✅
+            - Linting passed ✅
+
+            Generated by security-updater workflow"
+
+            # Push changes
+            git push origin security/automated-security-fixes --force
+
+            # Create urgent PR for security fixes
+            gh pr create \
+              --title "🔒 URGENT: Automated security vulnerability fixes" \
+              --body "## Security Vulnerability Fixes
+
+            This PR contains automated fixes for ${{ steps.security-check.outputs.vulnerability-count }} security vulnerabilities.
+
+            ### Vulnerabilities Fixed:
+            \`\`\`
+            ${{ steps.security-check.outputs.vulnerability-details }}
+            \`\`\`
+
+            ### Testing Results:
+            - ✅ Unit tests: Passed
+            - ✅ Type checking: Passed
+            - ✅ Linting: Passed
+
+            **This PR should be reviewed and merged urgently to address security vulnerabilities.**
+
+            🤖 Generated by automated security-updater workflow" \
+              --label "security" \
+              --label "urgent" \
+              --label "automated" \
+              --base main \
+              --head security/automated-security-fixes
+          else
+            echo "No security fixes were applied (fixes may require manual intervention)"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify-results:
+    needs: [check-dependencies, update-dependencies, security-updates]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Notify about dependency status
+        run: |
+          echo "## Dependency Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.check-dependencies.outputs.has-updates }}" == "true" ]; then
+            echo "📦 **Dependency Updates Available**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Updates found:" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "${{ needs.check-dependencies.outputs.update-summary }}" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ **All dependencies are up to date**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Workflow Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- Dependency Check: ${{ needs.check-dependencies.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Dependency Updates: ${{ needs.update-dependencies.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Security Updates: ${{ needs.security-updates.result }}" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "*Automated dependency management for USWDS Web Components*" >> $GITHUB_STEP_SUMMARY

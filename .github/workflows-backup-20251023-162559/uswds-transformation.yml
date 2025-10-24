@@ -1,0 +1,352 @@
+name: USWDS Transformation Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'src/components/**/*.ts'
+      - 'vite.config.ts'
+      - '.storybook/main.ts'
+      - 'scripts/validate-uswds-transformation.js'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/components/**/*.ts'
+      - 'vite.config.ts'
+      - '.storybook/main.ts'
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Run in verbose mode'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  validate-transformations:
+    name: Validate USWDS Component Transformations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Project
+        run: npm run build
+
+      - name: 🔍 Validate Vite Configuration
+        run: |
+          echo "Checking Vite module aliases and optimization..."
+          npm run validate:transformations
+
+      - name: 🌐 Test Browser Transformation
+        run: |
+          echo "Testing transformation in real browser environment..."
+          npm run dev &
+          DEV_SERVER_PID=$!
+          sleep 10  # Wait for dev server to start
+
+          # Test browser transformation
+          npm run validate:transformations:browser || BROWSER_TEST_FAILED=1
+
+          # Cleanup
+          kill $DEV_SERVER_PID || true
+
+          # Fail if browser tests failed
+          if [ "$BROWSER_TEST_FAILED" = "1" ]; then
+            echo "❌ Browser transformation tests failed"
+            exit 1
+          fi
+
+      - name: 🧪 Run Transformation Tests
+        run: |
+          echo "Running component transformation tests..."
+          npm test -- __tests__/uswds-transformation.test.ts || true
+
+      - name: 🎭 Test in Storybook Environment
+        run: |
+          echo "Starting Storybook and testing transformations..."
+          npm run build-storybook
+          npx http-server storybook-static -p 6006 &
+          sleep 10
+
+          # Test that combo box transforms properly
+          curl -s http://localhost:6006 > /dev/null || exit 1
+          echo "✅ Storybook is accessible"
+
+      - name: 📊 Generate Transformation Report
+        if: always()
+        run: |
+          echo "# USWDS Transformation Report" > transformation-report.md
+          echo "" >> transformation-report.md
+          echo "## Component Status" >> transformation-report.md
+          echo "" >> transformation-report.md
+
+          # Run validation and capture output
+          npm run validate:transformations 2>&1 | tee validation-output.txt || true
+
+          # Extract summary
+          grep -A 100 "Validation Results:" validation-output.txt >> transformation-report.md || true
+
+          echo "" >> transformation-report.md
+          echo "## Configuration" >> transformation-report.md
+          echo "" >> transformation-report.md
+          echo "### Vite Aliases" >> transformation-report.md
+          echo '```' >> transformation-report.md
+          grep -A 20 "USWDS module aliases" vite.config.ts >> transformation-report.md || true
+          echo '```' >> transformation-report.md
+
+      - name: 💬 Generate Automated PR Comment
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Generating comprehensive PR comment with Phase 2 validation..."
+          npm run test:pr-comment || true
+
+      - name: 💬 Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let report;
+
+            // Try to read automated PR comment first
+            try {
+              report = fs.readFileSync('__tests__/pr-comment.md', 'utf8');
+              console.log('Using automated PR comment');
+            } catch (e) {
+              // Fallback to basic transformation report
+              report = fs.readFileSync('transformation-report.md', 'utf8');
+              console.log('Using basic transformation report');
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
+
+      - name: 📤 Upload Transformation Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: transformation-report
+          path: |
+            transformation-report.md
+            validation-output.txt
+
+  test-combo-box-transformation:
+    name: Test Combo Box Transformation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install
+        run: npm ci
+
+      - name: 🧪 Test Combo Box Specifically
+        run: |
+          echo "Testing combo box transformation..."
+
+          # Create test file
+          cat > test-combo-box.js << 'EOF'
+          import puppeteer from 'puppeteer';
+
+          (async () => {
+            const browser = await puppeteer.launch({ headless: 'new' });
+            const page = await browser.newPage();
+
+            // Start dev server
+            const { exec } = await import('child_process');
+            const server = exec('npm run dev');
+            await new Promise(resolve => setTimeout(resolve, 5000));
+
+            try {
+              // Navigate to test page
+              await page.goto('http://localhost:5173', { waitUntil: 'networkidle0' });
+
+              // Create combo box
+              await page.evaluate(() => {
+                const comboBox = document.createElement('usa-combo-box');
+                comboBox.setAttribute('label', 'Test');
+                comboBox.options = [
+                  { value: 'a', label: 'Apple' },
+                  { value: 'b', label: 'Banana' }
+                ];
+                document.body.appendChild(comboBox);
+              });
+
+              // Wait for transformation
+              await page.waitForTimeout(2000);
+
+              // Check for transformation
+              const hasInput = await page.evaluate(() => {
+                const comboBox = document.querySelector('usa-combo-box');
+                const input = comboBox?.querySelector('.usa-combo-box__input');
+                const toggle = comboBox?.querySelector('.usa-combo-box__toggle-list');
+                return { hasInput: !!input, hasToggle: !!toggle };
+              });
+
+              if (hasInput.hasInput && hasInput.hasToggle) {
+                console.log('✅ Combo box transformed successfully!');
+                process.exit(0);
+              } else {
+                console.log('❌ Combo box did not transform');
+                process.exit(1);
+              }
+            } finally {
+              server.kill();
+              await browser.close();
+            }
+          })();
+          EOF
+
+          # Run test
+          node test-combo-box.js || echo "Test completed"
+
+      - name: 📊 Report Status
+        if: always()
+        run: |
+          echo "## Combo Box Transformation Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ $? -eq 0 ]; then
+            echo "✅ **PASSED**: Combo box properly transforms from select to input with typeahead" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **FAILED**: Combo box transformation did not occur" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  phase2-advanced-validation:
+    name: Phase 2 Advanced Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Project
+        run: npm run build
+
+      - name: 🌐 Cross-Browser Validation
+        run: |
+          echo "Testing transformations across browsers..."
+          npm run dev &
+          DEV_SERVER_PID=$!
+          sleep 10
+
+          # Run cross-browser tests
+          npm run test:cross-browser || CROSS_BROWSER_FAILED=1
+
+          # Cleanup
+          kill $DEV_SERVER_PID || true
+
+          if [ "$CROSS_BROWSER_FAILED" = "1" ]; then
+            echo "⚠️ Cross-browser validation had issues"
+          else
+            echo "✅ Cross-browser validation passed"
+          fi
+
+      - name: 📸 Visual Regression Testing
+        run: |
+          echo "Creating visual baselines and checking for regressions..."
+          npm run dev &
+          DEV_SERVER_PID=$!
+          sleep 10
+
+          # Run visual regression tests
+          npm run test:visual:baseline || true
+          npm run test:visual:regression || VISUAL_FAILED=1
+
+          # Cleanup
+          kill $DEV_SERVER_PID || true
+
+          if [ "$VISUAL_FAILED" = "1" ]; then
+            echo "⚠️ Visual regression tests detected changes"
+          else
+            echo "✅ No visual regressions detected"
+          fi
+
+      - name: ⚡ Performance Monitoring
+        run: |
+          echo "Monitoring component transformation performance..."
+          npm run dev &
+          DEV_SERVER_PID=$!
+          sleep 10
+
+          # Run performance monitoring
+          npm run test:performance:monitor || PERFORMANCE_FAILED=1
+
+          # Cleanup
+          kill $DEV_SERVER_PID || true
+
+          if [ "$PERFORMANCE_FAILED" = "1" ]; then
+            echo "⚠️ Performance issues detected"
+          else
+            echo "✅ Performance within acceptable thresholds"
+          fi
+
+      - name: 📊 Phase 2 Summary
+        if: always()
+        run: |
+          echo "## Phase 2 Advanced Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🌐 Cross-Browser Testing" >> $GITHUB_STEP_SUMMARY
+          if [ "$CROSS_BROWSER_FAILED" != "1" ]; then
+            echo "✅ All supported browsers pass component transformation tests" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Some browser compatibility issues detected" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📸 Visual Regression Testing" >> $GITHUB_STEP_SUMMARY
+          if [ "$VISUAL_FAILED" != "1" ]; then
+            echo "✅ No visual regressions detected in component transformations" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Visual changes detected - review required" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ⚡ Performance Monitoring" >> $GITHUB_STEP_SUMMARY
+          if [ "$PERFORMANCE_FAILED" != "1" ]; then
+            echo "✅ Component transformation performance within thresholds" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Performance concerns detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Phase 2 Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-validation-results
+          path: |
+            __tests__/visual-diffs/**
+            __tests__/performance-report.json
+            __tests__/pr-comment.md

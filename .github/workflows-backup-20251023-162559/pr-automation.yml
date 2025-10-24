@@ -1,0 +1,251 @@
+name: PR Automation with Puppeteer
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, develop]
+
+jobs:
+  # Job 1: PR Analysis and Component Detection
+  pr-analysis:
+    name: PR Analysis
+    runs-on: ubuntu-latest
+    outputs:
+      critical-components: ${{ steps.detect.outputs.critical-components }}
+      all-components: ${{ steps.detect.outputs.all-components }}
+      needs-validation: ${{ steps.detect.outputs.needs-validation }}
+      validation-type: ${{ steps.detect.outputs.validation-type }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect component changes
+        id: detect
+        run: |
+          echo "🔍 Analyzing PR changes..."
+
+          # Get changed files
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+
+          # Detect critical components (require Phase 2 validation)
+          CRITICAL_COMPONENTS=$(echo "$CHANGED_FILES" | grep -E "src/components/(combo-box|date-picker|time-picker|modal|tooltip|accordion|table)/" | cut -d'/' -f3 | sort -u | tr '\n' ',' | sed 's/,$//')
+
+          # Detect all component changes
+          ALL_COMPONENTS=$(echo "$CHANGED_FILES" | grep -E "src/components/[^/]+/" | cut -d'/' -f3 | sort -u | tr '\n' ',' | sed 's/,$//')
+
+          # Determine validation needs
+          NEEDS_VALIDATION="false"
+          VALIDATION_TYPE="basic"
+
+          if [ -n "$CRITICAL_COMPONENTS" ]; then
+            NEEDS_VALIDATION="true"
+            VALIDATION_TYPE="comprehensive"
+          elif [ -n "$ALL_COMPONENTS" ]; then
+            NEEDS_VALIDATION="true"
+            VALIDATION_TYPE="standard"
+          fi
+
+          echo "critical-components=$CRITICAL_COMPONENTS" >> $GITHUB_OUTPUT
+          echo "all-components=$ALL_COMPONENTS" >> $GITHUB_OUTPUT
+          echo "needs-validation=$NEEDS_VALIDATION" >> $GITHUB_OUTPUT
+          echo "validation-type=$VALIDATION_TYPE" >> $GITHUB_OUTPUT
+
+          echo "📋 Analysis Results:"
+          echo "   Critical Components: $CRITICAL_COMPONENTS"
+          echo "   All Components: $ALL_COMPONENTS"
+          echo "   Needs Validation: $NEEDS_VALIDATION"
+          echo "   Validation Type: $VALIDATION_TYPE"
+
+  # Job 2: Puppeteer Validation (Conditional)
+  puppeteer-validation:
+    name: Puppeteer Validation
+    runs-on: ubuntu-latest
+    needs: pr-analysis
+    if: needs.pr-analysis.outputs.needs-validation == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Puppeteer browsers
+        run: npx puppeteer browsers install chrome
+
+      - name: Build components
+        run: npm run build
+
+      - name: Start dev server for Puppeteer tests
+        run: npm run dev &
+        env:
+          CI: true
+
+      - name: Wait for dev server
+        run: npx wait-on http://localhost:5173 --timeout 120000
+
+      - name: Run USWDS transformation validation
+        run: |
+          echo "🏛️ Running USWDS transformation validation..."
+          npm run validate:uswds-transformation
+
+      - name: Run cross-browser validation
+        if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
+        run: |
+          echo "🌐 Running comprehensive cross-browser validation..."
+          npm run test:cross-browser
+
+      - name: Run performance monitoring
+        if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
+        run: |
+          echo "⚡ Running performance monitoring..."
+          npm run test:performance:monitor
+
+      - name: Run visual regression testing
+        if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
+        run: |
+          echo "📸 Running visual regression testing..."
+          npm run test:visual:regression || echo "Visual regression baseline may need updating"
+
+      - name: Generate validation report
+        run: |
+          echo "📊 Generating comprehensive validation report..."
+          node scripts/generate-pr-validation-report.js
+        env:
+          CRITICAL_COMPONENTS: ${{ needs.pr-analysis.outputs.critical-components }}
+          ALL_COMPONENTS: ${{ needs.pr-analysis.outputs.all-components }}
+          VALIDATION_TYPE: ${{ needs.pr-analysis.outputs.validation-type }}
+
+      - name: Upload validation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: puppeteer-validation-report
+          path: |
+            __tests__/puppeteer-validation-report.md
+            __tests__/performance-report.json
+            __tests__/visual-regression-report.json
+            __tests__/cross-browser-report.json
+          retention-days: 30
+
+  # Job 3: PR Comment with Results
+  pr-comment:
+    name: PR Comment Generation
+    runs-on: ubuntu-latest
+    needs: [pr-analysis, puppeteer-validation]
+    if: always() && needs.pr-analysis.outputs.needs-validation == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download validation artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: puppeteer-validation-report
+          path: __tests__/
+
+      - name: Generate PR comment
+        run: |
+          echo "💬 Generating PR comment..."
+          node scripts/generate-pr-comment.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.number }}
+          VALIDATION_SUCCESS: ${{ needs.puppeteer-validation.result == 'success' }}
+          CRITICAL_COMPONENTS: ${{ needs.pr-analysis.outputs.critical-components }}
+          ALL_COMPONENTS: ${{ needs.pr-analysis.outputs.all-components }}
+          VALIDATION_TYPE: ${{ needs.pr-analysis.outputs.validation-type }}
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const commentPath = '__tests__/pr-comment.md';
+
+            if (fs.existsSync(commentPath)) {
+              const comment = fs.readFileSync(commentPath, 'utf8');
+
+              // Find existing comment to update
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+              });
+
+              const botComment = comments.find(comment =>
+                comment.user.type === 'Bot' &&
+                comment.body.includes('🤖 Puppeteer Validation Report')
+              );
+
+              if (botComment) {
+                // Update existing comment
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: botComment.id,
+                  body: comment
+                });
+              } else {
+                // Create new comment
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: comment
+                });
+              }
+            }
+
+  # Job 4: Update PR Status
+  pr-status:
+    name: PR Status Update
+    runs-on: ubuntu-latest
+    needs: [pr-analysis, puppeteer-validation]
+    if: always()
+    steps:
+      - name: Set PR status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const needsValidation = '${{ needs.pr-analysis.outputs.needs-validation }}' === 'true';
+            const validationSuccess = '${{ needs.puppeteer-validation.result }}' === 'success';
+            const validationType = '${{ needs.pr-analysis.outputs.validation-type }}';
+
+            let state = 'success';
+            let description = 'No component validation required';
+
+            if (needsValidation) {
+              if (validationSuccess) {
+                state = 'success';
+                description = `${validationType} validation passed`;
+              } else {
+                state = 'failure';
+                description = `${validationType} validation failed`;
+              }
+            }
+
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              description: description,
+              context: 'Puppeteer Component Validation'
+            });

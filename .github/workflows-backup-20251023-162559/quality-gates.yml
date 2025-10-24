@@ -1,0 +1,293 @@
+name: Code Quality Gates
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-format:
+    name: Linting & Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint -- --format json --output-file eslint-report.json
+        continue-on-error: true
+
+      - name: Upload ESLint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-report
+          path: eslint-report.json
+
+      - name: Check Prettier formatting
+        run: npx prettier --check "src/**/*.{ts,js,css,json,md}"
+
+      - name: Annotate ESLint results
+        uses: ataylorme/eslint-annotate-action@v3
+        if: always()
+        with:
+          report-json: eslint-report.json
+
+  type-checking:
+    name: TypeScript Type Checking
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript compiler
+        run: npm run typecheck
+
+      - name: Check for TypeScript strict mode
+        run: |
+          if ! grep -q '"strict": true' tsconfig.json; then
+            echo "⚠️ TypeScript strict mode is not enabled"
+            exit 1
+          fi
+
+  test-coverage:
+    name: Test Coverage Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: Generate coverage summary
+        run: |
+          echo "## 📊 Test Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          npx c8 report --reporter=text-summary | tail -n +2 >> $GITHUB_STEP_SUMMARY
+
+      - name: Check coverage thresholds
+        run: |
+          COVERAGE=$(npx c8 report --reporter=json-summary | jq '.total.lines.pct')
+          echo "Current coverage: ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "⚠️ Coverage is below 80% threshold"
+            exit 1
+          fi
+
+  complexity-analysis:
+    name: Code Complexity Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm install -g complexity-report
+
+      - name: Analyze code complexity
+        run: |
+          npx cr --format json --output complexity-report.json src/**/*.ts
+
+      - name: Check complexity thresholds
+        run: |
+          node -e "
+          const report = require('./complexity-report.json');
+          const complex = report.reports.filter(r => r.complexity > 10);
+          if (complex.length > 0) {
+            console.log('⚠️ High complexity files detected:');
+            complex.forEach(f => console.log(\`  - \${f.path}: complexity \${f.complexity}\`));
+            process.exit(1);
+          }
+          "
+
+      - name: Upload complexity report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: complexity-report
+          path: complexity-report.json
+
+  bundle-size-check:
+    name: Bundle Size Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Analyze bundle size
+        run: |
+          npm install -g bundlesize2
+          echo '[{"path": "dist/*.js", "maxSize": "250KB"}, {"path": "dist/*.css", "maxSize": "600KB"}]' > .bundlesize.json
+          bundlesize -f .bundlesize.json
+
+      - name: Generate bundle report
+        run: |
+          echo "## 📦 Bundle Size Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size | Gzipped |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|---------|" >> $GITHUB_STEP_SUMMARY
+          for file in dist/*.js dist/*.css; do
+            if [ -f "$file" ]; then
+              SIZE=$(du -h "$file" | cut -f1)
+              GZIPPED=$(gzip -c "$file" | wc -c | numfmt --to=iec)
+              echo "| $(basename $file) | $SIZE | $GZIPPED |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+  documentation-check:
+    name: Documentation Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for missing documentation
+        run: |
+          echo "Checking for components without README files..."
+          for dir in src/components/*/; do
+            if [ ! -f "$dir/README.md" ]; then
+              echo "⚠️ Missing README.md in $dir"
+              exit 1
+            fi
+          done
+
+      - name: Validate JSDoc comments
+        run: |
+          npm install -g documentation
+          documentation lint src/**/*.ts
+
+      - name: Check Storybook stories exist
+        run: |
+          echo "Checking for components without Storybook stories..."
+          for dir in src/components/*/; do
+            component=$(basename "$dir")
+            if [ ! -f "$dir/usa-$component.stories.ts" ]; then
+              echo "⚠️ Missing Storybook story for $component"
+              exit 1
+            fi
+          done
+
+  accessibility-check:
+    name: Accessibility Standards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Run accessibility tests
+        run: |
+          npx playwright install chromium
+          npm run test:storybook -- --url http://localhost:6006
+
+  quality-report:
+    name: Generate Quality Report
+    needs:
+      [
+        lint-and-format,
+        type-checking,
+        test-coverage,
+        complexity-analysis,
+        bundle-size-check,
+        documentation-check,
+        accessibility-check,
+      ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create quality summary
+        run: |
+          echo "## 🎯 Code Quality Gates Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Linting & Formatting | ${{ needs.lint-and-format.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript Type Checking | ${{ needs.type-checking.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Coverage | ${{ needs.test-coverage.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Code Complexity | ${{ needs.complexity-analysis.result == 'success' && '✅ Acceptable' || '⚠️ High' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bundle Size | ${{ needs.bundle-size-check.result == 'success' && '✅ Within Limits' || '⚠️ Exceeds Limits' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Documentation | ${{ needs.documentation-check.result == 'success' && '✅ Complete' || '❌ Incomplete' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${{ needs.accessibility-check.result == 'success' && '✅ Compliant' || '❌ Issues Found' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Quality Gate: ${{ contains(needs.*.result, 'failure') && '❌ FAILED' || '✅ PASSED' }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if quality gates not met
+        if: contains(needs.*.result, 'failure')
+        run: exit 1
