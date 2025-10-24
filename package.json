@@ -607,7 +607,15 @@
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
     "version:packages": "changeset version && pnpm install --no-frozen-lockfile",
-    "release": "turbo run build && changeset publish"
+    "release": "turbo run build && changeset publish",
+    "// MONOREPO EFFICIENCY & AUTOMATION": "",
+    "monorepo": "node scripts/maintenance/monorepo-cli.js",
+    "monorepo:health": "node scripts/maintenance/package-health-dashboard.js",
+    "monorepo:graph": "node scripts/maintenance/generate-dependency-graph.js",
+    "monorepo:affected": "pnpm turbo build test lint --filter='...[HEAD^]'",
+    "affected:build": "pnpm turbo build --filter='...[HEAD^]'",
+    "affected:test": "pnpm turbo test --filter='...[HEAD^]'",
+    "affected:lint": "pnpm turbo lint --filter='...[HEAD^]'"
   },
   "keywords": [
     "uswds",
