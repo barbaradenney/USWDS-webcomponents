@@ -307,3 +307,18 @@ export const InteractiveDemo: Story = {
     </div>
   `,
 };
+
+/**
+ * Test story to verify Chromatic visual regression automation
+ * This story tests that visual changes trigger automated Chromatic reviews
+ */
+export const ChromaticTest: StoryObj<USAButton> = {
+  args: {
+    variant: 'primary',
+  },
+  render: (args) => html`
+    <usa-button variant="${args.variant}">
+      Chromatic Automation Test
+    </usa-button>
+  `,
+};
