@@ -74,10 +74,7 @@ jobs:
           onlyChanged: true
           skip: 'dependabot/**'
           ignoreLastBuildOnBranch: main
-          debug: false
-          diagnostics: ${{ github.event_name == 'pull_request' }}
           uploadMetadata: true
-          junitReport: true
 
       - name: Archive Chromatic results
         if: always()

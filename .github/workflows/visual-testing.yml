@@ -36,7 +36,7 @@ jobs:
         run: pnpm run build-storybook
 
       - name: Run Chromatic Visual Tests
-        uses: chromaui/action@latest
+        uses: chromaui/action@v1
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: 'build-storybook'
@@ -44,8 +44,6 @@ jobs:
           exitZeroOnChanges: true
           storybookBuildDir: 'storybook-static'
           autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
-          diagnostics: true
-          junitReport: true
           skip: 'dependabot/**'
 
       - name: Upload test results
