@@ -360,8 +360,7 @@ describe('USADatePicker', () => {
     });
   });
 
-  describe('Calendar UI', () => {
-  });
+  // NOTE: Calendar UI tests moved to Cypress (cypress/e2e/date-picker-calendar.cy.ts)
 
   describe('Component Lifecycle Stability (CRITICAL)', () => {
     // NOTE: Browser-dependent calendar tests moved to Cypress (cypress/e2e/date-picker-calendar.cy.ts)
