@@ -599,7 +599,15 @@
     "// BUNDLE SIZE MONITORING": "",
     "size": "size-limit",
     "size:packages": "size-limit --json",
-    "size:why": "size-limit --why"
+    "size:why": "size-limit --why",
+    "// VERSION MANAGEMENT": "",
+    "changeset": "changeset",
+    "changeset:add": "changeset add",
+    "changeset:status": "changeset status",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "version:packages": "changeset version && pnpm install --no-frozen-lockfile",
+    "release": "turbo run build && changeset publish"
   },
   "keywords": [
     "uswds",
@@ -644,6 +652,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
+    "@changesets/changelog-github": "^0.5.1",
     "@changesets/cli": "^2.29.7",
     "@cypress/vite-dev-server": "^7.0.0",
     "@fullhuman/postcss-purgecss": "^7.0.2",
