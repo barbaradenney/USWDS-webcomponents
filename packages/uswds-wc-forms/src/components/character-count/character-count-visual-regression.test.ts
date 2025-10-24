@@ -65,7 +65,7 @@ describe('Character Count Visual Regression Prevention', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       const status = element.querySelector('.usa-character-count__status');
-      expect(status?.textContent?.trim()).toBe('100 characters allowed');
+      expect(status?.textContent?.trim()).toBe('100 characters remaining');
     });
 
     it('should update visual status when typing', async () => {
@@ -74,7 +74,7 @@ describe('Character Count Visual Regression Prevention', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       const status = element.querySelector('.usa-character-count__status');
-      expect(status?.textContent?.trim()).toBe('95 characters left');
+      expect(status?.textContent?.trim()).toBe('95 characters remaining');
     });
 
     it('should show error state visually when over limit', async () => {
@@ -141,11 +141,11 @@ describe('Character Count Visual Regression Prevention', () => {
 
       element.value = '';
       await element.updateComplete;
-      expect(srStatus?.textContent?.trim()).toBe('100 characters allowed');
+      expect(srStatus?.textContent?.trim()).toBe('100 characters remaining');
 
       element.value = 'Test';
       await element.updateComplete;
-      expect(srStatus?.textContent?.trim()).toBe('96 characters left');
+      expect(srStatus?.textContent?.trim()).toBe('96 characters remaining');
 
       element.value = 'a'.repeat(105);
       await element.updateComplete;
@@ -243,7 +243,7 @@ describe('Character Count Visual Regression Prevention', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       const status = element.querySelector('.usa-character-count__status');
-      expect(status?.textContent?.trim()).toBe('1 character left');
+      expect(status?.textContent?.trim()).toBe('1 character remaining');
     });
 
     it('should use plural "characters" for multiple remaining', async () => {
@@ -252,7 +252,7 @@ describe('Character Count Visual Regression Prevention', () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       const status = element.querySelector('.usa-character-count__status');
-      expect(status?.textContent?.trim()).toBe('5 characters left');
+      expect(status?.textContent?.trim()).toBe('5 characters remaining');
     });
 
     it('should show "Character limit reached" when at exactly limit', async () => {
@@ -337,12 +337,12 @@ describe('Character Count Visual Regression Prevention', () => {
       await element.updateComplete;
 
       const status = element.querySelector('.usa-character-count__status');
-      expect(status?.textContent?.trim()).toBe('46 characters left');
+      expect(status?.textContent?.trim()).toBe('46 characters remaining');
 
       element.maxlength = 10;
       await element.updateComplete;
 
-      expect(status?.textContent?.trim()).toBe('6 characters left');
+      expect(status?.textContent?.trim()).toBe('6 characters remaining');
     });
   });
 

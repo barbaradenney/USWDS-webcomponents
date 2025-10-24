@@ -125,19 +125,19 @@ describe('USACharacterCount - USWDS Structure Compliance', () => {
 
       const status = element.querySelector('.usa-character-count__status');
 
-      // USWDS spec line 23: Default format is "{maxLength} characters allowed"
-      expect(status?.textContent?.trim()).toBe('100 characters allowed');
+      // USWDS spec line 23: Default format is "{maxLength} characters remaining"
+      expect(status?.textContent?.trim()).toBe('100 characters remaining');
     });
 
-    it('should show correct "characters left" message', async () => {
+    it('should show correct "characters remaining" message', async () => {
       element.value = 'Hello';
       await element.updateComplete;
       await new Promise((resolve) => setTimeout(resolve, 50));
 
       const status = element.querySelector('.usa-character-count__status');
 
-      // USWDS spec lines 110-116: Format is "{difference} characters left"
-      expect(status?.textContent?.trim()).toBe('95 characters left');
+      // USWDS spec lines 110-116: Format is "{difference} characters remaining"
+      expect(status?.textContent?.trim()).toBe('95 characters remaining');
     });
 
     it('should show correct "over limit" message', async () => {
@@ -159,7 +159,7 @@ describe('USACharacterCount - USWDS Structure Compliance', () => {
       const status = element.querySelector('.usa-character-count__status');
 
       // USWDS spec line 113: Singular vs plural handling
-      expect(status?.textContent?.trim()).toBe('1 character left');
+      expect(status?.textContent?.trim()).toBe('1 character remaining');
     });
   });
 

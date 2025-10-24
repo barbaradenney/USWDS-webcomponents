@@ -37,7 +37,7 @@ const STATUS_MESSAGE_CLASS = `${CHARACTER_COUNT_CLASS}__status`;
 const STATUS_MESSAGE_SR_ONLY_CLASS = `${CHARACTER_COUNT_CLASS}__sr-status`;
 const STATUS_MESSAGE = `.${STATUS_MESSAGE_CLASS}`;
 const STATUS_MESSAGE_SR_ONLY = `.${STATUS_MESSAGE_SR_ONLY_CLASS}`;
-const DEFAULT_STATUS_LABEL = `characters allowed`;
+const DEFAULT_STATUS_LABEL = `characters remaining`;
 
 /**
  * Character count elements interface
@@ -155,7 +155,7 @@ const getCountMessage = (currentLength: number, maxLength: number): string => {
   } else {
     const difference = Math.abs(maxLength - currentLength);
     const characters = `character${difference === 1 ? '' : 's'}`;
-    const guidance = currentLength > maxLength ? 'over limit' : 'left';
+    const guidance = currentLength > maxLength ? 'over limit' : 'remaining';
 
     newMessage = `${difference} ${characters} ${guidance}`;
   }

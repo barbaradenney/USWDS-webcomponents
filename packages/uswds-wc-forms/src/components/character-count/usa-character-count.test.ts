@@ -375,7 +375,7 @@ describe('USACharacterCount', () => {
     it('should have aria-live on character count message', async () => {
       await element.updateComplete;
 
-      const message = element.querySelector('.usa-character-count__message');
+      const message = element.querySelector('.usa-character-count__sr-status');
       expect(message?.getAttribute('aria-live')).toBe('polite');
     });
 
