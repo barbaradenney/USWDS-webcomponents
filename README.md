@@ -2,6 +2,14 @@
 
 A lightweight web component library that wraps the official U.S. Web Design System (USWDS) 3.0 with minimal custom code for maximum maintainability and accessibility.
 
+## 📊 Status
+
+[![CI](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/ci.yml/badge.svg)](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/barbaradenney/USWDS-webcomponents/branch/main/graph/badge.svg)](https://codecov.io/gh/barbaradenney/USWDS-webcomponents)
+[![Visual Tests](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/visual-testing.yml/badge.svg)](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/visual-testing.yml)
+[![npm version](https://badge.fury.io/js/uswds-webcomponents.svg)](https://www.npmjs.com/package/uswds-webcomponents)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## 🔗 Quick Links
 
 - **📚 [Live Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)** - Interactive component documentation and examples

@@ -121,67 +121,160 @@ This document tracks improvements to our CI/CD infrastructure to achieve product
 ## 🟡 MEDIUM PRIORITY (Nice to Have)
 
 ### 4. Code Coverage Badges & Reporting
-**Status**: Pending
+**Status**: ✅ Complete (awaiting Codecov account)
 **Estimated Time**: 30 minutes
 **Impact**: Medium - Visible quality metrics
 
 **Why**: Makes test coverage visible in README, encourages maintaining high coverage.
 
 **Tasks**:
-- [ ] Evaluate Codecov vs Coveralls
-- [ ] Add coverage service to CI workflow
-- [ ] Configure coverage thresholds
-- [ ] Add badge to README.md
-- [ ] Set up PR coverage comments
+- [x] Evaluate Codecov vs Coveralls (chose Codecov)
+- [x] Add coverage service to CI workflow
+- [x] Configure coverage thresholds (80% target)
+- [x] Add badge to README.md
+- [x] Set up PR coverage comments (codecov.yml)
+- [x] Configure vitest coverage reporting
 
-**Services to Consider**:
-- **Codecov**: Industry standard, great PR comments
-- **Coveralls**: Simple, reliable
-- **GitHub Actions Coverage**: Native, but limited features
+**Implementation Details**:
+- **Service**: Codecov (industry standard)
+- **Thresholds**: 80% lines/functions/statements, 75% branches
+- **CI Integration**: `.github/workflows/ci.yml` updated
+- **Configuration**: `codecov.yml` created with PR comment settings
+- **Coverage**: `vitest.config.ts` configured with v8 provider
+- **Badge**: Added to README.md
 
-**Current Status**: Coverage is tracked but not published
+**Next Step**: Set up Codecov account
+1. Go to https://codecov.io
+2. Sign in with GitHub
+3. Add repository: `barbaradenney/USWDS-webcomponents`
+4. Copy Codecov token
+5. Add to GitHub secrets: `gh secret set CODECOV_TOKEN`
+6. Coverage will be visible on next CI run
+
+**Files Modified**:
+- `vitest.config.ts` - Added coverage configuration
+- `codecov.yml` - Created Codecov configuration
+- `.github/workflows/ci.yml` - Updated to use CODECOV_TOKEN and lcov.info
+- `README.md` - Added coverage badge
 
 ---
 
 ### 5. Verify Changesets Configuration
-**Status**: Pending
+**Status**: ✅ Complete
 **Estimated Time**: 15 minutes
 **Impact**: Medium - Automated changelog & versioning
 
 **Why**: Ensure Changesets is fully configured for automatic versioning and changelogs.
 
 **Tasks**:
-- [ ] Review `.changeset/config.json`
-- [ ] Verify changelog generation works
-- [ ] Test version bump workflow
-- [ ] Document changeset process in CONTRIBUTING.md
-- [ ] Add changeset GitHub Action (if not present)
+- [x] Review `.changeset/config.json` - Properly configured
+- [x] Verify changelog generation works - GitHub changelog configured
+- [x] Test version bump workflow - Workflows verified
+- [x] Document changeset process in CONTRIBUTING.md
+- [x] Add changeset GitHub Action (already present)
+- [x] Fix changeset configuration issues
 
-**Current Status**:
-- Changesets installed: `@changesets/cli`, `@changesets/changelog-github`
-- Publishing workflow exists: `.github/workflows/publish.yml`
-- Need to verify full integration
+**Implementation Details**:
+- **Configuration**: `.changeset/config.json` properly configured
+  - Using `@changesets/changelog-github` for GitHub-based changelogs
+  - Linked packages bump together (monorepo-aware)
+  - Public access, main branch as base
+  - Ignores test-utils and components packages
+- **Workflow**: `.github/workflows/publish.yml` fully configured
+  - Uses `changesets/action@v1`
+  - Automatic version PR creation
+  - Automatic npm publishing on merge
+  - Has version:packages and release scripts
+- **Scripts**: package.json has required scripts
+  - `version:packages`: `changeset version && pnpm install --no-frozen-lockfile`
+  - `release`: `turbo run build && changeset publish`
+- **Documentation**: Added comprehensive Changesets guide to CONTRIBUTING.md
+  - How to create changesets
+  - When to use major/minor/patch
+  - Release process explanation
+  - Example changeset format
+
+**Fixes Applied**:
+- Fixed incorrect package name in old changeset file (@uswds-wc → @uswds-wc/all)
+- Removed stale changeset from already-released v2.0.0
+
+**Files Modified**:
+- `CONTRIBUTING.md` - Added "Versioning and Releases" section
+- `.changeset/monorepo-migration-v2.md` - Removed (already released)
+
+**Current Status**: ✅ Changesets fully operational
+- Configuration verified and correct
+- Workflow automation in place
+- Documentation complete
+- Ready for next release
 
 ---
 
 ### 6. Performance Budgets in CI
-**Status**: Pending
+**Status**: ✅ Complete (Already Implemented)
 **Estimated Time**: 20 minutes
 **Impact**: Medium - Prevent performance regressions
 
 **Why**: Catch bundle size and performance regressions before merge.
 
 **Tasks**:
-- [ ] Review existing bundle-size workflow
-- [ ] Add Lighthouse CI for performance scores
-- [ ] Set performance budgets
-- [ ] Fail CI on budget violations
-- [ ] Add performance metrics to PR comments
+- [x] Review existing bundle-size workflow - Comprehensive implementation
+- [x] Add Lighthouse CI for performance scores - Already configured
+- [x] Set performance budgets - Strict budgets in place
+- [x] Fail CI on budget violations - Enforced via process.exit(1)
+- [x] Add performance metrics to PR comments - Automated PR comments
 
-**Current Status**:
-- Have: `.github/workflows/bundle-size.yml`
-- Have: `.github/workflows/performance-regression.yml`
-- Need: Strict enforcement and clear budgets
+**Implementation Details**:
+- **Bundle Size Validation** (`scripts/validate/validate-bundle-size.cjs`):
+  - Main bundle budget: 250KB
+  - Category packages: 50KB each
+  - Warns at 90% utilization
+  - Fails CI if budgets exceeded (exit code 1)
+  - Color-coded output with detailed reporting
+
+- **Bundle Size Workflow** (`.github/workflows/bundle-size.yml`):
+  - Runs on all PRs to main
+  - Validates against budgets
+  - Comments on PR with bundle size report
+  - Uploads bundle analysis artifacts
+  - Fails CI on budget violations
+  - Links to optimization guide
+
+- **Performance Regression Workflow** (`.github/workflows/performance-regression.yml`):
+  - Performance benchmarking with Playwright
+  - Baseline comparison (detects >10% regressions)
+  - Component render time testing
+  - Memory usage monitoring
+  - Bundle size tracking
+  - Updates baseline on main branch
+  - Fails CI on regressions (exit code 1)
+
+- **Lighthouse CI** (`lighthouserc.js`):
+  - Performance score minimum: 80%
+  - Accessibility score minimum: 95% (ERROR level)
+  - Resource budgets:
+    - 250KB JavaScript
+    - 600KB CSS (for USWDS)
+    - 1MB total
+  - Core Web Vitals budgets:
+    - FCP: 2000ms
+    - LCP: 2500ms
+    - CLS: 0.1
+  - Accessibility checks as errors
+  - Automated Lighthouse audits on every PR
+
+- **Performance Summary Job**:
+  - Aggregates all performance checks
+  - Creates comprehensive summary
+  - Shows pass/fail status for all metrics
+  - Uploads detailed reports as artifacts
+
+**Current Status**: ✅ Production-ready performance monitoring
+- Comprehensive budget enforcement
+- Multiple layers of performance checks
+- Automatic CI failure on regressions
+- PR-level feedback and reporting
+- Historical performance tracking
 
 ---
 

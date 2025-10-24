@@ -38,6 +38,37 @@ export default defineConfig({
         'packages/**/src/**/*-interaction.test.ts'
       ] : [])
     ],
+    // Coverage configuration
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov', 'html', 'json'],
+      reportsDirectory: './coverage',
+      include: [
+        'packages/**/src/**/*.ts',
+      ],
+      exclude: [
+        'packages/**/src/**/*.test.ts',
+        'packages/**/src/**/*.stories.ts',
+        'packages/**/src/**/*.browser.test.ts',
+        'packages/**/src/**/*.visual.test.ts',
+        'packages/**/src/**/index.ts',
+        'packages/**/src/**/*.d.ts',
+        'node_modules',
+        '__tests__',
+        '__mocks__',
+      ],
+      // Coverage thresholds (warn if below)
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 75,
+        statements: 80,
+      },
+      // Report uncovered lines
+      all: true,
+      // Clean coverage directory before running
+      clean: true,
+    },
     // CSS handling in tests
     css: {
       modules: {

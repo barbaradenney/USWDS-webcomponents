@@ -231,6 +231,54 @@ export class USAButton extends USWDSBaseComponent {
    - Maintainers will merge once approved
    - Your PR will be squashed into a single commit
 
+### Versioning and Releases
+
+This project uses [Changesets](https://github.com/changesets/changesets) for automated versioning and changelog generation.
+
+#### Creating a Changeset
+
+When making changes that affect the public API, add a changeset:
+
+```bash
+# Interactive mode (recommended)
+pnpm changeset
+
+# Follow prompts to:
+# 1. Select packages affected
+# 2. Choose version bump type (major/minor/patch)
+# 3. Write a summary of changes
+```
+
+**When to create changesets:**
+- **major**: Breaking changes (incompatible API changes)
+- **minor**: New features (backwards-compatible)
+- **patch**: Bug fixes (backwards-compatible)
+
+**Example changeset** (`.changeset/my-feature.md`):
+```markdown
+---
+"@uswds-wc/forms": minor
+"@uswds-wc/core": patch
+---
+
+Add new text-area component with auto-resize feature
+```
+
+#### Release Process
+
+Releases are **fully automated**:
+
+1. **Merge PR**: When PR with changeset merges to `main`
+2. **Release PR**: Changesets bot creates "Version Packages" PR
+3. **Changelog**: Automatically generated from changesets
+4. **Publish**: Merging release PR publishes to npm automatically
+
+**Maintainers only**: The Release PR:
+- Updates package versions
+- Updates CHANGELOG.md files
+- Can accumulate multiple changesets
+- Publishes to npm when merged
+
 ## Coding Standards
 
 ### TypeScript

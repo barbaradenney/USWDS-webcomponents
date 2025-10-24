@@ -1,0 +1,113 @@
+# Codecov Configuration
+# Documentation: https://docs.codecov.com/docs/codecov-yaml
+
+# Coverage targets and thresholds
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  # Status checks that will appear on PRs
+  status:
+    project:
+      default:
+        target: 80%          # Overall project coverage target
+        threshold: 2%        # Allow 2% drop without failing
+        if_ci_failed: error  # Fail if CI fails
+
+    patch:
+      default:
+        target: 80%          # New code coverage target
+        threshold: 5%        # Allow 5% variance for new code
+        if_ci_failed: error
+
+# Comment configuration on PRs
+comment:
+  layout: "header, diff, changes, tree, footer"
+  behavior: default
+  require_changes: false   # Always comment, even if no changes
+  require_base: false      # Comment on first PR
+  require_head: true
+
+# GitHub integration
+github_checks:
+  annotations: true        # Add inline code annotations
+
+# Ignore paths (documentation, configs, etc.)
+ignore:
+  - "**/*.test.ts"
+  - "**/*.stories.ts"
+  - "**/*.config.ts"
+  - "**/index.ts"
+  - "**/*.d.ts"
+  - "__tests__/**"
+  - "__mocks__/**"
+  - "scripts/**"
+  - "docs/**"
+  - ".github/**"
+  - ".husky/**"
+  - ".storybook/**"
+  - "cypress/**"
+  - "tests/**"
+  - "*.md"
+
+# Flags to track coverage for different areas
+flags:
+  # Unit tests coverage
+  unit:
+    paths:
+      - packages/**/src/**/*.ts
+    carryforward: true
+
+  # Component coverage by category
+  actions:
+    paths:
+      - packages/uswds-wc-actions/
+    carryforward: true
+
+  forms:
+    paths:
+      - packages/uswds-wc-forms/
+    carryforward: true
+
+  navigation:
+    paths:
+      - packages/uswds-wc-navigation/
+    carryforward: true
+
+  feedback:
+    paths:
+      - packages/uswds-wc-feedback/
+    carryforward: true
+
+  data-display:
+    paths:
+      - packages/uswds-wc-data-display/
+    carryforward: true
+
+# Component detection
+component_management:
+  individual_components:
+    - component_id: actions
+      name: Actions Package
+      paths:
+        - packages/uswds-wc-actions/**
+    - component_id: forms
+      name: Forms Package
+      paths:
+        - packages/uswds-wc-forms/**
+    - component_id: navigation
+      name: Navigation Package
+      paths:
+        - packages/uswds-wc-navigation/**
+    - component_id: feedback
+      name: Feedback Package
+      paths:
+        - packages/uswds-wc-feedback/**
+    - component_id: data-display
+      name: Data Display Package
+      paths:
+        - packages/uswds-wc-data-display/**
+
+# Notification settings
+slack_app: false

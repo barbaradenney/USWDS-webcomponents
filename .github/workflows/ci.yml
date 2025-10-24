@@ -103,17 +103,19 @@ jobs:
         run: pnpm run test:ci || pnpm run test
 
       - name: Generate test coverage
-        run: pnpm run test:coverage || true
+        run: pnpm run test:coverage
         continue-on-error: true
 
-      - name: Upload coverage reports
+      - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         if: always()
         with:
-          files: ./coverage/coverage-final.json
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
+          verbose: true
 
   # Job 4: Build Verification
   build:
