@@ -1,0 +1,102 @@
+# Dependabot Configuration
+# Automates dependency updates and security vulnerability fixes
+#
+# Complements: .github/workflows/dependency-updates.yml
+# - Dependabot: Security vulnerabilities (daily) + Dependencies (weekly)
+# - Custom workflow: Coordinated updates with testing
+#
+# Documentation: https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+  # npm/pnpm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "barbaradenney"
+    assignees:
+      - "barbaradenney"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group minor/patch updates together
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
+    # Only auto-merge patch updates to dev dependencies
+    # (Uncomment if you want auto-merge)
+    # allow:
+    #   - dependency-type: "development"
+    #     update-type: "semver:patch"
+    ignore:
+      # Ignore major updates for stable dependencies
+      - dependency-name: "lit"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@uswds/uswds"
+        update-types: ["version-update:semver-major"]
+      # Let custom workflow handle these
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "barbaradenney"
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    labels:
+      - "ci"
+      - "dependencies"
+      - "automated"
+    # Group all GitHub Actions updates together
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Security-only updates (checked daily)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "barbaradenney"
+    assignees:
+      - "barbaradenney"
+    commit-message:
+      prefix: "fix(security)"
+      include: "scope"
+    labels:
+      - "security"
+      - "dependencies"
+      - "priority:high"
+    # Only create PRs for security updates
+    versioning-strategy: increase-if-necessary
