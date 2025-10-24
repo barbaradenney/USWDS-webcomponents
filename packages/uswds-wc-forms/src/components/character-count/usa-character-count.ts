@@ -203,9 +203,12 @@ export class USACharacterCount extends USWDSBaseComponent {
       return `${overBy} ${characters} over limit`;
     }
 
-    // Normal case: "45 characters remaining"
+    // USWDS spec: Use "allowed" for initial state, "left" when typing
+    // Initial state (empty input): "100 characters allowed"
+    // Typing state: "95 characters left"
     const characters = remaining === 1 ? 'character' : 'characters';
-    return `${remaining} ${characters} remaining`;
+    const suffix = currentLength === 0 ? 'allowed' : 'left';
+    return `${remaining} ${characters} ${suffix}`;
   }
 
   // Public API methods
