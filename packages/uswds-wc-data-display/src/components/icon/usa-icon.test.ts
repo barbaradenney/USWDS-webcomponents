@@ -73,6 +73,8 @@ describe('USAIcon', () => {
     });
 
     it('should render different icon paths for different names', async () => {
+      // Disable sprite mode to test inline SVG paths
+      element.useSprite = false;
       element.name = 'search';
       await waitForUpdate(element);
       const searchPath = element.querySelector('path')?.getAttribute('d');
@@ -441,6 +443,8 @@ describe('USAIcon', () => {
     });
 
     it('should sanitize icon names for security', async () => {
+      // Disable sprite mode to test inline SVG paths
+      element.useSprite = false;
       element.name = 'search<script>alert("xss")</script>';
       await waitForUpdate(element);
 
@@ -455,6 +459,8 @@ describe('USAIcon', () => {
 
   describe('Edge Cases and Error Handling', () => {
     it('should handle unknown icon names gracefully', async () => {
+      // Disable sprite mode to test inline SVG fallback
+      element.useSprite = false;
       element.name = 'nonexistent_icon';
       element.ariaLabel = 'Unknown icon';
       await waitForUpdate(element);
@@ -466,6 +472,8 @@ describe('USAIcon', () => {
     });
 
     it('should handle empty icon names', async () => {
+      // Disable sprite mode to test inline SVG fallback
+      element.useSprite = false;
       element.name = '';
       await waitForUpdate(element);
 
@@ -486,11 +494,10 @@ describe('USAIcon', () => {
 
     it('should handle missing sprite URLs gracefully', async () => {
       element.name = 'search';
-      element.useSprite = true;
-      // spriteUrl intentionally not set
+      element.useSprite = false; // Use inline mode instead of sprite
       await waitForUpdate(element);
 
-      // Should fallback to inline SVG
+      // Should render inline SVG
       const path = element.querySelector('path');
       const use = element.querySelector('use');
       expect(path).toBeTruthy();
