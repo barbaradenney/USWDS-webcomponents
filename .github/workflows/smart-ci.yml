@@ -82,9 +82,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
       - name: Build affected packages
         run: |
           # Turborepo will only build changed packages + their dependents
+          # Caching enabled via GitHub Actions cache above
           pnpm turbo build --filter="...[HEAD^]"
 
   smart-test:
@@ -138,6 +147,15 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-lint-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-lint-
+            ${{ runner.os }}-turbo-
 
       - name: Lint affected packages
         run: |
