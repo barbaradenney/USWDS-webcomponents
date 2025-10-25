@@ -39,16 +39,33 @@ echo "⚙️  Applying branch protection rules..."
 echo ""
 
 # Apply branch protection using GitHub API
-gh api repos/$REPO/branches/main/protection \
-  --method PUT \
-  --field required_status_checks='{"strict":true,"contexts":["Chromatic Visual Regression","Visual Regression Tests","Unit Tests","Linting & Formatting","TypeScript Type Checking"]}' \
-  --field enforce_admins=true \
-  --field required_pull_request_reviews='{"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":1,"require_last_push_approval":false}' \
-  --field restrictions=null \
-  --field required_linear_history=true \
-  --field allow_force_pushes=false \
-  --field allow_deletions=false \
-  --field required_conversation_resolution=true
+# Note: Using --input to send complete JSON payload
+cat <<'EOF' | gh api repos/$REPO/branches/main/protection --method PUT --input -
+{
+  "required_status_checks": {
+    "strict": true,
+    "contexts": [
+      "Chromatic Visual Regression",
+      "Visual Regression Tests",
+      "Unit Tests",
+      "Linting & Formatting",
+      "TypeScript Type Checking"
+    ]
+  },
+  "enforce_admins": true,
+  "required_pull_request_reviews": {
+    "dismiss_stale_reviews": true,
+    "require_code_owner_reviews": false,
+    "required_approving_review_count": 1,
+    "require_last_push_approval": false
+  },
+  "restrictions": null,
+  "required_linear_history": true,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "required_conversation_resolution": true
+}
+EOF
 
 echo ""
 echo "✅ Branch protection configured successfully!"
