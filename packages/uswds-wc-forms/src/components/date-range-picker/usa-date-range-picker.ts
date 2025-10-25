@@ -94,9 +94,6 @@ export class USADateRangePicker extends USWDSBaseComponent {
   @property({ type: String })
   error = '';
 
-  // Store USWDS module for cleanup
-  private uswdsModule: any = null;
-
   override connectedCallback() {
     super.connectedCallback();
 
@@ -113,14 +110,14 @@ export class USADateRangePicker extends USWDSBaseComponent {
     // ARCHITECTURE: Script Tag Pattern
     // USWDS is loaded globally via script tag in .storybook/preview-head.html
     // Components just render HTML - USWDS enhances automatically via window.USWDS
+    // No manual initialization needed - USWDS JavaScript runs automatically on date pickers
 
     super.firstUpdated(changedProperties);
-    this.initializeUSWDSComponent();
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback();
-    this.cleanupUSWDS();
+    // No cleanup needed - USWDS JavaScript is managed globally
   }
 
   override updated(changedProperties: Map<string, any>) {
