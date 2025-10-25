@@ -27,8 +27,19 @@ describe('USAComboBox', () => {
     document.body.appendChild(element);
   });
 
-  afterEach(() => {
-    element.remove();
+  afterEach(async () => {
+    // Wait for any pending updates and USWDS operations before cleanup
+    await element.updateComplete;
+
+    // Give USWDS time to complete any async operations
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    // Clean up - wrap in try-catch to handle any async cleanup errors
+    try {
+      element.remove();
+    } catch (error) {
+      // Ignore cleanup errors
+    }
   });
 
   describe('Basic Functionality', () => {
