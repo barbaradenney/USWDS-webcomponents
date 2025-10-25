@@ -1,24 +1,24 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import '../../../__tests__/test-utils.js';
+import '@uswds-wc/test-utils/test-utils.js';
 import './usa-button.js';
 import type { USAButton } from './usa-button.js';
-import type { ButtonVariant, ButtonType } from '../../types/index.js';
+import type { ButtonVariant, ButtonType } from '@uswds-wc/core';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { quickUSWDSComplianceTest } from '../../../__tests__/uswds-compliance-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   testActivationKeys,
   verifyKeyboardOnlyUsable,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
   testPointerAccessibility,
   testTargetSize,
   testLabelInName,
-} from '../../../__tests__/touch-pointer-utils.js';
+} from '@uswds-wc/test-utils/touch-pointer-utils.js';
 
 // Performance testing utility (commented out - not currently used)
 // const measurePerformance = (fn: () => void): number => {
@@ -1774,7 +1774,7 @@ describe('USAButton', () => {
 
   describe('Color/Contrast Accessibility (WCAG 1.4)', () => {
     it('should have correct USWDS classes for contrast (WCAG 1.4.3)', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       element.variant = 'default';
       await element.updateComplete;
@@ -1814,7 +1814,7 @@ describe('USAButton', () => {
     });
 
     it('should test contrast with explicit colors', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       await element.updateComplete;
 
@@ -1856,7 +1856,7 @@ describe('USAButton', () => {
     });
 
     it('should calculate contrast correctly with test colors', async () => {
-      const { calculateContrastRatio } = await import('../../../__tests__/contrast-utils.js');
+      const { calculateContrastRatio } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       // Test high contrast
       const highContrast = calculateContrastRatio('#000000', '#ffffff');

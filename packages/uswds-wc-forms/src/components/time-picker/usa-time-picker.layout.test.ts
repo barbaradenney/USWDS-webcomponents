@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../time-picker/index.ts';
 import type { USATimePicker } from './usa-time-picker.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USATimePicker Layout Tests', () => {
   let element: USATimePicker;

@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-language-selector.ts';
 import type { USALanguageSelector } from './usa-language-selector.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Language Selector JavaScript Interaction Testing', () => {
   let element: USALanguageSelector;

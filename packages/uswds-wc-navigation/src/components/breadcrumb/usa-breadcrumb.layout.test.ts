@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../breadcrumb/index.ts';
 import type { USABreadcrumb } from './usa-breadcrumb.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USABreadcrumb Layout Tests', () => {
   let element: USABreadcrumb;

@@ -1,25 +1,25 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import '../../../__tests__/test-utils.js';
+import '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { quickUSWDSComplianceTest } from '../../../__tests__/uswds-compliance-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
 import {
   testARIAAccessibility,
   testARIARoles,
   testAccessibleName,
   testARIARelationships,
-} from '../../../__tests__/aria-screen-reader-utils.js';
+} from '@uswds-wc/test-utils/aria-screen-reader-utils.js';
 import {
   testTextResize,
   testReflow,
   testTextSpacing,
   testMobileAccessibility,
-} from '../../../__tests__/responsive-accessibility-utils.js';
+} from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
 import './usa-accordion.js';
 import type { USAAccordion, AccordionItem } from './usa-accordion.js';
-import { assertHTMLIsRendered, cleanupAfterTest } from '../../../__tests__/test-utils.js';
+import { assertHTMLIsRendered, cleanupAfterTest } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAAccordion', () => {
   let element: USAAccordion;

@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../checkbox/index.ts';
 import type { USACheckbox } from './usa-checkbox.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USACheckbox Layout Tests', () => {
   let element: USACheckbox;

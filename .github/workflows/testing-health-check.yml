@@ -19,19 +19,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Run Health Check
         id: health
         run: |
-          npm run testing:health > health-output.txt 2>&1
+          pnpm run testing:health > health-output.txt 2>&1
           HEALTH_SCORE=$(grep "Overall Health Score" health-output.txt | grep -oP '\d+(?=%)')
           echo "score=$HEALTH_SCORE" >> $GITHUB_OUTPUT
           cat health-output.txt
@@ -57,7 +62,7 @@ jobs:
           )
 
           for cmd in "${CRITICAL_COMMANDS[@]}"; do
-            if npm run $cmd -- --help > /dev/null 2>&1; then
+            if pnpm run $cmd -- --help > /dev/null 2>&1; then
               echo "✅ $cmd is functional"
             else
               echo "❌ $cmd is broken or missing"
@@ -98,7 +103,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `🔴 Testing Infrastructure Health Critical: ${score}%`,
-              body: `## Testing Infrastructure Health Check Failed\n\n**Score:** ${score}%\n\n### Report\n\`\`\`\n${report}\n\`\`\`\n\n### Action Required\n- Review stale scripts\n- Update broken commands\n- Fix missing dependencies\n\nRun locally: \`npm run testing:health\``,
+              body: `## Testing Infrastructure Health Check Failed\n\n**Score:** ${score}%\n\n### Report\n\`\`\`\n${report}\n\`\`\`\n\n### Action Required\n- Review stale scripts\n- Update broken commands\n- Fix missing dependencies\n\nRun locally: \`pnpm run testing:health\``,
               labels: ['testing', 'infrastructure', 'maintenance']
             });
 
@@ -114,7 +119,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## ${status} Testing Infrastructure Health: ${score}%\n\nRun \`npm run testing:health\` for details.`
+              body: `## ${status} Testing Infrastructure Health: ${score}%\n\nRun \`pnpm run testing:health\` for details.`
             });
 
   auto-update:
@@ -126,23 +131,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Update Dependencies
         run: |
           echo "Checking for testing dependency updates..."
-          npm outdated --json > outdated.json || true
+          pnpm outdated --json > outdated.json || true
 
           # Update critical testing dependencies if needed
           TESTING_DEPS="vitest cypress playwright @storybook/test-runner axe-core"
           for dep in $TESTING_DEPS; do
             echo "Checking $dep..."
             # Conservative update - only patch versions
-            npm update $dep --save-dev || true
+            pnpm update $dep --save-dev || true
           done
 
       - name: Fix Import Paths
@@ -171,6 +181,6 @@ jobs:
 
             **Please review the changes before merging.**
 
-            Run `npm run testing:health` to verify everything is working.
+            Run `pnpm run testing:health` to verify everything is working.
           branch: auto-update/testing-infrastructure
           labels: testing, maintenance, automated

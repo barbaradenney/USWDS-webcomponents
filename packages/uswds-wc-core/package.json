@@ -15,7 +15,7 @@
       "import": "./dist/utils/*.js",
       "types": "./dist/utils/*.d.ts"
     },
-    "./styles.css": "./dist/styles/styles.css"
+    "./styles.css": "./src/styles/styles.css"
   },
   "files": [
     "dist",
@@ -33,7 +33,9 @@
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "lit": "^3.0.0"
+  },
   "keywords": [
     "uswds",
     "web-components",

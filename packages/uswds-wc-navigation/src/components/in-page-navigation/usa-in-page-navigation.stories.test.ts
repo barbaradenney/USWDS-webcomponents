@@ -11,7 +11,7 @@ import {
   validateNavigationTargets,
   validateHeadingSelector,
   generateValidationReport,
-} from '../../../__tests__/story-validation-utils.js';
+} from '@uswds-wc/test-utils/story-validation-utils.js';
 
 // Import the sample data and helper functions from stories
 const testSampleItems: InPageNavItem[] = [

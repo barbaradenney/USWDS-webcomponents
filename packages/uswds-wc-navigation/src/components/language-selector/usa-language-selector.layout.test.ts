@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../language-selector/index.ts';
 import type { USALanguageSelector } from './usa-language-selector.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USALanguageSelector Layout Tests', () => {
   let element: USALanguageSelector;

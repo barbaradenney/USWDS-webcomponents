@@ -11,12 +11,12 @@
  */
 
 import { readFileSync, readdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
+import { getAllComponentPaths, getAllComponentNames } from '../utils/find-components.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const componentsDir = join(__dirname, '../../src/components');
 
 // Color helpers for console output
 const colors = {
@@ -362,13 +362,17 @@ function validateHTMLStructure(content, componentName) {
   }
 
   // Check if component uses USWDS-Mirrored Behavior pattern
-  const hasBehaviorFile = existsSync(join(componentsDir, componentName, `usa-${componentName}-behavior.ts`)) ||
-                          existsSync(join(componentsDir, componentName, `usa-${componentName}-behavior.js`));
+  const componentPaths = getAllComponentPaths();
+  const componentDir = componentPaths.find(p => basename(p) === componentName);
+  const hasBehaviorFile = componentDir && (
+    existsSync(join(componentDir, `usa-${componentName}-behavior.ts`)) ||
+    existsSync(join(componentDir, `usa-${componentName}-behavior.js`))
+  );
   let behaviorContent = '';
 
-  if (hasBehaviorFile) {
+  if (hasBehaviorFile && componentDir) {
     try {
-      const behaviorPath = join(componentsDir, componentName, `usa-${componentName}-behavior.ts`);
+      const behaviorPath = join(componentDir, `usa-${componentName}-behavior.ts`);
       if (existsSync(behaviorPath)) {
         behaviorContent = readFileSync(behaviorPath, 'utf8');
       }
@@ -539,8 +543,12 @@ function validateJSIntegration(content, componentName) {
     );
 
     // Check if component has behavior file (USWDS-Mirrored Behavior pattern)
-    const hasBehaviorFile = existsSync(join(componentsDir, componentName, `usa-${componentName}-behavior.ts`)) ||
-                            existsSync(join(componentsDir, componentName, `usa-${componentName}-behavior.js`));
+    const componentPaths = getAllComponentPaths();
+    const componentDir = componentPaths.find(p => basename(p) === componentName);
+    const hasBehaviorFile = componentDir && (
+      existsSync(join(componentDir, `usa-${componentName}-behavior.ts`)) ||
+      existsSync(join(componentDir, `usa-${componentName}-behavior.js`))
+    );
 
     // Check for @uswds-behavior-disabled annotation (intentionally disabled for Lit compatibility)
     const hasBehaviorDisabled = content.includes('@uswds-behavior-disabled');
@@ -898,7 +906,14 @@ function validateDOMTransformation(content, componentName) {
  * Validate a single component
  */
 function validateComponent(componentName) {
-  const componentFile = join(componentsDir, componentName, `usa-${componentName}.ts`);
+  const componentPaths = getAllComponentPaths();
+  const componentDir = componentPaths.find(p => basename(p) === componentName);
+
+  if (!componentDir) {
+    return null;
+  }
+
+  const componentFile = join(componentDir, `usa-${componentName}.ts`);
 
   if (!existsSync(componentFile)) {
     return null;
@@ -938,10 +953,7 @@ function validateAllComponents() {
   console.log(colors.bold(colors.blue('\n🔍 USWDS Light Wrapper Compliance Report\n')));
   console.log(colors.gray('=' .repeat(80)));
 
-  const components = readdirSync(componentsDir, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-    .sort();
+  const components = getAllComponentNames().sort();
 
   const results = [];
   let totalIssues = 0;

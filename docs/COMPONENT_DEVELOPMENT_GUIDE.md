@@ -8,7 +8,7 @@ This guide provides instructions for developing simple, maintainable USWDS web c
 
 ### ✅ **Compliance Standards**
 
-- **Single CSS Import**: All components use `import '../../styles/styles.css'`
+- **Single CSS Import**: All components use `import '@uswds-wc/core/styles.css'` (compiled USWDS CSS)
 - **No Custom CSS**: Only essential `:host` display styles permitted
 - **Official Classes Only**: Direct application of USWDS classes via `updateClasses()`
 - **Light DOM Only**: Maximum USWDS compatibility
@@ -19,11 +19,14 @@ This guide provides instructions for developing simple, maintainable USWDS web c
 Every component is automatically validated for USWDS compliance:
 
 ```bash
-# Validate any component during development
-npm run uswds:validate-alignment src/components/your-component/usa-your-component.ts
+# Validate any component during development (monorepo structure)
+pnpm run uswds:validate-alignment packages/uswds-wc-actions/src/components/button/usa-button.ts
+
+# Validate specific package
+pnpm --filter @uswds-wc/actions run validate:uswds-compliance
 
 # Validate all critical components
-npm run uswds:validate-critical
+pnpm run uswds:validate-critical
 ```
 
 **Git hooks automatically prevent non-compliant commits**, ensuring 100% USWDS alignment is maintained. See `docs/USWDS_COMPLIANCE_AUTOMATION.md` for complete automation system details.
@@ -43,40 +46,166 @@ Our approach prioritizes:
 
 ```bash
 # Generate different component types
-npm run generate:component text-input input
-npm run generate:component my-button button
-npm run generate:component status-alert alert
+pnpm run generate:component text-input input
+pnpm run generate:component my-button button
+pnpm run generate:component status-alert alert
+
+# Note: Generated components should be moved to appropriate package
+# See "Monorepo Development Workflow" section below
 ```
 
 ### Update USWDS Styles
 
 ```bash
 # Recompile USWDS CSS when the design system updates
-npm run uswds:compile
+pnpm run uswds:compile
+```
+
+## Monorepo Development Workflow
+
+### Choosing the Right Package
+
+When adding a new component, determine which category package it belongs to:
+
+| Package | Category | Use For | Examples |
+|---------|----------|---------|----------|
+| `@uswds-wc/actions` | User actions | Buttons, links, search | Button, Link, Search, ButtonGroup |
+| `@uswds-wc/forms` | Form inputs | Input fields, validation | TextInput, Select, Checkbox, DatePicker |
+| `@uswds-wc/navigation` | Site navigation | Headers, menus, breadcrumbs | Header, Footer, Breadcrumb, SideNav |
+| `@uswds-wc/data-display` | Data presentation | Tables, cards, lists, icons | Table, Card, Icon, Tag, List |
+| `@uswds-wc/feedback` | User notifications | Alerts, modals, tooltips | Alert, Modal, Tooltip, Banner |
+| `@uswds-wc/layout` | Page structure | Content containers | Prose, StepIndicator, Identifier |
+| `@uswds-wc/structure` | Page organization | Expandable sections | Accordion |
+| `@uswds-wc/core` | Base utilities | Shared classes (DO NOT add UI components) | USWDSBaseComponent |
+
+### Adding a Component to a Package
+
+```bash
+# 1. Navigate to appropriate package
+cd packages/uswds-wc-forms
+
+# 2. Create component directory
+mkdir -p src/components/my-input
+
+# 3. Create component files
+touch src/components/my-input/usa-my-input.ts
+touch src/components/my-input/usa-my-input.test.ts
+touch src/components/my-input/usa-my-input.stories.ts
+touch src/components/my-input/usa-my-input.layout.test.ts
+touch src/components/my-input/README.mdx
+touch src/components/my-input/index.ts
+
+# 4. Add component to package exports
+# Edit packages/uswds-wc-forms/src/index.ts
+# Add: export * from './components/my-input/index.js';
+
+# 5. Build package
+pnpm --filter @uswds-wc/forms build
+
+# 6. Test package
+pnpm --filter @uswds-wc/forms test
+```
+
+### Monorepo Commands
+
+```bash
+# Install dependencies (uses pnpm workspaces)
+pnpm install
+
+# Build all packages (Turborepo parallel builds)
+pnpm run build
+
+# Build specific package
+pnpm --filter @uswds-wc/forms build
+
+# Test all packages
+pnpm test
+
+# Test specific package
+pnpm --filter @uswds-wc/actions test
+
+# Run Storybook (shows all packages)
+pnpm run storybook
+
+# Run visual tests
+pnpm run test:visual
+
+# Validate USWDS compliance (all packages)
+pnpm run validate:uswds-compliance
+```
+
+### Package Dependencies
+
+All UI component packages depend on `@uswds-wc/core`:
+
+```json
+// packages/uswds-wc-forms/package.json
+{
+  "dependencies": {
+    "@uswds-wc/core": "workspace:*",
+    "lit": "^3.0.0"
+  }
+}
+```
+
+The `uswds-wc` meta package re-exports all category packages:
+
+```typescript
+// packages/uswds-wc/src/index.ts
+export * from '@uswds-wc/actions';
+export * from '@uswds-wc/forms';
+export * from '@uswds-wc/navigation';
+// ... all categories
 ```
 
 ## Project Structure
 
+### Monorepo Organization
+
+This project uses a **monorepo architecture** with pnpm workspaces and Turborepo:
+
+```
+packages/
+├── uswds-wc-core/              # @uswds-wc/core - Base classes and utilities
+│   ├── src/
+│   │   ├── components/base-component.ts
+│   │   └── styles.css          # Compiled USWDS CSS (from gulpfile)
+│   └── package.json
+├── uswds-wc-actions/           # @uswds-wc/actions (4 components)
+│   ├── src/components/
+│   │   ├── button/
+│   │   ├── link/
+│   │   ├── search/
+│   │   └── button-group/
+│   └── package.json
+├── uswds-wc-forms/             # @uswds-wc/forms (15 components)
+├── uswds-wc-navigation/        # @uswds-wc/navigation (8 components)
+├── uswds-wc-data-display/      # @uswds-wc/data-display (8 components)
+├── uswds-wc-feedback/          # @uswds-wc/feedback (5 components)
+├── uswds-wc-layout/            # @uswds-wc/layout (4 components)
+├── uswds-wc-structure/         # @uswds-wc/structure (1 component)
+└── uswds-wc/                   # Meta package (re-exports all categories)
+```
+
+### Component Structure (Within Each Package)
+
+```
+packages/uswds-wc-{category}/src/components/{component}/
+├── usa-{component}.ts             # Web component implementation
+├── usa-{component}.test.ts        # Unit tests
+├── usa-{component}.stories.ts     # Storybook stories
+├── usa-{component}.layout.test.ts # Layout/structure tests
+├── README.mdx                     # Component documentation
+└── index.ts                       # Export file
+```
+
 ### USWDS Integration
 
 ```
-gulpfile.cjs              # Official USWDS compile configuration
-sass/uswds/               # USWDS theme and settings (created by init)
-src/styles/styles.css     # Compiled USWDS CSS (auto-generated)
-assets/uswds/             # USWDS fonts, images, JS (auto-generated)
-```
-
-### Components
-
-```
-src/components/[name]/
-├── usa-[name].ts         # Web component implementation
-├── usa-[name].stories.ts # Storybook stories
-├── usa-[name].test.ts    # Component tests
-└── index.ts             # Export file
-
-stories/
-└── [Name].stories.ts    # Storybook documentation
+gulpfile.cjs                       # Official USWDS compile configuration
+sass/uswds/                        # USWDS theme and settings
+packages/uswds-wc-core/src/styles.css  # Compiled USWDS CSS (auto-generated)
+assets/uswds/                      # USWDS fonts, images, JS
 ```
 
 ## Component Architecture
@@ -110,13 +239,15 @@ Follow the USWDS Documentation Standards (see `docs/USWDS_JAVASCRIPT_REFERENCES.
 
 ### Basic Component Template
 
+Components are built within category packages using shared core utilities:
+
 ```typescript
 import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { USWDSBaseComponent } from '../../utils/base-component.js';
+import { USWDSBaseComponent } from '@uswds-wc/core';
 
-// Import official USWDS compiled CSS
-import '../../styles/styles.css';
+// Import official USWDS compiled CSS from core package
+import '@uswds-wc/core/styles.css';
 
 /**
  * USA My Component Web Component
@@ -318,18 +449,18 @@ static styles = css`
 ### Initial Setup (Done Once)
 
 ```bash
-npm install @uswds/uswds @uswds/compile --save-dev
-npm run uswds:init  # Creates theme files and compiles CSS
+pnpm install @uswds/uswds @uswds/compile --save-dev
+pnpm run uswds:init  # Creates theme files and compiles CSS
 ```
 
 ### Regular Maintenance
 
 ```bash
 # Update USWDS package
-npm update @uswds/uswds
+pnpm update @uswds/uswds
 
-# Recompile CSS with new version
-npm run uswds:compile
+# Recompile CSS with new version (updates packages/uswds-wc-core/src/styles.css)
+pnpm run uswds:compile
 ```
 
 ### Customizing USWDS (Optional)
@@ -338,7 +469,7 @@ Edit theme files in `sass/uswds/` then recompile:
 
 ```bash
 # Edit sass/uswds/_uswds-theme.scss for customizations
-npm run uswds:compile
+pnpm run uswds:compile
 ```
 
 ## Form Integration
@@ -401,30 +532,40 @@ export const Default: Story = {
 ### Automated Testing Strategy
 
 ```bash
-# Run all tests (MUST PASS)
-npm run test
+# Run all tests (MUST PASS) - monorepo runs all package tests
+pnpm test
+
+# Run tests for specific package
+pnpm --filter @uswds-wc/forms test
 
 # Run tests with coverage
-npm run test:coverage
+pnpm run test:coverage
 
 # Interactive test runner
-npm run test:ui
+pnpm run test:ui
 
 # TypeScript compilation (MUST PASS)
-npm run typecheck
+pnpm run typecheck
 
 # Code quality checks (MUST PASS)
-npm run lint
+pnpm run lint
+
+# Visual regression tests (Playwright + Chromatic)
+pnpm run test:visual
+
+# USWDS compliance validation
+pnpm run validate:uswds-compliance
 ```
 
 ### Unit Test Structure
 
-Create test files in `__tests__/` directory:
+Create test files co-located with components in their package:
 
 ```typescript
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import '../src/components/my-component/usa-my-component.ts';
-import type { USAMyComponent } from '../src/components/my-component/usa-my-component.js';
+// Import from same package (example within uswds-wc-actions)
+import './usa-my-component.ts';
+import type { USAMyComponent } from './usa-my-component.js';
 
 describe('USAMyComponent', () => {
   let element: USAMyComponent;
@@ -503,10 +644,13 @@ localStorage.setItem('uswds-debug', 'true');
 **⚠️ DO NOT COMMIT** if any of these fail:
 
 ```bash
-npm run test              # All tests must pass
-npm run typecheck         # TypeScript must compile
-npm run lint             # No linting errors
+pnpm test                 # All tests must pass (runs tests across all packages)
+pnpm run typecheck        # TypeScript must compile
+pnpm run lint             # No linting errors
+pnpm run validate         # Full validation suite (includes USWDS compliance)
 ```
+
+**Note**: Pre-commit hooks automatically run these checks. Smart commit detection skips tests for docs-only commits.
 
 ## Available Component Types
 
@@ -542,15 +686,16 @@ If migrating from systems with custom base classes:
 
 ### Styles Not Applying
 
-- Verify `src/styles/styles.css` exists and is imported
-- Run `npm run uswds:compile` to regenerate CSS
+- Verify `packages/uswds-wc-core/src/styles.css` exists and is compiled
+- Run `pnpm run uswds:compile` to regenerate CSS
+- Check component imports `@uswds-wc/core/styles.css`
 - Check browser dev tools for applied classes
 
 ### TypeScript Errors
 
-- Run `npm run typecheck` to identify issues
+- Run `pnpm run typecheck` to identify issues
 - Ensure all properties have correct types
-- Verify imports are correct
+- Verify imports are correct (use `@uswds-wc/core` for base classes)
 
 ### Component Not Rendering
 

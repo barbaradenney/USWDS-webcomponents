@@ -75,6 +75,7 @@ export class USASelect extends LitElement {
 
   private selectElement?: HTMLSelectElement;
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
@@ -87,8 +88,9 @@ export class USASelect extends LitElement {
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial light DOM content before render to prevent duplication
-    if (this.childNodes.length > 0 && this.options.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based options AND custom slotted option elements
+    if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
     }
@@ -118,9 +120,10 @@ export class USASelect extends LitElement {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent) {
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
       const slotElement = this.querySelector('slot');
-      if (slotElement && this.options.length === 0) {
+      if (slotElement) {
         // Parse content safely using DOMParser instead of innerHTML
         const parser = new DOMParser();
         const doc = parser.parseFromString(`<div>${this.slottedContent}</div>`, 'text/html');
@@ -128,6 +131,7 @@ export class USASelect extends LitElement {
 
         if (tempDiv) {
           slotElement.replaceWith(...Array.from(tempDiv.childNodes));
+          this.slottedContentApplied = true;
         }
       }
     }
@@ -228,7 +232,7 @@ export class USASelect extends LitElement {
     }
 
     // Check if select is CSS-only before attempting to load JavaScript
-    const { isCSSOnlyComponent } = await import('../../utils/uswds-loader.js');
+    const { isCSSOnlyComponent } = await import('@uswds-wc/core');
     if (isCSSOnlyComponent('select')) {
       console.log('✅ USWDS select is CSS-only, using web component behavior');
       this.setupFallbackBehavior();
@@ -239,6 +243,7 @@ export class USASelect extends LitElement {
 
     try {
       // Tree-shaking: Import only the specific USWDS component module
+      // @ts-expect-error - @uswds/uswds doesn't have type definitions
       const module = await import('@uswds/uswds');
       this.uswdsModule = module.default;
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-validation.ts';
 import type { USAValidation } from './usa-validation.js';
-import { waitForUpdate, validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * Regression Tests for Validation Component Interactive Functionality

@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { USWDSBaseComponent } from '@uswds-wc/core';
+// Import icon component (used in template)
+import '../icon/index.js';
 
 // Import official USWDS compiled CSS
 import '@uswds-wc/core/styles.css';

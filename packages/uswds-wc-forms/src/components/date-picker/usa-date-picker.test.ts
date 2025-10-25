@@ -11,23 +11,23 @@ async function waitForDatePickerButton(element: USADatePicker): Promise<HTMLButt
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   waitForUpdate,
   testPropertyChanges,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testUSWDSIntegration,
   assertUSWDSIntegration,
   USWDS_TEST_CONFIGS,
   setupUSWDSIntegrationMonitoring,
-} from '../../../__tests__/uswds-integration-utils.js';
+} from '@uswds-wc/test-utils/uswds-integration-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-} from '../../../__tests__/keyboard-navigation-utils.js';
+} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USADatePicker', () => {
   let element: USADatePicker;
@@ -360,8 +360,7 @@ describe('USADatePicker', () => {
     });
   });
 
-  describe('Calendar UI', () => {
-  });
+  // NOTE: Calendar UI tests moved to Cypress (cypress/e2e/date-picker-calendar.cy.ts)
 
   describe('Component Lifecycle Stability (CRITICAL)', () => {
     // NOTE: Browser-dependent calendar tests moved to Cypress (cypress/e2e/date-picker-calendar.cy.ts)

@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-in-page-navigation.ts';
 import type { USAInPageNavigation } from './usa-in-page-navigation.js';
-import { waitForUpdate, setupTestEnvironment } from '../../../__tests__/test-utils.js';
+import { waitForUpdate, setupTestEnvironment } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 
 describe('USAInPageNavigation', () => {
   let element: USAInPageNavigation;

@@ -41,12 +41,31 @@ export class USASummaryBox extends LitElement {
   // Track whether we're using innerHTML mode to avoid Lit marker conflicts
   private isUsingInnerHTML = false;
 
+  // Slotted content capture for Light DOM
+  private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
+
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
     return this as any;
   }
 
   override connectedCallback() {
+    // CRITICAL: Capture slotted content BEFORE calling super.connectedCallback()
+    // This ensures we capture it before Lit's rendering lifecycle starts
+    console.log('[SummaryBox] connectedCallback', {
+      childNodesCount: this.childNodes.length,
+      innerHTML: this.innerHTML?.substring(0, 100)
+    });
+
+    if (this.childNodes.length > 0) {
+      this.slottedContent = this.innerHTML;
+      this.innerHTML = '';
+      console.log('[SummaryBox] Captured and cleared slotted content', {
+        capturedLength: this.slottedContent.length
+      });
+    }
+
     super.connectedCallback();
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
@@ -77,6 +96,9 @@ export class USASummaryBox extends LitElement {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
+    // Apply slotted content first (before content property handling)
+    this.applySlottedContent();
+
     // Update content via innerHTML when content property changes
     // CRITICAL: Cannot use unsafeHTML directive in Light DOM components
     // Must use innerHTML imperatively instead
@@ -95,6 +117,38 @@ export class USASummaryBox extends LitElement {
           this.requestUpdate();
         }
       }
+    }
+  }
+
+  private applySlottedContent() {
+    // Only apply slotted content once to prevent duplication
+    // Only apply if NOT using content property (content property takes precedence)
+    console.log('[SummaryBox] applySlottedContent called', {
+      hasSlottedContent: !!this.slottedContent,
+      slottedContentLength: this.slottedContent?.length,
+      alreadyApplied: this.slottedContentApplied,
+      hasContentProp: !!this.content,
+      slotElement: this.querySelector('slot')
+    });
+
+    if (this.slottedContent && !this.slottedContentApplied && !this.content) {
+      const slotElement = this.querySelector('slot');
+      console.log('[SummaryBox] Applying slotted content', { slotElement, content: this.slottedContent.substring(0, 100) });
+      if (slotElement) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = this.slottedContent;
+        slotElement.replaceWith(...Array.from(tempDiv.childNodes));
+        this.slottedContentApplied = true;
+        console.log('[SummaryBox] Slotted content applied successfully');
+      } else {
+        console.warn('[SummaryBox] Slot element not found!');
+      }
+    } else {
+      console.log('[SummaryBox] Skipping slot application', {
+        reason: !this.slottedContent ? 'no slotted content' :
+                this.slottedContentApplied ? 'already applied' :
+                this.content ? 'using content property' : 'unknown'
+      });
     }
   }
 

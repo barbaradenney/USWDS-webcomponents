@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../summary-box/index.ts';
 import type { USASummaryBox } from './usa-summary-box.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USASummaryBox Layout Tests', () => {
   let element: USASummaryBox;

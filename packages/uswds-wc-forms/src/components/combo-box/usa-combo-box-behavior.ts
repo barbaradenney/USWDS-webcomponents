@@ -12,8 +12,8 @@
  * DO NOT add custom logic. ALL changes must come from USWDS source updates.
  */
 
-import { selectOrMatches } from '../../utils/select-or-matches.js';
-import { Sanitizer } from '../../utils/sanitizer.js';
+import { selectOrMatches } from '@uswds-wc/core';
+import { Sanitizer } from '@uswds-wc/core';
 
 /**
  * Constants from USWDS

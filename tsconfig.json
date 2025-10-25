@@ -58,5 +58,17 @@
     "node_modules/@types/node/test.d.ts",
     "node_modules/ast-types/**/*"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./packages/uswds-wc" },
+    { "path": "./packages/uswds-wc-core" },
+    { "path": "./packages/uswds-wc-actions" },
+    { "path": "./packages/uswds-wc-forms" },
+    { "path": "./packages/uswds-wc-navigation" },
+    { "path": "./packages/uswds-wc-data-display" },
+    { "path": "./packages/uswds-wc-feedback" },
+    { "path": "./packages/uswds-wc-layout" },
+    { "path": "./packages/uswds-wc-structure" }
+  ]
 }

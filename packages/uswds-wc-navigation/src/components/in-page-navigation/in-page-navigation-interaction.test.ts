@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-in-page-navigation.ts';
 import type { USAInPageNavigation } from './usa-in-page-navigation.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('In-Page Navigation JavaScript Interaction Testing', () => {
   let element: USAInPageNavigation;

@@ -1,0 +1,172 @@
+name: Accessibility Reporting
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  accessibility-report:
+    name: Generate Accessibility Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Build Storybook
+        run: pnpm run build-storybook
+
+      - name: Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 &
+          echo $! > storybook.pid
+          # Wait for Storybook to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+
+      - name: Generate accessibility report
+        id: a11y_report
+        run: |
+          pnpm run test:a11y || echo "violations_found=true" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Stop Storybook server
+        if: always()
+        run: |
+          if [ -f storybook.pid ]; then
+            kill $(cat storybook.pid) || true
+            rm storybook.pid
+          fi
+
+      - name: Upload accessibility reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accessibility-reports
+          path: |
+            reports/accessibility/accessibility-report.html
+            reports/accessibility/accessibility-results.json
+          retention-days: 30
+
+      - name: Comment PR with summary
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let reportData;
+            try {
+              reportData = JSON.parse(fs.readFileSync('reports/accessibility/accessibility-results.json', 'utf8'));
+            } catch (error) {
+              console.log('Could not read accessibility report');
+              return;
+            }
+
+            const { summary, results } = reportData;
+            const violationsFound = summary.totalViolations > 0;
+
+            const emoji = violationsFound ? '⚠️' : '✅';
+            const status = violationsFound ? 'Issues Found' : 'All Checks Passed';
+
+            let comment = `## ${emoji} Accessibility Report - ${status}\n\n`;
+            comment += `| Metric | Count |\n`;
+            comment += `|--------|-------|\n`;
+            comment += `| Total Components | ${summary.totalComponents} |\n`;
+            comment += `| Total Violations | **${summary.totalViolations}** |\n`;
+            comment += `| Total Passes | ${summary.totalPasses} |\n`;
+            comment += `| Components with Issues | ${results.filter(r => r.violations > 0).length} |\n\n`;
+
+            if (violationsFound) {
+              comment += `### ⚠️ Components with Accessibility Violations\n\n`;
+
+              const componentsWithViolations = results
+                .filter(r => r.violations > 0)
+                .sort((a, b) => b.violations - a.violations)
+                .slice(0, 10); // Top 10
+
+              for (const comp of componentsWithViolations) {
+                comment += `**${comp.story}** - ${comp.violations} violation(s)\n`;
+
+                // Group by impact
+                const byImpact = comp.issues.reduce((acc, issue) => {
+                  acc[issue.impact] = (acc[issue.impact] || 0) + 1;
+                  return acc;
+                }, {});
+
+                const impacts = [];
+                if (byImpact.critical) impacts.push(`🔴 ${byImpact.critical} critical`);
+                if (byImpact.serious) impacts.push(`🟠 ${byImpact.serious} serious`);
+                if (byImpact.moderate) impacts.push(`🟡 ${byImpact.moderate} moderate`);
+                if (byImpact.minor) impacts.push(`🔵 ${byImpact.minor} minor`);
+
+                comment += `  - ${impacts.join(', ')}\n`;
+              }
+
+              if (results.filter(r => r.violations > 0).length > 10) {
+                comment += `\n_... and ${results.filter(r => r.violations > 0).length - 10} more component(s) with violations_\n`;
+              }
+            } else {
+              comment += `### ✅ All Components Pass Accessibility Checks\n\n`;
+              comment += `All ${summary.totalComponents} components passed accessibility validation!\n`;
+            }
+
+            comment += `\n---\n`;
+            comment += `📊 [View detailed HTML report](${context.payload.repository.html_url}/actions/runs/${context.runId})\n`;
+            comment += `_Generated at ${new Date(summary.timestamp).toLocaleString()}_\n`;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' && comment.body.includes('Accessibility Report')
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Check for violations
+        if: steps.a11y_report.outputs.violations_found == 'true'
+        run: |
+          echo "⚠️ Accessibility violations detected!"
+          echo "Review the detailed report in the artifacts section."
+          echo ""
+          echo "Note: This is informational and does not fail the CI."
+          echo "However, addressing these issues improves accessibility compliance."

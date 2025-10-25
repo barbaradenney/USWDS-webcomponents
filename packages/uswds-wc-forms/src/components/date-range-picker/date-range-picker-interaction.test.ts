@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-date-range-picker.ts';
 import type { USADateRangePicker } from './usa-date-range-picker.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Date Range Picker JavaScript Interaction Testing', () => {
   let element: USADateRangePicker;

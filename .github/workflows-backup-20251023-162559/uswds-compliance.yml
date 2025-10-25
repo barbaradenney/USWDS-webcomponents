@@ -1,0 +1,178 @@
+name: USWDS Compliance Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths: ['src/components/**']
+  pull_request:
+    branches: [main, develop]
+    paths: ['src/components/**']
+
+jobs:
+  compliance-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run USWDS Critical Component Validation
+        run: |
+          echo "🔍 Running USWDS compliance validation..."
+          npm run uswds:validate-critical
+        continue-on-error: false
+
+      - name: Run Component Structure Tests
+        run: |
+          echo "🏗️ Validating component structure..."
+          npm run test -- --reporter=verbose --coverage=false structure-regression
+        continue-on-error: false
+
+      - name: Run USWDS Module Optimization Tests
+        run: |
+          echo "⚙️ Validating USWDS module optimization..."
+          npm run test -- uswds-module-optimization
+        continue-on-error: false
+
+      - name: Run Accessibility Compliance Tests
+        run: |
+          echo "♿ Running accessibility compliance tests..."
+          npm run test -- --reporter=verbose accessibility
+        continue-on-error: false
+
+      - name: Generate Compliance Report
+        if: always()
+        run: |
+          echo "📊 Generating compliance report..."
+          npm run uswds:compliance 2>/dev/null || echo "Compliance check completed with warnings"
+
+      - name: Upload Compliance Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uswds-compliance-report
+          path: compliance/
+          retention-days: 30
+
+      - name: Comment PR with Compliance Status
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let reportPath = 'compliance/enhanced-compliance-report.json';
+            let compliance = { passRate: 'Unknown', details: 'Report not found' };
+
+            try {
+              if (fs.existsSync(reportPath)) {
+                const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+                compliance = {
+                  passRate: report.overallPassRate || 'Unknown',
+                  details: report.summary || 'No summary available'
+                };
+              }
+            } catch (error) {
+              console.log('Could not read compliance report:', error);
+            }
+
+            const comment = `## 🏛️ USWDS Compliance Report
+
+            **Overall Compliance Rate:** ${compliance.passRate}
+
+            ### Component Status
+            ${compliance.details}
+
+            *This report was generated automatically by the USWDS compliance validation workflow.*
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  prevent-regressions:
+    runs-on: ubuntu-latest
+    needs: compliance-validation
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for Critical Regressions
+        run: |
+          echo "🚨 Checking for critical compliance regressions..."
+
+          # Run date-picker compliance (must be >90%)
+          DATE_PICKER_RESULT=$(npm run uswds:validate-alignment src/components/date-picker/usa-date-picker.ts 2>&1 | grep "Pass Rate:" || echo "Pass Rate: 0%")
+          echo "Date Picker: $DATE_PICKER_RESULT"
+
+          # Check if date-picker compliance dropped below 90%
+          if echo "$DATE_PICKER_RESULT" | grep -E "Pass Rate: [0-8][0-9]%" > /dev/null; then
+            echo "❌ CRITICAL: Date picker compliance regression detected!"
+            echo "Date picker compliance must remain above 90%"
+            exit 1
+          fi
+
+          # Check for missing required USWDS classes in critical components
+          MISSING_CLASSES=$(npm run test -- --reporter=min structure-regression 2>&1 | grep -c "Missing required class" || echo "0")
+          if [ "$MISSING_CLASSES" -gt "5" ]; then
+            echo "❌ CRITICAL: Too many missing USWDS classes detected ($MISSING_CLASSES)"
+            echo "This indicates a structural regression in component compliance"
+            exit 1
+          fi
+
+          echo "✅ No critical regressions detected"
+
+  accessibility-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Accessibility Gate
+        run: |
+          echo "♿ Running accessibility compliance gate..."
+
+          # Run accessibility tests and capture results
+          ACCESSIBILITY_FAILURES=$(npm run test -- --reporter=min accessibility 2>&1 | grep -c "ACCESSIBILITY VIOLATIONS FOUND" || echo "0")
+
+          if [ "$ACCESSIBILITY_FAILURES" -gt "0" ]; then
+            echo "❌ ACCESSIBILITY GATE FAILED: $ACCESSIBILITY_FAILURES violations found"
+            echo "All accessibility violations must be fixed before merging"
+            exit 1
+          fi
+
+          echo "✅ Accessibility gate passed - no violations found"

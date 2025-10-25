@@ -4,10 +4,10 @@ import { resolve } from 'path';
 
 const config: StorybookConfig = {
   stories: [
-    // Pick up all stories in all subdirectories, including modal
-    '../src/**/*.stories.@(ts|mdx)',
+    // Pick up all stories from all packages
+    '../packages/**/src/**/*.stories.@(ts|mdx)',
     // Include component changelogs (version history)
-    '../src/components/*/CHANGELOG.mdx',
+    '../packages/**/src/components/*/CHANGELOG.mdx',
     // Note: TESTING.mdx files excluded - too technical for Storybook UI
     './*.mdx', // Include documentation files from .storybook directory
   ],
@@ -39,15 +39,23 @@ const config: StorybookConfig = {
     check: false,
   },
   viteFinal: async (config) => {
-    // Ensure proper module resolution
+    // Set Vite root to project root for monorepo support
+    config.root = resolve(__dirname, '..');
+
+    // Ensure proper module resolution for monorepo
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': '/src',
-      '@/components': '/src/components',
-      '@/styles': '/src/styles',
-      '@/utils': '/src/utils',
-      '@/types': '/src/types',
+      // CSS import alias (must come before general @uswds-wc/core alias)
+      '@uswds-wc/core/styles.css': resolve(__dirname, '../packages/uswds-wc-core/src/styles/styles.css'),
+      '@uswds-wc/core': resolve(__dirname, '../packages/uswds-wc-core/src'),
+      '@uswds-wc/actions': resolve(__dirname, '../packages/uswds-wc-actions/src'),
+      '@uswds-wc/forms': resolve(__dirname, '../packages/uswds-wc-forms/src'),
+      '@uswds-wc/navigation': resolve(__dirname, '../packages/uswds-wc-navigation/src'),
+      '@uswds-wc/data-display': resolve(__dirname, '../packages/uswds-wc-data-display/src'),
+      '@uswds-wc/feedback': resolve(__dirname, '../packages/uswds-wc-feedback/src'),
+      '@uswds-wc/layout': resolve(__dirname, '../packages/uswds-wc-layout/src'),
+      '@uswds-wc/structure': resolve(__dirname, '../packages/uswds-wc-structure/src'),
       // Resolve @storybook/blocks to addon-docs for MDX files
       '@storybook/blocks': resolve(
         __dirname,
@@ -62,6 +70,13 @@ const config: StorybookConfig = {
     // Remove external configuration to allow bundling
     config.build = config.build || {};
     config.build.rollupOptions = config.build.rollupOptions || {};
+
+    // Add alias for rollup build phase to handle CSS imports
+    config.build.rollupOptions.alias = config.build.rollupOptions.alias || {};
+    config.build.rollupOptions.alias['@uswds-wc/core/styles.css'] = resolve(
+      __dirname,
+      '../packages/uswds-wc-core/src/styles/styles.css'
+    );
 
     // CRITICAL: CommonJS handling for USWDS modules in Storybook
     config.build.commonjsOptions = config.build.commonjsOptions || {};
@@ -109,6 +124,9 @@ const config: StorybookConfig = {
     // Enhance development server settings for faster iteration
     config.server.fs = config.server.fs || {};
     config.server.fs.strict = false; // Allow serving files outside root
+    config.server.fs.allow = config.server.fs.allow || [];
+    // Add packages directory to allowed serve paths for monorepo
+    config.server.fs.allow.push(resolve(__dirname, '../packages'));
     config.server.watch = config.server.watch || {};
     if (typeof config.server.watch === 'object') {
       config.server.watch.usePolling = false; // Use native file watching for performance

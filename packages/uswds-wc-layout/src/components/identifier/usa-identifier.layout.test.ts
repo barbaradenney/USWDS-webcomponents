@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../identifier/index.ts';
 import type { USAIdentifier } from './usa-identifier.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAIdentifier Layout Tests', () => {
   let element: USAIdentifier;

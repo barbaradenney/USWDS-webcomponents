@@ -4,11 +4,11 @@ import type { USASideNavigation, SideNavItem } from './usa-side-navigation.js';
 import {
   setupTestEnvironment, waitForUpdate,
   validateComponentJavaScript,
-} from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 
 describe('USASideNavigation', () => {
   let element: USASideNavigation;

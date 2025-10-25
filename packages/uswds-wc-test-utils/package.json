@@ -1,0 +1,47 @@
+{
+  "name": "@uswds-wc/test-utils",
+  "version": "2.0.0",
+  "description": "Shared test utilities for USWDS Web Components",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    },
+    "./*": {
+      "import": "./src/*.js"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "echo 'No tests for test-utils package'"
+  },
+  "dependencies": {
+    "@uswds-wc/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@vitest/expect": "^3.0.0",
+    "vitest": "^3.0.0"
+  },
+  "keywords": [
+    "uswds",
+    "web-components",
+    "testing",
+    "test-utils",
+    "utilities"
+  ],
+  "author": "Barbara Miles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
+    "directory": "packages/uswds-wc-test-utils"
+  },
+  "devDependencies": {
+    "@vitest/expect": "^3.0.0",
+    "vitest": "^3.2.4"
+  }
+}

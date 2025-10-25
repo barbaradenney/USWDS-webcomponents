@@ -1,0 +1,326 @@
+name: Documentation Maintenance
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggering
+  push:
+    paths:
+      - 'src/components/**'
+      - 'docs/**'
+      - '*.md'
+
+jobs:
+  validate-documentation:
+    runs-on: ubuntu-latest
+    name: Validate Documentation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate documentation consistency
+        run: node scripts/validate-docs.js
+        continue-on-error: true
+        id: validate
+
+      - name: Check for outdated documentation
+        run: node scripts/check-outdated-docs.js
+        continue-on-error: true
+        id: outdated
+
+      - name: Sync component documentation status
+        run: node scripts/sync-component-docs.js
+        id: sync
+
+      - name: Check documentation links
+        run: node scripts/check-links.js
+        continue-on-error: true
+        id: links
+
+      - name: Create documentation report
+        run: |
+          echo "# Documentation Maintenance Report" > docs-report.md
+          echo "" >> docs-report.md
+          echo "Generated on: $(date)" >> docs-report.md
+          echo "" >> docs-report.md
+          
+          if [ -f docs/component-status-report.md ]; then
+            echo "## Component Status Summary" >> docs-report.md
+            echo "" >> docs-report.md
+            head -20 docs/component-status-report.md | tail -15 >> docs-report.md
+            echo "" >> docs-report.md
+          fi
+          
+          echo "## Validation Results" >> docs-report.md
+          echo "" >> docs-report.md
+          echo "- Documentation Validation: ${{ steps.validate.outcome }}" >> docs-report.md
+          echo "- Outdated Check: ${{ steps.outdated.outcome }}" >> docs-report.md
+          echo "- Status Sync: ${{ steps.sync.outcome }}" >> docs-report.md
+          echo "- Link Check: ${{ steps.links.outcome }}" >> docs-report.md
+          echo "" >> docs-report.md
+          
+          if [ "${{ steps.validate.outcome }}" != "success" ] || [ "${{ steps.links.outcome }}" != "success" ]; then
+            echo "⚠️ Issues found that need attention." >> docs-report.md
+          else
+            echo "✅ All documentation checks passed!" >> docs-report.md
+          fi
+
+      - name: Commit updated documentation
+        if: steps.sync.outcome == 'success'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git add docs/component-status-report.md
+            git add docs/COMPONENT_REVIEW_STATUS.md
+            git commit -m "📊 Auto-update component documentation status
+            
+            🤖 Generated with Documentation Maintenance Workflow
+            
+            Co-Authored-By: GitHub Actions <noreply@github.com>" || echo "No changes to commit"
+            git push
+          else
+            echo "No documentation changes to commit"
+          fi
+
+      - name: Upload documentation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-report
+          path: docs-report.md
+
+  link-check:
+    runs-on: ubuntu-latest
+    name: Weekly Link Check
+    if: github.event_name == 'schedule'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check all documentation links
+        run: node scripts/check-links.js
+        continue-on-error: true
+        id: comprehensive-links
+
+      - name: Create link check issue if needed
+        if: steps.comprehensive-links.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🔗 Broken Documentation Links Found';
+            const body = `
+            ## Broken Links Detected
+            
+            The automated link checker found broken links in our documentation.
+            
+            **Action Required:**
+            1. Review the failed workflow logs for details
+            2. Fix or remove broken links
+            3. Consider if external links need to be updated or archived
+            
+            **Files to check:**
+            - Component README files
+            - Main documentation files
+            - GitHub workflow files
+            
+            This issue was created automatically by the documentation maintenance workflow.
+            `;
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['documentation', 'automated'],
+              state: 'open'
+            });
+            
+            const existingIssue = issues.data.find(issue => 
+              issue.title.includes('Broken Documentation Links')
+            );
+            
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['documentation', 'automated', 'maintenance']
+              });
+              console.log('Created new issue for broken links');
+            } else {
+              console.log('Issue already exists, not creating duplicate');
+            }
+
+  component-coverage:
+    runs-on: ubuntu-latest
+    name: Component Documentation Coverage
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate component coverage report
+        run: |
+          node scripts/sync-component-docs.js
+          
+          # Create coverage badge data
+          TOTAL_COMPONENTS=$(find src/components -mindepth 1 -maxdepth 1 -type d | wc -l)
+          COMPLETE_COMPONENTS=$(grep -o "Complete (90%+): [0-9]*" docs/component-status-report.md | grep -o "[0-9]*" || echo "0")
+          COVERAGE_PERCENT=$(echo "scale=0; $COMPLETE_COMPONENTS * 100 / $TOTAL_COMPONENTS" | bc -l || echo "0")
+          
+          echo "Component Coverage: $COVERAGE_PERCENT% ($COMPLETE_COMPONENTS/$TOTAL_COMPONENTS)"
+          echo "COVERAGE_PERCENT=$COVERAGE_PERCENT" >> $GITHUB_ENV
+
+      - name: Comment on PR if this is a PR
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            if (fs.existsSync('docs/component-status-report.md')) {
+              const report = fs.readFileSync('docs/component-status-report.md', 'utf8');
+              const summary = report.split('\n').slice(0, 15).join('\n');
+              
+              const comment = `
+              ## 📊 Component Documentation Status
+              
+              ${summary}
+              
+              <details>
+              <summary>📋 View Full Report</summary>
+              
+              [Complete status report available in artifacts]
+              </details>
+              
+              *Updated automatically by Documentation Maintenance workflow*
+              `;
+              
+              // Find PR number if this is a PR
+              const prs = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: `${context.repo.owner}:${context.ref.replace('refs/heads/', '')}`,
+                state: 'open'
+              });
+              
+              if (prs.data.length > 0) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prs.data[0].number,
+                  body: comment
+                });
+              }
+            }
+
+  automated-cleanup:
+    runs-on: ubuntu-latest
+    name: Automated Documentation Cleanup
+    # Only run on schedule (weekly) or manual trigger, not on push
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for proper git operations
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Analyze documentation state
+        id: analyze
+        run: |
+          echo "📊 Analyzing documentation state..."
+          ARCHIVABLE=$(node scripts/maintenance/cleanup-documentation.cjs --dry-run 2>/dev/null | grep "📦 Archivable:" | awk '{print $3}')
+          echo "archivable=$ARCHIVABLE" >> $GITHUB_OUTPUT
+          echo "Found $ARCHIVABLE docs ready for archive"
+
+      - name: Run documentation cleanup
+        if: steps.analyze.outputs.archivable > 0
+        run: |
+          echo "🧹 Running documentation cleanup..."
+          node scripts/maintenance/cleanup-documentation.cjs
+
+          # Check if any files were changed
+          if ! git diff --quiet --exit-code docs/; then
+            echo "cleanup_performed=true" >> $GITHUB_OUTPUT
+            echo "✅ Documentation cleanup completed"
+          else
+            echo "cleanup_performed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No changes after cleanup"
+          fi
+        id: cleanup
+
+      - name: Commit and push changes
+        if: steps.cleanup.outputs.cleanup_performed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docs/
+          git commit -m "chore: automated weekly documentation cleanup
+
+Archived ${{ steps.analyze.outputs.archivable }} obsolete doc(s).
+
+Automated by GitHub Actions (weekly schedule).
+
+🤖 Generated by docs-maintenance workflow"
+
+          git push
+
+      - name: Create cleanup summary
+        if: always()
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # 🧹 Documentation Cleanup Summary
+
+          **Archivable Docs Found:** ${{ steps.analyze.outputs.archivable }}
+          **Cleanup Performed:** ${{ steps.cleanup.outputs.cleanup_performed == 'true' && 'Yes ✅' || 'No' }}
+
+          ## Details
+          - **Threshold**: 7 days for temporary docs, 60 days for status docs
+          - **Trigger**: Weekly schedule (Monday 9 AM UTC)
+          - **Manual Trigger**: Available via workflow_dispatch
+
+          ## Next Steps
+          ${{ steps.analyze.outputs.archivable > 0 && steps.cleanup.outputs.cleanup_performed == 'true' && '✅ Documentation has been automatically cleaned up and committed.' || '✅ No cleanup needed - documentation is current.' }}
+          EOF

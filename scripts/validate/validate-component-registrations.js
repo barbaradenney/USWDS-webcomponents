@@ -12,7 +12,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 // ANSI color codes
 const colors = {
@@ -61,7 +62,7 @@ class ComponentRegistrationValidator {
   }
 
   async findDecoratorRegistrations() {
-    const componentFiles = glob.sync('src/components/**/*.ts', {
+    const componentFiles = glob.sync('packages/*/src/components/**/*.ts', {
       ignore: [
         '**/*.test.ts',
         '**/*.spec.ts',

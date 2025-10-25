@@ -42,6 +42,7 @@ export class USAProcessList extends LitElement {
   headingLevel = 'h4';
 
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
@@ -54,8 +55,9 @@ export class USAProcessList extends LitElement {
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial light DOM content before render to prevent duplication
-    if (this.childNodes.length > 0 && this.items.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based items AND custom slotted process list content
+    if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
     }
@@ -69,8 +71,9 @@ export class USAProcessList extends LitElement {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent && this.items.length === 0) {
-      // If no items provided, use slotted content (avoid innerHTML in light DOM)
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
+      // Use slotted content in addition to or instead of property-based items
       const slotElement = this.querySelector('slot');
       if (slotElement && slotElement.parentElement) {
         // Create a temporary div to parse content safely
@@ -84,6 +87,7 @@ export class USAProcessList extends LitElement {
 
         // Remove the slot element
         slotElement.remove();
+        this.slottedContentApplied = true;
       }
     }
   }

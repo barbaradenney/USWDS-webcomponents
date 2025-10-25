@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../combo-box/index.ts';
 import type { USAComboBox } from './usa-combo-box.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAComboBox Layout Tests', () => {
   let element: USAComboBox;

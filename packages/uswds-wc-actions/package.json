@@ -34,7 +34,9 @@
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "lit": "^3.0.0"
+  },
   "keywords": [
     "uswds",
     "web-components",

@@ -5,14 +5,19 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../button/index.ts';
-import '../icon/index.ts';
+import { USAIcon } from '@uswds-wc/data-display';
 import type { USAButton } from './usa-button.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
+
+// Register icon component
+if (!customElements.get('usa-icon')) {
+  customElements.define('usa-icon', USAIcon);
+}
 import {
   validateCSSClassString,
   validateAllCSSClasses,
   validateUSWDSClassPattern
-} from '../../../__tests__/css-class-utils.js';
+} from '@uswds-wc/test-utils/css-class-utils.js';
 
 describe('USAButton Layout Tests', () => {
   let element: USAButton;

@@ -15,7 +15,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { waitForBehaviorInit } from '../../../__tests__/test-utils.js';
+import { waitForBehaviorInit } from '@uswds-wc/test-utils/test-utils.js';
 import './usa-validation.js';
 import type { USAValidation } from './usa-validation.js';
 

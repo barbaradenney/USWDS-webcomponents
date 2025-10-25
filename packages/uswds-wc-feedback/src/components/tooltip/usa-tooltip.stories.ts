@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import './index.ts';
-import '@uswds-wc/data-display/icon';
 import type { USATooltip } from './usa-tooltip.js';
 
 const meta: Meta<USATooltip> = {
@@ -119,7 +118,9 @@ export const OnIconButton: Story = {
         @tooltip-hide="${() => console.log('Tooltip hidden')}"
       >
         <button type="button" class="usa-button usa-button--unstyled padding-105 text-center" aria-label="Help">
-          <usa-icon name="help" decorative="true"></usa-icon>
+          <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+            <use xlink:href="#svg-help"></use>
+          </svg>
         </button>
       </usa-tooltip>
       <input type="email" id="sample-input" class="usa-input" />

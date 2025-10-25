@@ -1,14 +1,43 @@
 # Component Templates
 
-This document contains reusable templates for creating USWDS web components.
+This document contains reusable templates for creating USWDS web components in the monorepo structure.
+
+## Monorepo Context
+
+All components are located in category-based packages under `packages/`:
+
+```
+packages/
+├── uswds-wc-actions/           # Buttons, links, search
+├── uswds-wc-forms/             # Form controls
+├── uswds-wc-navigation/        # Headers, menus, breadcrumbs
+├── uswds-wc-data-display/      # Tables, cards, lists, icons
+├── uswds-wc-feedback/          # Alerts, modals, tooltips
+├── uswds-wc-layout/            # Content structure
+├── uswds-wc-structure/         # Page sections (accordion)
+└── uswds-wc-core/              # Shared base classes and utilities
+```
+
+**Component File Location Example:**
+```
+packages/uswds-wc-forms/src/components/text-input/
+├── usa-text-input.ts              # Component implementation
+├── usa-text-input.test.ts         # Unit tests
+├── usa-text-input.layout.test.ts  # Layout tests
+├── usa-text-input.stories.ts      # Storybook stories
+├── README.mdx                      # Component documentation
+└── index.ts                        # Barrel export
+```
+
+**Important:** These templates use `@uswds-wc/core` imports which work correctly when used inside a package (e.g., `packages/uswds-wc-forms/`). The templates are designed for co-located files within a component directory.
 
 ## Component Template
 
 ```typescript
 import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { USWDSBaseComponent } from '../../utils/base-component.js';
-import '../../styles/styles.css';
+import { USWDSBaseComponent } from '@uswds-wc/core';
+import '@uswds-wc/core/styles.css';
 
 /**
  * USA Component Web Component
@@ -47,7 +76,7 @@ export class USAComponent extends USWDSBaseComponent {
   private async initializeUSWDSComponent() {
     try {
       // Use standardized USWDS loader utility for consistency
-      const { initializeUSWDSComponent } = await import('../../utils/uswds-loader.js');
+      const { initializeUSWDSComponent } = await import('@uswds-wc/core');
 
       await this.updateComplete;
       const element = this.querySelector('.usa-component');
@@ -79,9 +108,9 @@ export class USAComponent extends USWDSBaseComponent {
 
 ```typescript
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import '../src/components/component/usa-component.ts';
-import type { USAComponent } from '../src/components/component/usa-component.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '../__tests__/accessibility-utils.js';
+import './usa-component.ts';
+import type { USAComponent } from './usa-component.js';
+import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '@uswds-wc/core/testing';
 
 describe('USAComponent', () => {
   let element: USAComponent;
@@ -267,13 +296,39 @@ See [Storybook](http://localhost:6006) for interactive examples.
 Instead of manually creating files, use the automated generator:
 
 ```bash
-npm run generate:component -- --name=my-component
-npm run generate:component -- --interactive
+# Interactive mode (recommended)
+pnpm run generate:component -- --interactive
+
+# Or specify component name
+pnpm run generate:component -- --name=my-component
 ```
 
-The generator creates:
-- Component TypeScript file with USWDS patterns
-- Unit test file with accessibility tests
-- Storybook story file
-- Component README with documentation
-- All required boilerplate following best practices
+The generator will:
+1. **Prompt for package selection** - Choose which category package (forms, actions, etc.)
+2. **Create component files** in the correct package location
+3. **Generate all boilerplate** following monorepo patterns:
+   - Component TypeScript file with `@uswds-wc/core` imports
+   - Unit test file with accessibility tests
+   - Layout test file with DOM structure validation
+   - Storybook story file
+   - Component README.mdx with documentation
+   - Barrel export in `index.ts`
+
+**Example workflow:**
+```bash
+# 1. Generate new form component
+pnpm run generate:component -- --interactive
+# Select: @uswds-wc/forms
+# Name: text-input
+
+# 2. Build the package
+pnpm --filter @uswds-wc/forms build
+
+# 3. Test the package
+pnpm --filter @uswds-wc/forms test
+
+# 4. View in Storybook
+pnpm run storybook
+```
+
+All generated code follows monorepo best practices and uses correct `@uswds-wc/core` imports.

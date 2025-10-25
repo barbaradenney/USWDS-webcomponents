@@ -25,7 +25,9 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
+import { getAllComponentPaths, getAllComponentNames, getComponentPath } from '../utils/find-components.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,18 +82,17 @@ const results = {
 
 // Get component list
 function getComponents() {
-  const componentsDir = path.join(rootDir, 'src/components');
-  const dirs = fs.readdirSync(componentsDir, { withFileTypes: true });
-
-  return dirs
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
-    .filter(name => !name.startsWith('.'));
+  return getAllComponentNames();
 }
 
 // Validation: USWDS HTML/CSS Compliance
 async function validateUSWDSCompliance(componentName) {
-  const componentPath = path.join(rootDir, 'src/components', componentName, `usa-${componentName}.ts`);
+  const componentDir = getComponentPath(componentName);
+  if (!componentDir) {
+    results.warnings.push(`${componentName}: Component directory not found`);
+    return;
+  }
+  const componentPath = path.join(componentDir, `usa-${componentName}.ts`);
 
   if (!fs.existsSync(componentPath)) {
     results.warnings.push(`${componentName}: Component file not found`);
@@ -156,7 +157,11 @@ async function validateUSWDSCompliance(componentName) {
 
 // Validation: Component Structure
 async function validateStructure(componentName) {
-  const componentDir = path.join(rootDir, 'src/components', componentName);
+  const componentDir = getComponentPath(componentName);
+  if (!componentDir) {
+    results.warnings.push(`${componentName}: Component directory not found`);
+    return;
+  }
 
   const requiredFiles = [
     `usa-${componentName}.ts`,
@@ -179,7 +184,12 @@ async function validateStructure(componentName) {
 
 // Validation: JavaScript Integration
 async function validateJavaScriptIntegration(componentName) {
-  const componentPath = path.join(rootDir, 'src/components', componentName, `usa-${componentName}.ts`);
+  const componentDir = getComponentPath(componentName);
+  if (!componentDir) {
+    results.warnings.push(`${componentName}: Component directory not found`);
+    return;
+  }
+  const componentPath = path.join(componentDir, `usa-${componentName}.ts`);
 
   if (!fs.existsSync(componentPath)) {
     results.warnings.push(`${componentName}: Component file not found`);
@@ -217,7 +227,9 @@ async function validateJavaScriptIntegration(componentName) {
 
 // Validation: Architecture Patterns
 async function validateArchitecture(componentName) {
-  const componentPath = path.join(rootDir, 'src/components', componentName, `usa-${componentName}.ts`);
+  const componentDir = getComponentPath(componentName);
+  if (!componentDir) return;
+  const componentPath = path.join(componentDir, `usa-${componentName}.ts`);
 
   if (!fs.existsSync(componentPath)) {
     return;
@@ -254,7 +266,12 @@ async function validateArchitecture(componentName) {
 
 // Validation: Storybook Stories
 async function validateStorybook(componentName) {
-  const storyPath = path.join(rootDir, 'src/components', componentName, `usa-${componentName}.stories.ts`);
+  const componentDir = getComponentPath(componentName);
+  if (!componentDir) {
+    results.failures.push(`${componentName}: Component directory not found`);
+    return;
+  }
+  const storyPath = path.join(componentDir, `usa-${componentName}.stories.ts`);
 
   if (!fs.existsSync(storyPath)) {
     results.failures.push(`${componentName}: Missing Storybook story file`);
@@ -287,7 +304,9 @@ async function validateStorybook(componentName) {
 
 // Validation: Accessibility
 async function validateAccessibility(componentName) {
-  const testPath = path.join(rootDir, 'src/components', componentName, `usa-${componentName}.test.ts`);
+  const componentDir = getComponentPath(componentName);
+  if (!componentDir) return;
+  const testPath = path.join(componentDir, `usa-${componentName}.test.ts`);
 
   if (!fs.existsSync(testPath)) {
     results.warnings.push(`${componentName}: No test file found`);

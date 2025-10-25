@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../input-prefix-suffix/index.ts';
 import type { USAInputPrefixSuffix } from './usa-input-prefix-suffix.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USAInputPrefixSuffix Layout Tests', () => {
   let element: USAInputPrefixSuffix;

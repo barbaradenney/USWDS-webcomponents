@@ -1,0 +1,626 @@
+name: 🧪 Comprehensive Testing Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run comprehensive tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      include_visual:
+        description: 'Include visual regression tests'
+        required: false
+        default: 'true'
+        type: boolean
+      include_performance:
+        description: 'Include performance tests'
+        required: false
+        default: 'true'
+        type: boolean
+      test_environment:
+        description: 'Test environment'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+        - full
+        - fast
+      include_phase5:
+        description: 'Include Phase 5 AI-powered testing'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  NODE_VERSION: '18'
+  FORCE_COLOR: 1
+  CI: true
+
+jobs:
+  # Pre-flight checks and setup
+  setup:
+    name: 🔧 Setup & Pre-flight Checks
+    runs-on: ubuntu-latest
+    outputs:
+      should_run_visual: ${{ steps.config.outputs.should_run_visual }}
+      should_run_performance: ${{ steps.config.outputs.should_run_performance }}
+      test_matrix: ${{ steps.config.outputs.test_matrix }}
+      cache_key: ${{ steps.cache.outputs.cache_key }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎯 Configure test strategy
+        id: config
+        run: |
+          # Determine test configuration based on trigger and inputs
+          if [[ "${{ github.event_name }}" == "schedule" ]] || [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.test_environment }}" == "full" ]]; then
+            echo "should_run_visual=true" >> $GITHUB_OUTPUT
+            echo "should_run_performance=true" >> $GITHUB_OUTPUT
+            echo "test_matrix=[\"chromium\", \"firefox\", \"webkit\", \"mobile-chrome\", \"mobile-safari\"]" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "should_run_visual=false" >> $GITHUB_OUTPUT
+            echo "should_run_performance=false" >> $GITHUB_OUTPUT
+            echo "test_matrix=[\"chromium\", \"firefox\"]" >> $GITHUB_OUTPUT
+          else
+            echo "should_run_visual=${{ inputs.include_visual || 'false' }}" >> $GITHUB_OUTPUT
+            echo "should_run_performance=${{ inputs.include_performance || 'false' }}" >> $GITHUB_OUTPUT
+            echo "test_matrix=[\"chromium\", \"firefox\", \"webkit\"]" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 💾 Generate cache key
+        id: cache
+        run: |
+          echo "cache_key=comprehensive-tests-${{ hashFiles('package-lock.json', 'playwright.*.config.ts') }}" >> $GITHUB_OUTPUT
+
+      - name: 🔍 Validate configuration
+        run: |
+          echo "🔧 Test Configuration:"
+          echo "  Visual Tests: ${{ steps.config.outputs.should_run_visual }}"
+          echo "  Performance Tests: ${{ steps.config.outputs.should_run_performance }}"
+          echo "  Browser Matrix: ${{ steps.config.outputs.test_matrix }}"
+          echo "  Event: ${{ github.event_name }}"
+          echo "  Environment: ${{ inputs.test_environment || 'default' }}"
+
+  # Core testing suite - Unit tests, linting, type checking
+  core-tests:
+    name: 🔍 Core Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Lint code
+        run: npm run lint
+
+      - name: 🔍 Type check
+        run: npm run typecheck
+
+      - name: 🧪 Run unit tests
+        run: npm run test:coverage
+
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: unit-tests
+          name: unit-tests-coverage
+
+      - name: 📦 Archive coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: |
+            coverage/
+            test-reports/
+          retention-days: 30
+
+  # Accessibility testing across all environments
+  accessibility-tests:
+    name: ♿ Accessibility Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - { name: 'standard', options: '--project=chromium-desktop' }
+          - { name: 'high-contrast', options: '--project=accessibility-high-contrast' }
+          - { name: 'reduced-motion', options: '--project=accessibility-reduced-motion' }
+          - { name: 'dark-mode', options: '--project=accessibility-dark-mode' }
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: ♿ Run accessibility tests
+        run: |
+          npx playwright test tests/accessibility/ \
+            ${{ matrix.environment.options }} \
+            --config=playwright.comprehensive.config.ts \
+            --reporter=html,json
+
+      - name: 📊 Upload accessibility results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accessibility-results-${{ matrix.environment.name }}
+          path: |
+            test-reports/
+            playwright-report/
+          retention-days: 30
+
+  # Security testing suite
+  security-tests:
+    name: 🔒 Security Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: 🔒 Run security tests
+        run: |
+          npx playwright test tests/security/ \
+            --project=security-testing \
+            --config=playwright.comprehensive.config.ts \
+            --reporter=json
+
+      - name: 🔍 Run npm audit
+        run: npm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
+
+      - name: 📊 Upload security results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-results
+          path: |
+            test-reports/
+          retention-days: 30
+
+  # Cross-browser compatibility testing
+  cross-browser-tests:
+    name: 🌐 Cross-Browser Tests
+    runs-on: ${{ matrix.os }}
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            browser: chromium
+            project: chromium-desktop
+          - os: ubuntu-latest
+            browser: firefox
+            project: firefox-desktop
+          - os: ubuntu-latest
+            browser: webkit
+            project: webkit-desktop
+          - os: macos-latest
+            browser: webkit
+            project: webkit-desktop
+          - os: windows-latest
+            browser: chromium
+            project: chromium-desktop
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: 🌐 Run cross-browser tests
+        run: |
+          npx playwright test tests/cross-browser/ tests/progressive-enhancement/ \
+            --project=${{ matrix.project }} \
+            --config=playwright.comprehensive.config.ts \
+            --reporter=json
+
+      - name: 📊 Upload cross-browser results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cross-browser-results-${{ matrix.os }}-${{ matrix.browser }}
+          path: |
+            test-reports/
+          retention-days: 30
+
+  # Performance testing (conditional)
+  performance-tests:
+    name: ⚡ Performance Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    if: needs.setup.outputs.should_run_performance == 'true'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: ⚡ Run performance tests
+        run: |
+          npx playwright test tests/performance/ \
+            --project=performance-testing \
+            --config=playwright.comprehensive.config.ts \
+            --reporter=json
+
+      - name: 📊 Upload performance results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-results
+          path: |
+            test-reports/
+          retention-days: 30
+
+  # Visual regression testing (conditional)
+  visual-tests:
+    name: 👁️ Visual Regression Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    if: needs.setup.outputs.should_run_visual == 'true'
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 👁️ Run visual regression tests
+        run: npm run test:visual
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+      - name: 📊 Upload visual test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-regression-results
+          path: |
+            test-results/
+          retention-days: 30
+
+  # Integration and error recovery testing
+  integration-tests:
+    name: 🔄 Integration & Error Recovery Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: 🔄 Run integration tests
+        run: |
+          npx playwright test tests/integration/ tests/error-recovery/ tests/api-contracts/ \
+            --project=integration-testing \
+            --config=playwright.comprehensive.config.ts \
+            --reporter=json
+
+      - name: 📊 Upload integration results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-results
+          path: |
+            test-reports/
+          retention-days: 30
+
+  # Comprehensive test orchestration
+  comprehensive-report:
+    name: 📊 Generate Comprehensive Report
+    runs-on: ubuntu-latest
+    needs: [setup, core-tests, accessibility-tests, security-tests, cross-browser-tests, integration-tests]
+    if: always()
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 📥 Download all test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./downloaded-artifacts
+
+      - name: 🔄 Consolidate test results
+        run: |
+          # Create consolidated test reports directory
+          mkdir -p ./test-reports/consolidated
+
+          # Copy all test results to consolidated directory
+          find ./downloaded-artifacts -name "*.json" -exec cp {} ./test-reports/consolidated/ \;
+          find ./downloaded-artifacts -name "*.xml" -exec cp {} ./test-reports/consolidated/ \;
+
+          # Run comprehensive report generation
+          node scripts/test-orchestrator.js --no-parallel --html --report-path ./test-reports
+
+      - name: 📊 Generate comprehensive summary
+        run: |
+          echo "# 🧪 Comprehensive Test Results" > test-summary.md
+          echo "" >> test-summary.md
+          echo "## 📋 Test Summary" >> test-summary.md
+
+          # Add job status summary
+          echo "| Test Suite | Status |" >> test-summary.md
+          echo "|------------|--------|" >> test-summary.md
+          echo "| Core Tests | ${{ needs.core-tests.result }} |" >> test-summary.md
+          echo "| Accessibility Tests | ${{ needs.accessibility-tests.result }} |" >> test-summary.md
+          echo "| Security Tests | ${{ needs.security-tests.result }} |" >> test-summary.md
+          echo "| Cross-Browser Tests | ${{ needs.cross-browser-tests.result }} |" >> test-summary.md
+          echo "| Integration Tests | ${{ needs.integration-tests.result }} |" >> test-summary.md
+
+          if [[ "${{ needs.setup.outputs.should_run_performance }}" == "true" ]]; then
+            echo "| Performance Tests | ${{ needs.performance-tests.result }} |" >> test-summary.md
+          fi
+
+          if [[ "${{ needs.setup.outputs.should_run_visual }}" == "true" ]]; then
+            echo "| Visual Tests | ${{ needs.visual-tests.result }} |" >> test-summary.md
+          fi
+
+      - name: 📊 Upload comprehensive report
+        uses: actions/upload-artifact@v4
+        with:
+          name: comprehensive-test-report
+          path: |
+            test-reports/
+            test-summary.md
+          retention-days: 30
+
+      - name: 💬 Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let summary = '# 🧪 Comprehensive Test Results\n\n';
+
+            // Add test status overview
+            const jobs = {
+              'Core Tests': '${{ needs.core-tests.result }}',
+              'Accessibility Tests': '${{ needs.accessibility-tests.result }}',
+              'Security Tests': '${{ needs.security-tests.result }}',
+              'Cross-Browser Tests': '${{ needs.cross-browser-tests.result }}',
+              'Integration Tests': '${{ needs.integration-tests.result }}'
+            };
+
+            if ('${{ needs.setup.outputs.should_run_performance }}' === 'true') {
+              jobs['Performance Tests'] = '${{ needs.performance-tests.result }}';
+            }
+
+            if ('${{ needs.setup.outputs.should_run_visual }}' === 'true') {
+              jobs['Visual Tests'] = '${{ needs.visual-tests.result }}';
+            }
+
+            summary += '| Test Suite | Status |\n|------------|--------|\n';
+
+            for (const [name, status] of Object.entries(jobs)) {
+              const emoji = status === 'success' ? '✅' : status === 'failure' ? '❌' : '⚠️';
+              summary += `| ${name} | ${emoji} ${status} |\n`;
+            }
+
+            summary += '\n## 📊 Detailed Reports\n\n';
+            summary += 'Detailed test reports are available in the [Actions artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).\n\n';
+            summary += '### 📁 Available Artifacts:\n';
+            summary += '- 📊 Comprehensive Test Report\n';
+            summary += '- ♿ Accessibility Results\n';
+            summary += '- 🔒 Security Test Results\n';
+            summary += '- 🌐 Cross-Browser Results\n';
+            summary += '- 🔄 Integration Test Results\n';
+
+            if ('${{ needs.setup.outputs.should_run_performance }}' === 'true') {
+              summary += '- ⚡ Performance Test Results\n';
+            }
+
+            if ('${{ needs.setup.outputs.should_run_visual }}' === 'true') {
+              summary += '- 👁️ Visual Regression Results\n';
+            }
+
+            // Post comment
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+  # Quality gates and notifications
+  phase5-ai-testing:
+    name: 🤖 Phase 5 AI-Powered Testing
+    runs-on: ubuntu-latest
+    needs: [setup, core-tests]
+    if: github.event.inputs.include_phase5 == 'true' || (github.event.inputs.include_phase5 == '' && github.event_name != 'pull_request')
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧠 AI Test Generation Analysis
+        run: |
+          echo "🤖 Running AI-powered test analysis..."
+          npm run ai:analyze
+
+      - name: 🔮 Predictive Regression Testing
+        run: |
+          echo "🔮 Running predictive regression testing..."
+          npm run test:predict:dry-run --verbose
+
+      - name: 💡 Smart Test Recommendations
+        run: |
+          echo "💡 Generating smart test recommendations..."
+          npm run test:recommend --verbose
+
+      - name: 🌪️ Chaos Engineering Tests
+        run: |
+          echo "🌪️ Running chaos engineering tests..."
+          npm run test:chaos:medium --verbose
+
+      - name: ⚡ Intelligent Test Optimization
+        run: |
+          echo "⚡ Analyzing test optimization opportunities..."
+          npm run test:optimize:dry-run
+
+      - name: 📊 Upload Phase 5 Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase5-reports-${{ github.sha }}
+          path: |
+            test-recommendations-report.json
+            TEST_RECOMMENDATIONS.md
+            chaos-engineering-report.json
+            .predictive-test-results.json
+          retention-days: 14
+
+  quality-gates:
+    name: 🚦 Quality Gates
+    runs-on: ubuntu-latest
+    needs: [setup, core-tests, accessibility-tests, security-tests, cross-browser-tests, integration-tests, comprehensive-report, phase5-ai-testing]
+    if: always()
+    steps:
+      - name: 🔍 Evaluate quality gates
+        run: |
+          echo "🚦 Evaluating quality gates..."
+
+          # Core tests must pass
+          if [[ "${{ needs.core-tests.result }}" != "success" ]]; then
+            echo "❌ Core tests failed - blocking deployment"
+            exit 1
+          fi
+
+          # Accessibility tests must pass
+          if [[ "${{ needs.accessibility-tests.result }}" != "success" ]]; then
+            echo "❌ Accessibility tests failed - blocking deployment"
+            exit 1
+          fi
+
+          # Security tests must pass
+          if [[ "${{ needs.security-tests.result }}" != "success" ]]; then
+            echo "❌ Security tests failed - blocking deployment"
+            exit 1
+          fi
+
+          # Cross-browser tests should pass (warning if not)
+          if [[ "${{ needs.cross-browser-tests.result }}" != "success" ]]; then
+            echo "⚠️ Cross-browser tests failed - review required"
+          fi
+
+          echo "✅ Quality gates passed"
+
+      - name: 🔔 Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚨 **Quality Gates Failed**\n\nOne or more critical test suites failed. Please review the test results before merging.'
+            });
+
+# Workflow configuration
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true

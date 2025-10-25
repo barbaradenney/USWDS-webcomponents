@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-skip-link.ts';
 import type { USASkipLink, SkipLinkDetail } from './usa-skip-link.js';
-import { waitForUpdate, validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 
 describe('USASkipLink', () => {
   let element: USASkipLink;

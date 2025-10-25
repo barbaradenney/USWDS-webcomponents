@@ -36,37 +36,38 @@ The Component Generator is an intelligent scaffolding system that creates fully-
 ### Basic Usage
 
 ```bash
-# Generate a new component
-npm run generate:component -- --name=my-component
+# Generate a new component (interactive mode recommended)
+pnpm run generate:component -- --interactive
 
-# Interactive mode (prompts for options)
-npm run generate:component -- --interactive
+# Or specify component name and package
+pnpm run generate:component -- --name=my-component
 ```
 
 ### Example Output
 
 ```bash
-npm run generate:component -- --name=alert-box
+pnpm run generate:component -- --name=alert-box
 
 🎯 Generating USWDS-compliant component: alert-box
-📁 Directory: src/components/alert-box
+📦 Select package: @uswds-wc/feedback
+📁 Directory: packages/uswds-wc-feedback/src/components/alert-box
 
-✅ Created: src/components/alert-box/usa-alert-box.ts
-✅ Created: src/components/alert-box/usa-alert-box.test.ts
-✅ Created: src/components/alert-box/usa-alert-box.stories.ts
-✅ Created: src/components/alert-box/README.mdx
-✅ Created: src/components/alert-box/CHANGELOG.mdx
-✅ Created: src/components/alert-box/TESTING.md
-✅ Created: src/components/alert-box/index.ts
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/usa-alert-box.ts
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/usa-alert-box.test.ts
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/usa-alert-box.stories.ts
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/README.mdx
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/CHANGELOG.mdx
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/TESTING.md
+✅ Created: packages/uswds-wc-feedback/src/components/alert-box/index.ts
 
 🎉 Component generated successfully!
 
 📋 Next steps:
-   1. Review generated files in src/components/alert-box/
+   1. Review generated files in packages/uswds-wc-feedback/src/components/alert-box/
    2. Implement component logic in usa-alert-box.ts
    3. Add test cases to usa-alert-box.test.ts
    4. Update README.mdx with usage examples
-   5. Run: npm test src/components/alert-box
+   5. Run: pnpm --filter @uswds-wc/feedback test
 ```
 
 ## 📦 Generated Files
@@ -77,10 +78,10 @@ npm run generate:component -- --name=alert-box
 ```typescript
 import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { USWDSBaseComponent } from '../../utils/base-component.js';
+import { USWDSBaseComponent } from '@uswds-wc/core';
 
 // Import official USWDS compiled CSS
-import '../../styles/styles.css';
+import '@uswds-wc/core/styles.css';
 
 /**
  * USA AlertBox Web Component

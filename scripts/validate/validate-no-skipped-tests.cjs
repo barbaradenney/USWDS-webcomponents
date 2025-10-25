@@ -28,7 +28,7 @@ const { execSync } = require('child_process');
 // - Remaining: 1 architectural decision + 5 Cypress timing limitations
 const APPROVED_SKIPS = {
   // Footer architectural decision ✅ JUSTIFIED
-  'src/components/footer/footer-uswds-alignment.test.ts': {
+  'packages/uswds-wc-navigation/src/components/footer/footer-uswds-alignment.test.ts': {
     count: 1,
     reason: 'ARCHITECTURAL_DECISION',
     documented: 'Intentional design deviation from USWDS footer - testing invalid mixed usage',
@@ -36,12 +36,12 @@ const APPROVED_SKIPS = {
 
   // Cypress timing limitation tests ✅ JUSTIFIED
   // These are Cypress-specific timing issues that don't affect production
-  'src/components/date-picker/usa-date-picker-timing-regression.component.cy.ts': {
+  'packages/uswds-wc-forms/src/components/date-picker/usa-date-picker-timing-regression.component.cy.ts': {
     count: 2,
     reason: 'CYPRESS_LIMITATION',
     documented: 'Cypress timing issues with month navigation and date constraints - works in production',
   },
-  'src/components/modal/usa-modal-timing-regression.component.cy.ts': {
+  'packages/uswds-wc-feedback/src/components/modal/usa-modal-timing-regression.component.cy.ts': {
     count: 3,
     reason: 'CYPRESS_LIMITATION',
     documented: 'Cypress timing issues with programmatic API and force-action - works in production',
@@ -75,22 +75,22 @@ const APPROVED_SKIPS = {
   // CI Environment Limitation (2025-10-20) ✅ JUSTIFIED
   // USWDS global event delegation interferes in CI's jsdom environment
   // Entire behavior test suites skipped in CI, fully covered by Cypress
-  'src/components/accordion/usa-accordion-behavior.test.ts': {
+  'packages/uswds-wc-structure/src/components/accordion/usa-accordion-behavior.test.ts': {
     count: 22,
     reason: 'CI_ENVIRONMENT_LIMITATION',
     documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
-  'src/components/combo-box/usa-combo-box-behavior.test.ts': {
+  'packages/uswds-wc-forms/src/components/combo-box/usa-combo-box-behavior.test.ts': {
     count: 27,
     reason: 'CI_ENVIRONMENT_LIMITATION',
     documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
-  'src/components/footer/usa-footer-behavior.test.ts': {
+  'packages/uswds-wc-navigation/src/components/footer/usa-footer-behavior.test.ts': {
     count: 26,
     reason: 'CI_ENVIRONMENT_LIMITATION',
     documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
   },
-  'src/components/search/usa-search-behavior.test.ts': {
+  'packages/uswds-wc-actions/src/components/search/usa-search-behavior.test.ts': {
     count: 21,
     reason: 'CI_ENVIRONMENT_LIMITATION',
     documented: 'USWDS global event delegation interferes with all jsdom tests in CI - entire suite skipped, covered by Cypress',
@@ -113,6 +113,8 @@ function findTestFiles() {
   const testFiles = [];
 
   function scanDir(dir) {
+    if (!fs.existsSync(dir)) return;
+
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
@@ -124,7 +126,17 @@ function findTestFiles() {
     }
   }
 
-  scanDir('src/components');
+  // Scan all monorepo packages
+  const packagesDir = 'packages';
+  if (fs.existsSync(packagesDir)) {
+    const packages = fs.readdirSync(packagesDir, { withFileTypes: true });
+    for (const pkg of packages) {
+      if (pkg.isDirectory() && pkg.name.startsWith('uswds-wc-')) {
+        scanDir(path.join(packagesDir, pkg.name, 'src'));
+      }
+    }
+  }
+
   return testFiles;
 }
 

@@ -26,26 +26,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build components
-        run: npm run build:css
+        run: pnpm run build:css
 
       - name: Analyze component integration status
-        run: npm run analyze:component-integration
+        run: pnpm run analyze:component-integration
 
       - name: Validate component interactions
-        run: npm run validate:component-interactions
+        run: pnpm run validate:component-interactions
 
       - name: Run interaction unit tests
-        run: npm run test:accordion:interaction
+        run: pnpm run test:accordion:interaction
 
       - name: Upload interaction analysis report
         uses: actions/upload-artifact@v4
@@ -62,21 +67,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build CSS
-        run: npm run build:css
+        run: pnpm run build:css
 
       - name: Start dev server in background
         run: |
-          npm run dev &
+          pnpm run dev &
           echo "DEV_PID=$!" >> $GITHUB_ENV
 
       - name: Wait for dev server
@@ -85,7 +95,7 @@ jobs:
 
       - name: Build and start Storybook
         run: |
-          npm run build-storybook
+          pnpm run build-storybook
           npx http-server storybook-static -p 6007 &
           echo "STORYBOOK_PID=$!" >> $GITHUB_ENV
 
@@ -94,7 +104,7 @@ jobs:
           timeout 60 bash -c 'until curl -f http://localhost:6007; do sleep 2; done'
 
       - name: Run interaction tests in browser environments
-        run: npm run test:interactions:verbose
+        run: pnpm run test:interactions:verbose
 
       - name: Upload interaction test results
         uses: actions/upload-artifact@v4
@@ -123,20 +133,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Update documentation with latest component status
-        run: npm run docs:auto-update
+        run: pnpm run docs:auto-update
 
       - name: Update changelogs for interaction testing changes
-        run: npm run changelog:update
+        run: pnpm run changelog:update
 
       - name: Commit documentation updates
         run: |
@@ -164,14 +179,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Check for accordion-like patterns in changes
         run: |
@@ -184,7 +204,7 @@ jobs:
             # Run migration analysis on changed components
             for component in $CHANGED_COMPONENTS; do
               echo "Testing migration pattern for: $component"
-              npm run migrate:component -- --component=$component --dry-run || echo "Migration analysis completed for $component"
+              pnpm run migrate:component -- --component=$component --dry-run || echo "Migration analysis completed for $component"
             done
           else
             echo "No component changes detected"
@@ -193,10 +213,10 @@ jobs:
       - name: Validate USWDS integration consistency
         run: |
           # Check that USWDS configuration is consistent
-          npm run validate:storybook-uswds
+          pnpm run validate:storybook-uswds
 
           # Run quick interaction validation
-          npm run validate:component-interactions
+          pnpm run validate:component-interactions
 
   # Security check for new interaction patterns
   security-validation:
@@ -293,9 +313,9 @@ jobs:
             }
 
             analysisComment += \`### 🔗 Useful Commands\\n\`;
-            analysisComment += \`- \\\`npm run analyze:component-integration\\\` - Full analysis\\n\`;
-            analysisComment += \`- \\\`npm run test:interactions\\\` - Test interactions\\n\`;
-            analysisComment += \`- \\\`npm run migrate:component -- --component=COMPONENT_NAME\\\` - Fix patterns\\n\`;
+            analysisComment += \`- \\\`pnpm run analyze:component-integration\\\` - Full analysis\\n\`;
+            analysisComment += \`- \\\`pnpm run test:interactions\\\` - Test interactions\\n\`;
+            analysisComment += \`- \\\`pnpm run migrate:component -- --component=COMPONENT_NAME\\\` - Fix patterns\\n\`;
 
             // Post comment
             github.rest.issues.createComment({

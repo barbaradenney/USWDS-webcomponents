@@ -2,6 +2,14 @@
 
 A lightweight web component library that wraps the official U.S. Web Design System (USWDS) 3.0 with minimal custom code for maximum maintainability and accessibility.
 
+## 📊 Status
+
+[![CI](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/ci.yml/badge.svg)](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/barbaradenney/USWDS-webcomponents/branch/main/graph/badge.svg)](https://codecov.io/gh/barbaradenney/USWDS-webcomponents)
+[![Visual Tests](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/visual-testing.yml/badge.svg)](https://github.com/barbaradenney/USWDS-webcomponents/actions/workflows/visual-testing.yml)
+[![npm version](https://badge.fury.io/js/uswds-webcomponents.svg)](https://www.npmjs.com/package/uswds-webcomponents)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## 🔗 Quick Links
 
 - **📚 [Live Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)** - Interactive component documentation and examples
@@ -141,12 +149,19 @@ pnpm add uswds-webcomponents lit
 ### Basic Usage
 
 ```javascript
-// Import the component(s) you need
-import 'uswds-webcomponents/components/button';
-import 'uswds-webcomponents/components/alert';
+// Import by category (recommended for most use cases)
+import 'uswds-webcomponents/actions';      // Button, Link, Search, ButtonGroup
+import 'uswds-webcomponents/feedback';     // Alert, Modal, Tooltip, Banner, SiteAlert
 
-// Import USWDS styles
-import 'uswds-webcomponents/styles.css';
+// Or import individual components (best for tree-shaking)
+import { USAButton } from 'uswds-webcomponents/actions';
+import { USAAlert } from 'uswds-webcomponents/feedback';
+
+// Or import specific component from category
+import 'uswds-webcomponents/actions/button';
+import 'uswds-webcomponents/feedback/alert';
+
+// USWDS styles are automatically included with components
 ```
 
 ```html
@@ -180,8 +195,9 @@ You can also use the library via CDN (unpkg or jsdelivr):
 
 **React**:
 ```jsx
-import 'uswds-webcomponents/components/button';
-import 'uswds-webcomponents/styles.css';
+// Import by category or individual component
+import 'uswds-webcomponents/actions';
+// Or: import { USAButton } from 'uswds-webcomponents/actions';
 
 function App() {
   return <usa-button variant="primary">Click Me</usa-button>;
@@ -195,16 +211,18 @@ function App() {
 </template>
 
 <script>
-import 'uswds-webcomponents/components/button';
-import 'uswds-webcomponents/styles.css';
+// Import by category or individual component
+import 'uswds-webcomponents/actions';
+// Or: import { USAButton } from 'uswds-webcomponents/actions';
 </script>
 ```
 
 **Angular**:
 ```typescript
 // app.module.ts
-import 'uswds-webcomponents/components/button';
-import 'uswds-webcomponents/styles.css';
+// Import by category or individual component
+import 'uswds-webcomponents/actions';
+// Or: import { USAButton } from 'uswds-webcomponents/actions';
 
 // Add CUSTOM_ELEMENTS_SCHEMA to your module
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -214,29 +232,28 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 })
 ```
 
-### Tree-Shaking (Recommended)
+### Tree-Shaking & Optimized Imports (Recommended)
 
-Import only the components you need for optimal bundle size:
+Import only what you need for optimal bundle size:
 
 ```javascript
-// Import specific components
-import 'uswds-webcomponents/components/button';
-import 'uswds-webcomponents/components/alert';
-import 'uswds-webcomponents/components/modal';
+// BEST: Import by category (balance of convenience and size)
+import 'uswds-webcomponents/forms';        // All 15 form components
+import 'uswds-webcomponents/navigation';   // All 8 navigation components
+import 'uswds-webcomponents/actions';      // Button, Link, Search, ButtonGroup
+import 'uswds-webcomponents/feedback';     // Alert, Modal, Tooltip, Banner, SiteAlert
 
-// Import by category (smaller bundles than full import)
-import 'uswds-webcomponents/forms';        // All form components
-import 'uswds-webcomponents/navigation';   // All navigation components
+// BETTER: Named imports for specific components (TypeScript-friendly)
+import { USAButton, USAButtonGroup } from 'uswds-webcomponents/actions';
+import { USATextInput, USACheckbox, USASelect } from 'uswds-webcomponents/forms';
+import { USAHeader, USAFooter } from 'uswds-webcomponents/navigation';
 
-// Import individual components from categories
+// GOOD: Direct component imports (most specific)
 import 'uswds-webcomponents/forms/text-input';
+import 'uswds-webcomponents/actions/button';
 import 'uswds-webcomponents/navigation/header';
 
-// Named imports for TypeScript (side-effect free)
-import { USAButton, USAAlert } from 'uswds-webcomponents/actions';
-import { USATextInput, USACheckbox } from 'uswds-webcomponents/forms';
-
-// Components will automatically import their required styles
+// Components automatically include their required USWDS styles
 ```
 
 ## 📦 Available Components (45 Total)
@@ -414,15 +431,26 @@ For contributors who want to work on the library itself:
 git clone https://github.com/barbaramiles/USWDS-webcomponents.git
 cd USWDS-webcomponents
 
-# Install dependencies
-npm install
+# Install pnpm globally (if not already installed)
+npm install -g pnpm
 
-# Compile USWDS CSS (first time only)
-npm run build:css
+# Install dependencies (pnpm workspaces)
+pnpm install
+
+# Build all packages (Turborepo parallel builds)
+pnpm run build
 
 # Start Storybook for development
-npm run storybook
+pnpm run storybook
+
+# Run tests
+pnpm test
+
+# Run visual regression tests
+pnpm run test:visual
 ```
+
+**Monorepo Structure**: This project uses pnpm workspaces with 9 independently buildable packages. See [docs/MONOREPO_MIGRATION_GUIDE.md](docs/MONOREPO_MIGRATION_GUIDE.md) for details.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
@@ -461,21 +489,57 @@ npm run build:css
 
 ### Project Structure
 
+**Monorepo Architecture**: The project is organized into 9 independently publishable packages:
+
 ```
-├── src/styles/
-│   ├── styles.scss           # Main USWDS compilation using @forward
-│   ├── _uswds-theme.scss    # Official USWDS theme configuration
-│   └── styles.css           # Compiled USWDS CSS (746KB)
-├── src/
-│   ├── components/           # Web component implementations
-│   │   └── [name]/
-│   │       ├── usa-[name].ts # Component class (minimal wrapper)
-│   │       ├── [name].scss   # Host styles only (no USWDS overrides)
-│   │       └── index.ts      # Exports
-│   ├── styles/
-│   │   └── styles.css       # Compiled USWDS CSS (auto-generated)
-│   └── types/               # TypeScript type definitions
-└── docs/                    # Development guides
+├── packages/
+│   ├── uswds-wc-core/              # @uswds-wc/core - Base classes and utilities
+│   │   ├── src/
+│   │   │   ├── base-component.ts   # USWDSBaseComponent class
+│   │   │   ├── utils/              # 23 shared utilities
+│   │   │   ├── types/              # TypeScript type definitions
+│   │   │   └── styles/             # Compiled USWDS CSS
+│   │   └── package.json
+│   │
+│   ├── uswds-wc-actions/           # @uswds-wc/actions (4 components)
+│   │   ├── src/components/
+│   │   │   ├── button/
+│   │   │   ├── button-group/
+│   │   │   ├── link/
+│   │   │   └── search/
+│   │   └── package.json
+│   │
+│   ├── uswds-wc-forms/             # @uswds-wc/forms (15 components)
+│   │   ├── src/components/
+│   │   │   ├── text-input/
+│   │   │   ├── checkbox/
+│   │   │   ├── date-picker/
+│   │   │   └── ... (12 more form components)
+│   │   └── package.json
+│   │
+│   ├── uswds-wc-navigation/        # @uswds-wc/navigation (8 components)
+│   ├── uswds-wc-data-display/      # @uswds-wc/data-display (8 components)
+│   ├── uswds-wc-feedback/          # @uswds-wc/feedback (5 components)
+│   ├── uswds-wc-layout/            # @uswds-wc/layout (4 components)
+│   ├── uswds-wc-structure/         # @uswds-wc/structure (1 component: accordion)
+│   │
+│   └── uswds-wc/                   # @uswds-wc - Meta package (re-exports all)
+│       └── src/index.ts            # Barrel exports for all categories
+│
+├── docs/                           # Development guides and documentation
+├── pnpm-workspace.yaml             # pnpm workspace configuration
+└── turbo.json                      # Turborepo build pipeline
+```
+
+**Each component package contains:**
+```
+└── [component-name]/
+    ├── usa-[name].ts           # Component implementation
+    ├── usa-[name].test.ts      # Unit tests (Vitest)
+    ├── usa-[name].stories.ts   # Storybook stories
+    ├── [name].css              # Component-specific styles
+    ├── README.md               # Component documentation
+    └── index.ts                # Exports
 ```
 
 ### Component Architecture
@@ -483,14 +547,17 @@ npm run build:css
 Each component follows this pattern:
 
 ```typescript
-import { LitElement, html, css } from 'lit';
+import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-// Import official compiled USWDS CSS
-import '../../styles/styles.css';
+// Import base component from core package
+import { USWDSBaseComponent } from '@uswds-wc/core';
+
+// Import USWDS styles from core
+import '@uswds-wc/core/styles.css';
 
 @customElement('usa-component')
-export class USAComponent extends LitElement {
+export class USAComponent extends USWDSBaseComponent {
   // Minimal host styles only
   static styles = css`
     :host {
@@ -942,8 +1009,9 @@ This comprehensive testing and automation infrastructure ensures high-quality, a
 
 ```typescript
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import '../src/components/button/usa-button.ts';
-import type { USAButton } from '../src/components/button/usa-button.js';
+// Import from the component within the package
+import './usa-button.ts';
+import type { USAButton } from './usa-button.js';
 
 describe('USAButton', () => {
   let element: USAButton;
@@ -982,6 +1050,19 @@ npm run lint             # No linting errors allowed
 ```
 
 ## 🤝 Contributing
+
+**Complete Contributing Guide**: See [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- Development setup and prerequisites
+- Pull request process and requirements
+- Code standards and testing requirements
+- Versioning and release process (Changesets)
+- Commit message guidelines
+
+**CI/CD Documentation**: See [docs/CI_CD_WORKFLOWS.md](docs/CI_CD_WORKFLOWS.md) for:
+- All 30 GitHub Actions workflows explained
+- Required secrets and configuration
+- Troubleshooting guide for CI failures
+- Performance optimizations (Turborepo caching)
 
 ### Adding a New Component
 

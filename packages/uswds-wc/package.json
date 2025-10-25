@@ -1,5 +1,5 @@
 {
-  "name": "@uswds-wc",
+  "name": "@uswds-wc/all",
   "version": "2.0.0",
   "description": "U.S. Web Design System components as Web Components - Complete Package",
   "type": "module",
@@ -24,19 +24,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@uswds-wc/actions": "workspace:*",
     "@uswds-wc/core": "workspace:*",
-    "@uswds-wc/forms": "workspace:*",
-    "@uswds-wc/navigation": "workspace:*",
     "@uswds-wc/data-display": "workspace:*",
     "@uswds-wc/feedback": "workspace:*",
-    "@uswds-wc/actions": "workspace:*",
+    "@uswds-wc/forms": "workspace:*",
     "@uswds-wc/layout": "workspace:*",
+    "@uswds-wc/navigation": "workspace:*",
     "@uswds-wc/structure": "workspace:*"
   },
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "lit": "^3.0.0"
+  },
   "keywords": [
     "uswds",
     "web-components",

@@ -7,8 +7,8 @@ import { initializeHeader } from './usa-header-behavior.js';
 // Import official USWDS compiled CSS
 import '@uswds-wc/core/styles.css';
 
-// Import usa-search component
-import '../search/index.js';
+// Import usa-search component from actions package
+import '@uswds-wc/actions/components/search';
 
 // Import usa-language-selector component
 import '../language-selector/index.js';
@@ -83,6 +83,7 @@ export class USAHeader extends USWDSBaseComponent {
 
   // Store slotted content for Light DOM compatibility
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
 
   @property({ type: Boolean, reflect: true })
   extended = false;
@@ -103,8 +104,9 @@ export class USAHeader extends USWDSBaseComponent {
     super.connectedCallback();
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial content before render
-    if (this.childNodes.length > 0 && this.navItems.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based navItems AND custom slotted navigation
+    if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
     }
@@ -163,10 +165,12 @@ export class USAHeader extends USWDSBaseComponent {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent && this.navItems.length === 0) {
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
       const slotElement = this.querySelector('slot');
       if (slotElement) {
         slotElement.innerHTML = this.slottedContent;
+        this.slottedContentApplied = true;
       }
     }
   }

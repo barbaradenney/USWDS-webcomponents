@@ -4,8 +4,8 @@ import type { USATag } from './usa-tag.js';
 import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
-} from '../../../__tests__/accessibility-utils.js';
-import { validateComponentJavaScript } from '../../../__tests__/test-utils.js';
+} from '@uswds-wc/test-utils/accessibility-utils.js';
+import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USATag', () => {
   let element: USATag;
@@ -599,7 +599,7 @@ describe('USATag', () => {
 
   describe('Color/Contrast Accessibility (WCAG 1.4)', () => {
     it('should verify tag has USWDS classes for contrast', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       await element.updateComplete;
 
@@ -626,7 +626,7 @@ describe('USATag', () => {
     });
 
     it('should calculate contrast correctly for tag colors', async () => {
-      const { calculateContrastRatio } = await import('../../../__tests__/contrast-utils.js');
+      const { calculateContrastRatio } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       // USWDS tag uses dark background with white text
       // Test typical tag color combinations
@@ -642,7 +642,7 @@ describe('USATag', () => {
     });
 
     it('should verify tag text has adequate contrast', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       await element.updateComplete;
 
@@ -656,7 +656,7 @@ describe('USATag', () => {
     });
 
     it('should test large text identification for big tags', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       element.big = true;
       await element.updateComplete;
@@ -672,7 +672,7 @@ describe('USATag', () => {
     });
 
     it('should verify tag maintains contrast with explicit colors', async () => {
-      const { testColorContrast } = await import('../../../__tests__/contrast-utils.js');
+      const { testColorContrast } = await import('@uswds-wc/test-utils/contrast-utils.js');
 
       await element.updateComplete;
 

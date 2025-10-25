@@ -12,7 +12,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 // ANSI color codes for better output
 const colors = {
@@ -66,7 +67,7 @@ class InitializationIssueDetector {
   }
 
   extractComponentName(filePath) {
-    // Extract component name from file path like "src/components/pagination/usa-pagination.ts" -> "usa-pagination"
+    // Extract component name from file path like "packages/*/src/components/pagination/usa-pagination.ts" -> "usa-pagination"
     const match = filePath.match(/usa-([^\/]+)\.ts$/);
     return match ? `usa-${match[1]}` : null;
   }
@@ -75,7 +76,7 @@ class InitializationIssueDetector {
     this.logHeader('USWDS Component Initialization Issue Detection');
 
     // Find all component TypeScript files
-    const componentFiles = glob.sync('src/components/**/*.ts', {
+    const componentFiles = glob.sync('packages/*/src/components/**/*.ts', {
       ignore: [
         '**/*.test.ts',
         '**/*.spec.ts',

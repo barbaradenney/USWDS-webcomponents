@@ -1,0 +1,112 @@
+name: Bundle Size Monitor
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  bundle-size:
+    name: Bundle Size Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for production
+        run: NODE_ENV=production npm run build
+
+      - name: Validate bundle size
+        id: bundle_size
+        run: |
+          echo "Running bundle size validation..."
+          npm run validate:bundle-size > bundle-size-output.txt 2>&1 || echo "validation_failed=true" >> $GITHUB_OUTPUT
+          cat bundle-size-output.txt
+
+      - name: Generate bundle size report
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## 📦 Bundle Size Report" > bundle-size-report.md
+          echo "" >> bundle-size-report.md
+          echo "\`\`\`" >> bundle-size-report.md
+          cat bundle-size-output.txt >> bundle-size-report.md
+          echo "\`\`\`" >> bundle-size-report.md
+          echo "" >> bundle-size-report.md
+          echo "### 📊 Bundle Analysis" >> bundle-size-report.md
+          echo "" >> bundle-size-report.md
+          echo "Run \`npm run build:analyze:visual\` locally to view detailed bundle composition." >> bundle-size-report.md
+          echo "" >> bundle-size-report.md
+          echo "See [Bundle Size Optimization Guide](../../docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md) for optimization strategies." >> bundle-size-report.md
+
+      - name: Comment PR with bundle size
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('bundle-size-report.md', 'utf8');
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' && comment.body.includes('Bundle Size Report')
+            );
+
+            const commentBody = report;
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody
+              });
+            }
+
+      - name: Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-size-report
+          path: |
+            bundle-size-output.txt
+            bundle-size-report.md
+            dist/stats.html
+          retention-days: 30
+
+      - name: Check validation result
+        if: steps.bundle_size.outputs.validation_failed == 'true'
+        run: |
+          echo "❌ Bundle size validation failed!"
+          echo "One or more files exceed size limits."
+          echo "Review the bundle size report above for details."
+          echo ""
+          echo "💡 Actions to take:"
+          echo "  • Run 'npm run build:analyze:visual' to analyze bundle composition"
+          echo "  • Check for large dependencies or unused imports"
+          echo "  • See docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md for optimization strategies"
+          exit 1

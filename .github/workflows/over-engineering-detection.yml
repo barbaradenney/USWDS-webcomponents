@@ -14,17 +14,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
+        cache: 'pnpm'
 
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
 
     - name: 🔍 Detect over-engineering patterns
-      run: npm run detect:over-engineering:ci
+      run: pnpm run detect:over-engineering:ci
 
     - name: 📊 Generate over-engineering report
       if: always()
@@ -60,7 +65,7 @@ jobs:
             1. Research the USWDS source code for your component
             2. Remove custom event handlers and let USWDS handle behavior
             3. Ensure components always initialize USWDS (no mode switching)
-            4. Run \`npm run detect:over-engineering\` locally to verify fixes
+            4. Run \`pnpm run detect:over-engineering\` locally to verify fixes
 
             ### 💡 Remember
             We are **HTML structure providers**, not **behavior implementers**. Let USWDS do what it does best!`

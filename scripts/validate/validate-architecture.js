@@ -9,7 +9,8 @@
 
 import fs from 'fs';
 import path from 'path';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 // Patterns that indicate violations of USWDS architecture
 const FORBIDDEN_PATTERNS = [
@@ -159,7 +160,7 @@ function findLineNumber(source, pattern) {
 function validateAllComponents() {
   console.log('🔍 Validating USWDS architecture compliance...\n');
 
-  const componentFiles = glob.sync('src/components/*/usa-*.ts', {
+  const componentFiles = glob.sync('packages/*/src/components/*/usa-*.ts', {
     ignore: ['**/*.test.ts', '**/*.spec.ts']
   });
 

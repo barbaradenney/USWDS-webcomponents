@@ -1,0 +1,205 @@
+name: 🧹 Stale Branch Cleanup
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  cleanup-stale-branches:
+    name: Clean up stale branches
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all branches
+
+      - name: Find stale branches
+        id: find-stale
+        run: |
+          echo "🔍 Finding stale branches..."
+
+          # Get current date (Unix timestamp)
+          CURRENT_DATE=$(date +%s)
+          STALE_THRESHOLD=60 # Days
+          STALE_SECONDS=$((STALE_THRESHOLD * 86400))
+
+          # Protected branches
+          PROTECTED_BRANCHES="main master develop"
+
+          # Find stale branches
+          STALE_BRANCHES=()
+
+          for branch in $(git branch -r | grep -v HEAD | sed 's|origin/||'); do
+            # Skip protected branches
+            if echo "$PROTECTED_BRANCHES" | grep -q "\b$branch\b"; then
+              continue
+            fi
+
+            # Get last commit date
+            LAST_COMMIT=$(git log -1 --format=%ct "origin/$branch" 2>/dev/null || echo "0")
+
+            if [ "$LAST_COMMIT" != "0" ]; then
+              AGE_SECONDS=$((CURRENT_DATE - LAST_COMMIT))
+              AGE_DAYS=$((AGE_SECONDS / 86400))
+
+              if [ $AGE_SECONDS -gt $STALE_SECONDS ]; then
+                echo "📌 Stale: $branch (last commit ${AGE_DAYS} days ago)"
+                STALE_BRANCHES+=("$branch")
+              fi
+            fi
+          done
+
+          # Output results
+          if [ ${#STALE_BRANCHES[@]} -eq 0 ]; then
+            echo "✅ No stale branches found"
+            echo "has_stale=false" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️  Found ${#STALE_BRANCHES[@]} stale branches"
+            echo "has_stale=true" >> $GITHUB_OUTPUT
+            echo "stale_count=${#STALE_BRANCHES[@]}" >> $GITHUB_OUTPUT
+
+            # Save to file for next step
+            printf '%s\n' "${STALE_BRANCHES[@]}" > stale-branches.txt
+          fi
+
+      - name: Check for open PRs
+        if: steps.find-stale.outputs.has_stale == 'true'
+        id: check-prs
+        run: |
+          echo "🔍 Checking for open PRs on stale branches..."
+
+          # Read stale branches
+          BRANCHES_TO_DELETE=()
+          BRANCHES_WITH_PRS=()
+
+          while IFS= read -r branch; do
+            # Check if branch has open PR
+            PR_COUNT=$(gh pr list --head "$branch" --state open --json number --jq 'length')
+
+            if [ "$PR_COUNT" -eq 0 ]; then
+              BRANCHES_TO_DELETE+=("$branch")
+            else
+              BRANCHES_WITH_PRS+=("$branch")
+              echo "📌 $branch has open PR, skipping deletion"
+            fi
+          done < stale-branches.txt
+
+          # Save branches to delete
+          if [ ${#BRANCHES_TO_DELETE[@]} -gt 0 ]; then
+            printf '%s\n' "${BRANCHES_TO_DELETE[@]}" > branches-to-delete.txt
+            echo "delete_count=${#BRANCHES_TO_DELETE[@]}" >> $GITHUB_OUTPUT
+            echo "has_branches_to_delete=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_branches_to_delete=false" >> $GITHUB_OUTPUT
+          fi
+
+          # Save branches with PRs
+          if [ ${#BRANCHES_WITH_PRS[@]} -gt 0 ]; then
+            printf '%s\n' "${BRANCHES_WITH_PRS[@]}" > branches-with-prs.txt
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Create notification issue
+        if: steps.check-prs.outputs.has_branches_to_delete == 'true'
+        id: create-issue
+        run: |
+          echo "📝 Creating notification issue..."
+
+          # Build issue body
+          ISSUE_BODY="## 🧹 Stale Branch Cleanup Report\n\n"
+          ISSUE_BODY+="**Date:** $(date '+%Y-%m-%d %H:%M UTC')\n\n"
+          ISSUE_BODY+="### Branches Scheduled for Deletion\n\n"
+          ISSUE_BODY+="The following branches have not been updated in 60+ days and will be deleted:\n\n"
+
+          while IFS= read -r branch; do
+            LAST_COMMIT_DATE=$(git log -1 --format=%cd --date=short "origin/$branch")
+            LAST_COMMIT_MSG=$(git log -1 --format=%s "origin/$branch")
+            ISSUE_BODY+="- \`$branch\`\n"
+            ISSUE_BODY+="  - Last commit: $LAST_COMMIT_DATE\n"
+            ISSUE_BODY+="  - Message: \"$LAST_COMMIT_MSG\"\n"
+          done < branches-to-delete.txt
+
+          ISSUE_BODY+="\n### Actions Taken\n\n"
+          ISSUE_BODY+="✅ Remote branches will be deleted\n"
+          ISSUE_BODY+="✅ Local branches remain (run \`git fetch --prune\` to sync)\n\n"
+          ISSUE_BODY+="### Why?\n\n"
+          ISSUE_BODY+="Stale branches clutter the repository and make navigation difficult. "
+          ISSUE_BODY+="Branches inactive for 60+ days are automatically cleaned up.\n\n"
+          ISSUE_BODY+="### Need to Recover?\n\n"
+          ISSUE_BODY+="Deleted branches can be recovered from their last commit hash within 30 days:\n"
+          ISSUE_BODY+="\`\`\`bash\ngit checkout -b branch-name <commit-hash>\n\`\`\`\n\n"
+          ISSUE_BODY+="---\n"
+          ISSUE_BODY+="🤖 *Automated by stale branch cleanup workflow*"
+
+          # Create issue
+          ISSUE_URL=$(gh issue create \
+            --title "🧹 Stale Branch Cleanup - $(date '+%Y-%m-%d')" \
+            --body "$ISSUE_BODY" \
+            --label "maintenance,automated")
+
+          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+          echo "✅ Issue created: $ISSUE_URL"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Delete stale branches
+        if: steps.check-prs.outputs.has_branches_to_delete == 'true'
+        run: |
+          echo "🗑️  Deleting stale branches..."
+
+          DELETED_COUNT=0
+
+          while IFS= read -r branch; do
+            echo "Deleting: $branch"
+
+            # Delete remote branch
+            if git push origin --delete "$branch" 2>/dev/null; then
+              echo "✅ Deleted: $branch"
+              DELETED_COUNT=$((DELETED_COUNT + 1))
+            else
+              echo "⚠️  Failed to delete: $branch (may already be deleted)"
+            fi
+          done < branches-to-delete.txt
+
+          echo ""
+          echo "🎉 Deleted $DELETED_COUNT stale branch(es)"
+
+          # Comment on issue
+          if [ -n "${{ steps.create-issue.outputs.issue_url }}" ]; then
+            gh issue comment "${{ steps.create-issue.outputs.issue_url }}" \
+              --body "✅ Cleanup complete! Deleted **$DELETED_COUNT** stale branch(es)."
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## 🧹 Stale Branch Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.find-stale.outputs.has_stale }}" == "true" ]; then
+            echo "- **Stale branches found:** ${{ steps.find-stale.outputs.stale_count }}" >> $GITHUB_STEP_SUMMARY
+
+            if [ "${{ steps.check-prs.outputs.has_branches_to_delete }}" == "true" ]; then
+              echo "- **Branches deleted:** ${{ steps.check-prs.outputs.delete_count }}" >> $GITHUB_STEP_SUMMARY
+
+              if [ -n "${{ steps.create-issue.outputs.issue_url }}" ]; then
+                echo "- **Notification issue:** ${{ steps.create-issue.outputs.issue_url }}" >> $GITHUB_STEP_SUMMARY
+              fi
+            else
+              echo "- **Branches deleted:** 0 (all have open PRs)" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "✅ No stale branches found!" >> $GITHUB_STEP_SUMMARY
+          fi

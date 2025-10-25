@@ -69,13 +69,31 @@ let passed = [];
 console.log('🔍 Validating Component JavaScript Integration...\n');
 
 /**
+ * Find component file path across monorepo packages
+ */
+function findComponentPath(componentName) {
+  const packagesDir = path.join(rootDir, 'packages');
+  const packageDirs = fs.readdirSync(packagesDir, { withFileTypes: true })
+    .filter(d => d.isDirectory() && d.name.startsWith('uswds-wc-'))
+    .map(d => d.name);
+
+  for (const pkgName of packageDirs) {
+    const componentPath = path.join(rootDir, `packages/${pkgName}/src/components/${componentName}/usa-${componentName}.ts`);
+    if (fs.existsSync(componentPath)) {
+      return componentPath;
+    }
+  }
+  return null;
+}
+
+/**
  * Check if component file properly initializes USWDS
  */
 function validateComponentJavaScript(componentName) {
-  const componentPath = path.join(rootDir, `src/components/${componentName}/usa-${componentName}.ts`);
+  const componentPath = findComponentPath(componentName);
 
-  if (!fs.existsSync(componentPath)) {
-    warnings.push(`⚠️  ${componentName}: Component file not found at ${componentPath}`);
+  if (!componentPath) {
+    warnings.push(`⚠️  ${componentName}: Component file not found`);
     return;
   }
 
@@ -162,6 +180,8 @@ function validateTestImports() {
   const testFiles = [];
 
   function findTestFiles(dir) {
+    if (!fs.existsSync(dir)) return;
+
     const files = fs.readdirSync(dir);
 
     for (const file of files) {
@@ -176,7 +196,16 @@ function validateTestImports() {
     }
   }
 
-  findTestFiles(path.join(rootDir, 'src/components'));
+  // Scan all monorepo packages
+  const packagesDir = path.join(rootDir, 'packages');
+  if (fs.existsSync(packagesDir)) {
+    const packages = fs.readdirSync(packagesDir, { withFileTypes: true });
+    for (const pkg of packages) {
+      if (pkg.isDirectory() && pkg.name.startsWith('uswds-wc-')) {
+        findTestFiles(path.join(packagesDir, pkg.name, 'src'));
+      }
+    }
+  }
 
   for (const testFile of testFiles) {
     const content = fs.readFileSync(testFile, 'utf-8');
@@ -198,9 +227,9 @@ function validateTestImports() {
  */
 function validateEventHandlerCalls() {
   for (const componentName of INTERACTIVE_COMPONENTS) {
-    const componentPath = path.join(rootDir, `src/components/${componentName}/usa-${componentName}.ts`);
+    const componentPath = findComponentPath(componentName);
 
-    if (!fs.existsSync(componentPath)) continue;
+    if (!componentPath) continue;
 
     const content = fs.readFileSync(componentPath, 'utf-8');
 

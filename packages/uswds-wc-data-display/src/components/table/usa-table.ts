@@ -2,7 +2,7 @@ import { html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { USWDSBaseComponent } from '@uswds-wc/core';
-import { USWDSVirtualScroller } from '../../utils/performance-helpers.js';
+import { USWDSVirtualScroller } from '@uswds-wc/core';
 import { initializeTable } from './usa-table-behavior.js';
 
 // Import official USWDS compiled CSS
@@ -107,6 +107,7 @@ export class USATable extends USWDSBaseComponent {
   private virtualScroller?: USWDSVirtualScroller;
   private visibleRange = { start: 0, end: 0 };
   private slottedContent: string = '';
+  private slottedContentApplied: boolean = false;
 
   // Store cleanup function from behavior
   private cleanup?: () => void;
@@ -136,8 +137,9 @@ export class USATable extends USWDSBaseComponent {
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial content before render (avoid innerHTML in light DOM)
-    if (this.childNodes.length > 0 && this.data.length === 0 && this.headers.length === 0) {
+    // Capture any initial slotted content before render
+    // This allows using BOTH property-based data AND custom slotted table content
+    if (this.childNodes.length > 0) {
       this.slottedContent = Array.from(this.childNodes)
         .map(node => node.nodeType === Node.TEXT_NODE ? node.textContent : (node as Element).outerHTML || '')
         .join('');
@@ -211,9 +213,10 @@ export class USATable extends USWDSBaseComponent {
   }
 
   private applySlottedContent() {
-    if (this.slottedContent) {
+    // Only apply slotted content once to prevent duplication
+    if (this.slottedContent && !this.slottedContentApplied) {
       const slotElement = this.querySelector('slot:not([name])');
-      if (slotElement && this.data.length === 0 && this.headers.length === 0) {
+      if (slotElement) {
         // Parse content safely using DOMParser instead of innerHTML
         const parser = new DOMParser();
         const doc = parser.parseFromString(`<div>${this.slottedContent}</div>`, 'text/html');
@@ -224,6 +227,7 @@ export class USATable extends USWDSBaseComponent {
           const nodes = Array.from(tempDiv.childNodes);
           if (nodes.length > 0) {
             // Insert nodes before slot
+            this.slottedContentApplied = true;
             nodes.forEach(node => {
               slotElement.parentNode?.insertBefore(node, slotElement);
             });

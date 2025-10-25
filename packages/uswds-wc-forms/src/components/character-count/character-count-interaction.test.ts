@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-character-count.ts';
 import type { USACharacterCount } from './usa-character-count.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('Character Count JavaScript Interaction Testing', () => {
   let element: USACharacterCount;
@@ -299,8 +299,16 @@ describe('Character Count JavaScript Interaction Testing', () => {
       if (textarea && message && label) {
         // Check ARIA attributes
         expect(textarea.getAttribute('aria-describedby')).toBeTruthy();
-        expect(message.getAttribute('aria-live')).toBe('polite');
+
+        // USWDS spec: message element should NOT have aria-live (removed for backwards compatibility)
+        // See: node_modules/@uswds/uswds/packages/usa-character-count/src/index.js line 189
+        expect(message.getAttribute('aria-live')).toBeFalsy();
+        expect(message.classList.contains('usa-sr-only')).toBe(true);
         expect(message.id).toBeTruthy();
+
+        // USWDS creates separate SR status element with aria-live
+        const srStatus = element.querySelector('.usa-character-count__sr-status');
+        expect(srStatus?.getAttribute('aria-live')).toBe('polite');
 
         // Check label association
         expect(label.getAttribute('for')).toBe(textarea.id);

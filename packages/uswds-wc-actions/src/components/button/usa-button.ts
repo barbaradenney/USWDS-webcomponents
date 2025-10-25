@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ButtonVariant, ButtonType } from '../../types/index.js';
+import type { ButtonVariant, ButtonType } from '@uswds-wc/core';
 
 // Import official USWDS compiled CSS
 import '@uswds-wc/core/styles.css';

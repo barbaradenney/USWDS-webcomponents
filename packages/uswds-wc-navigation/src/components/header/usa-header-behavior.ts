@@ -12,10 +12,10 @@
  * DO NOT add custom logic. ALL changes must come from USWDS source updates.
  */
 
-import { selectOrMatches } from '../../utils/select-or-matches.js';
-import { FocusTrap } from '../../utils/focus-trap.js';
-import { getScrollbarWidth } from '../../utils/scrollbar-width.js';
-import { toggle } from '../banner/usa-banner-behavior.js';
+import { selectOrMatches } from '@uswds-wc/core';
+import { FocusTrap } from '@uswds-wc/core';
+import { getScrollbarWidth } from '@uswds-wc/core';
+import { toggle } from '@uswds-wc/feedback';
 
 /**
  * Constants from USWDS

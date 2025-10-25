@@ -68,34 +68,38 @@ export async function loadComponentDocs(componentName: string): Promise<Componen
     return docsCache.get(componentName)!;
   }
 
-  let readme = '';
-  let changelog = '';
-  let testing = '';
+  const readme = '';
+  const changelog = '';
+  const testing = '';
 
+  // TODO: Re-enable dynamic documentation loading for monorepo
+  // Dynamic imports with template strings don't work in monorepo structure
+  // because components are in different packages (packages/*/src/components/)
+  // For now, documentation is available in the component source directories
   try {
-    // Try to load README.md
-    try {
-      const readmeModule = await import(`../components/${componentName}/README.md?raw`);
-      readme = readmeModule.default || '';
-    } catch (error) {
-      console.log(`No README found for ${componentName}`);
-    }
+    // // Try to load README.md
+    // try {
+    //   const readmeModule = await import(`../components/${componentName}/README.md?raw`);
+    //   readme = readmeModule.default || '';
+    // } catch (error) {
+    //   console.log(`No README found for ${componentName}`);
+    // }
 
-    // Try to load CHANGELOG.md
-    try {
-      const changelogModule = await import(`../components/${componentName}/CHANGELOG.md?raw`);
-      changelog = changelogModule.default || '';
-    } catch (error) {
-      console.log(`No CHANGELOG found for ${componentName}`);
-    }
+    // // Try to load CHANGELOG.md
+    // try {
+    //   const changelogModule = await import(`../components/${componentName}/CHANGELOG.md?raw`);
+    //   changelog = changelogModule.default || '';
+    // } catch (error) {
+    //   console.log(`No CHANGELOG found for ${componentName}`);
+    // }
 
-    // Try to load TESTING.md
-    try {
-      const testingModule = await import(`../components/${componentName}/TESTING.md?raw`);
-      testing = testingModule.default || '';
-    } catch (error) {
-      console.log(`No TESTING.md found for ${componentName}`);
-    }
+    // // Try to load TESTING.md
+    // try {
+    //   const testingModule = await import(`../components/${componentName}/TESTING.md?raw`);
+    //   testing = testingModule.default || '';
+    // } catch (error) {
+    //   console.log(`No TESTING.md found for ${componentName}`);
+    // }
   } catch (error) {
     console.warn(`Error loading documentation for ${componentName}:`, error);
   }

@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-file-input.ts';
 import type { USAFileInput } from './usa-file-input.js';
-import { waitForUpdate } from '../../../__tests__/test-utils.js';
+import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('File Input JavaScript Interaction Testing', () => {
   let element: USAFileInput;

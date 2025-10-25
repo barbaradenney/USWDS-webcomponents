@@ -18,3 +18,4 @@ export { USATooltip } from './components/tooltip/index.js';
 
 // Export banner component
 export { USABanner } from './components/banner/index.js';
+export { toggle } from './components/banner/usa-banner-behavior.js';
