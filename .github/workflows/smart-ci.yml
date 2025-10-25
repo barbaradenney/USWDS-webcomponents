@@ -169,15 +169,26 @@ jobs:
     steps:
       - name: Check all jobs
         run: |
-          if [[ "${{ needs.changes.outputs.has_changes }}" == "false" ]]; then
+          # Handle empty or false has_changes - both mean no changes
+          if [[ "${{ needs.changes.outputs.has_changes }}" == "false" ]] || \
+             [[ -z "${{ needs.changes.outputs.has_changes }}" ]]; then
             echo "✅ No package changes detected - skipping CI"
             exit 0
           fi
 
-          if [[ "${{ needs.smart-build.result }}" != "success" ]] || \
-             [[ "${{ needs.smart-test.result }}" != "success" ]] || \
-             [[ "${{ needs.smart-lint.result }}" != "success" ]]; then
+          # Check for failures (skipped is OK when has_changes is false)
+          # Valid states: success, skipped
+          # Invalid states: failure, cancelled
+          if [[ "${{ needs.smart-build.result }}" == "failure" ]] || \
+             [[ "${{ needs.smart-build.result }}" == "cancelled" ]] || \
+             [[ "${{ needs.smart-test.result }}" == "failure" ]] || \
+             [[ "${{ needs.smart-test.result }}" == "cancelled" ]] || \
+             [[ "${{ needs.smart-lint.result }}" == "failure" ]] || \
+             [[ "${{ needs.smart-lint.result }}" == "cancelled" ]]; then
             echo "❌ Some checks failed"
+            echo "Build: ${{ needs.smart-build.result }}"
+            echo "Test: ${{ needs.smart-test.result }}"
+            echo "Lint: ${{ needs.smart-lint.result }}"
             exit 1
           fi
 
