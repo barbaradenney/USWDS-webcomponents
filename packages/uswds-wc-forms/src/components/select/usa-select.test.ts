@@ -457,9 +457,15 @@ describe('USASelect', () => {
       ];
       element.value = 'option1';
 
+      // Wait for initial render before moving element to prevent Lit ChildPart corruption
+      await element.updateComplete;
+
       form.appendChild(element);
       document.body.appendChild(form);
       await element.updateComplete;
+
+      // Give time for internal select to be created and registered with form
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       const formData = new FormData(form);
       expect(formData.get('test-select')).toBe('option1');
@@ -474,9 +480,15 @@ describe('USASelect', () => {
       element.options = [{ value: 'option1', text: 'Option 1' }];
       element.value = ''; // Default option selected
 
+      // Wait for initial render before moving element to prevent Lit ChildPart corruption
+      await element.updateComplete;
+
       form.appendChild(element);
       document.body.appendChild(form);
       await element.updateComplete;
+
+      // Give time for internal select to be created and registered with form
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       const formData = new FormData(form);
       expect(formData.get('test-select')).toBe('');
@@ -1301,9 +1313,15 @@ describe('USASelect', () => {
       ];
       element.value = 'MARRIED_JOINT';
 
+      // Wait for initial render before moving element to prevent Lit ChildPart corruption
+      await element.updateComplete;
+
       form.appendChild(element);
       document.body.appendChild(form);
       await element.updateComplete;
+
+      // Give time for internal select to be created and registered with form
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       const formData = new FormData(form);
       expect(formData.get('filing_status')).toBe('MARRIED_JOINT');
