@@ -691,6 +691,14 @@ describe('USAList', () => {
         expect(listElement).toBeTruthy();
 
         if (listElement) {
+          // IMPORTANT: Disconnect element from DOM before using innerHTML
+          // to avoid ChildPart corruption from Lit's marker nodes
+          const parent = element.parentElement;
+          element.remove();
+
+          // Wait for any pending updates to complete
+          await element.updateComplete;
+
           // Clear existing content and add test items directly to the list element
           // This ensures proper accessibility structure for testing
           listElement.innerHTML = '';
@@ -699,6 +707,12 @@ describe('USAList', () => {
             li.textContent = item;
             listElement.appendChild(li);
           });
+
+          // Re-attach for accessibility testing
+          parent?.appendChild(element);
+
+          // Wait for re-attach to complete
+          await element.updateComplete;
         }
 
         await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
@@ -751,12 +765,26 @@ describe('USAList', () => {
         expect(listElement).toBeTruthy();
 
         if (listElement) {
+          // IMPORTANT: Disconnect element from DOM before using innerHTML
+          // to avoid ChildPart corruption from Lit's marker nodes
+          const parent = element.parentElement;
+          element.remove();
+
+          // Wait for any pending updates to complete
+          await element.updateComplete;
+
           listElement.innerHTML = '';
           items.forEach((item) => {
             const li = document.createElement('li');
             li.textContent = item;
             listElement.appendChild(li);
           });
+
+          // Re-attach for accessibility testing
+          parent?.appendChild(element);
+
+          // Wait for re-attach to complete
+          await element.updateComplete;
         }
 
         await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
