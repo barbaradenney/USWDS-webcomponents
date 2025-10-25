@@ -9,9 +9,7 @@
     ".": {
       "import": "./src/index.js"
     },
-    "./*": {
-      "import": "./src/*.js"
-    }
+    "./*": "./src/*"
   },
   "files": [
     "src"
