@@ -1,20 +1,11 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "barbaradenney/USWDS-webcomponents" }],
+  "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [
-    ["@uswds-wc/core", "@uswds-wc/actions", "@uswds-wc/forms", "@uswds-wc/navigation", "@uswds-wc/data-display", "@uswds-wc/feedback", "@uswds-wc/layout", "@uswds-wc/structure", "@uswds-wc/all"]
-  ],
+  "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@uswds-wc/test-utils", "@uswds-wc/components"],
-  "privatePackages": {
-    "version": true,
-    "tag": false
-  },
-  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
-    "onlyUpdatePeerDependentsWhenOutOfRange": true
-  }
+  "ignore": ["@uswds-wc/test-utils"]
 }
