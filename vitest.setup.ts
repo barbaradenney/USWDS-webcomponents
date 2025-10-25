@@ -28,12 +28,27 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  // Clear any timers or intervals that tests might have created FIRST
+  // CRITICAL: Clear timers FIRST before anything else
+  // This prevents pending async operations from running during cleanup
   const highestTimeoutId = setTimeout(() => {}, 0) as any as number;
   for (let i = 0; i < highestTimeoutId; i++) {
     clearTimeout(i);
     clearInterval(i);
   }
+
+  // CRITICAL: Disconnect all custom elements BEFORE clearing innerHTML
+  // This prevents Lit ChildPart errors from destroying Lit's DOM markers
+  const allCustomElements = document.querySelectorAll('*');
+  allCustomElements.forEach((el) => {
+    if (el.tagName.includes('-') && typeof (el as any).disconnectedCallback === 'function') {
+      try {
+        // Remove from DOM first to trigger disconnectedCallback
+        el.remove();
+      } catch (e) {
+        // Ignore errors during cleanup
+      }
+    }
+  });
 
   // Clean up any remaining elements - more aggressive approach
   document.body.innerHTML = '';
@@ -48,7 +63,21 @@ afterEach(() => {
   document.documentElement.style.cssText = '';
 
   // Clear any global USWDS state (multiple approaches)
+  // CRITICAL: Clear USWDS component registries and state
   if ((window as any).USWDS) {
+    const uswds = (window as any).USWDS;
+    // Clear any component registries
+    if (uswds.components) {
+      delete uswds.components;
+    }
+    // Clear any event listeners
+    if (uswds.listeners) {
+      delete uswds.listeners;
+    }
+    // Clear any internal state
+    if (uswds._initialized) {
+      delete uswds._initialized;
+    }
     delete (window as any).USWDS;
   }
   if ('USWDS' in window) {
@@ -77,16 +106,27 @@ afterEach(() => {
     // Ignore
   }
 
-  // Remove any global event listeners that might persist
-  const eventTypes = ['keydown', 'keyup', 'click', 'focus', 'blur', 'resize', 'scroll'];
-  eventTypes.forEach(type => {
-    try {
-      // Try to remove common event listeners (this is a best-effort cleanup)
-      document.removeEventListener(type, () => {});
-    } catch (e) {
-      // Ignore errors from removing non-existent listeners
-    }
-  });
+  // Remove ALL event listeners by cloning document elements
+  // This is the only reliable way to remove all listeners in jsdom
+  try {
+    // Clone and replace body to remove all its event listeners
+    const newBody = document.body.cloneNode(false) as HTMLElement;
+    document.body.parentNode?.replaceChild(newBody, document.body);
+  } catch (e) {
+    // Fallback: try individual event type removal
+    const eventTypes = ['keydown', 'keyup', 'click', 'focus', 'blur', 'resize', 'scroll', 'mousedown', 'mouseup', 'touchstart', 'touchend'];
+    eventTypes.forEach(type => {
+      try {
+        const clone = (window as any).EventTarget.prototype.addEventListener;
+        if (clone) {
+          document.removeEventListener(type, () => {});
+          window.removeEventListener(type, () => {});
+        }
+      } catch (err) {
+        // Ignore
+      }
+    });
+  }
 
   // Clear any cached modules or component state
   try {
