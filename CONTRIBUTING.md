@@ -2,9 +2,24 @@
 
 Thank you for your interest in contributing to USWDS Web Components! This document provides guidelines and instructions for contributing to this project.
 
+## 🔥 Quick Start
+
+**New to this project?** Start here:
+
+1. **📖 [Git Workflow Guide](docs/GIT_WORKFLOW.md)** - REQUIRED READING
+   - Branching strategy (main vs feature branches)
+   - Pull request process
+   - Release workflow
+   - Common scenarios and best practices
+
+2. **Read this guide** (CONTRIBUTING.md) for development standards
+
+3. **Check [CLAUDE.md](CLAUDE.md)** for component-specific guidelines
+
 ## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
+- [Git Workflow](#git-workflow)
 - [Getting Started](#getting-started)
 - [Development Setup](#development-setup)
 - [Making Changes](#making-changes)
@@ -18,6 +33,57 @@ Thank you for your interest in contributing to USWDS Web Components! This docume
 ## Code of Conduct
 
 This project follows the [Contributor Covenant](https://www.contributor-covenant.org/) Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to the project maintainers.
+
+## Git Workflow
+
+**⚠️ IMPORTANT**: This project uses GitHub Flow with protected `main` branch.
+
+### Key Rules
+
+1. **Never commit directly to `main`** - All changes via pull requests
+2. **Create feature branches** - Use descriptive names with prefixes
+3. **Keep PRs focused** - One feature/fix per PR (200-400 lines ideal)
+4. **All tests must pass** - Pre-commit hooks enforce quality standards
+5. **Get code review** - At least 1 approval required
+
+### Quick Workflow
+
+```bash
+# 1. Create branch from main
+git checkout main && git pull origin main
+git checkout -b feature/123-my-feature
+
+# 2. Make changes and commit
+git add .
+git commit -m "feat(component): add feature"
+
+# 3. Push and create PR
+git push -u origin feature/123-my-feature
+gh pr create --base main
+
+# 4. After merge, clean up
+git checkout main && git pull origin main
+git branch -d feature/123-my-feature
+```
+
+### Branch Naming
+
+Use these prefixes:
+- `feature/` - New features
+- `fix/` - Bug fixes
+- `docs/` - Documentation
+- `refactor/` - Code refactoring
+- `test/` - Test additions
+- `chore/` - Maintenance
+- `hotfix/` - Urgent production fixes
+
+**See [Git Workflow Guide](docs/GIT_WORKFLOW.md) for complete details**, including:
+- Branching strategy
+- PR process
+- Release workflow
+- Hotfix procedures
+- Branch protection rules
+- Common scenarios
 
 ## Getting Started
 
@@ -105,23 +171,7 @@ packages/
 
 ## Making Changes
 
-### Branch Naming
-
-Use descriptive branch names with prefixes:
-
-- `feature/` - New features
-- `fix/` - Bug fixes
-- `docs/` - Documentation changes
-- `refactor/` - Code refactoring
-- `test/` - Test additions/changes
-- `chore/` - Maintenance tasks
-
-Examples:
-```bash
-feature/add-table-component
-fix/modal-keyboard-navigation
-docs/update-button-readme
-```
+> **Note**: See [Git Workflow Guide](docs/GIT_WORKFLOW.md) for complete branching strategy and workflow details.
 
 ### Component Development
 
