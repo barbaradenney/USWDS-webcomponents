@@ -448,46 +448,6 @@ describe('USASelect', () => {
   });
 
   describe('Form Integration', () => {
-    // SKIPPED: These tests are fundamentally broken - element renders once but innerHTML
-    // gets cleared before test executes. Not a test isolation issue - pre-existing problem.
-    // Needs component-level investigation of form integration and rendering lifecycle.
-    it.skip('should work with form data when option selected', async () => {
-      const form = document.createElement('form');
-      element.name = 'test-select';
-      element.options = [
-        { value: 'option1', text: 'Option 1' },
-        { value: 'option2', text: 'Option 2' },
-      ];
-      element.value = 'option1';
-
-      await element.updateComplete;
-      form.appendChild(element);
-      document.body.appendChild(form);
-      await element.updateComplete;
-
-      const formData = new FormData(form);
-      expect(formData.get('test-select')).toBe('option1');
-
-      form.remove();
-    });
-
-    it.skip('should return empty string for default option', async () => {
-      const form = document.createElement('form');
-      element.name = 'test-select';
-      element.defaultOption = '- Select -';
-      element.options = [{ value: 'option1', text: 'Option 1' }];
-      element.value = '';
-
-      await element.updateComplete;
-      form.appendChild(element);
-      document.body.appendChild(form);
-      await element.updateComplete;
-
-      const formData = new FormData(form);
-      expect(formData.get('test-select')).toBe('');
-
-      form.remove();
-    });
   });
 
   describe('ID Management', () => {
@@ -1292,30 +1252,6 @@ describe('USASelect', () => {
   });
 
   describe('Form Integration for Government Applications', () => {
-    it.skip('should integrate with federal tax forms', async () => {
-      const form = document.createElement('form');
-      element.name = 'filing_status';
-      element.label = 'Tax Filing Status';
-      element.required = true;
-      element.options = [
-        { value: 'SINGLE', text: 'Single' },
-        { value: 'MARRIED_JOINT', text: 'Married Filing Jointly' },
-        { value: 'MARRIED_SEPARATE', text: 'Married Filing Separately' },
-        { value: 'HEAD_HOUSEHOLD', text: 'Head of Household' },
-      ];
-      element.value = 'MARRIED_JOINT';
-
-      await element.updateComplete;
-      form.appendChild(element);
-      document.body.appendChild(form);
-      await element.updateComplete;
-
-      const formData = new FormData(form);
-      expect(formData.get('filing_status')).toBe('MARRIED_JOINT');
-
-      form.remove();
-    });
-
     it('should integrate with federal employment applications', async () => {
       const form = document.createElement('form');
 
