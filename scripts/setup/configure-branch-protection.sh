@@ -52,13 +52,8 @@ cat <<'EOF' | gh api repos/$REPO/branches/main/protection --method PUT --input -
       "TypeScript Type Checking"
     ]
   },
-  "enforce_admins": true,
-  "required_pull_request_reviews": {
-    "dismiss_stale_reviews": true,
-    "require_code_owner_reviews": false,
-    "required_approving_review_count": 1,
-    "require_last_push_approval": false
-  },
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
   "restrictions": null,
   "required_linear_history": true,
   "allow_force_pushes": false,
@@ -71,8 +66,7 @@ echo ""
 echo "✅ Branch protection configured successfully!"
 echo ""
 echo "📋 Configuration Summary:"
-echo "   ✅ Require pull request reviews (1 approval required)"
-echo "   ✅ Dismiss stale reviews when new commits pushed"
+echo "   ✅ No approval required (solo developer repository)"
 echo "   ✅ Require status checks before merging:"
 echo "      - Chromatic Visual Regression"
 echo "      - Visual Regression Tests"
@@ -83,12 +77,12 @@ echo "   ✅ Require linear history (squash merge enforced)"
 echo "   ✅ No force pushes allowed"
 echo "   ✅ No branch deletion allowed"
 echo "   ✅ Require conversation resolution before merging"
-echo "   ✅ Enforce rules for administrators"
+echo "   ⚠️  Admin bypass available (enforce_admins: false)"
 echo ""
 echo "💡 Workflow:"
 echo "   1. Claude creates feature branch and PR"
-echo "   2. You review and approve the PR"
-echo "   3. Either you or Claude merges after approval"
+echo "   2. CI checks run automatically"
+echo "   3. Merge when all checks pass (admin override available if needed)"
 echo ""
 echo "🔗 View settings: https://github.com/$REPO/settings/branches"
 echo ""
