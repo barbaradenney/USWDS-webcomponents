@@ -2,6 +2,8 @@
 
 <!-- Provide a clear and concise description of your changes -->
 
+**Workflow Note:** This PR follows the [Git Workflow Guide](../docs/GIT_WORKFLOW.md). Claude (AI) creates PRs → User reviews and approves → Either can merge after approval and CI passes.
+
 ## Related Issue
 
 <!-- Link to the related issue. Use "Fixes #123" or "Closes #456" to auto-close issues -->
@@ -175,17 +177,31 @@ Fixes #
 
 <!-- Any additional information that reviewers should know -->
 
-## Checklist for Maintainers
+## Checklist for Reviewer (User)
 
-<!-- For maintainers during review -->
+<!-- For the User during review - this is your approval checklist -->
 
+**Code Quality:**
 - [ ] Code review completed
 - [ ] Architecture aligns with project guidelines
-- [ ] Tests are comprehensive
+- [ ] No unnecessary complexity or over-engineering
+- [ ] Follows established patterns from GIT_WORKFLOW.md
+
+**Testing & Validation:**
+- [ ] All CI checks pass (required before merge)
+- [ ] Tests are comprehensive and passing
+- [ ] No security concerns identified
+- [ ] USWDS compliance verified (if applicable)
+
+**Documentation:**
 - [ ] Documentation is clear and accurate
-- [ ] USWDS compliance verified
-- [ ] No security concerns
-- [ ] Ready to merge
+- [ ] Changes are well-explained in PR description
+- [ ] Breaking changes are documented (if applicable)
+
+**Final Approval:**
+- [ ] Ready to approve and merge
+- [ ] Will approve this PR after review
+- [ ] Can merge after approval + CI passes
 
 ---
 
