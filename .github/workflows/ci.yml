@@ -32,10 +32,16 @@ jobs:
 
       - name: Run TypeScript type checking
         run: pnpm run typecheck
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Run ESLint
         run: pnpm run lint
         continue-on-error: true # Don't fail on warnings for now
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Check code formatting
         run: pnpm run format:check || true # Non-blocking for now
@@ -95,6 +101,9 @@ jobs:
 
       - name: Run all unit tests
         run: pnpm test
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Generate test coverage
         run: pnpm run test:coverage
@@ -145,6 +154,9 @@ jobs:
 
       - name: Build library
         run: pnpm run build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Build Storybook
         run: pnpm run build-storybook
