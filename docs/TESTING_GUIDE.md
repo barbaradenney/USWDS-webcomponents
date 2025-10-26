@@ -1,27 +1,90 @@
 # Testing Guide
 
-Complete testing documentation for USWDS Web Components.
+Complete testing documentation for USWDS Web Components monorepo.
+
+## 🏗️ Monorepo Testing Architecture
+
+The USWDS Web Components library uses a **monorepo with 11 packages**, each with independent tests that run in parallel via **Turborepo**.
+
+### Package Structure
+
+```
+packages/
+├── uswds-wc-core/              # Core utilities (9 tests)
+├── uswds-wc-actions/           # Button, Link, Search (150+ tests)
+├── uswds-wc-forms/             # Form components (650+ tests)
+├── uswds-wc-navigation/        # Navigation components (550+ tests)
+├── uswds-wc-data-display/      # Cards, Tables, Lists (400+ tests)
+├── uswds-wc-feedback/          # Alerts, Modals (250+ tests)
+├── uswds-wc-layout/            # Layout utilities (282 tests)
+├── uswds-wc-structure/         # Accordion (60+ tests)
+├── uswds-wc-test-utils/        # Shared test utilities
+├── components/                 # Legacy meta-package
+└── uswds-wc/                   # All components bundle
+```
+
+**Total:** 2301/2301 tests passing across all packages
+
+### Monorepo Test Commands
+
+```bash
+# Run all tests across all packages (parallel via Turborepo)
+pnpm test
+
+# Test specific package
+pnpm --filter @uswds-wc/forms test
+pnpm --filter @uswds-wc/actions test
+
+# Test multiple packages
+pnpm --filter "@uswds-wc/forms" --filter "@uswds-wc/actions" test
+
+# Test with Turborepo (explicit)
+pnpm turbo test
+
+# Force rebuild and test (no cache)
+pnpm turbo test --force
+```
+
+### Performance Benefits
+
+**Turborepo Parallel Execution:**
+- ✅ **All 11 packages test simultaneously**
+- ✅ **Smart caching** - Skip unchanged packages
+- ✅ **Remote caching** - Share test results across team
+- ✅ **Faster feedback** - Failures surface immediately
+
+**Typical Performance:**
+```bash
+# Without Turborepo (sequential)
+Time: ~5-7 minutes for all tests
+
+# With Turborepo (parallel)
+Time: ~1-2 minutes for all tests
+
+# With remote cache (unchanged code)
+Time: ~5-10 seconds (skip all tests!)
+```
 
 ## Quick Start
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
 # Run tests with coverage
-npm run test:coverage
+pnpm run test:coverage
 
 # Run tests in watch mode
-npm run test:ui
+pnpm run test:ui
 
 # Run browser tests
-npm run test:browser
+pnpm run test:browser
 
 # Type check
-npm run typecheck
+pnpm run typecheck
 
 # Lint
-npm run lint
+pnpm run lint
 ```
 
 ## Consolidated Test Orchestrator ⭐ RECOMMENDED
@@ -30,27 +93,27 @@ Single unified testing system with flag-based commands:
 
 ```bash
 # Default test orchestrator
-npm run test:run
+pnpm run test:run
 
 # Specific test types
-npm run test:run -- --unit              # Unit tests only
-npm run test:run -- --browser           # Browser-required tests
-npm run test:run -- --e2e               # E2E tests
-npm run test:run -- --all               # All tests (unit + browser + e2e)
+pnpm run test:run -- --unit              # Unit tests only
+pnpm run test:run -- --browser           # Browser-required tests
+pnpm run test:run -- --e2e               # E2E tests
+pnpm run test:run -- --all               # All tests (unit + browser + e2e)
 
 # Component-specific testing
-npm run test:run -- --component=<name>  # Test specific component
+pnpm run test:run -- --component=<name>  # Test specific component
 
 # Test modes
-npm run test:run -- --watch             # Watch mode
-npm run test:run -- --coverage          # With coverage
+pnpm run test:run -- --watch             # Watch mode
+pnpm run test:run -- --coverage          # With coverage
 
 # Advanced testing
-npm run test:run -- --flaky             # Flaky test detection
-npm run test:run -- --smoke             # Production smoke tests
-npm run test:run -- --contracts         # Contract testing
-npm run test:run -- --performance       # Performance regression
-npm run test:run -- --mutation          # Mutation testing
+pnpm run test:run -- --flaky             # Flaky test detection
+pnpm run test:run -- --smoke             # Production smoke tests
+pnpm run test:run -- --contracts         # Contract testing
+pnpm run test:run -- --performance       # Performance regression
+pnpm run test:run -- --mutation          # Mutation testing
 ```
 
 ## Consolidated Validation System
@@ -59,24 +122,24 @@ Single unified compliance and validation system:
 
 ```bash
 # Run all validations
-npm run validate
+pnpm run validate
 
 # Component-specific
-npm run validate -- --component=<name>
+pnpm run validate -- --component=<name>
 
 # Validation types
-npm run validate -- --uswds             # USWDS HTML/CSS compliance
-npm run validate -- --structure         # Component file structure
-npm run validate -- --css               # CSS compliance (no custom styles)
-npm run validate -- --javascript        # JavaScript integration
-npm run validate -- --accessibility     # Accessibility compliance
-npm run validate -- --architecture      # Architecture patterns
-npm run validate -- --storybook         # Storybook story validation
+pnpm run validate -- --uswds             # USWDS HTML/CSS compliance
+pnpm run validate -- --structure         # Component file structure
+pnpm run validate -- --css               # CSS compliance (no custom styles)
+pnpm run validate -- --javascript        # JavaScript integration
+pnpm run validate -- --accessibility     # Accessibility compliance
+pnpm run validate -- --architecture      # Architecture patterns
+pnpm run validate -- --storybook         # Storybook story validation
 
 # Options
-npm run validate -- --fix               # Auto-fix issues
-npm run validate -- --strict            # Strict mode (warnings as errors)
-npm run validate -- --report=json       # JSON report output
+pnpm run validate -- --fix               # Auto-fix issues
+pnpm run validate -- --strict            # Strict mode (warnings as errors)
+pnpm run validate -- --report=json       # JSON report output
 ```
 
 ## Testing Infrastructure
@@ -86,17 +149,17 @@ npm run validate -- --report=json       # JSON report output
 Fast tests in jsdom environment for component logic:
 
 ```bash
-npm test                    # Run unit tests
-npm run test:ui            # Interactive UI
-npm run test:coverage      # With coverage report
+pnpm test                    # Run unit tests
+pnpm run test:ui            # Interactive UI
+pnpm run test:coverage      # With coverage report
 ```
 
 **Example test:**
 ```typescript
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import '../src/components/button/usa-button.ts';
-import type { USAButton } from '../src/components/button/usa-button.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '../__tests__/accessibility-utils.js';
+import './usa-button.ts'; // From same package directory
+import type { USAButton } from './usa-button.js';
+import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '@uswds-wc/test-utils';
 
 describe('USAButton', () => {
   let element: USAButton;
@@ -126,9 +189,9 @@ describe('USAButton', () => {
 Tests requiring real browser environment:
 
 ```bash
-npm run test:browser          # Run browser tests
-npm run test:browser:watch    # Watch mode
-npm run test:browser:coverage # With coverage
+pnpm run test:browser          # Run browser tests
+pnpm run test:browser:watch    # Watch mode
+pnpm run test:browser:coverage # With coverage
 ```
 
 ### 3. Component Tests (Cypress)
@@ -136,9 +199,9 @@ npm run test:browser:coverage # With coverage
 Interactive component testing in isolation:
 
 ```bash
-npm run cypress:open          # Interactive mode
-npm run cypress:run           # Headless mode
-npm run cypress:component     # Component tests only
+pnpm run cypress:open          # Interactive mode
+pnpm run cypress:run           # Headless mode
+pnpm run cypress:component     # Component tests only
 ```
 
 **Example Cypress test:**
@@ -162,8 +225,8 @@ describe('usa-button', () => {
 Full application testing:
 
 ```bash
-npm run e2e                   # Run E2E tests
-npm run e2e:open              # Interactive E2E testing
+pnpm run e2e                   # Run E2E tests
+pnpm run e2e:open              # Interactive E2E testing
 ```
 
 ### 5. Storybook Tests
@@ -171,8 +234,8 @@ npm run e2e:open              # Interactive E2E testing
 Automated testing of all Storybook stories:
 
 ```bash
-npm run test:storybook        # Run story tests
-npm run test:storybook:ci     # CI mode
+pnpm run test:storybook        # Run story tests
+pnpm run test:storybook:ci     # CI mode
 ```
 
 ### 6. Visual Regression Testing ⭐ NEW
@@ -181,23 +244,23 @@ Automated visual testing to catch appearance bugs and USWDS compliance issues:
 
 ```bash
 # Playwright Visual Tests
-npm run test:visual                # Run all visual tests
-npm run test:visual:baseline       # Update visual baselines
-npm run test:visual:ui             # Interactive UI mode
-npm run test:visual:components     # Component-specific tests
-npm run test:visual:headed         # Run with visible browser
+pnpm run test:visual                # Run all visual tests
+pnpm run test:visual:baseline       # Update visual baselines
+pnpm run test:visual:ui             # Interactive UI mode
+pnpm run test:visual:components     # Component-specific tests
+pnpm run test:visual:headed         # Run with visible browser
 
 # Cross-Browser Testing
-npm run test:cross-browser         # All browsers
-npm run test:cross-browser:chromium # Chrome only
-npm run test:cross-browser:firefox  # Firefox only
-npm run test:cross-browser:webkit   # Safari only
-npm run test:cross-browser:mobile   # Mobile browsers
+pnpm run test:cross-browser         # All browsers
+pnpm run test:cross-browser:chromium # Chrome only
+pnpm run test:cross-browser:firefox  # Firefox only
+pnpm run test:cross-browser:webkit   # Safari only
+pnpm run test:cross-browser:mobile   # Mobile browsers
 
 # Chromatic Visual Testing
-npm run chromatic                  # Run Chromatic
-npm run chromatic:ci               # CI mode
-npm run chromatic:build            # Build and run
+pnpm run chromatic                  # Run Chromatic
+pnpm run chromatic:ci               # CI mode
+pnpm run chromatic:build            # Build and run
 ```
 
 **What Visual Tests Catch:**
@@ -261,23 +324,23 @@ Complete test suite with consolidated reporting:
 
 ```bash
 # Full test suite
-npm run test:comprehensive
+pnpm run test:comprehensive
 
 # Targeted suites
-npm run test:comprehensive:fast          # Fast critical tests
-npm run test:comprehensive:critical      # Critical path only
-npm run test:comprehensive:full          # Everything
-npm run test:comprehensive:ci            # CI optimized
+pnpm run test:comprehensive:fast          # Fast critical tests
+pnpm run test:comprehensive:critical      # Critical path only
+pnpm run test:comprehensive:full          # Everything
+pnpm run test:comprehensive:ci            # CI optimized
 
 # Specialized testing
-npm run test:comprehensive:security      # Security tests
-npm run test:comprehensive:accessibility # A11y tests
-npm run test:comprehensive:performance   # Performance tests
-npm run test:comprehensive:error-recovery # Error handling
-npm run test:comprehensive:contracts     # Contract tests
+pnpm run test:comprehensive:security      # Security tests
+pnpm run test:comprehensive:accessibility # A11y tests
+pnpm run test:comprehensive:performance   # Performance tests
+pnpm run test:comprehensive:error-recovery # Error handling
+pnpm run test:comprehensive:contracts     # Contract tests
 
 # Reporting
-npm run test:comprehensive:report        # Generate report
+pnpm run test:comprehensive:report        # Generate report
 ```
 
 ## Test Health Validation
@@ -286,12 +349,12 @@ Automated testing infrastructure to prevent component issues:
 
 ```bash
 # Health checks
-npm run test:validate-health             # Comprehensive health check
-npm run test:validate-health:verbose     # Detailed analysis
-npm run test:health-report               # Generate report
+pnpm run test:validate-health             # Comprehensive health check
+pnpm run test:validate-health:verbose     # Detailed analysis
+pnpm run test:health-report               # Generate report
 
 # Component-specific
-npm run test:validate-health:component=modal  # Specific component
+pnpm run test:validate-health:component=modal  # Specific component
 ```
 
 ## Regression Testing
@@ -299,9 +362,9 @@ npm run test:validate-health:component=modal  # Specific component
 Prevent component behavior degradation:
 
 ```bash
-npm run test:regression:baseline         # Create baseline snapshots
-npm run test:regression:validate         # Check for regressions
-npm run test:regression:update           # Update baselines after changes
+pnpm run test:regression:baseline         # Create baseline snapshots
+pnpm run test:regression:validate         # Check for regressions
+pnpm run test:regression:update           # Update baselines after changes
 ```
 
 ## Testing Best Practices
@@ -492,4 +555,4 @@ Before committing layout-heavy components:
 - [TESTING_LAYOUT_VISUAL_REGRESSIONS.md](./TESTING_LAYOUT_VISUAL_REGRESSIONS.md) - Layout testing methodology
 - [TESTING_INFRASTRUCTURE_ENHANCEMENT.md](docs/archived/TESTING_INFRASTRUCTURE_ENHANCEMENT.md) - Enhanced testing features
 - [DEBUGGING_GUIDE.md](./DEBUGGING_GUIDE.md) - Troubleshooting test failures
-- [Component README files](../src/components/) - Component-specific testing notes
+- [Component README files](../packages/*/src/components/) - Component-specific testing notes in each package
