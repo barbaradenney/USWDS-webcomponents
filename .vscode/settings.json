@@ -2,9 +2,13 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.preferences.includePackageJsonAutoImports": "off",
-  "typescript.tsserver.maxTsServerMemory": 4096,
+  "typescript.tsserver.maxTsServerMemory": 6144,
   "typescript.validate.enable": true,
   "typescript.reportStyleChecksAsWarnings": true,
+
+  // Monorepo optimizations
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.surveys.enabled": false,
 
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
@@ -20,14 +24,19 @@
 
   "eslint.validate": ["javascript", "typescript"],
 
-  "eslint.workingDirectories": ["./src"],
+  // Updated for monorepo structure
+  "eslint.workingDirectories": [
+    { "pattern": "packages/*" }
+  ],
 
   "files.watcherExclude": {
     "**/node_modules/**": true,
     "**/dist/**": true,
     "**/.git/**": true,
     "**/coverage/**": true,
-    "**/storybook-static/**": true
+    "**/storybook-static/**": true,
+    "**/.turbo/**": true,
+    "**/packages/*/node_modules/**": true
   },
 
   "search.exclude": {
@@ -35,7 +44,8 @@
     "**/dist": true,
     "**/coverage": true,
     "**/storybook-static": true,
-    "**/*.lock": true
+    "**/*.lock": true,
+    "**/.turbo": true
   },
 
   "[typescript]": {
