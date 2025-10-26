@@ -49,6 +49,9 @@ export class USADateRangePicker extends USWDSBaseComponent {
     }
   `;
 
+  // USWDS module instance (loaded dynamically)
+  private uswdsModule: any = null;
+
   @property({ type: String })
   startDate = '';
 
