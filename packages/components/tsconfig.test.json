@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "strict": false,
-    "noUncheckedIndexedAccess": false,
-    "exactOptionalPropertyTypes": false
-  },
-  "include": ["**/*.test.ts", "**/*.spec.ts"]
-}
