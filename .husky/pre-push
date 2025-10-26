@@ -32,7 +32,7 @@ fi
 
 # 2. Run full test suite (faster than waiting for CI to fail)
 echo "🧪 Running full test suite..."
-npm test -- --run --silent || {
+pnpm test || {
   echo "❌ Tests failed! Fix before pushing."
   echo "   Or use: git push --no-verify (not recommended)"
   exit 1
@@ -40,14 +40,14 @@ npm test -- --run --silent || {
 
 # 3. Verify TypeScript compiles
 echo "📘 Verifying TypeScript..."
-npm run typecheck || {
+pnpm run typecheck || {
   echo "❌ TypeScript errors detected"
   exit 1
 }
 
 # 4. Verify linting passes
 echo "🔍 Verifying linting..."
-npm run lint || {
+pnpm run lint || {
   echo "❌ Linting errors detected"
   exit 1
 }
