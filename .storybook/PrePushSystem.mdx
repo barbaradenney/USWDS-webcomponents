@@ -105,7 +105,7 @@ Are you SURE you want to force push? (yes/NO):
 
 **What It Runs:**
 ```bash
-npm test -- --run --silent
+pnpm test -- --run --silent
 ```
 
 **Test Coverage:**
@@ -153,7 +153,7 @@ Fix the failing tests and try again.
 
 **What It Runs:**
 ```bash
-npm run typecheck
+pnpm run typecheck
 ```
 
 **What It Checks:**
@@ -198,7 +198,7 @@ Fix these errors before pushing.
 
 **What It Runs:**
 ```bash
-npm run lint
+pnpm run lint
 ```
 
 **What It Checks:**
@@ -229,7 +229,7 @@ src/components/button/usa-button.ts
 src/components/modal/usa-modal.ts
   67:3   warning  Unexpected console statement        no-console
 
-Fix these issues or run 'npm run lint:fix' to auto-fix where possible.
+Fix these issues or run 'pnpm run lint:fix' to auto-fix where possible.
 ```
 
 **Auto-Fix Available:**
@@ -237,7 +237,7 @@ Fix these issues or run 'npm run lint:fix' to auto-fix where possible.
 Many linting errors can be automatically fixed:
 
 ```bash
-npm run lint:fix
+pnpm run lint:fix
 ```
 
 Then retry your push.
@@ -267,7 +267,7 @@ Total:                               30-60 seconds
 
 1. **Run tests during development:**
    ```bash
-   npm test -- --watch
+   pnpm test -- --watch
    ```
    Fix failures as you code, not before push
 
@@ -314,13 +314,13 @@ FAIL src/components/modal/usa-modal.test.ts
 
 ```bash
 # For test failures
-npm test -- src/components/modal/usa-modal.test.ts
+pnpm test -- src/components/modal/usa-modal.test.ts
 
 # For TypeScript errors
-npm run typecheck
+pnpm run typecheck
 
 # For linting errors
-npm run lint:fix
+pnpm run lint:fix
 ```
 
 **4. Commit Fixes (If Needed)**
@@ -343,8 +343,8 @@ git push
 ```bash
 Problem: Tests pass locally but fail in pre-push
 Solution: Clear test cache and retry
-  npm run test:clear-cache
-  npm test
+  pnpm run test:clear-cache
+  pnpm test
 ```
 
 **TypeScript Errors:**
@@ -353,7 +353,7 @@ Solution: Clear test cache and retry
 Problem: Types work in editor but fail in pre-push
 Solution: Restart TypeScript server
   # In VSCode: Cmd+Shift+P → "TypeScript: Restart TS Server"
-  npm run typecheck
+  pnpm run typecheck
 ```
 
 **Linting Errors:**
@@ -361,7 +361,7 @@ Solution: Restart TypeScript server
 ```bash
 Problem: Linting errors after merge
 Solution: Auto-fix formatting issues
-  npm run lint:fix
+  pnpm run lint:fix
   git add .
   git commit -m "style: fix linting errors"
 ```
@@ -437,7 +437,7 @@ PROTECTED_BRANCHES="main"
 # Edit .husky/pre-push and comment out the stage
 
 # Disable test suite (not recommended!)
-# npm test -- --run --silent || {
+# pnpm test -- --run --silent || {
 #   echo "❌ Tests failed! Fix before pushing."
 #   exit 1
 # }
@@ -549,7 +549,7 @@ ls -la .husky/pre-push
 chmod +x .husky/pre-push
 
 # 3. Verify Husky installation
-npm run prepare
+pnpm run prepare
 
 # 4. Test hook manually
 .husky/pre-push
@@ -563,11 +563,11 @@ npm run prepare
 
 ```bash
 # 1. Check test performance
-npm test -- --reporter=verbose
+pnpm test -- --reporter=verbose
 # Look for slow tests
 
 # 2. Clear caches
-npm run test:clear-cache
+pnpm run test:clear-cache
 rm -rf node_modules/.cache
 
 # 3. Update dependencies
@@ -585,13 +585,13 @@ npm update
 
 ```bash
 # 1. Run each check independently
-npm test
-npm run typecheck
-npm run lint
+pnpm test
+pnpm run typecheck
+pnpm run lint
 
 # 2. Check for stale cache
-npm run clean
-npm install
+pnpm run clean
+pnpm add
 
 # 3. Verify git state
 git status
@@ -642,10 +642,10 @@ git push --no-verify
 
 ```bash
 # Watch mode during development
-npm test -- --watch
+pnpm test -- --watch
 
 # Run full suite before committing
-npm test && git commit
+pnpm test && git commit
 ```
 
 **2. Use Git Aliases**

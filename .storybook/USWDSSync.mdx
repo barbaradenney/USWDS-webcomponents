@@ -37,32 +37,32 @@ The USWDS Sync System automatically detects USWDS version changes and updates th
 
 ```bash
 # Complete USWDS sync (recommended)
-npm run uswds:sync
+pnpm run uswds:sync
 
 # This runs:
-# 1. npm run uswds:check-updates    → Check for new USWDS version
-# 2. npm run uswds:update-classes   → Extract and update class list
-# 3. npm run uswds:compliance       → Validate all components
-# 4. npm run test:accessibility     → Run accessibility tests
+# 1. pnpm run uswds:check-updates    → Check for new USWDS version
+# 2. pnpm run uswds:update-classes   → Extract and update class list
+# 3. pnpm run uswds:compliance       → Validate all components
+# 4. pnpm run test:accessibility     → Run accessibility tests
 ```
 
 ### Individual Commands
 
 ```bash
 # Check for USWDS updates
-npm run uswds:check-updates
+pnpm run uswds:check-updates
 
 # Update USWDS class list (auto-detects version change)
-npm run uswds:update-classes
+pnpm run uswds:update-classes
 
 # Force update (even if version unchanged)
-npm run uswds:update-classes --force
+pnpm run uswds:update-classes --force
 
 # Check if update needed (dry-run)
-npm run uswds:update-classes --check-only
+pnpm run uswds:update-classes --check-only
 
 # Run USWDS compliance validation
-npm run uswds:compliance
+pnpm run uswds:compliance
 ```
 
 ## 📦 System Components
@@ -75,7 +75,7 @@ npm run uswds:compliance
 
 **What It Does:**
 ```bash
-npm run uswds:check-updates
+pnpm run uswds:check-updates
 
 🔍 Checking USWDS Version Status...
 
@@ -97,8 +97,8 @@ npm run uswds:check-updates
 - Provides update instructions if needed
 
 **When It Runs:**
-- Part of `npm run uswds:sync` workflow
-- Can run standalone with `npm run uswds:check-updates`
+- Part of `pnpm run uswds:sync` workflow
+- Can run standalone with `pnpm run uswds:check-updates`
 
 ### 2. USWDS Class Extractor
 
@@ -205,7 +205,7 @@ Scans three sources to build comprehensive class list:
 
 🎉 USWDS class list successfully updated!
 💡 You may want to run the full compliance check to see improvements:
-   npm run uswds:compliance
+   pnpm run uswds:compliance
 ```
 
 **Version Tracking:**
@@ -230,7 +230,7 @@ Scans three sources to build comprehensive class list:
 Scans all component files for CSS classes and validates them against the extracted USWDS class list:
 
 ```bash
-npm run uswds:compliance
+pnpm run uswds:compliance
 
 🔍 USWDS Compliance Validation
 
@@ -267,10 +267,10 @@ Component: character-count
 
 ```bash
 # 1. Update USWDS package
-npm install @uswds/uswds@3.14.0
+pnpm add @uswds/uswds@3.14.0
 
 # 2. Run full sync workflow
-npm run uswds:sync
+pnpm run uswds:sync
 
 # OUTPUT:
 
@@ -332,10 +332,10 @@ git commit -m "chore(deps): update USWDS to v3.14.0
 
 ```bash
 # 1. Install dependencies
-npm install
+pnpm add
 
 # 2. Run initial sync
-npm run uswds:sync
+pnpm run uswds:sync
 
 # OUTPUT:
 
@@ -358,7 +358,7 @@ npm run uswds:sync
 **Scenario:** Class list corrupted or missing
 
 ```bash
-npm run uswds:update-classes --force
+pnpm run uswds:update-classes --force
 
 🔄 Force update requested
 
@@ -496,7 +496,7 @@ The pre-commit hook validates USWDS compliance using the auto-updated class list
 
 ```bash
 # Pre-commit Stage 6: USWDS Compliance
-npm run validate:uswds-compliance
+pnpm run validate:uswds-compliance
 
 # Uses /tmp/uswds_classes.txt
 # Ensures all components use only official USWDS classes
@@ -526,8 +526,8 @@ GitHub Actions workflow can verify USWDS compliance:
 ```yaml
 - name: Verify USWDS Compliance
   run: |
-    npm run uswds:sync
-    npm run uswds:compliance
+    pnpm run uswds:sync
+    pnpm run uswds:compliance
 ```
 
 ## 📈 Benefits
@@ -545,8 +545,8 @@ GitHub Actions workflow can verify USWDS compliance:
 - Immediate feedback on compliance issues
 
 **Easy Updates:**
-- Update USWDS: `npm install @uswds/uswds@latest`
-- Sync classes: `npm run uswds:sync`
+- Update USWDS: `pnpm add @uswds/uswds@latest`
+- Sync classes: `pnpm run uswds:sync`
 - Done! All 45 components validated automatically
 
 ### For the Project
@@ -592,7 +592,7 @@ GitHub Actions workflow can verify USWDS compliance:
 **Solution:**
 ```bash
 # Force regeneration
-npm run uswds:update-classes --force
+pnpm run uswds:update-classes --force
 
 # Verify USWDS is installed
 npm list @uswds/uswds
@@ -611,7 +611,7 @@ node scripts/utils/extract-complete-uswds-classes.js
 rm .uswds-version
 
 # Re-run sync
-npm run uswds:sync
+pnpm run uswds:sync
 
 # Version will be detected and saved
 ```
@@ -623,14 +623,14 @@ npm run uswds:sync
 **Investigation:**
 ```bash
 # Check what changed
-npm run uswds:update-classes --force
+pnpm run uswds:update-classes --force
 # Review the "Update Summary" output
 
 # Identify removed classes
 diff /tmp/uswds_classes_backup.txt /tmp/uswds_classes.txt
 
 # Fix components using removed classes
-npm run uswds:compliance
+pnpm run uswds:compliance
 # Will show which components have issues
 ```
 
@@ -649,8 +649,8 @@ node scripts/utils/extract-complete-uswds-classes.js
 # - Compiled CSS
 
 # Verify USWDS is properly installed
-npm ci
-npm run build:css
+pnpm install
+pnpm run build:css
 ```
 
 ## 📚 Related Documentation
@@ -667,25 +667,25 @@ npm run build:css
 - **Compliance Validation** - Every commit (pre-commit hook)
 
 ### Manual (Optional)
-- **Force Update** - If class list corrupted: `npm run uswds:update-classes --force`
-- **Full Sync** - After major USWDS update: `npm run uswds:sync`
+- **Force Update** - If class list corrupted: `pnpm run uswds:update-classes --force`
+- **Full Sync** - After major USWDS update: `pnpm run uswds:sync`
 
 ### Recommended Workflow
 
 **When USWDS Updates:**
 ```bash
 # 1. Update USWDS
-npm install @uswds/uswds@latest
+pnpm add @uswds/uswds@latest
 
 # 2. Run full sync
-npm run uswds:sync
+pnpm run uswds:sync
 
 # 3. Review changes
 git diff .uswds-version
 
 # 4. Test components
-npm test
-npm run test:accessibility
+pnpm test
+pnpm run test:accessibility
 
 # 5. Commit
 git commit -m "chore(deps): update USWDS to vX.Y.Z"

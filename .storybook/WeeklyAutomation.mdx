@@ -772,14 +772,14 @@ gh run view <run-id> --log
 **Fix:**
 ```bash
 # If link check fails:
-npm run validate:image-links
+pnpm run validate:image-links
 
 # If cleanup fails:
-npm run docs:cleanup:dry-run
+pnpm run docs:cleanup:dry-run
 
 # If commit fails:
 git pull origin main
-npm run docs:sync
+pnpm run docs:sync
 ```
 
 ### Workflow Failed - Dependency Updates
@@ -798,9 +798,9 @@ gh run view <run-id> --log
 **Fix:**
 ```bash
 # Reproduce locally:
-npm install <package>@<version>
-npm test
-npm run typecheck
+pnpm add <package>@<version>
+pnpm test
+pnpm run typecheck
 
 # Fix issues, then:
 git commit -m "fix: resolve issues from <package> update"
@@ -826,8 +826,8 @@ git fetch origin
 git checkout uswds-update-v<version>
 
 # Run full compliance:
-npm run uswds:sync
-npm run validate:uswds-compliance
+pnpm run uswds:sync
+pnpm run validate:uswds-compliance
 
 # Fix any issues:
 # - Update component code
@@ -849,7 +849,7 @@ gh run download <run-id>
 **Flaky Tests:**
 ```bash
 # Run locally to reproduce:
-npm run test:flaky-detection -- --runs=10 --verbose
+pnpm run test:flaky-detection -- --runs=10 --verbose
 
 # Fix the flaky test:
 # - Add proper waits
@@ -861,33 +861,78 @@ npm run test:flaky-detection -- --runs=10 --verbose
 ```bash
 # View HTML report in artifacts
 # Add missing test cases
-npm run test:mutation
+pnpm run test:mutation
 ```
 
 **Contract Testing:**
 ```bash
 # Check what changed:
-npm run test:contracts:validate -- --verbose
+pnpm run test:contracts:validate -- --verbose
 
 # Update contracts if intentional:
-npm run test:contracts:generate
+pnpm run test:contracts:generate
 ```
 
 **Performance Regression:**
 ```bash
 # Profile the slow component:
-npm run test:performance:compare
+pnpm run test:performance:compare
 
 # Review recent changes to component
 # Optimize or update baseline if acceptable
 ```
 
+## ⚡ Turborepo Integration
+
+### Monorepo Performance Benefits
+
+**Weekly automation tasks benefit from Turborepo's remote caching:**
+
+**Build Performance:**
+```bash
+# Without cache (first run)
+pnpm run build  # ~39s
+
+# With remote cache (subsequent runs)
+pnpm run build  # ~0.35s (111x faster!)
+```
+
+**Test Performance:**
+```bash
+# All packages test in parallel
+pnpm test  # Turborepo runs tests across 11 packages simultaneously
+```
+
+### Automated Tasks with Turborepo
+
+**Dependency Updates:**
+```yaml
+- name: Build all packages (with cache)
+  run: pnpm run build
+  env:
+    TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+```
+
+**Flaky Test Detection:**
+```bash
+# Each package's tests run independently
+# Failed packages don't block successful ones
+# Turborepo caches passing test results
+```
+
+**Performance Benefits:**
+- ✅ **10x faster CI runs** - Weekly automation completes in minutes, not hours
+- ✅ **Parallel execution** - All 11 packages process simultaneously
+- ✅ **Smart caching** - Skip unchanged packages entirely
+- ✅ **Cost reduction** - Less GitHub Actions minutes consumed
+
 ## 📚 Related Documentation
 
 - [Post-Commit System](./PostCommitSystem.mdx) - Automatic documentation updates
 - [USWDS Sync System](./USWDSSync.mdx) - USWDS class list updates
-- [CI/CD Pipeline](./CICDPipeline.mdx) - Complete testing infrastructure
+- [CI/CD Pipeline](./CICDPipeline.mdx) - Complete testing infrastructure with Turborepo
 
 ---
 
-**The Weekly Automation system ensures continuous quality, security, and maintenance without manual intervention - detecting problems early, creating actionable issues, and keeping the project healthy automatically.**
+**The Weekly Automation system, powered by Turborepo and pnpm workspaces, ensures continuous quality, security, and maintenance without manual intervention - detecting problems early, creating actionable issues, and keeping the project healthy automatically with unprecedented performance.**
