@@ -32,7 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Validate documentation consistency
         run: node scripts/validate-docs.js
@@ -127,7 +127,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Check all documentation links
         run: node scripts/check-links.js
@@ -203,7 +203,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Generate component coverage report
         run: |
@@ -284,7 +284,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Analyze documentation state
         id: analyze

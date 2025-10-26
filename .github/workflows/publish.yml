@@ -35,19 +35,19 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: ppnpm run build
+        run: pnpm run build
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
-          # This expects you to have a script called version:packages which runs changeset version + ppnpm install
-          version: ppnpm run version:packages
+          # This expects you to have a script called version:packages which runs changeset version + pnpm install
+          version: pnpm run version:packages
           # This expects you to have a script called release which runs turbo run build && changeset publish
-          publish: ppnpm run release
+          publish: pnpm run release
           title: 'chore(release): version packages'
           commit: 'chore(release): version packages'
         env:

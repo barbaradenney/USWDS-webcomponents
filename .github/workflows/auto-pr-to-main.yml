@@ -1,0 +1,61 @@
+name: Auto PR develop to main
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if PR exists
+        id: check-pr
+        run: |
+          PR_COUNT=$(gh pr list --base main --head develop --json number --jq 'length')
+          echo "pr_count=$PR_COUNT" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        if: steps.check-pr.outputs.pr_count == '0'
+        run: |
+          gh pr create \
+            --base main \
+            --head develop \
+            --title "chore: merge develop to main" \
+            --body "$(cat <<'EOF'
+          ## Summary
+          Auto-generated PR to merge develop branch to main.
+
+          ## Changes
+          This PR includes all changes that have been merged to develop since the last release.
+
+          ## Checklist
+          - [ ] All tests passing
+          - [ ] All CI checks passing
+          - [ ] Ready for production deployment
+
+          This PR can be merged once all checks pass.
+          EOF
+          )"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: PR exists
+        if: steps.check-pr.outputs.pr_count != '0'
+        run: |
+          echo "PR already exists from develop to main"
+          gh pr list --base main --head develop
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

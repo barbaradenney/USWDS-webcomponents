@@ -28,23 +28,23 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run TypeScript type checking
-        run: ppnpm run typecheck
+        run: pnpm run typecheck
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Run ESLint
-        run: ppnpm run lint
+        run: pnpm run lint
         continue-on-error: true # Don't fail on warnings for now
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Check code formatting
-        run: ppnpm run format:check || true # Non-blocking for now
+        run: pnpm run format:check || true # Non-blocking for now
 
   # Job 2: Security Audit
   security:
@@ -66,16 +66,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run security audit
-        run: ppnpm audit --audit-level=critical
+        run: pnpm audit --audit-level=critical
         continue-on-error: true # Report but don't fail for now
 
       - name: Check for known vulnerabilities
         run: |
           echo "Security audit completed. Review results above."
-          ppnpm audit --audit-level=critical || echo "::warning::Security vulnerabilities found"
+          pnpm audit --audit-level=critical || echo "::warning::Security vulnerabilities found"
 
   # Job 3: Unit Tests
   test:
@@ -97,16 +97,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run all unit tests
-        run: ppnpm test
+        run: pnpm test
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Generate test coverage
-        run: ppnpm run test:coverage
+        run: pnpm run test:coverage
         continue-on-error: true
 
       - name: Upload coverage reports to Codecov
@@ -141,7 +141,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Cache Turborepo
         uses: actions/cache@v4
@@ -153,20 +153,20 @@ jobs:
             ${{ runner.os }}-turbo-
 
       - name: Build library
-        run: ppnpm run build
+        run: pnpm run build
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Build Storybook
-        run: ppnpm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Check bundle size
         run: |
           echo "📦 Bundle Size Validation"
           echo "=========================="
           echo ""
-          ppnpm run validate:bundle-size
+          pnpm run validate:bundle-size
           echo ""
           echo "📊 Bundle Analysis:"
           ls -lah dist/ | head -20
@@ -206,15 +206,15 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run Cypress component tests
         uses: cypress-io/github-action@v6
         with:
-          start: ppnpm run storybook
+          start: pnpm run storybook
           wait-on: 'http://localhost:6006'
           wait-on-timeout: 120
-          command: ppnpm run cypress:run
+          command: pnpm run cypress:run
         continue-on-error: true # Don't fail for now
 
       - name: Upload Cypress screenshots
@@ -255,13 +255,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Start Storybook for testing
-        run: ppnpm run storybook &
+        run: pnpm run storybook &
         env:
           CI: true
 
@@ -280,11 +280,11 @@ jobs:
         continue-on-error: true
 
       - name: Run browser-required tests (USWDS integration)
-        run: ppnpm run test:browser-required
+        run: pnpm run test:browser-required
         continue-on-error: true
 
       - name: Run production smoke tests (critical flows)
-        run: ppnpm run test:production:smoke:critical
+        run: pnpm run test:production:smoke:critical
         continue-on-error: true
 
       - name: Install Puppeteer for Phase 2 validation
@@ -293,7 +293,7 @@ jobs:
           npx puppeteer browsers install chrome
 
       - name: Start dev server for Puppeteer tests
-        run: ppnpm run dev &
+        run: pnpm run dev &
         env:
           CI: true
 
@@ -303,20 +303,20 @@ jobs:
       - name: Run Puppeteer cross-browser validation
         run: |
           echo "🌐 Running Puppeteer cross-browser validation..."
-          ppnpm run test:cross-browser || true
+          pnpm run test:cross-browser || true
         continue-on-error: true
 
       - name: Run Puppeteer performance monitoring
         run: |
           echo "⚡ Running Puppeteer performance monitoring..."
-          ppnpm run test:performance:monitor || true
+          pnpm run test:performance:monitor || true
         continue-on-error: true
 
       - name: Run Puppeteer visual regression tests
         run: |
           echo "📸 Running Puppeteer visual regression tests..."
-          ppnpm run test:visual:baseline || true
-          ppnpm run test:visual:regression || true
+          pnpm run test:visual:baseline || true
+          pnpm run test:visual:regression || true
         continue-on-error: true
 
       - name: Upload Playwright report
@@ -356,10 +356,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build for production
-        run: ppnpm run build
+        run: pnpm run build
 
       - name: Analyze bundle
         run: |
@@ -402,10 +402,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build for release
-        run: ppnpm run build
+        run: pnpm run build
 
       - name: Prepare release artifacts
         run: |

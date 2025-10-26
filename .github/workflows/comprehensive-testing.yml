@@ -123,13 +123,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🔍 Lint code
-        run: ppnpm run lint
+        run: pnpm run lint
 
       - name: 🔍 Type check
-        run: ppnpm run typecheck
+        run: pnpm run typecheck
 
       - name: 🧪 Run unit tests
-        run: ppnpm run test:coverage
+        run: pnpm run test:coverage
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v3
@@ -231,8 +231,8 @@ jobs:
             --config=playwright.comprehensive.config.ts \
             --reporter=json
 
-      - name: 🔍 Run ppnpm audit
-        run: ppnpm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
+      - name: 🔍 Run pnpm audit
+        run: pnpm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
 
       - name: 📊 Upload security results
         uses: actions/upload-artifact@v4
@@ -374,7 +374,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 👁️ Run visual regression tests
-        run: ppnpm run test:visual
+        run: pnpm run test:visual
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
@@ -589,27 +589,27 @@ jobs:
       - name: 🧠 AI Test Generation Analysis
         run: |
           echo "🤖 Running AI-powered test analysis..."
-          ppnpm run ai:analyze
+          pnpm run ai:analyze
 
       - name: 🔮 Predictive Regression Testing
         run: |
           echo "🔮 Running predictive regression testing..."
-          ppnpm run test:predict:dry-run --verbose
+          pnpm run test:predict:dry-run --verbose
 
       - name: 💡 Smart Test Recommendations
         run: |
           echo "💡 Generating smart test recommendations..."
-          ppnpm run test:recommend --verbose
+          pnpm run test:recommend --verbose
 
       - name: 🌪️ Chaos Engineering Tests
         run: |
           echo "🌪️ Running chaos engineering tests..."
-          ppnpm run test:chaos:medium --verbose
+          pnpm run test:chaos:medium --verbose
 
       - name: ⚡ Intelligent Test Optimization
         run: |
           echo "⚡ Analyzing test optimization opportunities..."
-          ppnpm run test:optimize:dry-run
+          pnpm run test:optimize:dry-run
 
       - name: 📊 Upload Phase 5 Reports
         uses: actions/upload-artifact@v4

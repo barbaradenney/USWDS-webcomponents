@@ -31,12 +31,12 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run Health Check
         id: health
         run: |
-          ppnpm run testing:health > health-output.txt 2>&1
+          pnpm run testing:health > health-output.txt 2>&1
           HEALTH_SCORE=$(grep "Overall Health Score" health-output.txt | grep -oP '\d+(?=%)')
           echo "score=$HEALTH_SCORE" >> $GITHUB_OUTPUT
           cat health-output.txt
@@ -62,7 +62,7 @@ jobs:
           )
 
           for cmd in "${CRITICAL_COMMANDS[@]}"; do
-            if ppnpm run $cmd -- --help > /dev/null 2>&1; then
+            if pnpm run $cmd -- --help > /dev/null 2>&1; then
               echo "✅ $cmd is functional"
             else
               echo "❌ $cmd is broken or missing"
@@ -103,7 +103,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `🔴 Testing Infrastructure Health Critical: ${score}%`,
-              body: `## Testing Infrastructure Health Check Failed\n\n**Score:** ${score}%\n\n### Report\n\`\`\`\n${report}\n\`\`\`\n\n### Action Required\n- Review stale scripts\n- Update broken commands\n- Fix missing dependencies\n\nRun locally: \`ppnpm run testing:health\``,
+              body: `## Testing Infrastructure Health Check Failed\n\n**Score:** ${score}%\n\n### Report\n\`\`\`\n${report}\n\`\`\`\n\n### Action Required\n- Review stale scripts\n- Update broken commands\n- Fix missing dependencies\n\nRun locally: \`pnpm run testing:health\``,
               labels: ['testing', 'infrastructure', 'maintenance']
             });
 
@@ -119,7 +119,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## ${status} Testing Infrastructure Health: ${score}%\n\nRun \`ppnpm run testing:health\` for details.`
+              body: `## ${status} Testing Infrastructure Health: ${score}%\n\nRun \`pnpm run testing:health\` for details.`
             });
 
   auto-update:
@@ -181,6 +181,6 @@ jobs:
 
             **Please review the changes before merging.**
 
-            Run `ppnpm run testing:health` to verify everything is working.
+            Run `pnpm run testing:health` to verify everything is working.
           branch: auto-update/testing-infrastructure
           labels: testing, maintenance, automated

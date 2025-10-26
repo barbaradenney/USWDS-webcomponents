@@ -39,10 +39,10 @@ jobs:
           cache: 'pnpm'
           
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
         
       - name: Regenerate Storybook documentation
-        run: ppnpm run docs:storybook
+        run: pnpm run docs:storybook
         
       - name: Check for changes
         id: check-changes
