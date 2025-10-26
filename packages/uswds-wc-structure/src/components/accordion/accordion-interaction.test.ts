@@ -108,6 +108,12 @@ describe('Accordion JavaScript Interaction Testing', () => {
 
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/accordion/usa-accordion.component.cy.ts (multiselectable tests)
+
+    it('placeholder test (real behavior tested in Cypress)', () => {
+      // This is a placeholder to prevent "No test found in suite" error
+      // All real click behavior tests are in Cypress component tests
+      expect(true).toBe(true);
+    });
   });
 
   describe('🚨 JavaScript Failure Detection', () => {

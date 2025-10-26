@@ -924,11 +924,11 @@ describe('USAAccordion', () => {
 
       // Verify the behavior file exists
       const fs = await import('fs');
-      const behaviorFilePath = `${process.cwd()}/packages/uswds-wc-structure/src/components/accordion/usa-accordion-behavior.ts`;
+      const behaviorFilePath = `${process.cwd()}/src/components/accordion/usa-accordion-behavior.ts`;
       expect(fs.existsSync(behaviorFilePath)).toBe(true);
 
       // Verify component imports the mirrored behavior
-      const componentPath = `${process.cwd()}/packages/uswds-wc-structure/src/components/accordion/usa-accordion.ts`;
+      const componentPath = `${process.cwd()}/src/components/accordion/usa-accordion.ts`;
       const componentSource = fs.readFileSync(componentPath, 'utf-8');
       expect(componentSource).toContain("import { initializeAccordion } from './usa-accordion-behavior.js'");
 
