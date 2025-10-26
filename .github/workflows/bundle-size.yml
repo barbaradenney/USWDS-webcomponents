@@ -27,16 +27,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Build for production
-        run: NODE_ENV=production pnpm run build
+        run: NODE_ENV=production ppnpm run build
 
       - name: Validate bundle size
         id: bundle_size
         run: |
           echo "Running bundle size validation..."
-          pnpm run validate:bundle-size > bundle-size-output.txt 2>&1 || echo "validation_failed=true" >> $GITHUB_OUTPUT
+          ppnpm run validate:bundle-size > bundle-size-output.txt 2>&1 || echo "validation_failed=true" >> $GITHUB_OUTPUT
           cat bundle-size-output.txt
 
       - name: Generate bundle size report
@@ -50,7 +50,7 @@ jobs:
           echo "" >> bundle-size-report.md
           echo "### 📊 Bundle Analysis" >> bundle-size-report.md
           echo "" >> bundle-size-report.md
-          echo "Run \`pnpm run build:analyze:visual\` locally to view detailed bundle composition." >> bundle-size-report.md
+          echo "Run \`ppnpm run build:analyze:visual\` locally to view detailed bundle composition." >> bundle-size-report.md
           echo "" >> bundle-size-report.md
           echo "See [Bundle Size Optimization Guide](../../docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md) for optimization strategies." >> bundle-size-report.md
 
@@ -111,7 +111,7 @@ jobs:
           echo "Review the bundle size report above for details."
           echo ""
           echo "💡 Actions to take:"
-          echo "  • Run 'pnpm run build:analyze:visual' to analyze bundle composition"
+          echo "  • Run 'ppnpm run build:analyze:visual' to analyze bundle composition"
           echo "  • Check for large dependencies or unused imports"
           echo "  • See docs/BUNDLE_SIZE_OPTIMIZATION_GUIDE.md for optimization strategies"
           exit 1

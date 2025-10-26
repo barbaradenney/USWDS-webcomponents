@@ -31,15 +31,15 @@ jobs:
         cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      run: ppnpm install --frozen-lockfile
 
     - name: Build Storybook
-      run: pnpm run build-storybook
+      run: ppnpm run build-storybook
       timeout-minutes: 10
 
     - name: Start Storybook and test USWDS module loading
       run: |
-        pnpm run storybook &
+        ppnpm run storybook &
         STORYBOOK_PID=$!
 
         # Wait for Storybook to start

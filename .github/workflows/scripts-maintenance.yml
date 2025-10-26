@@ -37,10 +37,10 @@ jobs:
         cache: 'pnpm'
         
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      run: ppnpm install --frozen-lockfile
       
     - name: Run scripts maintenance check
-      run: pnpm run scripts:check
+      run: ppnpm run scripts:check
       
     - name: Comment on PR if issues found
       if: failure() && github.event_name == 'pull_request'
@@ -50,7 +50,7 @@ jobs:
           const { execSync } = require('child_process');
           let output;
           try {
-            execSync('pnpm run scripts:check', { encoding: 'utf8' });
+            execSync('ppnpm run scripts:check', { encoding: 'utf8' });
             output = 'Scripts maintenance check passed ✅';
           } catch (error) {
             output = error.stdout || error.message;
@@ -67,7 +67,7 @@ ${output}
 \`\`\`
 
 **Fix suggestions:**
-- Run \`pnpm run scripts:clean\` to auto-fix some issues
+- Run \`ppnpm run scripts:clean\` to auto-fix some issues
 - Review unused scripts and remove if no longer needed
 - Check for orphaned package.json commands
 

@@ -53,6 +53,11 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -103,6 +108,11 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -113,13 +123,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🔍 Lint code
-        run: pnpm run lint
+        run: ppnpm run lint
 
       - name: 🔍 Type check
-        run: pnpm run typecheck
+        run: ppnpm run typecheck
 
       - name: 🧪 Run unit tests
-        run: pnpm run test:coverage
+        run: ppnpm run test:coverage
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v3
@@ -153,6 +163,11 @@ jobs:
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
@@ -192,6 +207,11 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -211,8 +231,8 @@ jobs:
             --config=playwright.comprehensive.config.ts \
             --reporter=json
 
-      - name: 🔍 Run pnpm audit
-        run: pnpm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
+      - name: 🔍 Run ppnpm audit
+        run: ppnpm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
 
       - name: 📊 Upload security results
         uses: actions/upload-artifact@v4
@@ -251,6 +271,11 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -288,6 +313,11 @@ jobs:
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
@@ -329,6 +359,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -339,7 +374,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 👁️ Run visual regression tests
-        run: pnpm run test:visual
+        run: ppnpm run test:visual
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
@@ -360,6 +395,11 @@ jobs:
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
@@ -398,6 +438,11 @@ jobs:
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
 
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
@@ -527,6 +572,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -539,27 +589,27 @@ jobs:
       - name: 🧠 AI Test Generation Analysis
         run: |
           echo "🤖 Running AI-powered test analysis..."
-          pnpm run ai:analyze
+          ppnpm run ai:analyze
 
       - name: 🔮 Predictive Regression Testing
         run: |
           echo "🔮 Running predictive regression testing..."
-          pnpm run test:predict:dry-run --verbose
+          ppnpm run test:predict:dry-run --verbose
 
       - name: 💡 Smart Test Recommendations
         run: |
           echo "💡 Generating smart test recommendations..."
-          pnpm run test:recommend --verbose
+          ppnpm run test:recommend --verbose
 
       - name: 🌪️ Chaos Engineering Tests
         run: |
           echo "🌪️ Running chaos engineering tests..."
-          pnpm run test:chaos:medium --verbose
+          ppnpm run test:chaos:medium --verbose
 
       - name: ⚡ Intelligent Test Optimization
         run: |
           echo "⚡ Analyzing test optimization opportunities..."
-          pnpm run test:optimize:dry-run
+          ppnpm run test:optimize:dry-run
 
       - name: 📊 Upload Phase 5 Reports
         uses: actions/upload-artifact@v4

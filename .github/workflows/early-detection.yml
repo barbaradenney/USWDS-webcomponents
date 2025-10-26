@@ -31,22 +31,22 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: TypeScript Validation
-        run: pnpm run typecheck
+        run: ppnpm run typecheck
 
       - name: ESLint Validation
-        run: pnpm run lint
+        run: ppnpm run lint
 
       - name: USWDS Compliance Check
-        run: pnpm run uswds:compliance:static
+        run: ppnpm run uswds:compliance:static
 
       - name: Critical Component Tests
-        run: pnpm run test:critical
+        run: ppnpm run test:critical
 
       - name: Layout Regression Tests
-        run: pnpm run test:layout:ci
+        run: ppnpm run test:layout:ci
 
   # PHASE 2: AI-Powered Analysis (3-5 minutes)
   ai-analysis:
@@ -70,16 +70,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: AI Test Gap Analysis
-        run: pnpm run ai:analyze
+        run: ppnpm run ai:analyze
 
       - name: Smart Test Recommendations
-        run: pnpm run test:recommend:high
+        run: ppnpm run test:recommend:high
 
       - name: Predictive Regression Testing
-        run: pnpm run test:predict:fast
+        run: ppnpm run test:predict:fast
 
       - name: Upload AI Analysis Results
         uses: actions/upload-artifact@v4
@@ -112,7 +112,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Install Playwright
         run: npx playwright install --with-deps
@@ -121,16 +121,16 @@ jobs:
         run: |
           case "${{ matrix.test-type }}" in
             "unit")
-              pnpm run test:coverage
+              ppnpm run test:coverage
               ;;
             "component")
-              pnpm run cypress:run
+              ppnpm run cypress:run
               ;;
             "integration")
-              pnpm run test:integration
+              ppnpm run test:integration
               ;;
             "accessibility")
-              pnpm run test:comprehensive:accessibility
+              ppnpm run test:comprehensive:accessibility
               ;;
           esac
 
@@ -162,28 +162,28 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Install Playwright
         run: npx playwright install --with-deps
 
       - name: Chaos Engineering Tests
-        run: pnpm run test:chaos:medium
+        run: ppnpm run test:chaos:medium
 
       - name: Cross-Browser Compatibility
-        run: pnpm run test:cross-browser
+        run: ppnpm run test:cross-browser
 
       - name: Performance Testing
-        run: pnpm run test:comprehensive:performance
+        run: ppnpm run test:comprehensive:performance
 
       - name: Security Testing
-        run: pnpm run test:comprehensive:security
+        run: ppnpm run test:comprehensive:security
 
       - name: Full USWDS Behavioral Testing
-        run: pnpm run uswds:test-comprehensive
+        run: ppnpm run uswds:test-comprehensive
 
       - name: Generate Comprehensive Report
-        run: pnpm run test:comprehensive:report
+        run: ppnpm run test:comprehensive:report
 
       - name: Upload Comprehensive Results
         uses: actions/upload-artifact@v4
@@ -222,7 +222,7 @@ jobs:
         if: github.event_name == 'schedule'
         run: |
           echo "Generating daily health report..."
-          pnpm run showcase:testing > daily-health-report.md
+          ppnpm run showcase:testing > daily-health-report.md
 
       - name: Comment on PR with Results
         if: github.event_name == 'pull_request'

@@ -80,16 +80,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Install Puppeteer browsers
         run: npx puppeteer browsers install chrome
 
       - name: Build components
-        run: pnpm run build
+        run: ppnpm run build
 
       - name: Start dev server for Puppeteer tests
-        run: pnpm run dev &
+        run: ppnpm run dev &
         env:
           CI: true
 
@@ -99,25 +99,25 @@ jobs:
       - name: Run USWDS transformation validation
         run: |
           echo "🏛️ Running USWDS transformation validation..."
-          pnpm run validate:uswds-transformation
+          ppnpm run validate:uswds-transformation
 
       - name: Run cross-browser validation
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "🌐 Running comprehensive cross-browser validation..."
-          pnpm run test:cross-browser
+          ppnpm run test:cross-browser
 
       - name: Run performance monitoring
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "⚡ Running performance monitoring..."
-          pnpm run test:performance:monitor
+          ppnpm run test:performance:monitor
 
       - name: Run visual regression testing
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "📸 Running visual regression testing..."
-          pnpm run test:visual:regression || echo "Visual regression baseline may need updating"
+          ppnpm run test:visual:regression || echo "Visual regression baseline may need updating"
 
       - name: Generate validation report
         run: |
@@ -161,7 +161,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Download validation artifacts
         uses: actions/download-artifact@v4
