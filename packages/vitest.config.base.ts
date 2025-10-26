@@ -8,6 +8,9 @@ import { resolve } from 'path';
  * This config is extended by individual packages to ensure consistent test settings.
  */
 export function createTestConfig(packageDir: string): UserConfig {
+  // Resolve workspace root (go up 2 levels from package directory)
+  const workspaceRoot = resolve(packageDir, '../..');
+
   return {
     test: {
       globals: true,
@@ -42,6 +45,17 @@ export function createTestConfig(packageDir: string): UserConfig {
     resolve: {
       alias: {
         '@': resolve(packageDir, 'src'),
+        // Workspace package aliases for monorepo imports
+        '@uswds-wc/core/styles.css': resolve(workspaceRoot, 'packages/uswds-wc-core/src/styles/styles.css'),
+        '@uswds-wc/core': resolve(workspaceRoot, 'packages/uswds-wc-core/src'),
+        '@uswds-wc/test-utils': resolve(workspaceRoot, 'packages/uswds-wc-test-utils/src'),
+        '@uswds-wc/forms': resolve(workspaceRoot, 'packages/uswds-wc-forms/src'),
+        '@uswds-wc/navigation': resolve(workspaceRoot, 'packages/uswds-wc-navigation/src'),
+        '@uswds-wc/data-display': resolve(workspaceRoot, 'packages/uswds-wc-data-display/src'),
+        '@uswds-wc/feedback': resolve(workspaceRoot, 'packages/uswds-wc-feedback/src'),
+        '@uswds-wc/actions': resolve(workspaceRoot, 'packages/uswds-wc-actions/src'),
+        '@uswds-wc/layout': resolve(workspaceRoot, 'packages/uswds-wc-layout/src'),
+        '@uswds-wc/structure': resolve(workspaceRoot, 'packages/uswds-wc-structure/src'),
       },
     },
     optimizeDeps: {
