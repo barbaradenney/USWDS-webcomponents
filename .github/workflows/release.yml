@@ -1,26 +1,12 @@
-name: Release
+name: Release (Monorepo)
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version type'
-        required: true
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
-          - prerelease
-      prerelease_tag:
-        description: 'Pre-release tag (beta, rc, alpha) - only for prerelease'
-        required: false
-        type: string
-      dry_run:
-        description: 'Dry run (skip NPM publish and GitHub release)'
-        required: false
-        type: boolean
-        default: false
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
@@ -29,6 +15,7 @@ jobs:
     permissions:
       contents: write
       packages: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -37,10 +24,10 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup pnpm
+      - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: '10.15.0'
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,22 +41,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Verify NPM Token
-        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
-        run: |
-          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "❌ NPM_TOKEN secret not configured!"
-            echo ""
-            echo "📝 To configure NPM_TOKEN:"
-            echo "   1. Create NPM access token: https://www.npmjs.com/settings/YOUR_USERNAME/tokens"
-            echo "   2. Go to: Repository Settings → Secrets and variables → Actions"
-            echo "   3. Create secret: NPM_TOKEN with your token"
-            echo ""
-            echo "💡 Or run with dry_run=true to skip NPM publishing"
-            exit 1
-          fi
-          echo "✅ NPM_TOKEN is configured"
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -77,228 +48,46 @@ jobs:
         timeout-minutes: 15
         run: |
           echo "🔍 Running pre-release validation..."
-          pnpm run lint
-          pnpm run typecheck
-          # Note: pnpm test skipped in release workflow
-          # Tests run comprehensively in CI/CD pipeline before manual release trigger
-          # This prevents jsdom navigation errors from blocking valid releases
+          pnpm turbo lint
+          pnpm turbo typecheck
+          pnpm turbo test --filter='!@uswds-wc/test-utils'
           pnpm run validate:uswds-compliance
           echo "✅ All validations passed"
 
-      - name: Determine version bump
-        id: version
+      - name: Build all packages
         run: |
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "🏗️ Building all packages..."
+          pnpm turbo build
+          echo "✅ All packages built"
 
-          if [ "${{ github.event.inputs.version }}" = "prerelease" ]; then
-            if [ -z "${{ github.event.inputs.prerelease_tag }}" ]; then
-              echo "❌ Pre-release tag required for prerelease version"
-              exit 1
-            fi
-            VERSION_TYPE="prerelease"
-            PRERELEASE_TAG="--preid=${{ github.event.inputs.prerelease_tag }}"
-          else
-            VERSION_TYPE="${{ github.event.inputs.version }}"
-            PRERELEASE_TAG=""
-          fi
-
-          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
-          echo "prerelease_tag=$PRERELEASE_TAG" >> $GITHUB_OUTPUT
-
-          echo "📦 Current version: $CURRENT_VERSION"
-          echo "📈 Version bump: $VERSION_TYPE $PRERELEASE_TAG"
-
-      - name: Bump version
-        id: bump
-        run: |
-          # Bump version in package.json and create git tag
-          NEW_VERSION=$(pnpm version ${{ steps.version.outputs.version_type }} ${{ steps.version.outputs.prerelease_tag }} --no-git-tag-version)
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "version_number=${NEW_VERSION#v}" >> $GITHUB_OUTPUT
-          echo "✅ Version bumped to $NEW_VERSION"
-
-      - name: Sync service worker version
-        run: |
-          echo "🔄 Syncing service worker version..."
-          pnpm run sw:sync
-          echo "✅ Service worker version synced"
-
-      - name: Build production bundle
-        run: |
-          echo "🏗️ Building production bundle..."
-          pnpm run build
-          echo "✅ Production build complete"
-
-      - name: Validate bundle size
-        run: |
-          echo "📦 Validating bundle size..."
-          pnpm run validate:bundle-size || echo "⚠️ Bundle size validation warning (non-blocking)"
-
-      - name: Generate release notes
-        id: release_notes
-        run: |
-          VERSION_NUMBER="${{ steps.bump.outputs.version_number }}"
-
-          cat > release-notes.md <<EOF
-          # USWDS Web Components ${VERSION_NUMBER}
-
-          Released: $(date +%Y-%m-%d)
-
-          ## 📦 Installation
-
-          \`\`\`bash
-          pnpm install uswds-webcomponents@${VERSION_NUMBER}
-          \`\`\`
-
-          ## 📊 Bundle Metrics
-
-          EOF
-
-          if [ -f "test-reports/optimization-summary.json" ]; then
-            PACKAGE_SIZE=$(jq -r '.package.totalSize' test-reports/optimization-summary.json)
-            COMPONENT_COUNT=$(jq -r '.package.componentCount' test-reports/optimization-summary.json)
-            ENTRY_POINT=$(jq -r '.bundle.entryPoint' test-reports/optimization-summary.json)
-            ENTRY_GZIP=$(jq -r '.bundle.entryPointGzipped' test-reports/optimization-summary.json)
-            CSS_REDUCTION=$(jq -r '.css.averageReduction' test-reports/optimization-summary.json)
-
-            cat >> release-notes.md <<EOF
-          - **Package Size:** ${PACKAGE_SIZE} (tree-shakeable)
-          - **Entry Point:** ${ENTRY_POINT} (${ENTRY_GZIP} gzipped)
-          - **CSS Optimization:** ${CSS_REDUCTION} average reduction
-          - **Service Worker:** v${VERSION_NUMBER}
-          - **Components:** ${COMPONENT_COUNT} USWDS-compliant components
-
-          > 📦 Users only download components they import thanks to tree-shaking optimization
-
-          EOF
-          fi
-
-          cat >> release-notes.md <<EOF
-          ## 📝 Changes
-
-          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for detailed changes.
-
-          ## 🔗 Resources
-
-          - [Documentation](https://github.com/${{ github.repository }})
-          - [Live Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)
-          - [USWDS Official](https://designsystem.digital.gov/)
-
-          ---
-
-          🤖 This release was automatically created by GitHub Actions.
-          EOF
-
-          cat release-notes.md
-          echo "✅ Release notes generated"
-
-      - name: Commit version bump
-        run: |
-          git add package.json package-lock.json
-          git add public/service-worker.js 2>/dev/null || true
-          git add test-reports/service-worker-version.json 2>/dev/null || true
-          git add test-reports/optimization-summary.json 2>/dev/null || true
-
-          # Skip pre-commit hook - validation already run in workflow
-          HUSKY=0 git commit -m "chore: release ${{ steps.bump.outputs.new_version }}"
-
-          # Create git tag
-          git tag ${{ steps.bump.outputs.new_version }} -m "Release ${{ steps.bump.outputs.new_version }}"
-
-          echo "✅ Version commit and tag created"
-
-      - name: Push changes and tags
-        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
-        run: |
-          # Skip pre-push hook - validation already run in workflow
-          git push origin main --no-verify
-          git push origin ${{ steps.bump.outputs.new_version }} --no-verify
-          echo "✅ Pushed version commit and tag"
-
-      - name: Publish to NPM
-        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
-        run: |
-          echo "📦 Publishing to NPM..."
-
-          if [ "${{ github.event.inputs.version }}" = "prerelease" ]; then
-            NPM_TAG="${{ github.event.inputs.prerelease_tag }}"
-          else
-            NPM_TAG="latest"
-          fi
-
-          pnpm publish --tag $NPM_TAG --access public
-          echo "✅ Published to NPM with tag: $NPM_TAG"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Verify NPM package
-        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
-        run: |
-          echo "🔍 Verifying NPM package..."
-          sleep 10  # Wait for NPM to propagate
-          pnpm view uswds-webcomponents@${{ steps.bump.outputs.version_number }}
-          echo "✅ Package verified on NPM"
-
-      - name: Create GitHub Release
-        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
-        uses: actions/create-release@v1
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run release:publish
+          version: pnpm run release:version
+          commit: "chore: update versions"
+          title: "chore: update package versions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.bump.outputs.new_version }}
-          release_name: ${{ steps.bump.outputs.new_version }}
-          body_path: release-notes.md
-          draft: false
-          prerelease: ${{ github.event.inputs.version == 'prerelease' }}
-
-      - name: Upload release artifacts
-        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-artifacts-${{ steps.bump.outputs.version_number }}
-          path: |
-            test-reports/optimization-summary.json
-            test-reports/service-worker-version.json
-            release-notes.md
-
-      - name: Dry run summary
-        if: ${{ github.event.inputs.dry_run == 'true' || github.event.inputs.dry_run == true }}
-        run: |
-          echo "🏃 DRY RUN SUMMARY"
-          echo "================"
-          echo "Version: ${{ steps.bump.outputs.new_version }}"
-          echo "Tag: ${{ steps.bump.outputs.new_version }}"
-          echo ""
-          echo "⏭️  Skipped (dry run):"
-          echo "  - Push to repository"
-          echo "  - Publish to NPM"
-          echo "  - Create GitHub release"
-          echo ""
-          echo "✅ All validations passed"
-          echo "✅ Build successful"
-          echo "✅ Ready for real release"
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Success summary
-        if: ${{ (github.event.inputs.dry_run != 'true' && github.event.inputs.dry_run != true) && success() }}
+        if: steps.changesets.outputs.published == 'true'
         run: |
           echo "🎉 RELEASE SUCCESSFUL"
           echo "===================="
-          echo "Version: ${{ steps.bump.outputs.new_version }}"
-          echo "NPM: https://www.npmjs.com/package/uswds-webcomponents/v/${{ steps.bump.outputs.version_number }}"
-          echo "GitHub: https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump.outputs.new_version }}"
+          echo "Published packages:"
+          echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | "  • \(.name)@\(.version)"'
           echo ""
-          echo "✅ Version bumped and committed"
-          echo "✅ Published to NPM"
-          echo "✅ GitHub release created"
-          echo "✅ Artifacts uploaded"
+          echo "✅ Packages published to NPM"
+          echo "✅ GitHub releases created"
 
       - name: Notify on failure
         if: failure()
         run: |
           echo "❌ RELEASE FAILED"
           echo "================"
-          echo "Version: ${{ steps.bump.outputs.new_version }}"
           echo ""
           echo "Please check the logs above for details."
           echo "The release can be retried after fixing issues."
