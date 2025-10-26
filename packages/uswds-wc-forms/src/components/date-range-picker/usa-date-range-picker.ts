@@ -94,9 +94,6 @@ export class USADateRangePicker extends USWDSBaseComponent {
   @property({ type: String })
   error = '';
 
-  // Store USWDS module for cleanup
-  private uswdsModule: any = null;
-
   override connectedCallback() {
     super.connectedCallback();
 
