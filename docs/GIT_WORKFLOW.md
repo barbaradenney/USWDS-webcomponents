@@ -537,7 +537,7 @@ pnpm changeset
 
 ```bash
 # Via GitHub CLI
-gh api repos/barbaradenney/USWDS-webcomponents/branches/main/protection \
+gh api repos/barbaradenney/uswds-wc/branches/main/protection \
   --method PUT \
   --field required_status_checks='{"strict":true,"contexts":["lint","typecheck","test","build"]}' \
   --field enforce_admins=true \
@@ -782,7 +782,7 @@ git fetch --prune && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs 
 
 ## Questions?
 
-- Check [GitHub Discussions](https://github.com/barbaradenney/USWDS-webcomponents/discussions)
+- Check [GitHub Discussions](https://github.com/barbaradenney/uswds-wc/discussions)
 - Review closed PRs for examples
 - Ask maintainers for clarification
 

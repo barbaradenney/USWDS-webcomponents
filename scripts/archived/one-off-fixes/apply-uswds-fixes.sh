@@ -7,7 +7,7 @@ echo "🔧 Applying USWDS compliance fixes..."
 
 # Fixes for banner
 echo "Fixing banner..."
-# Manual fix required: Remove custom SVG icons from /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/banner/usa-banner.ts
+# Manual fix required: Remove custom SVG icons from /Users/barbaramiles/Documents/Github/uswds-wc/src/components/banner/usa-banner.ts
 echo "⚠️  Manual fix needed: Remove custom SVG icons from banner"
 
 # Fixes for combo-box
@@ -18,7 +18,7 @@ echo "Fixing date-picker..."
 
 # Fixes for icon
 echo "Fixing icon..."
-# Manual fix required: Remove custom SVG icons from /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/icon/usa-icon.ts
+# Manual fix required: Remove custom SVG icons from /Users/barbaramiles/Documents/Github/uswds-wc/src/components/icon/usa-icon.ts
 echo "⚠️  Manual fix needed: Remove custom SVG icons from icon"
 
 # Fixes for time-picker

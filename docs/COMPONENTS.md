@@ -2,7 +2,7 @@
 
 Complete catalog of all USWDS Web Components with properties, events, and examples.
 
-**📚 [View Live Interactive Documentation](https://barbaradenney.github.io/USWDS-webcomponents/)** - Explore all components with interactive examples in Storybook
+**📚 [View Live Interactive Documentation](https://barbaradenney.github.io/uswds-wc/)** - Explore all components with interactive examples in Storybook
 
 **Total Components**: 45
 **USWDS Version**: 3.13.0

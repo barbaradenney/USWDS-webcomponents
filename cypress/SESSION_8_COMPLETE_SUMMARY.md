@@ -16,7 +16,7 @@
 
 ### Phase 1: Update Cypress Custom Commands (COMPLETE)
 
-**File Modified**: `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/support/commands.ts`
+**File Modified**: `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/support/commands.ts`
 
 **Changes**:
 ```typescript
@@ -213,15 +213,15 @@ Common anti-patterns found:
 ## Files Modified
 
 ### Created
-- `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/SESSION_8_CUSTOM_COMMAND_FIX_RESULTS.md`
-- `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/SESSION_8_FOOTER_TEST_FINDINGS.md`
-- `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/SESSION_8_COMPLETE_SUMMARY.md` (this file)
+- `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/SESSION_8_CUSTOM_COMMAND_FIX_RESULTS.md`
+- `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/SESSION_8_FOOTER_TEST_FINDINGS.md`
+- `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/SESSION_8_COMPLETE_SUMMARY.md` (this file)
 
 ### Modified
-- `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/support/commands.ts` - Updated to Storybook 9 iframe pattern
+- `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/support/commands.ts` - Updated to Storybook 9 iframe pattern
 
 ### Deleted
-- `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/footer-rapid-clicks.cy.ts` - Invalid tests
+- `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/footer-rapid-clicks.cy.ts` - Invalid tests
 
 ---
 

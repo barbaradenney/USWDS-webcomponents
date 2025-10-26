@@ -420,28 +420,28 @@ return this.sections as unknown as InPageNavItem[];
 ## Files Modified
 
 ### Test Files (4 files)
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/button-group-accessibility.cy.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/button-group-accessibility.cy.ts`
    - Fixed 5 tests (Cypress syntax + WCAG expectations)
 
-2. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/modal-storybook-test.cy.ts`
+2. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/modal-storybook-test.cy.ts`
    - Fixed 2 tests (focus trap + Light DOM slots)
 
-3. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/alert-announcements.cy.ts`
+3. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/alert-announcements.cy.ts`
    - Fixed 3 tests (heading regex + CSS icon implementation)
 
-4. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/range-slider-storybook-test.cy.ts`
+4. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/range-slider-storybook-test.cy.ts`
    - Fixed 7 tests (ARIA attributes + Cypress .invoke('text') pattern)
 
 ### Component Files (1 file)
-5. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/in-page-navigation/usa-in-page-navigation.ts`
+5. `/Users/barbaramiles/Documents/Github/uswds-wc/src/components/in-page-navigation/usa-in-page-navigation.ts`
    - Fixed TypeScript TS2352 errors with 'unknown' intermediate cast
 
 ### Documentation (1 file)
-6. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/in-page-navigation/CHANGELOG.mdx`
+6. `/Users/barbaramiles/Documents/Github/uswds-wc/src/components/in-page-navigation/CHANGELOG.mdx`
    - Auto-updated by post-commit hook
 
 ### Reports (1 file)
-7. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/reports/component-issues-report.json`
+7. `/Users/barbaramiles/Documents/Github/uswds-wc/reports/component-issues-report.json`
    - Auto-updated by component issue detection
 
 ---

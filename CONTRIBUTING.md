@@ -32,11 +32,11 @@ This project follows the [Contributor Covenant](https://www.contributor-covenant
 ```bash
 # 1. Fork the repository on GitHub
 # 2. Clone your fork
-git clone https://github.com/YOUR_USERNAME/USWDS-webcomponents.git
-cd USWDS-webcomponents
+git clone https://github.com/YOUR_USERNAME/uswds-wc.git
+cd uswds-wc
 
 # 3. Add upstream remote
-git remote add upstream https://github.com/barbaradenney/USWDS-webcomponents.git
+git remote add upstream https://github.com/barbaradenney/uswds-wc.git
 
 # 4. Install dependencies
 pnpm install

@@ -217,22 +217,22 @@ Proper research revealed:
 
 ## Files Modified
 
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/support/commands.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/support/commands.ts`
    - Updated to Storybook 9 iframe pattern
    - Added comprehensive documentation
 
-2. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/.husky/pre-commit`
+2. `/Users/barbaramiles/Documents/Github/uswds-wc/.husky/pre-commit`
    - Added Cypress pattern validation (8c/9 step)
    - Runs only when Cypress files modified
 
-3. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/package.json`
+3. `/Users/barbaramiles/Documents/Github/uswds-wc/package.json`
    - Added `validate:cypress-patterns` script
 
 ---
 
 ## Files Deleted
 
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/footer-rapid-clicks.cy.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/footer-rapid-clicks.cy.ts`
    - 7 invalid tests that didn't match component architecture
 
 ---

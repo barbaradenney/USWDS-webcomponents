@@ -23,7 +23,7 @@
 **Impact**: Fixed infrastructure for all tests using `cy.selectStory()`
 
 **Changes Made**:
-- Updated `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/support/commands.ts`
+- Updated `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/support/commands.ts`
 - Changed from Storybook 6 pattern (`/?path=/story/`) to Storybook 9 iframe pattern (`/iframe.html?id=...`)
 - Updated `cy.waitForStorybook()` to look for `body` instead of `#storybook-root`
 - Added comprehensive documentation explaining the iframe pattern
@@ -142,13 +142,13 @@
 5. `SESSION_8_FINAL_SUMMARY.md` - This file
 
 ### Modified
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/support/commands.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/support/commands.ts`
    - Updated `cy.selectStory()` to use iframe pattern
    - Updated `cy.waitForStorybook()` to check for `body`
    - Added comprehensive documentation
 
 ### Deleted
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/footer-rapid-clicks.cy.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/footer-rapid-clicks.cy.ts`
    - 7 invalid tests that didn't match component architecture
 
 ---

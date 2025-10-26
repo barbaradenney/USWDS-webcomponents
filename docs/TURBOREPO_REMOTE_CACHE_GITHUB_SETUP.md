@@ -10,7 +10,7 @@ To enable remote caching in CI/CD, you need to add these secrets to your GitHub 
 
 ### Step 1: Navigate to Repository Settings
 
-1. Go to your GitHub repository: https://github.com/barbaradenney/USWDS-webcomponents
+1. Go to your GitHub repository: https://github.com/barbaradenney/uswds-wc
 2. Click on **Settings** (top navigation)
 3. In the left sidebar, click **Secrets and variables** → **Actions**
 

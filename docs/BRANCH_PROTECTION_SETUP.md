@@ -35,7 +35,7 @@ pnpm run setup:branch-protection
 ### Option 3: Manual Setup via GitHub CLI
 
 ```bash
-gh api repos/barbaradenney/USWDS-webcomponents/branches/main/protection \
+gh api repos/barbaradenney/uswds-wc/branches/main/protection \
   --method PUT \
   --input .github/branch-protection-config.json
 ```
@@ -159,7 +159,7 @@ After setup, verify configuration:
 
 ```bash
 # View current protection rules
-gh api repos/barbaradenney/USWDS-webcomponents/branches/main/protection
+gh api repos/barbaradenney/uswds-wc/branches/main/protection
 
 # Or via web UI
 # Navigate to: Settings → Branches → main
@@ -200,7 +200,7 @@ To modify protection rules:
 
 3. **Verify changes**:
    ```bash
-   gh api repos/barbaradenney/USWDS-webcomponents/branches/main/protection
+   gh api repos/barbaradenney/uswds-wc/branches/main/protection
    ```
 
 ## Common Scenarios

@@ -895,8 +895,8 @@ npm install -g pnpm
 
 ```bash
 # Clone repository
-git clone https://github.com/barbaramiles/USWDS-webcomponents.git
-cd USWDS-webcomponents
+git clone https://github.com/barbaramiles/uswds-wc.git
+cd uswds-wc
 
 # Install all dependencies (uses pnpm workspaces)
 pnpm install

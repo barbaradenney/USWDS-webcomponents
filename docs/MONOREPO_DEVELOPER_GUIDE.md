@@ -39,8 +39,8 @@ pnpm --version  # Should be 8.x or higher
 
 ```bash
 # Clone repository
-git clone https://github.com/barbaradenney/USWDS-webcomponents.git
-cd USWDS-webcomponents
+git clone https://github.com/barbaradenney/uswds-wc.git
+cd uswds-wc
 
 # Install all dependencies (uses pnpm workspaces)
 pnpm install

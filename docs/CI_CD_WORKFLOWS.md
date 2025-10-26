@@ -219,7 +219,7 @@ This project has **30 GitHub Actions workflows** organized into several categori
 **Trigger**: Pushes to main
 **Purpose**: Deploy Storybook to GitHub Pages
 
-**URL**: https://barbaradenney.github.io/USWDS-webcomponents/
+**URL**: https://barbaradenney.github.io/uswds-wc/
 
 ---
 

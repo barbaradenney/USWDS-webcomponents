@@ -3,9 +3,9 @@
 # Documentation Status Report
 # Shows current state of docs consolidation
 
-DOCS_DIR="/Users/barbaramiles/Documents/Github/USWDS-webcomponents/docs"
+DOCS_DIR="/Users/barbaramiles/Documents/Github/uswds-wc/docs"
 ARCHIVED_DIR="$DOCS_DIR/archived"
-SRC_DIR="/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components"
+SRC_DIR="/Users/barbaramiles/Documents/Github/uswds-wc/src/components"
 
 # Colors
 GREEN='\033[0;32m'

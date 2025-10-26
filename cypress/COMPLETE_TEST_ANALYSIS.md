@@ -206,7 +206,7 @@ After completing the file-input Pure USWDS architecture transformation (16/25 â†
 
 ## Files Modified This Session
 
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/in-page-navigation/usa-in-page-navigation.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/src/components/in-page-navigation/usa-in-page-navigation.ts`
    - Added `items` property alias for `sections`
    - Enables tests to use either property name
 

@@ -22,7 +22,7 @@
 
 ## What We Fixed
 
-### Changed in `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/support/commands.ts`:
+### Changed in `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/support/commands.ts`:
 
 ```typescript
 // BEFORE (Storybook 6 pattern - broken in Storybook 9)

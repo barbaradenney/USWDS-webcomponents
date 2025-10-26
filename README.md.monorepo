@@ -21,9 +21,9 @@ Organized as independent packages for optimal tree-shaking and bundle sizes.
 
 ## 🔗 Quick Links
 
-- **📚 [Live Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)** - Interactive component documentation
+- **📚 [Live Storybook](https://barbaradenney.github.io/uswds-wc/)** - Interactive component documentation
 - **📦 [npm Packages](https://www.npmjs.com/org/uswds-wc)** - Install category packages or full library
-- **🐙 [GitHub Repository](https://github.com/barbaramiles/USWDS-webcomponents)** - Source code and issues
+- **🐙 [GitHub Repository](https://github.com/barbaramiles/uswds-wc)** - Source code and issues
 - **📖 [Component Catalog](docs/COMPONENTS.md)** - Complete reference of all 45 components
 
 ## 🏆 **100% Test Achievement (2025)**
@@ -197,8 +197,8 @@ Every commit automatically validates:
 
 ```bash
 # Clone repository
-git clone https://github.com/barbaramiles/USWDS-webcomponents.git
-cd USWDS-webcomponents
+git clone https://github.com/barbaramiles/uswds-wc.git
+cd uswds-wc
 
 # Install pnpm (if not already installed)
 npm install -g pnpm
@@ -338,10 +338,10 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🔗 Links
 
-- **Documentation**: [https://barbaradenney.github.io/USWDS-webcomponents/](https://barbaradenney.github.io/USWDS-webcomponents/)
+- **Documentation**: [https://barbaradenney.github.io/uswds-wc/](https://barbaradenney.github.io/uswds-wc/)
 - **NPM Organization**: [https://www.npmjs.com/org/uswds-wc](https://www.npmjs.com/org/uswds-wc)
-- **GitHub**: [https://github.com/barbaramiles/USWDS-webcomponents](https://github.com/barbaramiles/USWDS-webcomponents)
-- **Issues**: [https://github.com/barbaramiles/USWDS-webcomponents/issues](https://github.com/barbaramiles/USWDS-webcomponents/issues)
+- **GitHub**: [https://github.com/barbaramiles/uswds-wc](https://github.com/barbaramiles/uswds-wc)
+- **Issues**: [https://github.com/barbaramiles/uswds-wc/issues](https://github.com/barbaramiles/uswds-wc/issues)
 
 ---
 

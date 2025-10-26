@@ -48,7 +48,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
+    "url": "https://github.com/barbaradenney/uswds-wc.git",
     "directory": "packages/uswds-wc-core"
   }
 }

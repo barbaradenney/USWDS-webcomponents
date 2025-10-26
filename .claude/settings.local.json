@@ -50,10 +50,10 @@
       "Bash(do echo \"=== $file ===\")",
       "Bash(done)",
       "Bash(find:*)",
-      "Bash(for file in /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/time-picker/*.test.ts)",
+      "Bash(for file in /Users/barbaramiles/Documents/Github/uswds-wc/src/components/time-picker/*.test.ts)",
       "Bash(timeout 120 npm test)",
       "Bash(for comp in accordion alert banner breadcrumb button card character-count checkbox collection combo-box date-picker date-range-picker file-input footer)",
-      "Bash(do test_file=\"/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/$comp/usa-$comp.test.ts\")",
+      "Bash(do test_file=\"/Users/barbaramiles/Documents/Github/uswds-wc/src/components/$comp/usa-$comp.test.ts\")",
       "Bash(if [ ! -f \"$test_file\" ])",
       "Bash(then echo \"Missing: $test_file\")",
       "Bash(fi)",
@@ -112,7 +112,8 @@
       "Read(//dev/**)",
       "Bash(git tag -a v1.0.0 -m \"$(cat <<''EOF''\nRelease v1.0.0: USWDS Web Components - Production Ready\n\n🎉 First production-ready release of USWDS Web Components\n\n## Highlights\n\n✅ 45 fully-tested USWDS components\n✅ 2301/2301 tests passing (100%)\n✅ 100% USWDS 3.13.0 compliance\n✅ MUI-style category-based architecture\n✅ Enhanced tree-shaking support\n✅ Full TypeScript support\n✅ WCAG 2.1 AA accessible\n\n## Features\n\n- Category-based imports (forms, navigation, data-display, feedback, actions, layout, structure)\n- Multiple import patterns (individual, category, named)\n- Optimized bundles (0.12 KB - 0.47 KB per category)\n- Future-ready architecture for multi-package evolution\n- Complete Storybook documentation\n- Automated validation and quality gates\n\n## Installation\n\nnpm install uswds-webcomponents lit\n\n## Usage\n\nimport ''uswds-webcomponents/forms'';\nimport { USAButton } from ''uswds-webcomponents/actions'';\n\nSee CHANGELOG.md for complete details.\nEOF\n)\")",
       "WebFetch(domain:barbaradenney.github.io)",
-      "Bash(pnpm test:*)"
+      "Bash(pnpm test:*)",
+      "Bash(gh repo view:*)"
     ],
     "deny": [],
     "ask": []

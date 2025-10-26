@@ -115,7 +115,7 @@ MIT
 
 ## Repository
 
-[USWDS Web Components Monorepo](https://github.com/barbaradenney/USWDS-webcomponents/tree/main/packages/uswds-wc-core)
+[USWDS Web Components Monorepo](https://github.com/barbaradenney/uswds-wc/tree/main/packages/uswds-wc-core)
 
 ## Related Packages
 
@@ -130,4 +130,4 @@ MIT
 
 ## Contributing
 
-See the [main repository](https://github.com/barbaradenney/USWDS-webcomponents) for contribution guidelines.
+See the [main repository](https://github.com/barbaradenney/uswds-wc) for contribution guidelines.

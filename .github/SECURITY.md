@@ -23,7 +23,7 @@ We take the security of USWDS Web Components seriously. If you believe you have 
 Instead, please report them via one of the following methods:
 
 1. **GitHub Security Advisories** (Preferred)
-   - Navigate to the [Security tab](https://github.com/barbaradenney/USWDS-webcomponents/security)
+   - Navigate to the [Security tab](https://github.com/barbaradenney/uswds-wc/security)
    - Click "Report a vulnerability"
    - Fill out the form with details
 
@@ -187,14 +187,14 @@ _No vulnerabilities reported yet. Be the first to make our project more secure!_
 
 ## Security Resources
 
-- **GitHub Security Advisories**: [View Advisories](https://github.com/barbaradenney/USWDS-webcomponents/security/advisories)
+- **GitHub Security Advisories**: [View Advisories](https://github.com/barbaradenney/uswds-wc/security/advisories)
 - **npm Advisories**: [View on npm](https://www.npmjs.com/package/uswds-webcomponents?activeTab=security)
 - **USWDS Security**: [USWDS Security Guidance](https://designsystem.digital.gov/)
 
 ## Contact
 
 - **Security Email**: security@[your-domain].com
-- **GitHub Security**: Use [Security Advisories](https://github.com/barbaradenney/USWDS-webcomponents/security)
+- **GitHub Security**: Use [Security Advisories](https://github.com/barbaradenney/uswds-wc/security)
 - **PGP Key**: Available upon request
 
 ## Acknowledgments

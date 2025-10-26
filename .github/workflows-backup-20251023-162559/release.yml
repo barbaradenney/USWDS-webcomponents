@@ -177,7 +177,7 @@ jobs:
           ## 🔗 Resources
 
           - [Documentation](https://github.com/${{ github.repository }})
-          - [Live Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)
+          - [Live Storybook](https://barbaradenney.github.io/uswds-wc/)
           - [USWDS Official](https://designsystem.digital.gov/)
 
           ---

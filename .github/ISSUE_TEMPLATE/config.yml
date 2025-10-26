@@ -1,14 +1,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 GitHub Discussions
-    url: https://github.com/barbaramiles/USWDS-webcomponents/discussions
+    url: https://github.com/barbaramiles/uswds-wc/discussions
     about: Ask questions, share ideas, or discuss the project with the community
   - name: 📖 Documentation
-    url: https://github.com/barbaramiles/USWDS-webcomponents#readme
+    url: https://github.com/barbaramiles/uswds-wc#readme
     about: Read the documentation including CLAUDE.md for development guidelines
   - name: 🏛️ USWDS Documentation
     url: https://designsystem.digital.gov/
     about: Official U.S. Web Design System documentation
   - name: 🤖 AI Contribution Guide
-    url: https://github.com/barbaramiles/USWDS-webcomponents/blob/main/CONTRIBUTING.md#ai-driven-development
+    url: https://github.com/barbaramiles/uswds-wc/blob/main/CONTRIBUTING.md#ai-driven-development
     about: Learn how to contribute using AI tools (required for this project)

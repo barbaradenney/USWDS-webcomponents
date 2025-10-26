@@ -146,7 +146,7 @@ This document tracks improvements to our CI/CD infrastructure to achieve product
 **Next Step**: Set up Codecov account
 1. Go to https://codecov.io
 2. Sign in with GitHub
-3. Add repository: `barbaradenney/USWDS-webcomponents`
+3. Add repository: `barbaradenney/uswds-wc`
 4. Copy Codecov token
 5. Add to GitHub secrets: `gh secret set CODECOV_TOKEN`
 6. Coverage will be visible on next CI run

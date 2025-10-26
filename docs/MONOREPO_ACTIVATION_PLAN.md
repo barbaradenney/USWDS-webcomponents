@@ -377,10 +377,10 @@ rm -rf /tmp/test-install
 pnpm run build-storybook
 
 # 2. Deploy will happen automatically via GitHub Actions
-# Monitor: https://github.com/barbaramiles/USWDS-webcomponents/actions
+# Monitor: https://github.com/barbaramiles/uswds-wc/actions
 
 # 3. Verify deployment
-# Visit: https://barbaradenney.github.io/USWDS-webcomponents/
+# Visit: https://barbaradenney.github.io/uswds-wc/
 
 # Expected: Storybook loads successfully
 ```
@@ -468,7 +468,7 @@ npm info @uswds-wc downloads
 
 ### GitHub Actions
 
-Monitor at: https://github.com/barbaramiles/USWDS-webcomponents/actions
+Monitor at: https://github.com/barbaramiles/uswds-wc/actions
 
 Check for:
 - [ ] quality-checks workflow passing
@@ -478,7 +478,7 @@ Check for:
 ### User Feedback
 
 Monitor:
-- GitHub Issues: https://github.com/barbaramiles/USWDS-webcomponents/issues
+- GitHub Issues: https://github.com/barbaramiles/uswds-wc/issues
 - npm package page comments
 - Social media mentions
 

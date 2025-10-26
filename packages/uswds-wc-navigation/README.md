@@ -252,7 +252,7 @@ pnpm run lint
 
 View live examples and interactive documentation:
 
-[USWDS Web Components Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)
+[USWDS Web Components Storybook](https://barbaradenney.github.io/uswds-wc/)
 
 ## License
 
@@ -260,7 +260,7 @@ MIT
 
 ## Repository
 
-[USWDS Web Components Monorepo](https://github.com/barbaradenney/USWDS-webcomponents/tree/main/packages/uswds-wc-navigation)
+[USWDS Web Components Monorepo](https://github.com/barbaradenney/uswds-wc/tree/main/packages/uswds-wc-navigation)
 
 ## Related Packages
 
@@ -270,4 +270,4 @@ MIT
 
 ## Contributing
 
-See the [main repository](https://github.com/barbaradenney/USWDS-webcomponents) for contribution guidelines.
+See the [main repository](https://github.com/barbaradenney/uswds-wc) for contribution guidelines.

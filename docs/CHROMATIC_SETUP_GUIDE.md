@@ -43,7 +43,7 @@ Before setting up Chromatic, ensure you have:
 ### Step 2: Create Chromatic Project
 
 1. Click "Add project" in Chromatic dashboard
-2. Select your GitHub repository: `USWDS-webcomponents`
+2. Select your GitHub repository: `uswds-wc`
 3. Chromatic will generate a **project token**
 4. **Copy this token** - you'll need it in the next step
 

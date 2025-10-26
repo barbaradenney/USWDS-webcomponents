@@ -125,10 +125,10 @@ Object.entries(commitTypes).forEach(([type, data]) => {
       // Add issue/PR links
       if (commit.issues.length > 0) {
         const uniqueIssues = [...new Set(commit.issues)];
-        line += ` (${uniqueIssues.map(i => `[#${i}](https://github.com/YOUR_ORG/USWDS-webcomponents/issues/${i})`).join(', ')})`;
+        line += ` (${uniqueIssues.map(i => `[#${i}](https://github.com/YOUR_ORG/uswds-wc/issues/${i})`).join(', ')})`;
       }
 
-      line += ` ([${commit.hash}](https://github.com/YOUR_ORG/USWDS-webcomponents/commit/${commit.hash}))`;
+      line += ` ([${commit.hash}](https://github.com/YOUR_ORG/uswds-wc/commit/${commit.hash}))`;
 
       changelog += line + '\n';
     });

@@ -282,7 +282,7 @@ This single fix will:
 
 ```bash
 # Execute this now:
-cd /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+cd /Users/barbaramiles/Documents/Github/uswds-wc
 
 # Fix interaction test imports
 find src/components -name "*-interaction.test.ts" -exec sed -i '' \

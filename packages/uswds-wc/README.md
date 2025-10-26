@@ -305,7 +305,7 @@ pnpm run typecheck
 ### Storybook
 View live examples and interactive documentation:
 
-[USWDS Web Components Storybook](https://barbaradenney.github.io/USWDS-webcomponents/)
+[USWDS Web Components Storybook](https://barbaradenney.github.io/uswds-wc/)
 
 ### Package Documentation
 - [@uswds-wc/core](../uswds-wc-core/README.md)
@@ -351,14 +351,14 @@ MIT
 
 ## Repository
 
-[USWDS Web Components Monorepo](https://github.com/barbaradenney/USWDS-webcomponents)
+[USWDS Web Components Monorepo](https://github.com/barbaradenney/uswds-wc)
 
 ## Contributing
 
-See the [main repository](https://github.com/barbaradenney/USWDS-webcomponents) for contribution guidelines.
+See the [main repository](https://github.com/barbaradenney/uswds-wc) for contribution guidelines.
 
 ## Support
 
-- [GitHub Issues](https://github.com/barbaradenney/USWDS-webcomponents/issues)
-- [Storybook Documentation](https://barbaradenney.github.io/USWDS-webcomponents/)
+- [GitHub Issues](https://github.com/barbaradenney/uswds-wc/issues)
+- [Storybook Documentation](https://barbaradenney.github.io/uswds-wc/)
 - [USWDS Documentation](https://designsystem.digital.gov/)

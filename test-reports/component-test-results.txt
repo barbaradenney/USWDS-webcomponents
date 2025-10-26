@@ -6,7 +6,7 @@ Component Test Run - Fri Oct 17 01:15:08 MDT 2025
 > vitest run accordion
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/accordion/accordion-dom-validation.test.ts
 ✅ Vitest test environment setup complete
@@ -30,7 +30,7 @@ stdout | src/components/accordion/accordion-uswds-validation.test.ts
  FAIL  src/components/accordion/accordion-dom-validation.test.ts [ src/components/accordion/accordion-dom-validation.test.ts ]
 Error: Failed to resolve import "./dom-structure-validation.js" from "src/components/accordion/accordion-dom-validation.test.ts". Does the file exist?
   Plugin: vite:import-analysis
-  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/accordion/accordion-dom-validation.test.ts:7:7
+  File: /Users/barbaramiles/Documents/Github/uswds-wc/src/components/accordion/accordion-dom-validation.test.ts:7:7
   4  |    validateDOMStructure,
   5  |    USWDS_DOM_SPECS
   6  |  } from "./dom-structure-validation.js";
@@ -50,7 +50,7 @@ Error: Failed to resolve import "./dom-structure-validation.js" from "src/compon
  FAIL  src/components/accordion/accordion-interaction.test.ts [ src/components/accordion/accordion-interaction.test.ts ]
 Error: Failed to resolve import "./test-utils.js" from "src/components/accordion/accordion-interaction.test.ts". Does the file exist?
   Plugin: vite:import-analysis
-  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/accordion/accordion-interaction.test.ts:11:30
+  File: /Users/barbaramiles/Documents/Github/uswds-wc/src/components/accordion/accordion-interaction.test.ts:11:30
   1  |  import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
   2  |  import "./usa-accordion.ts";
   3  |  import { waitForUpdate } from "./test-utils.js";
@@ -84,7 +84,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run alert
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/alert/usa-alert.test.ts
 ✅ Vitest test environment setup complete
@@ -528,7 +528,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run banner
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/banner/banner-interaction.test.ts
 ✅ Vitest test environment setup complete
@@ -549,7 +549,7 @@ stdout | src/components/banner/usa-banner-behavior.test.ts
  FAIL  src/components/banner/banner-interaction.test.ts [ src/components/banner/banner-interaction.test.ts ]
 Error: Failed to resolve import "./test-utils.js" from "src/components/banner/banner-interaction.test.ts". Does the file exist?
   Plugin: vite:import-analysis
-  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/banner/banner-interaction.test.ts:11:30
+  File: /Users/barbaramiles/Documents/Github/uswds-wc/src/components/banner/banner-interaction.test.ts:11:30
   1  |  import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
   2  |  import "./usa-banner.ts";
   3  |  import { waitForUpdate } from "./test-utils.js";
@@ -583,44 +583,44 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run breadcrumb
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/breadcrumb/usa-breadcrumb.test.ts
 ✅ Vitest test environment setup complete
 
 stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Component Lifecycle Stability > should remain in DOM after property changes
 Error: Not implemented: navigation (except hash changes)
-    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
-    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
-    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
-    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at module.exports (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
     at listOnTimeout (node:internal/timers:588:17)
     at processTimers (node:internal/timers:523:7) [90mundefined[39m
 
 stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Event System Stability > should not pollute global event handling
 Error: Not implemented: navigation (except hash changes)
-    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
-    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
-    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
-    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at module.exports (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
     at listOnTimeout (node:internal/timers:588:17)
     at processTimers (node:internal/timers:523:7) [90mundefined[39m
 
 stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Event System Stability > should maintain stability during breadcrumb navigation clicks
 Error: Not implemented: navigation (except hash changes)
-    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
-    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
-    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
-    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at module.exports (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
     at listOnTimeout (node:internal/timers:588:17)
     at processTimers (node:internal/timers:523:7) [90mundefined[39m
 
 stderr | src/components/breadcrumb/usa-breadcrumb.test.ts > USABreadcrumb > CRITICAL: Event System Stability > should maintain stability during breadcrumb navigation clicks
 Error: Not implemented: navigation (except hash changes)
-    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
-    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
-    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
-    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
+    at module.exports (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at Timeout._onTimeout (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/nodes/HTMLHyperlinkElementUtils-impl.js:80:7)
     at listOnTimeout (node:internal/timers:588:17)
     at processTimers (node:internal/timers:523:7) [90mundefined[39m
 
@@ -647,7 +647,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run button
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/button/usa-button.layout.test.ts
 ✅ Vitest test environment setup complete
@@ -743,7 +743,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run button-group
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/button-group/usa-button-group.layout.test.ts
 ✅ Vitest test environment setup complete
@@ -771,23 +771,23 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run card
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/card/usa-card.layout.test.ts
 ✅ Vitest test environment setup complete
 
 stderr | src/components/card/usa-card.layout.test.ts > USACard Layout Tests > Visual Regression Prevention > should handle card click events correctly
 Error: Not implemented: navigation (except hash changes)
-    at module.exports (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
-    at navigateFetch (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
-    at exports.navigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
-    at LocationImpl._locationObjectNavigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:30:5)
-    at LocationImpl._locationObjectSetterNavigate (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:24:17)
-    at LocationImpl.set href [as href] (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:46:10)
-    at Location.set href [as href] (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/generated/Location.js:125:37)
-    at USACard.handleCardClick (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/card/usa-card.ts:140:27)
-    at USACard.callTheUserObjectsOperation (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
-    at innerInvokeEventListeners (/Users/barbaramiles/Documents/Github/USWDS-webcomponents/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25) [90mundefined[39m
+    at module.exports (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at navigateFetch (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:77:3)
+    at exports.navigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/navigation.js:55:3)
+    at LocationImpl._locationObjectNavigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:30:5)
+    at LocationImpl._locationObjectSetterNavigate (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:24:17)
+    at LocationImpl.set href [as href] (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/window/Location-impl.js:46:10)
+    at Location.set href [as href] (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/generated/Location.js:125:37)
+    at USACard.handleCardClick (/Users/barbaramiles/Documents/Github/uswds-wc/src/components/card/usa-card.ts:140:27)
+    at USACard.callTheUserObjectsOperation (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/generated/EventListener.js:26:30)
+    at innerInvokeEventListeners (/Users/barbaramiles/Documents/Github/uswds-wc/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:350:25) [90mundefined[39m
 
  ✓ src/components/card/usa-card.layout.test.ts (23 tests) 161ms 52 MB heap used
 stdout | src/components/card/usa-card.test.ts
@@ -812,7 +812,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run character-count
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/character-count/usa-character-count-behavior.test.ts
 ✅ Vitest test environment setup complete
@@ -823,7 +823,7 @@ stdout | src/components/character-count/usa-character-count-behavior.test.ts
 > vitest run checkbox
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/checkbox/usa-checkbox.test.ts
 ✅ Vitest test environment setup complete
@@ -1107,7 +1107,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run collection
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/collection/usa-collection.test.ts
 ✅ Vitest test environment setup complete
@@ -1135,7 +1135,7 @@ NotSupportedError: This name has already been registered in the registry.
 > vitest run combo-box
 
 
- RUN  v3.2.4 /Users/barbaramiles/Documents/Github/USWDS-webcomponents
+ RUN  v3.2.4 /Users/barbaramiles/Documents/Github/uswds-wc
 
 stdout | src/components/combo-box/combo-box-dom-validation.test.ts
 ✅ Vitest test environment setup complete
@@ -1165,7 +1165,7 @@ stdout | src/components/combo-box/combo-box-uswds-validation.test.ts
  FAIL  src/components/combo-box/combo-box-interaction.test.ts [ src/components/combo-box/combo-box-interaction.test.ts ]
 Error: Failed to resolve import "./test-utils.js" from "src/components/combo-box/combo-box-interaction.test.ts". Does the file exist?
   Plugin: vite:import-analysis
-  File: /Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/combo-box/combo-box-interaction.test.ts:11:30
+  File: /Users/barbaramiles/Documents/Github/uswds-wc/src/components/combo-box/combo-box-interaction.test.ts:11:30
   1  |  import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
   2  |  import "./usa-combo-box.ts";
   3  |  import { waitForUpdate } from "./test-utils.js";

@@ -99,4 +99,4 @@ Complete documentation available at:
 
 ---
 
-For complete installation and usage instructions, see the [README](https://github.com/barbaramiles/USWDS-webcomponents#readme).
+For complete installation and usage instructions, see the [README](https://github.com/barbaramiles/uswds-wc#readme).

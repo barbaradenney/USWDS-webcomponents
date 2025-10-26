@@ -217,15 +217,15 @@ set items(value: InPageNavItem[]) {
 ## Files Modified
 
 ### Components
-1. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components/in-page-navigation/usa-in-page-navigation.ts`
+1. `/Users/barbaramiles/Documents/Github/uswds-wc/src/components/in-page-navigation/usa-in-page-navigation.ts`
    - Added `items` property alias for `sections`
 
 ### Tests
-2. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/e2e/button-group-accessibility.cy.ts`
+2. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/e2e/button-group-accessibility.cy.ts`
    - Fixed 5 test expectation errors
 
 ### Documentation
-3. `/Users/barbaramiles/Documents/Github/USWDS-webcomponents/cypress/COMPLETE_TEST_ANALYSIS.md`
+3. `/Users/barbaramiles/Documents/Github/uswds-wc/cypress/COMPLETE_TEST_ANALYSIS.md`
    - Comprehensive 427-test breakdown
    - Prioritization by ROI and effort
    - Strategic recommendations

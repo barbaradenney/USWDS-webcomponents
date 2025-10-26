@@ -40,7 +40,7 @@ This migration converts the current single-package repository into a monorepo wi
 ### Current Structure
 
 ```
-USWDS-webcomponents/
+uswds-wc/
 ├── src/                  # All source code
 ├── __tests__/            # All tests
 ├── .storybook/           # Storybook config
@@ -52,7 +52,7 @@ USWDS-webcomponents/
 ### Target Structure
 
 ```
-USWDS-webcomponents/
+uswds-wc/
 ├── packages/
 │   ├── components/       # @uswds-wc/components
 │   │   ├── src/          # (moved from root)
@@ -228,7 +228,7 @@ The root package.json becomes a workspace manager. Create this replacement:
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git"
+    "url": "https://github.com/barbaradenney/uswds-wc.git"
   },
   "author": "Barbara Miles",
   "license": "MIT"

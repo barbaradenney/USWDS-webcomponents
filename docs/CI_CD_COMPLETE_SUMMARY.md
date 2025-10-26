@@ -418,7 +418,7 @@ flags:
 ### 1. Set up Codecov Account
 1. Go to https://codecov.io
 2. Sign in with GitHub
-3. Add repository: `barbaradenney/USWDS-webcomponents`
+3. Add repository: `barbaradenney/uswds-wc`
 4. Get token
 5. Add to GitHub secrets: `gh secret set CODECOV_TOKEN`
 

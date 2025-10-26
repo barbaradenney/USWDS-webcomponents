@@ -6,9 +6,9 @@
 
 set -e  # Exit on error
 
-DOCS_DIR="/Users/barbaramiles/Documents/Github/USWDS-webcomponents/docs"
+DOCS_DIR="/Users/barbaramiles/Documents/Github/uswds-wc/docs"
 ARCHIVED_DIR="$DOCS_DIR/archived"
-SRC_DIR="/Users/barbaramiles/Documents/Github/USWDS-webcomponents/src/components"
+SRC_DIR="/Users/barbaramiles/Documents/Github/uswds-wc/src/components"
 BACKUP_DIR="/tmp/docs-backup-$(date +%Y%m%d-%H%M%S)"
 
 # Colors for output

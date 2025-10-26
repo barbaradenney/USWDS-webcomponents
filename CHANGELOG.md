@@ -244,6 +244,6 @@ The first production-ready release of USWDS Web Components - a comprehensive, fu
 ### 📦 Distribution
 
 - Package: `uswds-webcomponents@1.0.0`
-- Repository: https://github.com/barbaramiles/USWDS-webcomponents
+- Repository: https://github.com/barbaramiles/uswds-wc
 - License: Apache-2.0
 - Dependencies: `lit` (peer dependency)

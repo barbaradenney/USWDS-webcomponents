@@ -145,7 +145,7 @@ You must configure an NPM token before publishing. The automated release workflo
 ### Step 2: Add Token to GitHub Repository
 
 1. **Navigate to Repository Settings**
-   - Go to: https://github.com/barbaramiles/USWDS-webcomponents
+   - Go to: https://github.com/barbaramiles/uswds-wc
    - Click "Settings" tab
    - Click "Secrets and variables" → "Actions"
 
@@ -225,7 +225,7 @@ You have two options for publishing:
    ```
 
 3. **Trigger Release Workflow**
-   - Go to: https://github.com/barbaramiles/USWDS-webcomponents/actions
+   - Go to: https://github.com/barbaramiles/uswds-wc/actions
    - Click "Release" workflow
    - Click "Run workflow" button
    - Select options:
@@ -306,7 +306,7 @@ You have two options for publishing:
    ```
 
 7. **Create GitHub Release**
-   - Go to: https://github.com/barbaramiles/USWDS-webcomponents/releases/new
+   - Go to: https://github.com/barbaramiles/uswds-wc/releases/new
    - Tag: v1.0.0
    - Title: v1.0.0
    - Description: Copy from CHANGELOG.md
@@ -337,7 +337,7 @@ ls node_modules/uswds-webcomponents/dist/
 ```
 
 ### 2. GitHub Release
-- Visit: https://github.com/barbaramiles/USWDS-webcomponents/releases
+- Visit: https://github.com/barbaramiles/uswds-wc/releases
 - Verify v1.0.0 release exists
 - Check release notes are complete
 - Confirm tag was created
@@ -360,7 +360,7 @@ ls node_modules/uswds-webcomponents/dist/
 ### Version Information
 - **Current Version:** 1.0.0
 - **License:** MIT
-- **Repository:** https://github.com/barbaramiles/USWDS-webcomponents
+- **Repository:** https://github.com/barbaramiles/uswds-wc
 
 ### Bundle Metrics
 - **Total Size:** 474 KB (87 KB gzipped)
@@ -462,8 +462,8 @@ npm info uswds-webcomponents
 
 ### Links
 - **NPM Package:** https://www.npmjs.com/package/uswds-webcomponents
-- **GitHub Repo:** https://github.com/barbaramiles/USWDS-webcomponents
-- **Release Workflow:** https://github.com/barbaramiles/USWDS-webcomponents/actions/workflows/release.yml
+- **GitHub Repo:** https://github.com/barbaramiles/uswds-wc
+- **Release Workflow:** https://github.com/barbaramiles/uswds-wc/actions/workflows/release.yml
 - **NPM Tokens:** https://www.npmjs.com/settings/YOUR_USERNAME/tokens
 
 ---

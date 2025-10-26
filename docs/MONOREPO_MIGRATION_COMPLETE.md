@@ -229,7 +229,7 @@ Successfully migrated USWDS Web Components from single-package structure to pnpm
 ## File Structure
 
 ```
-USWDS-webcomponents/
+uswds-wc/
 ├── packages/
 │   ├── uswds-wc-core/           # Core package
 │   │   ├── src/
