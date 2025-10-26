@@ -112,7 +112,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
     // Components just render HTML - USWDS enhances automatically via window.USWDS
 
     super.firstUpdated(changedProperties);
-    this.initializeDateRangePicker();
+    this.initializeUSWDSDateRangePicker();
   }
 
   override disconnectedCallback() {
@@ -175,7 +175,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
     }
   }
 
-  private async initializeDateRangePicker() {
+  private async initializeUSWDSDateRangePicker() {
     try {
       await this.updateComplete;
 

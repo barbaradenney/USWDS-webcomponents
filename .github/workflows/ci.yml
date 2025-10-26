@@ -32,10 +32,16 @@ jobs:
 
       - name: Run TypeScript type checking
         run: pnpm run typecheck
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Run ESLint
         run: pnpm run lint
         continue-on-error: true # Don't fail on warnings for now
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Check code formatting
         run: pnpm run format:check || true # Non-blocking for now
@@ -93,14 +99,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run critical component tests (MANDATORY)
-        run: |
-          echo "🧪 Running mandatory component tests for 100% pass rate..."
-          pnpm test src/components/date-picker/usa-date-picker.test.ts src/components/list/usa-list.test.ts src/components/date-range-picker/usa-date-range-picker.test.ts src/components/text-input/usa-text-input.test.ts src/components/table/usa-table.test.ts src/components/memorable-date/usa-memorable-date.test.ts src/components/icon/usa-icon.test.ts
-        # NO continue-on-error - these MUST pass
-
       - name: Run all unit tests
-        run: pnpm run test:ci || pnpm run test
+        run: pnpm test
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Generate test coverage
         run: pnpm run test:coverage
@@ -151,6 +154,9 @@ jobs:
 
       - name: Build library
         run: pnpm run build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Build Storybook
         run: pnpm run build-storybook

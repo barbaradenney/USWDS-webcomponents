@@ -2,12 +2,14 @@
 
 ## Overview
 
-This document describes the Storybook 9 configuration for the USWDS Web Components library. Our setup is optimized for:
+This document describes the Storybook 9 configuration for the USWDS Web Components monorepo. Our setup is optimized for:
+- **Monorepo architecture** with pnpm workspaces and Turborepo
 - Web Components development with Lit
 - USWDS integration and testing
 - Comprehensive accessibility testing
 - Documentation generation
 - Visual regression testing capabilities
+- Category-based component packages
 
 ## Configuration Files
 
@@ -18,17 +20,22 @@ This document describes the Storybook 9 configuration for the USWDS Web Componen
 
 **Key Features**:
 - Framework: `@storybook/web-components-vite`
-- Stories pattern: `../src/**/*.stories.@(ts|mdx)`
+- **Monorepo stories pattern**: `../packages/*/src/**/*.stories.@(ts|mdx)`
 - Addons: a11y, vitest, coverage, docs
 - Vite optimization for Lit and USWDS modules
 - CommonJS handling for USWDS dependencies
 - Lit deduplication to prevent version conflicts
+- **Workspace dependency resolution** for category packages
 
 **Configuration Highlights**:
 ```typescript
 {
   framework: '@storybook/web-components-vite',
-  stories: ['../src/**/*.stories.@(ts|mdx)', './*.mdx'],
+  // Monorepo story discovery across all packages
+  stories: [
+    '../packages/*/src/**/*.stories.@(ts|mdx)',
+    './*.mdx'
+  ],
   staticDirs: ['../public'],
   addons: [
     '@storybook/addon-a11y',
@@ -123,15 +130,25 @@ This document describes the Storybook 9 configuration for the USWDS Web Componen
 
 ### 2. Story Organization
 
-**File Structure**:
+**Monorepo File Structure**:
 ```
-src/components/button/
-  ├── usa-button.ts                  # Component implementation
-  ├── usa-button.stories.ts          # Co-located stories
-  ├── usa-button.test.ts             # Unit tests
-  ├── usa-button.component.cy.ts     # Component tests (Cypress)
-  └── README.mdx                     # Component documentation
+packages/
+├── uswds-wc-actions/               # Category package
+│   └── src/components/button/
+│       ├── usa-button.ts           # Component implementation
+│       ├── usa-button.stories.ts   # Co-located stories
+│       ├── usa-button.test.ts      # Unit tests
+│       └── README.mdx              # Component documentation
+├── uswds-wc-forms/                 # Another category
+│   └── src/components/text-input/
+│       ├── usa-text-input.ts
+│       ├── usa-text-input.stories.ts
+│       ├── usa-text-input.test.ts
+│       └── README.mdx
+└── ...                             # Other packages
 ```
+
+**Story Discovery**: Storybook automatically discovers stories across all packages using the pattern `../packages/*/src/**/*.stories.@(ts|mdx)`
 
 **Story Pattern**:
 ```typescript
@@ -326,7 +343,59 @@ parameters: {
 - [Vite Configuration](https://storybook.js.org/docs/configure/integration/vite)
 - [USWDS Documentation](https://designsystem.digital.gov/)
 
+## Monorepo Integration
+
+### Package Structure
+
+Storybook works seamlessly with the monorepo architecture:
+
+**11 Workspace Packages**:
+- `@uswds-wc/core` - Core utilities and USWDS CSS
+- `@uswds-wc/actions` - Buttons, links, search (4 components)
+- `@uswds-wc/forms` - Form controls (15 components)
+- `@uswds-wc/navigation` - Headers, menus (8 components)
+- `@uswds-wc/data-display` - Cards, tables (8 components)
+- `@uswds-wc/feedback` - Alerts, modals (5 components)
+- `@uswds-wc/layout` - Layout utilities (4 components)
+- `@uswds-wc/structure` - Accordion (1 component)
+- `@uswds-wc/test-utils` - Shared testing utilities
+- `@uswds-wc/components` - Legacy meta-package
+- `@uswds-wc/all` - All components bundle
+
+### Story Discovery
+
+Stories are automatically discovered from all packages:
+
+```typescript
+// .storybook/main.ts
+stories: [
+  '../packages/*/src/**/*.stories.@(ts|mdx)',  // All package stories
+  './*.mdx'                                     // Root docs
+]
+```
+
+### Development Commands
+
+```bash
+# Start Storybook (builds all packages first)
+pnpm run storybook
+
+# Build Storybook for deployment
+pnpm run build-storybook
+
+# Clean Storybook cache
+pnpm run storybook:clean
+```
+
+**Note**: Storybook automatically benefits from Turborepo caching. Unchanged packages are not rebuilt.
+
 ## Change Log
+
+### 2025-10-26
+- ✅ Updated for monorepo architecture with pnpm workspaces
+- ✅ Added workspace package documentation
+- ✅ Updated story discovery patterns for monorepo structure
+- ✅ Documented Turborepo integration
 
 ### 2025-10-18
 - ✅ Removed duplicate `preview.js` that was overriding `preview.ts`
@@ -339,6 +408,7 @@ parameters: {
 
 ---
 
-**Last Updated**: October 10, 2025
+**Last Updated**: October 26, 2025
 **Storybook Version**: 9.1.10
 **Framework**: @storybook/web-components-vite
+**Architecture**: Monorepo with pnpm workspaces + Turborepo

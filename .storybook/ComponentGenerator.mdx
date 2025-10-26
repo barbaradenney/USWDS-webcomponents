@@ -37,16 +37,16 @@ The Component Generator is an intelligent scaffolding system that creates fully-
 
 ```bash
 # Generate a new component (interactive mode recommended)
-pnpm run generate:component -- --interactive
+ppnpm run generate:component -- --interactive
 
 # Or specify component name and package
-pnpm run generate:component -- --name=my-component
+ppnpm run generate:component -- --name=my-component
 ```
 
 ### Example Output
 
 ```bash
-pnpm run generate:component -- --name=alert-box
+ppnpm run generate:component -- --name=alert-box
 
 🎯 Generating USWDS-compliant component: alert-box
 📦 Select package: @uswds-wc/feedback
@@ -234,7 +234,7 @@ USWDS-compliant alert-box component.
 ## Installation
 
 \`\`\`bash
-npm install uswds-webcomponents
+pnpm add uswds-webcomponents
 \`\`\`
 
 ## Usage
@@ -325,10 +325,10 @@ import { Meta } from '@storybook/blocks';
 npm test src/components/alert-box
 
 # Run with coverage
-npm run test:coverage
+pnpm run test:coverage
 
 # Run accessibility tests
-npm run test:a11y
+pnpm run test:a11y
 \`\`\`
 
 ## Test Files
@@ -364,7 +364,7 @@ export { USAAlertBox } from './usa-alert-box.js';
 ### Interactive Mode
 
 ```bash
-npm run generate:component -- --interactive
+pnpm run generate:component -- --interactive
 ```
 
 **Prompts for:**
@@ -378,7 +378,7 @@ npm run generate:component -- --interactive
 
 ```bash
 # Generate with specific options
-npm run generate:component -- --name=my-component --category=Forms --interactive=true
+pnpm run generate:component -- --name=my-component --category=Forms --interactive=true
 ```
 
 **Available options:**
@@ -489,9 +489,9 @@ After generating a component:
 
 **6. Validate**
 - [ ] Run `npm test src/components/{name}`
-- [ ] Run `npm run typecheck`
-- [ ] Run `npm run lint`
-- [ ] Run `npm run validate:uswds`
+- [ ] Run `pnpm run typecheck`
+- [ ] Run `pnpm run lint`
+- [ ] Run `pnpm run validate:uswds`
 
 ## 🔧 Customizing Templates
 
@@ -534,7 +534,7 @@ Component templates are located in `.templates/` directory.
 
 ### Generate a Form Component
 ```bash
-npm run generate:component -- --name=text-area --category=Forms
+pnpm run generate:component -- --name=text-area --category=Forms
 
 # Generated structure:
 src/components/text-area/
@@ -549,7 +549,7 @@ src/components/text-area/
 
 ### Generate a Navigation Component
 ```bash
-npm run generate:component -- --name=breadcrumb --category=Navigation
+pnpm run generate:component -- --name=breadcrumb --category=Navigation
 
 # All files generated with Navigation category structure
 ```

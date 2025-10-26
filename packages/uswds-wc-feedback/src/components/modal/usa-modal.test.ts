@@ -874,6 +874,27 @@ describe('USAModal', () => {
       expect(element.querySelector('.usa-modal')).toBeTruthy();
     });
 
+    // MOVED TO CYPRESS: cypress/e2e/modal-variants.cy.ts
+    // This test requires USWDS modal behavior (moving modal to document.body)
+    // which doesn't work reliably in jsdom. Testing in real browser via Cypress.
+    it.skip('should maintain state after multiple close button clicks', async () => {
+      element.heading = 'Close Button Test';
+      element.forceAction = false;
+
+      for (let cycle = 1; cycle <= 3; cycle++) {
+        // Open modal
+        element.open = true;
+        await waitForUpdate(element);
+
+        // Click close button
+        const closeButton = element.querySelector('.usa-modal__close') as HTMLButtonElement;
+        expect(closeButton).toBeTruthy();
+        closeButton.click();
+
+        await waitForUpdate(element);
+        expect(element.open).toBe(false);
+      }
+    });
 
     it('should handle escape key multiple times', async () => {
       element.heading = 'Escape Key Test';
@@ -2192,6 +2213,36 @@ describe('USAModal', () => {
         expect(description?.textContent?.trim()).toBe('Test description');
       });
 
+      // MOVED TO CYPRESS: cypress/e2e/modal-variants.cy.ts
+      // This test requires USWDS DOM transformation (modal moved to document.body)
+      // which is unreliable in jsdom. Testing in real browser via Cypress instead.
+      it.skip('should render both normal and large modals correctly', async () => {
+        // Test normal modal
+        element.heading = 'Normal Modal';
+        element.large = false;
+        element.open = true;
+        await waitForUpdate(element);
+
+        let modal = element.querySelector('.usa-modal');
+        expect(modal).toBeTruthy();
+        expect(modal?.classList.contains('usa-modal--lg')).toBe(false);
+
+        // Test large modal
+        element.open = false;
+        await waitForUpdate(element);
+
+        element.heading = 'Large Modal';
+        element.large = true;
+        element.open = true;
+        await waitForUpdate(element);
+
+        modal = element.querySelector('.usa-modal');
+        expect(modal).toBeTruthy();
+        expect(modal?.classList.contains('usa-modal--lg')).toBe(true);
+
+        // CRITICAL: Both variants render correctly
+        // Visual size/positioning checks are in Cypress component tests
+      });
     });
 
     describe('Overlay Structure', () => {

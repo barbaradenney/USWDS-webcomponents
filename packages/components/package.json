@@ -104,10 +104,12 @@
   },
   "homepage": "https://github.com/barbaradenney/USWDS-webcomponents/tree/main/packages/components#readme",
   "scripts": {
-    "dev": "cd ../.. && npm run dev",
-    "build": "cd ../.. && npm run build",
-    "test": "cd ../.. && npm test",
-    "storybook": "cd ../.. && npm run storybook"
+    "dev": "vite",
+    "build": "echo 'Skipping build for meta-package'",
+    "test": "echo 'Skipping tests for meta-package'",
+    "test:watch": "echo 'Skipping tests for meta-package'",
+    "lint": "echo 'Skipping lint for meta-package'",
+    "typecheck": "echo 'Skipping typecheck for meta-package'"
   },
   "devDependencies": {
     "lit": "^3.0.0"

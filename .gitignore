@@ -93,3 +93,4 @@ assets/
 
 # Build artifacts
 tsconfig.tsbuildinfocomponent-issues-report.json
+.turbo/

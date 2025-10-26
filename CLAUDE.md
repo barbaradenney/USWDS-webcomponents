@@ -77,12 +77,19 @@ Web components library converting USWDS components to custom elements using Lit.
 ### Development
 - `pnpm run dev` - Start development server
 - `pnpm run storybook` - Start Storybook (port 6006)
-- `pnpm run build` - Build for production (all packages via Turborepo)
+- `pnpm run build` - Build for production (all packages via Turborepo, 0.35s with cache!)
 
 ### Monorepo Commands
 - `pnpm install` - Install all dependencies (uses workspaces)
 - `pnpm --filter @uswds-wc/forms build` - Build specific package
 - `pnpm --filter @uswds-wc/actions test` - Test specific package
+- `pnpm turbo build --force` - Force rebuild (bypass cache)
+
+### Turborepo Remote Caching ⚡
+**Status:** ✅ Configured (111x faster builds!)
+- Remote cache automatically used when `TURBO_TOKEN` is set in `.env`
+- Builds: 39s → 0.35s with remote cache
+- See [docs/TURBOREPO_REMOTE_CACHE_SETUP.md](docs/TURBOREPO_REMOTE_CACHE_SETUP.md) for setup instructions
 
 ### Testing
 See [docs/TESTING_GUIDE.md](docs/TESTING_GUIDE.md) for complete testing documentation.

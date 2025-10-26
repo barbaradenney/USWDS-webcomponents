@@ -640,6 +640,8 @@
     "changeset:publish": "changeset publish",
     "version:packages": "changeset version && pnpm install --no-frozen-lockfile",
     "release": "turbo run build && changeset publish",
+    "release:version": "changeset version && pnpm install --lockfile-only",
+    "release:publish": "changeset publish",
     "// MONOREPO EFFICIENCY & AUTOMATION": "",
     "monorepo": "node scripts/maintenance/monorepo-cli.js",
     "monorepo:health": "node scripts/maintenance/package-health-dashboard.js",

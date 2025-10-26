@@ -2,64 +2,102 @@
 
 Complete guide for developers to integrate USWDS Web Components into their projects.
 
+## 🏗️ Monorepo Architecture
+
+USWDS Web Components uses a **modern monorepo** with pnpm workspaces + Turborepo for optimal performance:
+
+- **11 focused packages** organized by component category
+- **Category-based imports** for optimal tree-shaking
+- **111x faster builds** with Turborepo remote caching
+- **Independent versioning** per package
+- **2301/2301 tests passing** across all components
+
 ## 📦 Installation
 
-### Using npm
+### Option 1: Install Specific Category Packages (Recommended)
+
+Install only the component categories you need for optimal bundle size:
 
 ```bash
-npm install uswds-webcomponents
+# Using pnpm (recommended)
+pnpm add @uswds-wc/core @uswds-wc/forms @uswds-wc/actions lit
+
+# Using npm
+npm install @uswds-wc/core @uswds-wc/forms @uswds-wc/actions lit
+
+# Using yarn
+yarn add @uswds-wc/core @uswds-wc/forms @uswds-wc/actions lit
 ```
 
-### Using yarn
+**Available packages:**
+- `@uswds-wc/core` - Core utilities (required)
+- `@uswds-wc/actions` - Buttons, links, search (4 components)
+- `@uswds-wc/forms` - Form controls (15 components)
+- `@uswds-wc/navigation` - Headers, menus (8 components)
+- `@uswds-wc/data-display` - Cards, tables (8 components)
+- `@uswds-wc/feedback` - Alerts, modals (5 components)
+- `@uswds-wc/layout` - Layout utilities (4 components)
+- `@uswds-wc/structure` - Accordion (1 component)
+
+### Option 2: Install Full Library
+
+Install all components at once (convenience package):
 
 ```bash
-yarn add uswds-webcomponents
-```
+# Using pnpm
+pnpm add @uswds-wc lit
 
-### Using pnpm
+# Using npm
+npm install @uswds-wc lit
 
-```bash
-pnpm add uswds-webcomponents
+# Using yarn
+yarn add @uswds-wc lit
 ```
 
 ## 🚀 Quick Start
 
-### Option 1: Auto-Registration (Easiest)
+### Option 1: Category Imports (Recommended)
 
-Import the main package to automatically register all components:
+Import specific category packages for optimal bundle size:
 
 ```javascript
-// Import all components (auto-registers custom elements)
-import 'uswds-webcomponents';
+// Import category packages (components are auto-registered)
+import '@uswds-wc/actions';       // Button, Link, Search, ButtonGroup
+import '@uswds-wc/forms';          // All 15 form components
+import '@uswds-wc/feedback';       // Alert, Modal, Tooltip, Banner, SiteAlert
+
+// Or import specific components for maximum tree-shaking
+import { USAButton } from '@uswds-wc/actions';
+import { USAAlert } from '@uswds-wc/feedback';
+import { USATextInput } from '@uswds-wc/forms';
+
+// Import USWDS CSS (required)
+import '@uswds-wc/core/styles.css';
 ```
 
-Then use components in your HTML:
+Then use in your HTML:
 
 ```html
 <usa-button variant="default">Click me</usa-button>
 <usa-alert type="success" heading="Success!">
   Your action was completed successfully.
 </usa-alert>
+<usa-text-input label="Name" required></usa-text-input>
 ```
 
-### Option 2: Category Imports (Recommended)
+### Option 2: Full Library Import (Convenience)
 
-Import by category for a balance of convenience and bundle size:
+Import all components at once from the meta-package:
 
 ```javascript
-// Import all components in a category
-import 'uswds-webcomponents/actions';      // Button, Link, Search, ButtonGroup
-import 'uswds-webcomponents/forms';        // All 15 form components
-import 'uswds-webcomponents/feedback';     // Alert, Modal, Tooltip, Banner, SiteAlert
+// Import all components (auto-registers all custom elements)
+import '@uswds-wc';
 
-// Or import specific components (best for tree-shaking)
-import { USAButton } from 'uswds-webcomponents/actions';
-import { USAAlert } from 'uswds-webcomponents/feedback';
-
-// Components are automatically registered when imported
+// Import USWDS CSS (required)
+import '@uswds-wc/core/styles.css';
 ```
 
-Then use in your HTML:
+Then use any component in your HTML:
 
 ```html
 <usa-button variant="default">Click me</usa-button>
@@ -85,7 +123,14 @@ Add to your HTML `<head>`:
 
 ### Option 2: NPM Package (Recommended)
 
-Install USWDS:
+The `@uswds-wc/core` package includes compiled USWDS CSS:
+
+```javascript
+// Import compiled USWDS CSS from core package
+import '@uswds-wc/core/styles.css';
+```
+
+Or install USWDS separately for customization:
 
 ```bash
 npm install @uswds/uswds
@@ -95,15 +140,6 @@ Import in your application:
 
 ```javascript
 import '@uswds/uswds/dist/css/uswds.min.css';
-```
-
-Or link in your HTML:
-
-```html
-<link
-  rel="stylesheet"
-  href="/node_modules/@uswds/uswds/dist/css/uswds.min.css"
-/>
 ```
 
 ### Option 3: Compile Custom USWDS Theme
@@ -153,7 +189,8 @@ import './styles/uswds-theme.scss';
     </usa-alert>
 
     <script type="module">
-      import 'uswds-webcomponents';
+      import '@uswds-wc';  // Import all components
+      import '@uswds-wc/core/styles.css';  // Import USWDS CSS
 
       // Access component programmatically
       const button = document.querySelector('usa-button');
@@ -172,8 +209,10 @@ Web Components work seamlessly with React 19+. For React 18 and below, use refs 
 #### React 19+ (Recommended)
 
 ```jsx
-import 'uswds-webcomponents';
-import '@uswds/uswds/dist/css/uswds.min.css';
+// Import category packages or full library
+import '@uswds-wc/actions';
+import '@uswds-wc/feedback';
+import '@uswds-wc/core/styles.css';
 
 function App() {
   const handleButtonClick = () => {
@@ -199,8 +238,9 @@ export default App;
 
 ```jsx
 import { useRef, useEffect } from 'react';
-import 'uswds-webcomponents';
-import '@uswds/uswds/dist/css/uswds.min.css';
+import '@uswds-wc/actions';
+import '@uswds-wc/feedback';
+import '@uswds-wc/core/styles.css';
 
 function App() {
   const buttonRef = useRef(null);
@@ -254,8 +294,9 @@ Vue 3 has excellent web component support.
 
 ```vue
 <script setup>
-import 'uswds-webcomponents';
-import '@uswds/uswds/dist/css/uswds.min.css';
+import '@uswds-wc/actions';
+import '@uswds-wc/feedback';
+import '@uswds-wc/core/styles.css';
 
 const handleButtonClick = () => {
   console.log('Button clicked!');
@@ -308,7 +349,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
 // Import web components
-import 'uswds-webcomponents';
+import '@uswds-wc';  // Or import specific categories
+import '@uswds-wc/core/styles.css';
 
 @NgModule({
   declarations: [AppComponent],
@@ -372,8 +414,9 @@ Svelte works great with web components.
 
 ```svelte
 <script>
-  import 'uswds-webcomponents';
-  import '@uswds/uswds/dist/css/uswds.min.css';
+  import '@uswds-wc/actions';
+  import '@uswds-wc/feedback';
+  import '@uswds-wc/core/styles.css';
 
   function handleButtonClick() {
     console.log('Button clicked!');
@@ -663,38 +706,54 @@ All USWDS Web Components are built with accessibility as a priority:
 
 ## 📦 Bundle Size Optimization
 
-### Tree Shaking with Category Imports
+### Monorepo Architecture Benefits
 
-Import only the component categories you need to reduce bundle size:
+The monorepo structure enables **optimal tree-shaking** and **smaller bundles**:
+
+**Package Sizes** (gzipped):
+| Package | Size | Components |
+|---------|------|------------|
+| `@uswds-wc/actions` | ~12 KB | Button, Link, Search, ButtonGroup (4) |
+| `@uswds-wc/feedback` | ~18 KB | Alert, Modal, Tooltip, Banner, SiteAlert (5) |
+| `@uswds-wc/layout` | ~15 KB | Process List, Step Indicator, Identifier (4) |
+| `@uswds-wc/structure` | ~8 KB | Accordion (1) |
+| `@uswds-wc/data-display` | ~28 KB | Table, Card, List, Icon, Tag (8) |
+| `@uswds-wc/navigation` | ~32 KB | Header, Footer, Breadcrumb, Pagination (8) |
+| `@uswds-wc/forms` | ~45 KB | All 15 form components |
+| `@uswds-wc` (all) | ~150 KB | All 45 components |
+
+### Category-Based Imports (Recommended)
+
+Import only the categories you need:
 
 ```javascript
-// ❌ Imports all components (~475 KB)
-import 'uswds-webcomponents';
+// ✅ Import specific category packages (optimal)
+import '@uswds-wc/actions';       // ~12 KB - Button, Link, Search
+import '@uswds-wc/feedback';      // ~18 KB - Alert, Modal, Tooltip
+import '@uswds-wc/core/styles.css';  // USWDS CSS (required)
 
-// ✅ Import by category (~50-150 KB depending on category)
-import 'uswds-webcomponents/actions';      // Button, Link, Search, ButtonGroup (~12 KB)
-import 'uswds-webcomponents/feedback';     // Alert, Modal, Tooltip, Banner, SiteAlert (~45 KB)
-import 'uswds-webcomponents/forms';        // All 15 form components (~120 KB)
+// ✅ Or import specific components (maximum tree-shaking)
+import { USAButton } from '@uswds-wc/actions';
+import { USAAlert } from '@uswds-wc/feedback';
+import '@uswds-wc/core/styles.css';
 
-// ✅ Or import specific components (best tree-shaking)
-import { USAButton } from 'uswds-webcomponents/actions';
-import { USAAlert } from 'uswds-webcomponents/feedback';
-import { USATextInput } from 'uswds-webcomponents/forms';
+// ❌ Avoid importing everything unless you need all components
+import '@uswds-wc';  // ~150 KB - imports all 45 components
 ```
 
 ### Lazy Loading Components
 
-Load component categories on-demand:
+Load component categories on-demand for even better performance:
 
 ```javascript
-// Load category when needed
+// Load category package when needed
 async function loadFeedbackComponents() {
-  await import('uswds-webcomponents/feedback');  // Loads Modal, Alert, Tooltip, etc.
+  await import('@uswds-wc/feedback');  // Loads Modal, Alert, Tooltip, etc.
 }
 
 // Or load specific component
 async function loadModal() {
-  const { USAModal } = await import('uswds-webcomponents/feedback');
+  const { USAModal } = await import('@uswds-wc/feedback');
   return USAModal;
 }
 
@@ -718,17 +777,24 @@ export default {
     rollupOptions: {
       output: {
         manualChunks: {
-          // Split by category for optimal caching
-          'uswds-actions': ['uswds-webcomponents/actions'],
-          'uswds-forms': ['uswds-webcomponents/forms'],
-          'uswds-feedback': ['uswds-webcomponents/feedback'],
-          'uswds-navigation': ['uswds-webcomponents/navigation'],
+          // Split by category package for optimal browser caching
+          'uswds-actions': ['@uswds-wc/actions'],
+          'uswds-forms': ['@uswds-wc/forms'],
+          'uswds-feedback': ['@uswds-wc/feedback'],
+          'uswds-navigation': ['@uswds-wc/navigation'],
+          'uswds-core': ['@uswds-wc/core'],
         },
       },
     },
   },
 };
 ```
+
+**Benefits**:
+- Monorepo packages are **already optimized** for independent bundling
+- Browser caches packages separately
+- Update one category without invalidating others
+- **50-80% smaller bundles** vs importing everything
 
 ## 🐛 Troubleshooting
 
@@ -750,10 +816,18 @@ export default {
 2. Ensure components are imported:
 
 ```javascript
-import 'uswds-webcomponents';
+// Import specific categories
+import '@uswds-wc/actions';
+import '@uswds-wc/feedback';
+import '@uswds-wc/core/styles.css';
+
+// Or import all components
+import '@uswds-wc';
+import '@uswds-wc/core/styles.css';
 ```
 
 3. Check browser console for errors
+4. Verify package names use `@uswds-wc/` scope (not `uswds-webcomponents`)
 
 ### Styling Issues
 

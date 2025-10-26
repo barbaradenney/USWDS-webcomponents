@@ -216,7 +216,7 @@ describe('USAComponent', () => {
 **Auto-Generated Documentation:**
 ```bash
 # Updates these docs automatically
-npm run docs:sync
+pnpm run docs:sync
 
 # Auto-generated files:
 - .storybook/About.mdx
@@ -237,7 +237,7 @@ npm run docs:sync
 **Example: Language Selector:**
 ```bash
 # Special validation for modified components
-MODIFIED_COMPONENTS="language-selector" npm run validate:story-styles
+MODIFIED_COMPONENTS="language-selector" pnpm run validate:story-styles
 MODIFIED_COMPONENTS="language-selector" node scripts/validate/validate-uswds-compliance.cjs
 ```
 
@@ -319,16 +319,16 @@ className="usa-button usa-button--secondary"
 ### 3. Missing Tests
 **Error:**
 ```
-❌ Component src/components/button/usa-button.ts has no tests!
+❌ Component packages/uswds-wc-actions/src/components/button/usa-button.ts has no tests!
 ```
 
 **Fix:**
 ```bash
 # Create test file
-touch src/components/button/usa-button.test.ts
+touch packages/uswds-wc-actions/src/components/button/usa-button.test.ts
 
 # Or use generator
-npm run generate:component -- --name=button
+pnpm run generate:component -- --name=button
 ```
 
 ### 4. Double Initialization
@@ -377,8 +377,8 @@ decorators: [
 git commit --no-verify -m "Emergency fix"
 
 # Better: Fix the validation issue
-npm run validate:fix  # Auto-fix what's possible
-npm run validate      # Re-run validation
+pnpm run validate:fix  # Auto-fix what's possible
+pnpm run validate      # Re-run validation
 ```
 
 ## 🔧 Configuration
@@ -510,16 +510,16 @@ bash scripts/validation/stages/03-linting-and-quality.sh
 **Run traditional validation commands:**
 ```bash
 # Run just TypeScript check
-npm run typecheck
+pnpm run typecheck
 
 # Run just linting
-npm run lint
+pnpm run lint
 
 # Run just USWDS compliance
-npm run validate:uswds
+pnpm run validate:uswds
 
 # Run all validation
-npm run validate
+pnpm run validate
 ```
 
 ## 🔄 Modular Architecture Benefits

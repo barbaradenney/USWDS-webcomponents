@@ -1,3 +1,2 @@
-// CSS stub for testing
-// CSS imports are not needed during unit tests
+// Mock for CSS imports in tests
 export default {};

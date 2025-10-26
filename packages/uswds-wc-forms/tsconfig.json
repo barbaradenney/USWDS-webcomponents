@@ -12,12 +12,13 @@
     "allowImportingTsExtensions": false
   },
   "include": [
-    "src*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "***.spec.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
     "**/*.cy.ts"
   ],
   "references": [

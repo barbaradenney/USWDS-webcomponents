@@ -1,18 +1,97 @@
 # Storybook Guide - USWDS Web Components
 
-**Complete Storybook reference for USWDS Web Components library**
+**Complete Storybook reference for USWDS Web Components monorepo**
 
-This guide consolidates all Storybook-related documentation including property binding, USWDS integration, and critical navigation patterns.
+This guide consolidates all Storybook-related documentation including property binding, USWDS integration, critical navigation patterns, and monorepo-specific configuration.
 
 ---
 
 ## Table of Contents
 
-1. [Best Practices](#best-practices)
-2. [Property Binding](#property-binding)
-3. [USWDS Integration](#uswds-integration)
-4. [Layout Forcing Pattern](#layout-forcing-pattern) ⚠️ CRITICAL
-5. [Troubleshooting](#troubleshooting)
+1. [Monorepo Architecture](#monorepo-architecture) 🏗️ NEW
+2. [Best Practices](#best-practices)
+3. [Property Binding](#property-binding)
+4. [USWDS Integration](#uswds-integration)
+5. [Layout Forcing Pattern](#layout-forcing-pattern) ⚠️ CRITICAL
+6. [Troubleshooting](#troubleshooting)
+
+---
+
+## Monorepo Architecture
+
+### Package Structure
+
+The USWDS Web Components library uses a **monorepo architecture** with pnpm workspaces and Turborepo:
+
+```
+packages/
+├── uswds-wc-core/              # Core utilities, USWDS CSS
+├── uswds-wc-actions/           # Buttons, links, search (4 components)
+├── uswds-wc-forms/             # Form controls (15 components)
+├── uswds-wc-navigation/        # Headers, menus (8 components)
+├── uswds-wc-data-display/      # Cards, tables (8 components)
+├── uswds-wc-feedback/          # Alerts, modals (5 components)
+├── uswds-wc-layout/            # Layout utilities (4 components)
+├── uswds-wc-structure/         # Accordion (1 component)
+├── uswds-wc-test-utils/        # Shared testing utilities
+├── components/                 # Legacy meta-package
+└── uswds-wc/                   # All components bundle
+```
+
+### Story Location
+
+Stories are co-located with components in their respective packages:
+
+```
+packages/uswds-wc-actions/
+└── src/
+    └── components/
+        └── button/
+            ├── usa-button.ts           # Component
+            ├── usa-button.stories.ts   # Stories (co-located)
+            ├── usa-button.test.ts      # Tests
+            └── README.mdx              # Docs
+```
+
+### Storybook Discovery
+
+Storybook automatically discovers stories across all packages:
+
+```typescript
+// .storybook/main.ts
+stories: [
+  '../packages/*/src/**/*.stories.@(ts|mdx)',  // All package stories
+  './*.mdx'                                     // Root documentation
+]
+```
+
+### Component Imports in Stories
+
+Import components from their package location:
+
+```typescript
+// ✅ Correct - Import from package
+import './index.ts';  // From same package
+import type { USAButton } from './usa-button.js';
+
+// ❌ Incorrect - Don't use workspace names in story imports
+import '@uswds-wc/actions';  // Causes issues in Storybook
+```
+
+### Development Commands
+
+```bash
+# Start Storybook (with Turborepo caching)
+pnpm run storybook
+
+# Build Storybook for deployment
+pnpm run build-storybook
+
+# Clean Storybook cache
+pnpm run storybook:clean
+```
+
+**Performance**: Storybook automatically benefits from Turborepo's **111x faster builds** with remote caching!
 
 ---
 
@@ -432,9 +511,21 @@ npm run validate:layout-forcing
 
 ---
 
-**Last Updated**: October 2025 (Phase 3+ Documentation Consolidation)
+## See Also
+
+- [STORYBOOK_CONFIGURATION.md](../STORYBOOK_CONFIGURATION.md) - Detailed configuration reference
+- [MONOREPO_MIGRATION_FINAL_STATUS.md](../MONOREPO_MIGRATION_FINAL_STATUS.md) - Monorepo migration details
+- [TESTING_GUIDE.md](../TESTING_GUIDE.md) - Testing patterns and commands
+- [Component Development Guide](../COMPONENT_DEVELOPMENT_GUIDE.md) - Component creation
+
+---
+
+**Last Updated**: October 26, 2025 (Monorepo Architecture Update)
 
 **Remember**:
+- Stories are co-located in package directories under `packages/*/src/components/`
+- Import components from package locations, not workspace names
+- Storybook benefits from Turborepo's 111x faster caching
 - Always use Lit `html` templates for property binding
 - Layout forcing pattern is CRITICAL for navigation
 - USWDS modules require special Storybook configuration
