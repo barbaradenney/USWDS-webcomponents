@@ -241,6 +241,28 @@ pnpm turbo typecheck
 pnpm turbo clean
 ```
 
+### Turborepo Remote Caching (Optional)
+
+Speed up builds by 10-15x with remote caching:
+
+```bash
+# Setup (one-time)
+pnpm dlx turbo login
+pnpm dlx turbo link
+
+# Remote caching is automatically enabled
+pnpm turbo build  # First run uploads to cache
+pnpm turbo build  # Subsequent runs download from cache
+```
+
+**Benefits:**
+- **10-15x faster builds** when cache hits
+- **Share cache across team** - benefit from teammates' builds
+- **CI/CD speedup** - no need to rebuild unchanged code
+- **Free for personal projects** on Vercel
+
+See **[Turborepo Remote Cache Setup Guide](docs/TURBOREPO_REMOTE_CACHE_SETUP.md)** for detailed instructions.
+
 ### Creating a Changeset
 
 When making changes to packages:
