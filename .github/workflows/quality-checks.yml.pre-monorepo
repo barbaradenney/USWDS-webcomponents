@@ -1,4 +1,4 @@
-name: Code Quality Checks (Monorepo)
+name: Code Quality Checks
 
 on:
   push:
@@ -18,10 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: '10.15.0'
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -33,22 +33,22 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: TypeScript compilation check
-        run: pnpm turbo typecheck
+        run: pnpm run typecheck
 
       - name: JavaScript syntax validation
         run: pnpm run validate-syntax
 
       - name: Lint code
-        run: pnpm turbo lint
+        run: pnpm run lint
 
       - name: Validate test skip policy
         run: node scripts/validate/validate-no-skipped-tests.cjs
 
       - name: Run unit tests with coverage
-        run: pnpm turbo test --filter='!@uswds-wc/test-utils'
+        run: pnpm run test:coverage
 
-      - name: Build all packages
-        run: pnpm turbo build
+      - name: Build project
+        run: pnpm run build
 
       - name: Run Storybook build test
         run: pnpm run build-storybook
@@ -66,10 +66,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: '10.15.0'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -97,10 +97,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: '10.15.0'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -126,10 +126,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: '10.15.0'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -141,7 +141,7 @@ jobs:
         run: pnpm audit --audit-level moderate
 
       - name: Check for vulnerabilities
-        run: pnpm audit --audit-level high --prod
+        run: pnpm audit --audit-level high --production
 
   bundle-analysis:
     runs-on: ubuntu-latest
@@ -150,10 +150,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: '10.15.0'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -166,7 +166,7 @@ jobs:
 
       - name: Build and analyze bundle
         run: |
-          pnpm turbo build
+          pnpm run build
           npx bundlesize
 
       - name: Comment bundle size
