@@ -158,6 +158,9 @@ importers:
       '@uswds-wc/data-display':
         specifier: workspace:*
         version: link:../uswds-wc-data-display
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)
@@ -186,6 +189,9 @@ importers:
         specifier: workspace:*
         version: link:../uswds-wc-core
     devDependencies:
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)
@@ -202,6 +208,9 @@ importers:
         specifier: workspace:*
         version: link:../uswds-wc-core
     devDependencies:
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)
@@ -218,6 +227,9 @@ importers:
         specifier: workspace:*
         version: link:../uswds-wc-core
     devDependencies:
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)
@@ -234,6 +246,9 @@ importers:
         specifier: workspace:*
         version: link:../uswds-wc-core
     devDependencies:
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)
@@ -256,6 +271,9 @@ importers:
         specifier: workspace:*
         version: link:../uswds-wc-feedback
     devDependencies:
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)
@@ -272,6 +290,9 @@ importers:
         specifier: workspace:*
         version: link:../uswds-wc-core
     devDependencies:
+      '@uswds-wc/test-utils':
+        specifier: workspace:*
+        version: link:../uswds-wc-test-utils
       jsdom:
         specifier: 27.0.1
         version: 27.0.1(canvas@3.2.0)(postcss@8.5.6)

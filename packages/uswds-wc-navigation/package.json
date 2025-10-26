@@ -37,6 +37,7 @@
     "lit": "^3.0.0"
   },
   "devDependencies": {
+    "@uswds-wc/test-utils": "workspace:*",
     "jsdom": "27.0.1",
     "lit": "^3.0.0",
     "vitest": "3.2.4"
