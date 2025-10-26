@@ -28,13 +28,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         run: npx playwright install chromium
 
       - name: Build project
-        run: pnpm run build
+        run: ppnpm run build
 
       - name: Run performance tests
         run: |
@@ -249,14 +249,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: ppnpm run build-storybook
 
       - name: Run Lighthouse CI
         run: |
-          pnpm install -g @lhci/cli@0.13.x
+          ppnpm install -g @lhci/cli@0.13.x
           lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

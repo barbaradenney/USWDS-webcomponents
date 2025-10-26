@@ -49,17 +49,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          ppnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
       - name: Initialize USWDS
-        run: pnpm run uswds:init
+        run: ppnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+        run: ppnpm run uswds:compile
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: ppnpm run build-storybook
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
@@ -78,7 +78,7 @@ jobs:
 
       - name: Archive Chromatic results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: chromatic-results
           path: |
@@ -182,17 +182,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          ppnpm install --frozen-lockfile
           npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Initialize USWDS
-        run: pnpm run uswds:init
+        run: ppnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+        run: ppnpm run uswds:compile
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: ppnpm run build-storybook
 
       - name: Start Storybook server
         run: |
@@ -207,7 +207,7 @@ jobs:
 
       - name: Upload cross-browser screenshots
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cross-browser-screenshots-${{ matrix.browser }}
           path: |
@@ -237,16 +237,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Initialize USWDS
-        run: pnpm run uswds:init
+        run: ppnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+        run: ppnpm run uswds:compile
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: ppnpm run build-storybook
 
       - name: Run accessibility visual tests
         run: |
@@ -258,7 +258,7 @@ jobs:
 
       - name: Upload accessibility results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: accessibility-visual-results
           path: |
@@ -289,27 +289,27 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          ppnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
       - name: Initialize USWDS
-        run: pnpm run uswds:init
+        run: ppnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+        run: ppnpm run uswds:compile
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: ppnpm run build-storybook
 
       - name: Run performance visual tests
-        run: pnpm run test:performance:visual
+        run: ppnpm run test:performance:visual
 
       - name: Generate performance report
         run: node scripts/performance-visual-report.js
 
       - name: Upload performance results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: performance-visual-results
           path: |

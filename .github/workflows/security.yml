@@ -29,14 +29,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
-      - name: Run pnpm audit
-        run: pnpm audit --audit-level=moderate
+      - name: Run ppnpm audit
+        run: ppnpm audit --audit-level=moderate
         continue-on-error: true
 
-      - name: Run pnpm audit fix (dry run)
-        run: pnpm audit fix --dry-run --audit-level=moderate
+      - name: Run ppnpm audit fix (dry run)
+        run: ppnpm audit fix --dry-run --audit-level=moderate
 
       - name: Upload audit results
         if: failure()
@@ -118,7 +118,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
@@ -147,10 +147,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Install license checker
-        run: pnpm install -g license-checker
+        run: ppnpm install -g license-checker
 
       - name: Check licenses
         run: |

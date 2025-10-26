@@ -43,7 +43,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Check for outdated dependencies
         id: check
@@ -71,15 +71,15 @@ jobs:
       - name: Security audit
         run: |
           echo "Running security audit..."
-          pnpm audit --audit-level moderate --json > audit-results.json || true
+          ppnpm audit --audit-level moderate --json > audit-results.json || true
 
           # Check if there are any vulnerabilities
           VULN_COUNT=$(jq '.metadata.vulnerabilities.total' audit-results.json 2>/dev/null || echo "0")
 
           if [ "$VULN_COUNT" -gt 0 ]; then
             echo "⚠️ Found $VULN_COUNT security vulnerabilities"
-            echo "Running pnpm audit fix..."
-            pnpm audit fix --dry-run
+            echo "Running ppnpm audit fix..."
+            ppnpm audit fix --dry-run
           else
             echo "✅ No security vulnerabilities found"
           fi
@@ -122,7 +122,7 @@ jobs:
           git config user.email "dependency-updater[bot]@github.com"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Create update branch
         run: |
@@ -136,26 +136,26 @@ jobs:
           npx npm-check-updates ${{ matrix.update-type.flag }} --upgrade
 
           # Install updated dependencies
-          pnpm install
+          ppnpm install
 
       - name: Run tests after updates
         run: |
           echo "Running tests to ensure updates don't break functionality..."
 
           # Run comprehensive tests
-          pnpm run test:ci || {
+          ppnpm run test:ci || {
             echo "❌ Tests failed after dependency updates"
             exit 1
           }
 
           # Run type checking
-          pnpm run typecheck || {
+          ppnpm run typecheck || {
             echo "❌ Type checking failed after dependency updates"
             exit 1
           }
 
           # Run linting
-          pnpm run lint || {
+          ppnpm run lint || {
             echo "❌ Linting failed after dependency updates"
             exit 1
           }
@@ -165,7 +165,7 @@ jobs:
           echo "Analyzing bundle size impact..."
 
           # Run build optimization to check bundle sizes
-          pnpm run build:optimize || {
+          ppnpm run build:optimize || {
             echo "⚠️ Build optimization failed, but continuing..."
           }
 
@@ -277,7 +277,7 @@ jobs:
           git config user.email "security-updater[bot]@github.com"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Check for security vulnerabilities
         id: security-check
@@ -285,7 +285,7 @@ jobs:
           echo "Running security audit..."
 
           # Run audit and capture results
-          pnpm audit --audit-level moderate --json > audit-results.json || AUDIT_EXIT_CODE=$?
+          ppnpm audit --audit-level moderate --json > audit-results.json || AUDIT_EXIT_CODE=$?
 
           # Check if there are any vulnerabilities
           VULN_COUNT=$(jq '.metadata.vulnerabilities.total' audit-results.json 2>/dev/null || echo "0")
@@ -314,19 +314,19 @@ jobs:
           git checkout -b security/automated-security-fixes
 
           # Apply security fixes
-          pnpm audit fix
+          ppnpm audit fix
 
           # Check if any files were changed
           if ! git diff --exit-code; then
             echo "Security fixes applied, running tests..."
 
             # Install updated dependencies
-            pnpm install
+            ppnpm install
 
             # Run tests to ensure fixes don't break functionality
-            pnpm run test:ci
-            pnpm run typecheck
-            pnpm run lint
+            ppnpm run test:ci
+            ppnpm run typecheck
+            ppnpm run lint
 
             # Commit changes
             git add .

@@ -38,19 +38,19 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Build components
-        run: pnpm run build:css
+        run: ppnpm run build:css
 
       - name: Analyze component integration status
-        run: pnpm run analyze:component-integration
+        run: ppnpm run analyze:component-integration
 
       - name: Validate component interactions
-        run: pnpm run validate:component-interactions
+        run: ppnpm run validate:component-interactions
 
       - name: Run interaction unit tests
-        run: pnpm run test:accordion:interaction
+        run: ppnpm run test:accordion:interaction
 
       - name: Upload interaction analysis report
         uses: actions/upload-artifact@v4
@@ -79,14 +79,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Build CSS
-        run: pnpm run build:css
+        run: ppnpm run build:css
 
       - name: Start dev server in background
         run: |
-          pnpm run dev &
+          ppnpm run dev &
           echo "DEV_PID=$!" >> $GITHUB_ENV
 
       - name: Wait for dev server
@@ -95,7 +95,7 @@ jobs:
 
       - name: Build and start Storybook
         run: |
-          pnpm run build-storybook
+          ppnpm run build-storybook
           npx http-server storybook-static -p 6007 &
           echo "STORYBOOK_PID=$!" >> $GITHUB_ENV
 
@@ -104,7 +104,7 @@ jobs:
           timeout 60 bash -c 'until curl -f http://localhost:6007; do sleep 2; done'
 
       - name: Run interaction tests in browser environments
-        run: pnpm run test:interactions:verbose
+        run: ppnpm run test:interactions:verbose
 
       - name: Upload interaction test results
         uses: actions/upload-artifact@v4
@@ -145,13 +145,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Update documentation with latest component status
-        run: pnpm run docs:auto-update
+        run: ppnpm run docs:auto-update
 
       - name: Update changelogs for interaction testing changes
-        run: pnpm run changelog:update
+        run: ppnpm run changelog:update
 
       - name: Commit documentation updates
         run: |
@@ -191,7 +191,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Check for accordion-like patterns in changes
         run: |
@@ -204,7 +204,7 @@ jobs:
             # Run migration analysis on changed components
             for component in $CHANGED_COMPONENTS; do
               echo "Testing migration pattern for: $component"
-              pnpm run migrate:component -- --component=$component --dry-run || echo "Migration analysis completed for $component"
+              ppnpm run migrate:component -- --component=$component --dry-run || echo "Migration analysis completed for $component"
             done
           else
             echo "No component changes detected"
@@ -213,10 +213,10 @@ jobs:
       - name: Validate USWDS integration consistency
         run: |
           # Check that USWDS configuration is consistent
-          pnpm run validate:storybook-uswds
+          ppnpm run validate:storybook-uswds
 
           # Run quick interaction validation
-          pnpm run validate:component-interactions
+          ppnpm run validate:component-interactions
 
   # Security check for new interaction patterns
   security-validation:
@@ -313,9 +313,9 @@ jobs:
             }
 
             analysisComment += \`### 🔗 Useful Commands\\n\`;
-            analysisComment += \`- \\\`pnpm run analyze:component-integration\\\` - Full analysis\\n\`;
-            analysisComment += \`- \\\`pnpm run test:interactions\\\` - Test interactions\\n\`;
-            analysisComment += \`- \\\`pnpm run migrate:component -- --component=COMPONENT_NAME\\\` - Fix patterns\\n\`;
+            analysisComment += \`- \\\`ppnpm run analyze:component-integration\\\` - Full analysis\\n\`;
+            analysisComment += \`- \\\`ppnpm run test:interactions\\\` - Test interactions\\n\`;
+            analysisComment += \`- \\\`ppnpm run migrate:component -- --component=COMPONENT_NAME\\\` - Fix patterns\\n\`;
 
             // Post comment
             github.rest.issues.createComment({

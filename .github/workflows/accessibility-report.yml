@@ -27,13 +27,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         run: npx playwright install chromium
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: ppnpm run build-storybook
 
       - name: Start Storybook server
         run: |
@@ -45,7 +45,7 @@ jobs:
       - name: Generate accessibility report
         id: a11y_report
         run: |
-          pnpm run test:a11y || echo "violations_found=true" >> $GITHUB_OUTPUT
+          ppnpm run test:a11y || echo "violations_found=true" >> $GITHUB_OUTPUT
         continue-on-error: true
 
       - name: Stop Storybook server

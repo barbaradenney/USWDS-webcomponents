@@ -26,10 +26,10 @@ jobs:
         cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      run: ppnpm install --frozen-lockfile
 
     - name: 🔍 Detect over-engineering patterns
-      run: pnpm run detect:over-engineering:ci
+      run: ppnpm run detect:over-engineering:ci
 
     - name: 📊 Generate over-engineering report
       if: always()
@@ -65,7 +65,7 @@ jobs:
             1. Research the USWDS source code for your component
             2. Remove custom event handlers and let USWDS handle behavior
             3. Ensure components always initialize USWDS (no mode switching)
-            4. Run \`pnpm run detect:over-engineering\` locally to verify fixes
+            4. Run \`ppnpm run detect:over-engineering\` locally to verify fixes
 
             ### 💡 Remember
             We are **HTML structure providers**, not **behavior implementers**. Let USWDS do what it does best!`

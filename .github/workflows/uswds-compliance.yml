@@ -29,37 +29,37 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Run USWDS Critical Component Validation
         run: |
           echo "🔍 Running USWDS compliance validation..."
-          pnpm run uswds:validate-critical
+          ppnpm run uswds:validate-critical
         continue-on-error: false
 
       - name: Run Component Structure Tests
         run: |
           echo "🏗️ Validating component structure..."
-          pnpm run test -- --reporter=verbose --coverage=false structure-regression
+          ppnpm run test -- --reporter=verbose --coverage=false structure-regression
         continue-on-error: false
 
       - name: Run USWDS Module Optimization Tests
         run: |
           echo "⚙️ Validating USWDS module optimization..."
-          pnpm run test -- uswds-module-optimization
+          ppnpm run test -- uswds-module-optimization
         continue-on-error: false
 
       - name: Run Accessibility Compliance Tests
         run: |
           echo "♿ Running accessibility compliance tests..."
-          pnpm run test -- --reporter=verbose accessibility
+          ppnpm run test -- --reporter=verbose accessibility
         continue-on-error: false
 
       - name: Generate Compliance Report
         if: always()
         run: |
           echo "📊 Generating compliance report..."
-          pnpm run uswds:compliance 2>/dev/null || echo "Compliance check completed with warnings"
+          ppnpm run uswds:compliance 2>/dev/null || echo "Compliance check completed with warnings"
 
       - name: Upload Compliance Report
         if: always()
@@ -128,14 +128,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Check for Critical Regressions
         run: |
           echo "🚨 Checking for critical compliance regressions..."
 
           # Run date-picker compliance (must be >90%)
-          DATE_PICKER_RESULT=$(pnpm run uswds:validate-alignment src/components/date-picker/usa-date-picker.ts 2>&1 | grep "Pass Rate:" || echo "Pass Rate: 0%")
+          DATE_PICKER_RESULT=$(ppnpm run uswds:validate-alignment src/components/date-picker/usa-date-picker.ts 2>&1 | grep "Pass Rate:" || echo "Pass Rate: 0%")
           echo "Date Picker: $DATE_PICKER_RESULT"
 
           # Check if date-picker compliance dropped below 90%
@@ -146,7 +146,7 @@ jobs:
           fi
 
           # Check for missing required USWDS classes in critical components
-          MISSING_CLASSES=$(pnpm run test -- --reporter=min structure-regression 2>&1 | grep -c "Missing required class" || echo "0")
+          MISSING_CLASSES=$(ppnpm run test -- --reporter=min structure-regression 2>&1 | grep -c "Missing required class" || echo "0")
           if [ "$MISSING_CLASSES" -gt "5" ]; then
             echo "❌ CRITICAL: Too many missing USWDS classes detected ($MISSING_CLASSES)"
             echo "This indicates a structural regression in component compliance"
@@ -175,14 +175,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ppnpm install --frozen-lockfile
 
       - name: Run Accessibility Gate
         run: |
           echo "♿ Running accessibility compliance gate..."
 
           # Run accessibility tests and capture results
-          ACCESSIBILITY_FAILURES=$(pnpm run test -- --reporter=min accessibility 2>&1 | grep -c "ACCESSIBILITY VIOLATIONS FOUND" || echo "0")
+          ACCESSIBILITY_FAILURES=$(ppnpm run test -- --reporter=min accessibility 2>&1 | grep -c "ACCESSIBILITY VIOLATIONS FOUND" || echo "0")
 
           if [ "$ACCESSIBILITY_FAILURES" -gt "0" ]; then
             echo "❌ ACCESSIBILITY GATE FAILED: $ACCESSIBILITY_FAILURES violations found"

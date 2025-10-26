@@ -32,6 +32,11 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -42,22 +47,22 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build Project
-        run: pnpm run build
+        run: ppnpm run build
 
       - name: 🔍 Validate Vite Configuration
         run: |
           echo "Checking Vite module aliases and optimization..."
-          pnpm run validate:transformations
+          ppnpm run validate:transformations
 
       - name: 🌐 Test Browser Transformation
         run: |
           echo "Testing transformation in real browser environment..."
-          pnpm run dev &
+          ppnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10  # Wait for dev server to start
 
           # Test browser transformation
-          pnpm run validate:transformations:browser || BROWSER_TEST_FAILED=1
+          ppnpm run validate:transformations:browser || BROWSER_TEST_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
@@ -71,12 +76,12 @@ jobs:
       - name: 🧪 Run Transformation Tests
         run: |
           echo "Running component transformation tests..."
-          pnpm test -- __tests__/uswds-transformation.test.ts || true
+          ppnpm test -- __tests__/uswds-transformation.test.ts || true
 
       - name: 🎭 Test in Storybook Environment
         run: |
           echo "Starting Storybook and testing transformations..."
-          pnpm run build-storybook
+          ppnpm run build-storybook
           npx http-server storybook-static -p 6006 &
           sleep 10
 
@@ -93,7 +98,7 @@ jobs:
           echo "" >> transformation-report.md
 
           # Run validation and capture output
-          pnpm run validate:transformations 2>&1 | tee validation-output.txt || true
+          ppnpm run validate:transformations 2>&1 | tee validation-output.txt || true
 
           # Extract summary
           grep -A 100 "Validation Results:" validation-output.txt >> transformation-report.md || true
@@ -110,7 +115,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           echo "Generating comprehensive PR comment with Phase 2 validation..."
-          pnpm run test:pr-comment || true
+          ppnpm run test:pr-comment || true
 
       - name: 💬 Comment on PR
         if: github.event_name == 'pull_request'
@@ -178,7 +183,7 @@ jobs:
 
             // Start dev server
             const { exec } = await import('child_process');
-            const server = exec('pnpm run dev');
+            const server = exec('ppnpm run dev');
             await new Promise(resolve => setTimeout(resolve, 5000));
 
             try {
@@ -245,6 +250,11 @@ jobs:
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -255,17 +265,17 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🏗️ Build Project
-        run: pnpm run build
+        run: ppnpm run build
 
       - name: 🌐 Cross-Browser Validation
         run: |
           echo "Testing transformations across browsers..."
-          pnpm run dev &
+          ppnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10
 
           # Run cross-browser tests
-          pnpm run test:cross-browser || CROSS_BROWSER_FAILED=1
+          ppnpm run test:cross-browser || CROSS_BROWSER_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
@@ -279,13 +289,13 @@ jobs:
       - name: 📸 Visual Regression Testing
         run: |
           echo "Creating visual baselines and checking for regressions..."
-          pnpm run dev &
+          ppnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10
 
           # Run visual regression tests
-          pnpm run test:visual:baseline || true
-          pnpm run test:visual:regression || VISUAL_FAILED=1
+          ppnpm run test:visual:baseline || true
+          ppnpm run test:visual:regression || VISUAL_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
@@ -299,12 +309,12 @@ jobs:
       - name: ⚡ Performance Monitoring
         run: |
           echo "Monitoring component transformation performance..."
-          pnpm run dev &
+          ppnpm run dev &
           DEV_SERVER_PID=$!
           sleep 10
 
           # Run performance monitoring
-          pnpm run test:performance:monitor || PERFORMANCE_FAILED=1
+          ppnpm run test:performance:monitor || PERFORMANCE_FAILED=1
 
           # Cleanup
           kill $DEV_SERVER_PID || true
