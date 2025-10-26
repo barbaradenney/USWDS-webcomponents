@@ -34,13 +34,13 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run health check
         id: health
         run: |
           echo "## 🏥 Repository Health Check" >> $GITHUB_STEP_SUMMARY
-          ppnpm run health:check || true
+          pnpm run health:check || true
           echo "" >> $GITHUB_STEP_SUMMARY
 
       - name: Validate documentation links
@@ -49,7 +49,7 @@ jobs:
           echo "## 🔗 Documentation Link Validation" >> $GITHUB_STEP_SUMMARY
 
           # Run validation and capture output
-          if ppnpm run validate:doc-links 2>&1 | tee doc-links.log; then
+          if pnpm run validate:doc-links 2>&1 | tee doc-links.log; then
             echo "✅ All documentation links are valid" >> $GITHUB_STEP_SUMMARY
             echo "has_broken_links=false" >> $GITHUB_OUTPUT
           else
@@ -67,7 +67,7 @@ jobs:
           echo "## 📋 Documentation Synchronization Check" >> $GITHUB_STEP_SUMMARY
 
           # Run documentation sync validator
-          if ppnpm run docs:check-sync 2>&1 | tee doc-sync.log; then
+          if pnpm run docs:check-sync 2>&1 | tee doc-sync.log; then
             echo "✅ All critical documentation is synchronized" >> $GITHUB_STEP_SUMMARY
             echo "docs_synced=true" >> $GITHUB_OUTPUT
           else
@@ -85,7 +85,7 @@ jobs:
           echo "## 🔍 Documentation Truthfulness Check" >> $GITHUB_STEP_SUMMARY
 
           # Run documentation truthfulness validator
-          if ppnpm run docs:validate:truth 2>&1 | tee doc-truth.log; then
+          if pnpm run docs:validate:truth 2>&1 | tee doc-truth.log; then
             echo "✅ All documentation content is accurate" >> $GITHUB_STEP_SUMMARY
             echo "docs_accurate=true" >> $GITHUB_OUTPUT
           else
@@ -102,7 +102,7 @@ jobs:
         run: |
           echo "## 🧹 Unused Code Detection" >> $GITHUB_STEP_SUMMARY
 
-          if ppnpm run cleanup:unused 2>&1 | tee unused-code.log; then
+          if pnpm run cleanup:unused 2>&1 | tee unused-code.log; then
             echo "✅ No unused code detected" >> $GITHUB_STEP_SUMMARY
             echo "has_unused_code=false" >> $GITHUB_OUTPUT
           else
@@ -119,7 +119,7 @@ jobs:
         run: |
           echo "## 📊 Component Usage Analytics" >> $GITHUB_STEP_SUMMARY
 
-          ppnpm run analytics:components 2>&1 | tee component-analytics.log
+          pnpm run analytics:components 2>&1 | tee component-analytics.log
 
           # Extract summary statistics
           echo '```' >> $GITHUB_STEP_SUMMARY
@@ -133,9 +133,9 @@ jobs:
           echo "## 📦 Bundle Size Check" >> $GITHUB_STEP_SUMMARY
 
           # Build first
-          ppnpm run build || true
+          pnpm run build || true
 
-          if ppnpm run validate:bundle-size 2>&1 | tee bundle-size.log; then
+          if pnpm run validate:bundle-size 2>&1 | tee bundle-size.log; then
             echo "✅ All bundles within performance budgets" >> $GITHUB_STEP_SUMMARY
             echo "bundle_exceeded=false" >> $GITHUB_OUTPUT
           else
@@ -218,33 +218,33 @@ jobs:
 
             if (hasDocLinks) {
               body += `- 🔗 **Broken Documentation Links**\n`;
-              body += `  - Run \`ppnpm run validate:doc-links:fix\` to fix interactively\n`;
-              body += `  - Or run \`ppnpm run validate:doc-links:fix:auto\` to auto-fix\n\n`;
+              body += `  - Run \`pnpm run validate:doc-links:fix\` to fix interactively\n`;
+              body += `  - Or run \`pnpm run validate:doc-links:fix:auto\` to auto-fix\n\n`;
             }
 
             if (docsSynced) {
               body += `- 📋 **Documentation Out of Sync**\n`;
               body += `  - Critical docs (README, About.mdx, package.json) have inconsistencies\n`;
-              body += `  - Run \`ppnpm run docs:check-sync\` to see details\n`;
+              body += `  - Run \`pnpm run docs:check-sync\` to see details\n`;
               body += `  - Update package.json first (source of truth), then sync other docs\n\n`;
             }
 
             if (docsAccurate) {
               body += `- 🔍 **Documentation Content Inaccurate**\n`;
               body += `  - Documentation content doesn't match actual implementation\n`;
-              body += `  - Run \`ppnpm run docs:validate:truth\` to see details\n`;
+              body += `  - Run \`pnpm run docs:validate:truth\` to see details\n`;
               body += `  - Update documentation to reflect actual code, scripts, and features\n\n`;
             }
 
             if (hasUnusedCode) {
               body += `- 🧹 **Unused Code Detected**\n`;
-              body += `  - Run \`ppnpm run cleanup:unused\` to see details\n`;
+              body += `  - Run \`pnpm run cleanup:unused\` to see details\n`;
               body += `  - Remove unused dependencies, exports, and files\n\n`;
             }
 
             if (bundleExceeded) {
               body += `- 📦 **Bundle Size Budget Exceeded**\n`;
-              body += `  - Run \`ppnpm run validate:bundle-size\` to see details\n`;
+              body += `  - Run \`pnpm run validate:bundle-size\` to see details\n`;
               body += `  - Consider code splitting or removing large dependencies\n\n`;
             }
 
@@ -262,13 +262,13 @@ jobs:
             body += `### Quick Commands\n\n`;
             body += `\`\`\`bash\n`;
             body += `# Fix documentation links\n`;
-            body += `ppnpm run validate:doc-links:fix\n\n`;
+            body += `pnpm run validate:doc-links:fix\n\n`;
             body += `# Clean up unused code\n`;
-            body += `ppnpm run cleanup:unused\n\n`;
+            body += `pnpm run cleanup:unused\n\n`;
             body += `# Update dependencies\n`;
             body += `npm update\n\n`;
             body += `# Check bundle sizes\n`;
-            body += `ppnpm run validate:bundle-size\n`;
+            body += `pnpm run validate:bundle-size\n`;
             body += `\`\`\`\n\n`;
 
             body += `---\n`;

@@ -26,10 +26,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
-        run: ppnpm run lint -- --format json --output-file eslint-report.json
+        run: pnpm run lint -- --format json --output-file eslint-report.json
         continue-on-error: true
 
       - name: Upload ESLint report
@@ -67,10 +67,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run TypeScript compiler
-        run: ppnpm run typecheck
+        run: pnpm run typecheck
 
       - name: Check for TypeScript strict mode
         run: |
@@ -98,10 +98,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests with coverage
-        run: ppnpm run test:coverage
+        run: pnpm run test:coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -146,8 +146,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ppnpm install --frozen-lockfile
-          ppnpm install -g complexity-report
+          pnpm install --frozen-lockfile
+          pnpm install -g complexity-report
 
       - name: Analyze code complexity
         run: |
@@ -191,14 +191,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build project
-        run: ppnpm run build
+        run: pnpm run build
 
       - name: Analyze bundle size
         run: |
-          ppnpm install -g bundlesize2
+          pnpm install -g bundlesize2
           echo '[{"path": "dist/*.js", "maxSize": "250KB"}, {"path": "dist/*.css", "maxSize": "600KB"}]' > .bundlesize.json
           bundlesize -f .bundlesize.json
 
@@ -235,7 +235,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Check for missing documentation
         run: |
@@ -249,7 +249,7 @@ jobs:
 
       - name: Validate JSDoc comments
         run: |
-          ppnpm install -g documentation
+          pnpm install -g documentation
           documentation lint src/**/*.ts
 
       - name: Check Storybook stories exist
@@ -282,15 +282,15 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
-        run: ppnpm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run accessibility tests
         run: |
           npx playwright install chromium
-          ppnpm run test:storybook -- --url http://localhost:6006
+          pnpm run test:storybook -- --url http://localhost:6006
 
   quality-report:
     name: Generate Quality Report

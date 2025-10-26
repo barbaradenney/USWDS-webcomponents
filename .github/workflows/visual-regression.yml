@@ -49,17 +49,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ppnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
       - name: Initialize USWDS
-        run: ppnpm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: ppnpm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: ppnpm run build-storybook
+        run: pnpm run build-storybook
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
@@ -182,17 +182,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ppnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile
           npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Initialize USWDS
-        run: ppnpm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: ppnpm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: ppnpm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Start Storybook server
         run: |
@@ -237,16 +237,16 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Initialize USWDS
-        run: ppnpm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: ppnpm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: ppnpm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run accessibility visual tests
         run: |
@@ -289,20 +289,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ppnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
       - name: Initialize USWDS
-        run: ppnpm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: ppnpm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: ppnpm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run performance visual tests
-        run: ppnpm run test:performance:visual
+        run: pnpm run test:performance:visual
 
       - name: Generate performance report
         run: node scripts/performance-visual-report.js

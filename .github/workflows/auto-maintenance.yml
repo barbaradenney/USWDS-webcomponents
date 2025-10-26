@@ -36,17 +36,17 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: ppnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run automated maintenance tasks
         run: |
           echo "🤖 Running automated maintenance tasks..."
           
           # Update component status
-          ppnpm run docs:sync
+          pnpm run docs:sync
           
           # Check for dependency updates (security patches only)
-          ppnpm audit fix --only=prod || echo "No security fixes needed"
+          pnpm audit fix --only=prod || echo "No security fixes needed"
           
           # Update package-lock if needed
           if [ -n "$(git diff package-lock.json)" ]; then
@@ -54,7 +54,7 @@ jobs:
           fi
           
           # Format any auto-generated files
-          ppnpm run format || echo "No formatting needed"
+          pnpm run format || echo "No formatting needed"
 
       - name: Check for changes
         id: check_changes
@@ -159,7 +159,7 @@ Co-Authored-By: GitHub Actions <noreply@github.com>"
       - name: Check for USWDS updates
         id: uswds_check
         run: |
-          ppnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile
           
           CURRENT_VERSION=$(pnpm list @uswds/uswds --depth=0 --json | jq -r '.dependencies."@uswds/uswds".version')
           LATEST_VERSION=$(pnpm view @uswds/uswds version)
@@ -196,9 +196,9 @@ Co-Authored-By: GitHub Actions <noreply@github.com>"
             ### Automated Update Process
             \`\`\`bash
             pnpm update @uswds/uswds
-            ppnpm run uswds:compile
-            ppnpm run test
-            ppnpm run storybook  # Visual verification
+            pnpm run uswds:compile
+            pnpm run test
+            pnpm run storybook  # Visual verification
             \`\`\`
             
             This issue was created automatically by the maintenance workflow.
