@@ -165,7 +165,8 @@ jobs:
           pnpm turbo build
           npx bundlesize
 
-      - name: Comment bundle size
-        uses: github-actions-up-and-running/bundle-size-diff@v1
-        with:
-          base_branch: main
+      # Disabled: Action repository not found
+      # - name: Comment bundle size
+      #   uses: github-actions-up-and-running/bundle-size-diff@v1
+      #   with:
+      #     base_branch: main

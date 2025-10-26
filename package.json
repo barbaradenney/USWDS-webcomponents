@@ -33,7 +33,7 @@
     "sw:sync": "node scripts/build/sync-service-worker-version.js",
     "typecheck": "tsc --noEmit",
     "typecheck:fast": "tsc --noEmit --incremental",
-    "validate-syntax": "node scripts/validate-javascript-syntax.js",
+    "validate-syntax": "node scripts/validate/validate-javascript-syntax.js",
     "validate:click-events": "node scripts/validate-click-event-coverage.js",
     "validate:double-init": "node scripts/validate-double-initialization-prevention.js",
     "analyze:testing-gaps": "node scripts/analyze-testing-gaps.js",
