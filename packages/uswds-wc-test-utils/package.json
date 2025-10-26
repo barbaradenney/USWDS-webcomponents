@@ -9,8 +9,44 @@
     ".": {
       "import": "./src/index.js"
     },
-    "./*": {
-      "import": "./src/*.js"
+    "./test-utils.js": {
+      "import": "./src/test-utils.js"
+    },
+    "./accessibility-utils.js": {
+      "import": "./src/accessibility-utils.js"
+    },
+    "./uswds-compliance-utils.js": {
+      "import": "./src/uswds-compliance-utils.js"
+    },
+    "./aria-screen-reader-utils.js": {
+      "import": "./src/aria-screen-reader-utils.js"
+    },
+    "./responsive-accessibility-utils.js": {
+      "import": "./src/responsive-accessibility-utils.js"
+    },
+    "./keyboard-navigation-utils.js": {
+      "import": "./src/keyboard-navigation-utils.js"
+    },
+    "./touch-pointer-utils.js": {
+      "import": "./src/touch-pointer-utils.js"
+    },
+    "./css-class-utils.js": {
+      "import": "./src/css-class-utils.js"
+    },
+    "./contrast-utils.js": {
+      "import": "./src/contrast-utils.js"
+    },
+    "./focus-management-utils.js": {
+      "import": "./src/focus-management-utils.js"
+    },
+    "./form-error-utils.js": {
+      "import": "./src/form-error-utils.js"
+    },
+    "./story-validation-utils.js": {
+      "import": "./src/story-validation-utils.js"
+    },
+    "./uswds-integration-utils.js": {
+      "import": "./src/uswds-integration-utils.js"
     }
   },
   "files": [
