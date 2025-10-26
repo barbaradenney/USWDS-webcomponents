@@ -874,7 +874,10 @@ describe('USAModal', () => {
       expect(element.querySelector('.usa-modal')).toBeTruthy();
     });
 
-    it('should maintain state after multiple close button clicks', async () => {
+    // MOVED TO CYPRESS: cypress/e2e/modal-variants.cy.ts
+    // This test requires USWDS modal behavior (moving modal to document.body)
+    // which doesn't work reliably in jsdom. Testing in real browser via Cypress.
+    it.skip('should maintain state after multiple close button clicks', async () => {
       element.heading = 'Close Button Test';
       element.forceAction = false;
 
@@ -2210,7 +2213,10 @@ describe('USAModal', () => {
         expect(description?.textContent?.trim()).toBe('Test description');
       });
 
-      it('should render both normal and large modals correctly', async () => {
+      // MOVED TO CYPRESS: cypress/e2e/modal-variants.cy.ts
+      // This test requires USWDS DOM transformation (modal moved to document.body)
+      // which is unreliable in jsdom. Testing in real browser via Cypress instead.
+      it.skip('should render both normal and large modals correctly', async () => {
         // Test normal modal
         element.heading = 'Normal Modal';
         element.large = false;

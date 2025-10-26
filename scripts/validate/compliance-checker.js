@@ -210,10 +210,11 @@ async function validateJavaScriptIntegration(componentName) {
     const hasStandardInit = content.includes('initializeUSWDSComponent');
     const hasGlobalUSWDS = content.includes('USWDS.');
     const hasBehaviorFile = content.includes(`-behavior.js'`) || content.includes(`-behavior.ts'`);
+    const hasLoadUSWDSModule = content.includes('loadUSWDSModule');
     const hasBehaviorDisabled = content.includes('@uswds-behavior-disabled');
     const hasPureLitImplementation = content.includes('Pure Lit Implementation');
 
-    if (hasStandardInit || hasGlobalUSWDS || hasBehaviorFile) {
+    if (hasStandardInit || hasGlobalUSWDS || hasBehaviorFile || hasLoadUSWDSModule) {
       results.passed.push(`${componentName}: ✓ USWDS JavaScript integration`);
     } else if (hasBehaviorDisabled || hasPureLitImplementation) {
       results.passed.push(`${componentName}: ✓ Pure Lit implementation (USWDS behavior disabled)`);

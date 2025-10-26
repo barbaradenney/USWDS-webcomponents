@@ -305,6 +305,7 @@ const LIGHT_WRAPPER_REQUIREMENTS = {
     /accordionModule\.on\(/,
     /await import\([\s\S]*?@uswds\/uswds\/js/,
     /initializeUSWDSComponent\(/,
+    /loadUSWDSModule\(/,  // Support for loadUSWDSModule utility from @uswds-wc/core
     /module\.init\(this\)/,  // Support for modal and date-picker init() pattern
     /initialize\w+\(this\)/,  // Support for USWDS-Mirrored Behavior pattern (e.g., initializeModal, initializeAccordion)
     /from ['"]\.\/usa-[\w-]+-behavior\.(?:js|ts)['"]/  // Import from behavior file indicates mirrored behavior pattern (supports hyphens in component names)

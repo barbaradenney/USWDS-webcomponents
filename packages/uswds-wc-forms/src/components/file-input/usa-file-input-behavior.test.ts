@@ -152,6 +152,7 @@ describe('USWDS File Input Behavior Contract', () => {
   });
 
   describe('Contract 4: File Selection and Previews', () => {
+    it.todo('add file selection and preview tests');
   });
 
   describe('Contract 5: Multiple File Selection', () => {

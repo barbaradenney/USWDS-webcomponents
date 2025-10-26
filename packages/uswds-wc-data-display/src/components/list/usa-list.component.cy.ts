@@ -98,7 +98,7 @@ describe('List Component Tests', () => {
   // Test that component maintains accessibility after interactions
   it('should maintain accessibility after rapid interactions', () => {
     cy.mount('<usa-list></usa-list>');
-    
+
     // Perform various rapid interactions
     cy.get('usa-list')
       .click()
@@ -106,11 +106,77 @@ describe('List Component Tests', () => {
       .blur()
       .click()
       .click();
-    
+
     cy.wait(500);
-    
+
     // Accessibility should still be intact
     cy.injectAxe();
+    cy.checkAccessibility();
+  });
+
+  // Comprehensive accessibility tests (moved from Vitest - require real browser)
+  it('should pass comprehensive accessibility tests with list items', () => {
+    cy.mount('<usa-list type="unordered"></usa-list>');
+
+    cy.get('usa-list').then(($el) => {
+      const element = $el[0];
+      const listElement = element.querySelector('ul');
+
+      if (listElement) {
+        // Add test items directly to the list element
+        listElement.innerHTML = '';
+        ['First benefit', 'Second benefit', 'Third benefit'].forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          listElement.appendChild(li);
+        });
+      }
+    });
+
+    // Test accessibility
+    cy.injectAxe();
+    cy.checkAccessibility();
+  });
+
+  it('should maintain accessibility during dynamic content updates', () => {
+    cy.mount('<usa-list type="unordered"></usa-list>');
+
+    // Initial content
+    cy.get('usa-list').then(($el) => {
+      const element = $el[0];
+      const listElement = element.querySelector('ul');
+
+      if (listElement) {
+        listElement.innerHTML = '';
+        ['Initial item'].forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          listElement.appendChild(li);
+        });
+      }
+    });
+
+    cy.injectAxe();
+    cy.checkAccessibility();
+
+    // Update type to ordered
+    cy.get('usa-list').invoke('attr', 'type', 'ordered');
+
+    cy.get('usa-list').then(($el) => {
+      const element = $el[0];
+      const listElement = element.querySelector('ol');
+
+      if (listElement) {
+        listElement.innerHTML = '';
+        ['Updated item 1', 'Updated item 2'].forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          listElement.appendChild(li);
+        });
+      }
+    });
+
+    // Should still be accessible after updates
     cy.checkAccessibility();
   });
 

@@ -72,9 +72,51 @@ describe('LanguageSelector Component Tests', () => {
   // Accessibility testing - critical for government components
   it('should be accessible', () => {
     cy.mount('<usa-language-selector></usa-language-selector>');
-    
+
     cy.injectAxe();
     cy.checkAccessibility();
+  });
+
+  // ARIA attribute testing for dropdown variant
+  // This test moved from usa-language-selector.regression.test.ts
+  // because USWDS JavaScript interactions require real browser
+  it('should update ARIA attributes when dropdown toggles', () => {
+    const languages = [
+      { code: 'en', name: 'English', nativeName: 'English' },
+      { code: 'es', name: 'Spanish', nativeName: 'Español' },
+      { code: 'fr', name: 'French', nativeName: 'Français' }
+    ];
+
+    cy.mount(`
+      <usa-language-selector
+        variant="dropdown"
+        current-language="en"
+      ></usa-language-selector>
+    `);
+
+    cy.get('usa-language-selector').then(($el) => {
+      $el[0].languages = languages;
+    });
+
+    cy.wait(100); // Let component update
+
+    // Find the dropdown toggle button
+    cy.get('usa-language-selector .usa-language__link').as('toggleButton');
+
+    // Initially closed - aria-expanded should be 'false'
+    cy.get('@toggleButton').should('have.attr', 'aria-expanded', 'false');
+
+    // Click to open dropdown
+    cy.get('@toggleButton').click();
+
+    // After opening - aria-expanded should be 'true'
+    cy.get('@toggleButton').should('have.attr', 'aria-expanded', 'true');
+
+    // Click to close dropdown
+    cy.get('@toggleButton').click();
+
+    // After closing - aria-expanded should be 'false' again
+    cy.get('@toggleButton').should('have.attr', 'aria-expanded', 'false');
   });
 
   // Test that component maintains accessibility after interactions
