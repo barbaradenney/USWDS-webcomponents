@@ -16,7 +16,7 @@ const config: StorybookConfig = {
     // Note: In Storybook 9, essential addons (actions, controls, etc.) are built into core
     '@storybook/addon-a11y',
     '@storybook/addon-vitest',
-    '@storybook/addon-coverage',
+    // '@storybook/addon-coverage', // Temporarily disabled due to Node.js compatibility issue
     {
       name: '@storybook/addon-docs',
       options: {
