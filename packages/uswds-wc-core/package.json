@@ -34,7 +34,9 @@
     "lit": "^3.0.0"
   },
   "devDependencies": {
-    "lit": "^3.0.0"
+    "lit": "^3.0.0",
+    "vitest": "^3.2.4",
+    "jsdom": "^27.0.1"
   },
   "keywords": [
     "uswds",
