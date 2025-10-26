@@ -1,0 +1,265 @@
+#!/usr/bin/env bash
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Pre-commit Validation Orchestrator
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#
+# Purpose: Orchestrates modular pre-commit validation stages
+#
+# Architecture:
+#   - Lightweight orchestrator (~150 lines)
+#   - Modular validation stages in scripts/validation/stages/
+#   - Each stage is independently testable
+#   - Reusable in CI/CD pipelines
+#
+# Stages:
+#   00-discovered-issues.sh - Discovered issues check
+#   01-repository-organization.sh - Repository cleanup
+#   02-uswds-validation.sh - USWDS compliance
+#   03-linting-and-quality.sh - Linting and TypeScript
+#   04-component-tests.sh - Component tests (unit + Cypress)
+#   05-test-expectations.sh - Test quality validation
+#   06-final-validations.sh - Documentation and JavaScript
+#   07-optional-validations.sh - Opt-in features
+#
+# Usage:
+#   git commit (runs all required stages)
+#   CYPRESS_PRECOMMIT=1 git commit (includes Cypress)
+#   SMOKE_TESTS_PRECOMMIT=1 git commit (includes smoke tests)
+#
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+echo "🎯 Running component-specific pre-commit validation..."
+echo ""
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Performance Metrics Tracking
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VALIDATION_START=$(date +%s)
+METRICS_FILE=".git/validation-metrics.json"
+
+# Initialize stage timings (bash 3.2 compatible - parallel arrays)
+STAGE_IDS=()
+STAGE_NAMES=()
+STAGE_START_TIMES=()
+STAGE_DURATIONS=()
+
+# Helper function to find stage index by ID
+find_stage_index() {
+  local stage_id=$1
+  for i in "${!STAGE_IDS[@]}"; do
+    if [ "${STAGE_IDS[$i]}" = "$stage_id" ]; then
+      echo $i
+      return 0
+    fi
+  done
+  echo -1
+}
+
+# Helper function to start timing a stage
+start_stage() {
+  STAGE_ID=$1
+  STAGE_NAME=$2
+  STAGE_IDS+=("$STAGE_ID")
+  STAGE_NAMES+=("$STAGE_NAME")
+  # Use Python for millisecond precision (macOS compatible)
+  STAGE_START_TIMES+=($(python3 -c "import time; print(int(time.time() * 1000))"))
+  STAGE_DURATIONS+=(0)  # placeholder
+}
+
+# Helper function to end timing a stage
+end_stage() {
+  STAGE_ID=$1
+  STAGE_END=$(python3 -c "import time; print(int(time.time() * 1000))")
+  INDEX=$(find_stage_index "$STAGE_ID")
+  if [ "$INDEX" -ge 0 ]; then
+    STAGE_START=${STAGE_START_TIMES[$INDEX]}
+    STAGE_DURATIONS[$INDEX]=$((STAGE_END - STAGE_START))
+  fi
+}
+
+# Export functions so modules can use them
+export -f start_stage
+export -f end_stage
+export -f find_stage_index
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Environment Detection
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Smart commit type detection
+ALL_FILES=$(git diff --cached --name-only)
+CODE_FILES=$(echo "$ALL_FILES" | grep -E "\.(ts|js|tsx|jsx)$" | grep -v ".test.ts" | grep -v ".cy.ts" | wc -l | tr -d ' ')
+TEST_FILES=$(echo "$ALL_FILES" | grep -E "\.(test|cy)\.ts$" | wc -l | tr -d ' ')
+DOC_FILES=$(echo "$ALL_FILES" | grep -E "\.(md|mdx)$" | wc -l | tr -d ' ')
+
+# Detect commit type
+SKIP_TESTS=false
+if [ "$DOC_FILES" -gt 0 ] && [ "$CODE_FILES" -eq 0 ] && [ "$TEST_FILES" -eq 0 ]; then
+  echo "📝 Docs-only commit detected - skipping component tests"
+  SKIP_TESTS=true
+  echo ""
+fi
+
+# Get modified components
+MODIFIED_COMPONENTS=$(git diff --cached --name-only | grep "src/components/" | grep -E "\.(ts|js)$" | grep -v ".test.ts" | grep -v ".stories.ts" | sed 's|src/components/||' | cut -d'/' -f1 | sort -u)
+MODIFIED_COMPONENT_COUNT=$(echo "$MODIFIED_COMPONENTS" | grep -v '^$' | wc -l | tr -d ' ')
+
+# Get modified core files
+MODIFIED_CORE=$(git diff --cached --name-only | grep -E "(src/utils|src/styles|scripts/|.husky/)" | wc -l | tr -d ' ')
+
+# Display commit type
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  echo "📦 Modified components detected: $MODIFIED_COMPONENT_COUNT"
+  echo "$MODIFIED_COMPONENTS" | while read comp; do
+    [ -n "$comp" ] && echo "   • $comp"
+  done
+  echo ""
+elif [ "$MODIFIED_CORE" -gt 0 ]; then
+  echo "🔧 Core files modified (utils/styles/scripts) - running global validation"
+  echo ""
+else
+  echo "📝 No component or core files modified - running basic validation"
+  echo ""
+fi
+
+# Export environment variables for modules
+export SKIP_TESTS
+export MODIFIED_COMPONENTS
+export MODIFIED_COMPONENT_COUNT
+export MODIFIED_CORE
+export STAGE_IDS
+export STAGE_NAMES
+export STAGE_START_TIMES
+export STAGE_DURATIONS
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Run Validation Stages
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STAGES_DIR="scripts/validation/stages"
+
+# Run each validation stage
+bash "$STAGES_DIR/00-discovered-issues.sh" || exit 1
+bash "$STAGES_DIR/01-repository-organization.sh" || exit 1
+bash "$STAGES_DIR/02-uswds-validation.sh" || exit 1
+bash "$STAGES_DIR/03-linting-and-quality.sh" || exit 1
+bash "$STAGES_DIR/04-component-tests.sh" || exit 1
+bash "$STAGES_DIR/05-test-expectations.sh" || exit 1
+bash "$STAGES_DIR/06-final-validations.sh" || exit 1
+bash "$STAGES_DIR/07-optional-validations.sh" || exit 1
+
+echo ""
+echo "✅ All checks passed!"
+echo ""
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Performance Metrics Dashboard
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VALIDATION_END=$(date +%s)
+TOTAL_TIME=$((VALIDATION_END - VALIDATION_START))
+
+# Display performance metrics if any stages were tracked
+if [ ${#STAGE_DURATIONS[@]} -gt 0 ]; then
+  echo "⏱️  Validation Performance:"
+  echo ""
+
+  # Display each tracked stage
+  TOTAL_TRACKED=0
+  for i in "${!STAGE_IDS[@]}"; do
+    duration_ms=${STAGE_DURATIONS[$i]}
+    duration_s=$(echo "scale=2; $duration_ms / 1000" | bc)
+    stage_name=${STAGE_NAMES[$i]}
+
+    # Format with padding for alignment
+    printf "   %-25s %6.2fs\n" "$stage_name:" "$duration_s"
+
+    TOTAL_TRACKED=$((TOTAL_TRACKED + duration_ms))
+  done
+
+  echo "   ─────────────────────────────────"
+  TOTAL_TRACKED_S=$(echo "scale=2; $TOTAL_TRACKED / 1000" | bc)
+  printf "   %-25s %6.2fs\n" "Tracked time:" "$TOTAL_TRACKED_S"
+  printf "   %-25s %6ds\n" "Total time:" "$TOTAL_TIME"
+  echo ""
+
+  # Save metrics to file for historical tracking
+  TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+  mkdir -p .git/metrics
+
+  # Create JSON entry
+  cat > "$METRICS_FILE.tmp" << EOF
+{
+  "timestamp": "$TIMESTAMP",
+  "total_seconds": $TOTAL_TIME,
+  "tracked_milliseconds": $TOTAL_TRACKED,
+  "commit_type": "$([ "$SKIP_TESTS" = true ] && echo "docs-only" || echo "code-commit")",
+  "modified_components": $MODIFIED_COMPONENT_COUNT,
+  "stages": {
+EOF
+
+  # Add each stage to JSON
+  FIRST=true
+  for i in "${!STAGE_IDS[@]}"; do
+    stage_id=${STAGE_IDS[$i]}
+    duration_ms=${STAGE_DURATIONS[$i]}
+
+    if [ "$FIRST" = true ]; then
+      FIRST=false
+    else
+      echo "," >> "$METRICS_FILE.tmp"
+    fi
+
+    printf '    "%s": %d' "$stage_id" "$duration_ms" >> "$METRICS_FILE.tmp"
+  done
+
+  cat >> "$METRICS_FILE.tmp" << EOF
+
+  }
+}
+EOF
+
+  mv "$METRICS_FILE.tmp" "$METRICS_FILE"
+fi
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Helpful Information
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+echo "📊 Validation Summary:"
+if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
+  echo "   • Component-specific validation completed"
+  echo "   • $MODIFIED_COMPONENT_COUNT component(s) validated"
+elif [ "$MODIFIED_CORE" -gt 0 ]; then
+  echo "   • Core files validated (global checks)"
+else
+  echo "   • Basic validation completed"
+fi
+
+echo "   • 11 validation stages completed"
+echo "   • Repository organization clean"
+echo "   • Code quality standards verified"
+
+if [ "$SKIP_TESTS" = true ]; then
+  echo "   • Component tests skipped (docs-only)"
+elif [ "$MODIFIED_COMPONENT_COUNT" -eq 0 ]; then
+  echo "   • Component-specific checks skipped (not needed)"
+else
+  echo "   • Component tests completed"
+fi
+
+echo "   • JavaScript integration verified"
+echo "   • Documentation synchronized"
+echo ""
+
+echo "💡 Additional validation available (run manually when needed):"
+echo "   • CYPRESS_PRECOMMIT=1 git commit - Run Cypress tests before commit"
+echo "   • SMOKE_TESTS_PRECOMMIT=1 git commit - Run smoke tests before commit (~30s)"
+echo "   • BUNDLE_SIZE_PRECOMMIT=1 git commit - Validate bundle size before commit"
+echo "   • npm run validate:storybook-uswds - Storybook USWDS integration"
+echo "   • npm run validate:story-args - Storybook controls binding"
+echo "   • node scripts/validate-minimal-wrapper-pattern.js - Minimal wrapper pattern"
+echo "   • node scripts/pre-commit-test-validation.js - Test health validation"
+echo "   • npm test -- dom-validation - DOM structure validation"

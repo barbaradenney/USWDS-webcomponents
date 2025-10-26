@@ -31,7 +31,10 @@ describe('USADatePicker USWDS Integration Validation', () => {
     testContainer.appendChild(element);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    // Wait for any pending component updates to complete
+    // to avoid "missing inner input" errors during cleanup
+    await element.updateComplete;
     testContainer.remove();
   });
 

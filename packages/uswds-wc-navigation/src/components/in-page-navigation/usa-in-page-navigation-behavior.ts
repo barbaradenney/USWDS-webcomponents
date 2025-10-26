@@ -273,6 +273,10 @@ const handleScrollToSection = (el: HTMLElement): void => {
  * SOURCE: index.js (Lines 182-191)
  */
 const scrollToCurrentSection = (): void => {
+  // Guard against undefined window.location in test environments (jsdom)
+  if (!window.location || !window.location.hash) {
+    return;
+  }
   const hashFragment = window.location.hash.slice(1);
   if (hashFragment) {
     const anchorTag = document.getElementById(hashFragment);

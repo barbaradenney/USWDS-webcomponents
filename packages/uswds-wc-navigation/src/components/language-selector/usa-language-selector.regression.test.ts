@@ -438,7 +438,10 @@ describe('USALanguageSelector Interactive Regression Tests', () => {
       expect(submenu.getAttribute('id')).toBe('language-options');
     });
 
-    it('should update ARIA attributes when dropdown state changes', async () => {
+    // SKIPPED: USWDS JavaScript interaction doesn't work reliably in jsdom environment
+    // This test requires real browser for USWDS to toggle aria-expanded on click
+    // Coverage: usa-language-selector.component.cy.ts - "should update ARIA attributes when dropdown toggles"
+    it.skip('should update ARIA attributes when dropdown state changes', async () => {
       element.variant = 'dropdown';
       await waitForUpdate(element);
 

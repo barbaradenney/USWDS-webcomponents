@@ -30,7 +30,27 @@ if echo "$BRANCH" | grep -qE "^($PROTECTED_BRANCHES)$"; then
   done
 fi
 
-# 2. Run full test suite (faster than waiting for CI to fail)
+# 2. Validate branch name format
+BRANCH=$(git branch --show-current)
+VALID_PATTERN="^(feature|fix|docs|refactor|test|chore|hotfix)\/[a-z0-9\-]+$"
+
+if ! echo "$BRANCH" | grep -qE "$VALID_PATTERN"; then
+  # Allow protected branches (main, develop, master)
+  if [ "$BRANCH" != "main" ] && [ "$BRANCH" != "develop" ] && [ "$BRANCH" != "master" ]; then
+    echo "❌ Invalid branch name: $BRANCH"
+    echo ""
+    echo "Branch name must match pattern:"
+    echo "  <type>/<description>"
+    echo ""
+    echo "Valid types: feature, fix, docs, refactor, test, chore, hotfix"
+    echo "Example: feature/123-add-pagination"
+    echo ""
+    echo "See docs/GIT_WORKFLOW.md for details"
+    exit 1
+  fi
+fi
+
+# 3. Run full test suite (faster than waiting for CI to fail)
 echo "🧪 Running full test suite..."
 pnpm test || {
   echo "❌ Tests failed! Fix before pushing."
@@ -38,14 +58,14 @@ pnpm test || {
   exit 1
 }
 
-# 3. Verify TypeScript compiles
+# 4. Verify TypeScript compiles
 echo "📘 Verifying TypeScript..."
 pnpm run typecheck || {
   echo "❌ TypeScript errors detected"
   exit 1
 }
 
-# 4. Verify linting passes
+# 5. Verify linting passes
 echo "🔍 Verifying linting..."
 pnpm run lint || {
   echo "❌ Linting errors detected"

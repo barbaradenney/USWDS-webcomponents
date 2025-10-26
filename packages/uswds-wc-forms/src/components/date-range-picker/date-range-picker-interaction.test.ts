@@ -55,13 +55,15 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
       const dateRangeContainer = element.querySelector('.usa-date-range-picker');
       expect(dateRangeContainer).toBeTruthy();
 
-      const startDatePicker = element.querySelector('.usa-date-range-picker__range-start');
+      // Date pickers are identified by data attributes, not classes
+      const startDatePicker = element.querySelector('usa-date-picker[data-range-start="true"]');
       expect(startDatePicker).toBeTruthy();
 
-      const endDatePicker = element.querySelector('.usa-date-range-picker__range-end');
+      const endDatePicker = element.querySelector('usa-date-picker[data-range-end="true"]');
       expect(endDatePicker).toBeTruthy();
 
       // Look for inputs inside the child date picker components
+      // Note: Test sets element.name = 'date-range' so inputs are 'date-range-start' and 'date-range-end'
       const startInput = element.querySelector('input[name="date-range-start"]');
       expect(startInput).toBeTruthy();
 
@@ -172,8 +174,10 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
   describe('📋 Component Integration', () => {
     it('should maintain proper USWDS date range picker structure', async () => {
       const dateRangePicker = element.querySelector('.usa-date-range-picker');
-      const startSection = element.querySelector('.usa-date-range-picker__range-start');
-      const endSection = element.querySelector('.usa-date-range-picker__range-end');
+      // Date pickers are identified by data attributes, not classes
+      const startSection = element.querySelector('usa-date-picker[data-range-start="true"]');
+      const endSection = element.querySelector('usa-date-picker[data-range-end="true"]');
+      // Note: Test sets element.name = 'date-range' so inputs are 'date-range-start' and 'date-range-end'
       const startInput = element.querySelector('input[name="date-range-start"]');
       const endInput = element.querySelector('input[name="date-range-end"]');
 
