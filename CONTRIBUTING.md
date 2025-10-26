@@ -105,6 +105,60 @@ packages/
 
 ## Making Changes
 
+### Branching Strategy
+
+This project uses a **develop → main** branching workflow to prevent accidental commits directly to production:
+
+#### Branch Structure
+
+- **`main`**: Production branch
+  - Protected - requires Pull Requests
+  - Direct commits are blocked
+  - Auto-deploys to GitHub Pages
+  - Always stable and release-ready
+
+- **`develop`**: Default development branch
+  - All development work starts here
+  - Feature branches merge back to develop
+  - Auto-creates PRs to main when updated
+  - May contain unreleased features
+
+#### Workflow
+
+1. **Start from develop**:
+   ```bash
+   git checkout develop
+   git pull origin develop
+   ```
+
+2. **Create feature branch**:
+   ```bash
+   git checkout -b feature/my-feature
+   ```
+
+3. **Make changes and commit**:
+   ```bash
+   git add .
+   git commit -m "feat: add my feature"
+   ```
+
+4. **Push and create PR to develop**:
+   ```bash
+   git push origin feature/my-feature
+   # Create PR on GitHub targeting develop branch
+   ```
+
+5. **After merge**: GitHub Actions automatically creates a PR from develop → main
+
+6. **Production release**: Merge the auto-created develop → main PR
+
+#### Why This Workflow?
+
+- **Prevents accidents**: Can't accidentally commit to production
+- **Continuous integration**: develop branch always reflects latest work
+- **Controlled releases**: main updates only through reviewed PRs
+- **Automated**: GitHub Actions handles develop → main PR creation
+
 ### Branch Naming
 
 Use descriptive branch names with prefixes:
