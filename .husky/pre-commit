@@ -4,11 +4,11 @@ echo "🎯 Running component-specific pre-commit validation..."
 echo ""
 
 # Get list of modified component files
-MODIFIED_COMPONENTS=$(git diff --cached --name-only | grep "src/components/" | grep -E "\.(ts|js)$" | grep -v ".test.ts" | grep -v ".stories.ts" | sed 's|src/components/||' | cut -d'/' -f1 | sort -u)
+MODIFIED_COMPONENTS=$(git diff --cached --name-only | grep -E "packages/.*/src/components/" | grep -E "\.(ts|js)$" | grep -v ".test.ts" | grep -v ".stories.ts" | sed 's|packages/.*/src/components/||' | cut -d'/' -f1 | sort -u)
 MODIFIED_COMPONENT_COUNT=$(echo "$MODIFIED_COMPONENTS" | grep -v '^$' | wc -l | tr -d ' ')
 
 # Get modified files outside components
-MODIFIED_CORE=$(git diff --cached --name-only | grep -E "(src/utils|src/styles|scripts/|.husky/)" | wc -l | tr -d ' ')
+MODIFIED_CORE=$(git diff --cached --name-only | grep -E "(packages/.*/src/utils|packages/.*/src/styles|scripts/|.husky/)" | wc -l | tr -d ' ')
 
 if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
   echo "📦 Modified components detected: $MODIFIED_COMPONENT_COUNT"
