@@ -2,10 +2,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import './usa-list.ts';
 import type { USAList } from './usa-list.js';
-import {
-  testComponentAccessibility,
-  USWDS_A11Y_CONFIG,
-} from '@uswds-wc/test-utils/accessibility-utils.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
