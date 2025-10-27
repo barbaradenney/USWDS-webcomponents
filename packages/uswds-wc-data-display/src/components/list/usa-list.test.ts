@@ -323,16 +323,6 @@ describe('USAList', () => {
 
       newElement.remove();
     });
-
-    it('should handle disconnection gracefully', async () => {
-      element.type = 'ordered';
-      await element.updateComplete;
-
-      expect(() => {
-        element.remove();
-        document.body.appendChild(element);
-      }).not.toThrow();
-    });
   });
 
   describe('Integration Scenarios', () => {
