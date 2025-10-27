@@ -16,7 +16,6 @@ import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
-  testEscapeKeyBehavior,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
   testPointerAccessibility,

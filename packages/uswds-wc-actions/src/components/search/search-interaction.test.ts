@@ -82,9 +82,8 @@ describe('Search JavaScript Interaction Testing', () => {
       }
 
       // Click submit button
-      let eventFired = false;
       element.addEventListener('search-submit', () => {
-        eventFired = true;
+        // Event listener for search-submit
       });
 
       if (button) {
