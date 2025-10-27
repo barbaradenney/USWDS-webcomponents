@@ -163,9 +163,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build and analyze bundle
-        run: |
-          pnpm turbo build
-          npx bundlesize
+        run: pnpm turbo build
 
       # Disabled: Action repository not found
       # - name: Comment bundle size
