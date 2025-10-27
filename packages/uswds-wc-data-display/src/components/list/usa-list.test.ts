@@ -3,10 +3,6 @@ import '@uswds-wc/test-utils/test-utils.js';
 import './usa-list.ts';
 import type { USAList } from './usa-list.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
-import {
-  testKeyboardNavigation,
-  getFocusableElements,
-} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USAList', () => {
   let element: USAList;
