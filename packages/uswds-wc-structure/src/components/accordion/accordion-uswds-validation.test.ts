@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-accordion.ts';
 import type { USAAccordion } from './usa-accordion.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from './accessibility-utils.js';
 
 /**
  * USAAccordion USWDS Integration Validation
