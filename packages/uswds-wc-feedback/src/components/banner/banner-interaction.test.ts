@@ -75,6 +75,7 @@ describe('Banner JavaScript Interaction Testing', () => {
       expect(toggleButton).toBeTruthy();
 
       // Get initial state
+      const initialExpanded = element.expanded;
       const initialAriaExpanded = toggleButton.getAttribute('aria-expanded');
 
       // Click the toggle button
