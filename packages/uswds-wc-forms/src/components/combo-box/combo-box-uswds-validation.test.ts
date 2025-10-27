@@ -32,7 +32,11 @@ describe('USAComboBox USWDS Integration Validation', () => {
   afterEach(async () => {
     // Wait for any pending component updates to complete
     // to avoid "missing inner select" errors during cleanup
-    await element.updateComplete;
+    if (element) {
+      await element.updateComplete;
+      // Give extra time for any async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
     testContainer.remove();
   });
 
