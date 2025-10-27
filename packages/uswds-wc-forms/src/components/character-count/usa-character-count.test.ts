@@ -5,11 +5,6 @@ import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
-import {
-  validateComponentJavaScript,
-  testCharacterCountDuplicatePrevention,
-  validateUniqueElements,
-} from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USACharacterCount', () => {
   let element: USACharacterCount;

@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-date-picker.ts';
 import type { USADatePicker } from './usa-date-picker.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from './accessibility-utils.js';
 
 /**
  * USADatePicker USWDS Integration Validation

@@ -103,9 +103,9 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
       const endCalendarButton = element.querySelector('.usa-date-range-picker__range-end .usa-date-picker__button') as HTMLButtonElement;
 
       if (endCalendarButton) {
-        let eventFired = false;
+        // Event listener for end-calendar-toggle
         element.addEventListener('end-calendar-toggle', () => {
-          eventFired = true;
+          // Event tracking for end calendar toggle
         });
 
         // Click the end calendar button
@@ -134,9 +134,9 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
         endInput.dispatchEvent(endChangeEvent);
         await waitForUpdate(element);
 
-        let eventFired = false;
+        // Event listener for date-range-change
         element.addEventListener('date-range-change', () => {
-          eventFired = true;
+          // Event tracking for date range change
         });
 
         // Trigger range validation

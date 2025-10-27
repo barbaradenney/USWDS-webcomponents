@@ -24,7 +24,6 @@ import {
   setupUSWDSIntegrationMonitoring,
 } from '@uswds-wc/test-utils/uswds-integration-utils.js';
 import {
-  testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
@@ -531,69 +530,8 @@ describe('USADatePicker', () => {
   });
 
   describe('USWDS Enhancement Integration (CRITICAL)', () => {
-    let mockUSWDS: any;
-
     beforeEach(async () => {
-      // Mock USWDS object that should be loaded
-      mockUSWDS = {
-        init: vi.fn(),
-        datePicker: {
-          init: vi.fn(),
-          enhanceDatePicker: vi.fn((element) => {
-            // Simulate what real USWDS does - transforms the DOM
-            const input = element.querySelector('input[type="text"]');
-            const button = element.querySelector('.usa-date-picker__button');
-
-            if (input && button && !element.querySelector('.usa-date-picker__calendar')) {
-              // Create mock enhanced calendar structure
-              const calendar = document.createElement('div');
-              calendar.className = 'usa-date-picker__calendar';
-              calendar.setAttribute('role', 'application');
-              calendar.setAttribute('aria-label', 'Calendar');
-              calendar.setAttribute('tabindex', '-1');
-              calendar.hidden = true;
-
-              // Add calendar header
-              const header = document.createElement('div');
-              header.className = 'usa-date-picker__calendar__header';
-
-              const prevYear = document.createElement('button');
-              prevYear.className = 'usa-date-picker__calendar__previous-year';
-              prevYear.textContent = '‹‹';
-
-              const monthBtn = document.createElement('button');
-              monthBtn.className = 'usa-date-picker__calendar__month-selection';
-              monthBtn.textContent = 'January';
-
-              const yearBtn = document.createElement('button');
-              yearBtn.className = 'usa-date-picker__calendar__year-selection';
-              yearBtn.textContent = '2024';
-
-              header.appendChild(prevYear);
-              header.appendChild(monthBtn);
-              header.appendChild(yearBtn);
-              calendar.appendChild(header);
-
-              // Add calendar table
-              const table = document.createElement('table');
-              table.className = 'usa-date-picker__calendar__table';
-              table.setAttribute('role', 'grid');
-              calendar.appendChild(table);
-
-              element.appendChild(calendar);
-              element.classList.add('usa-date-picker--enhanced');
-
-              // Set up button behavior
-              button.addEventListener('click', () => {
-                calendar.hidden = !calendar.hidden;
-                input.setAttribute('aria-expanded', calendar.hidden ? 'false' : 'true');
-              });
-            }
-          }),
-        },
-      };
-
-      // Clear any existing USWDS
+      // Clear any existing USWDS for testing progressive enhancement
       delete (window as any).USWDS;
     });
 

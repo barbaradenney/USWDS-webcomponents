@@ -119,7 +119,8 @@
       "Bash(gh pr create:*)",
       "Bash(pnpm audit:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(pnpm --filter @uswds-wc/forms run lint:*)"
     ],
     "deny": [],
     "ask": []

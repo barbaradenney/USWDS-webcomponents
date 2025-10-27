@@ -105,9 +105,9 @@ describe('Date Picker JavaScript Interaction Testing', () => {
         if (dateButtons.length > 0) {
           const firstAvailableDate = dateButtons[0] as HTMLButtonElement;
 
-          let eventFired = false;
+          // Event listener for date-change
           element.addEventListener('date-change', () => {
-            eventFired = true;
+            // Event tracking for date selection
           });
 
           firstAvailableDate.click();

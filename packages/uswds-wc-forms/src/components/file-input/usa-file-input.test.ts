@@ -6,9 +6,7 @@ import {
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
-  waitForUpdate, waitForBehaviorInit, testPropertyChanges,
-  validateComponentJavaScript,
-  runUSWDSTransformationTests,
+  waitForUpdate, testPropertyChanges,
 } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,

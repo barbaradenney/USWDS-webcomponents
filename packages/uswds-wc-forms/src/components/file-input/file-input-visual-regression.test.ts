@@ -374,7 +374,6 @@ describe('File Input Visual Regression Prevention', () => {
       // Component should be functional regardless of USWDS availability
       expect(input, 'Input should be functional').toBeTruthy();
 
-      const fileInput = input as HTMLInputElement;
       // In test environment after USWDS transformation, check if we can find any file input
       const allInputs = element.querySelectorAll('input');
       const fileInput2 = Array.from(allInputs).find(inp => inp.type === 'file' || inp.getAttribute('type') === 'file');

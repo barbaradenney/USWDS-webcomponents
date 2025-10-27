@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-combo-box.ts';
 import type { USAComboBox } from './usa-combo-box.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from './accessibility-utils.js';
 
 /**
  * USAComboBox USWDS Integration Validation

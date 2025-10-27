@@ -1,13 +1,10 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-time-picker.ts';
 import type { USATimePicker } from './usa-time-picker.js';
 import {
   waitForUpdate,
   testPropertyChanges,
-  assertAccessibilityAttributes,
   assertDOMStructure,
-  validateComponentJavaScript,
-  runUSWDSTransformationTests,
 } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
