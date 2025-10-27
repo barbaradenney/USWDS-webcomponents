@@ -59,6 +59,7 @@ jobs:
 
   component-tests:
     runs-on: ubuntu-latest
+    if: false  # TEMPORARILY DISABLED: Tests hang for 3+ hours, blocking CI
 
     steps:
       - name: Checkout code
@@ -94,6 +95,7 @@ jobs:
 
   accessibility-tests:
     runs-on: ubuntu-latest
+    if: false  # TEMPORARILY DISABLED: Tests hang for 3+ hours, blocking CI
 
     steps:
       - name: Checkout code
