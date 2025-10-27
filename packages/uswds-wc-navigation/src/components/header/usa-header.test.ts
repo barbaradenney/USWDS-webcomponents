@@ -18,10 +18,7 @@ import {
   getFocusableElements,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
-  testFocusManagement,
   testFocusIndicators,
-  testProgrammaticFocus,
-  testSkipLinks,
 } from '@uswds-wc/test-utils/focus-management-utils.js';
 
 describe('USAHeader', () => {

@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-header.ts';
 import type { USAHeader } from './usa-header.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from './accessibility-utils.js';
 
 /**
  * USAHeader USWDS Integration Validation

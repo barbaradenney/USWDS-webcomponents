@@ -56,9 +56,9 @@ describe('Footer USWDS Alignment Validation', () => {
 
       expect(primaryLinks.length, 'Should have primary links').toBeGreaterThan(0);
 
-      primaryLinks.forEach((link, index) => {
-        expect(link.tagName.toLowerCase(), `Primary link ${index} must be <a> element for medium footer`).toBe('a');
-        expect(link.getAttribute('href'), `Primary link ${index} must have href attribute`).toBeTruthy();
+      primaryLinks.forEach((link) => {
+        expect(link.tagName.toLowerCase(), `Primary link must be <a> element for medium footer`).toBe('a');
+        expect(link.getAttribute('href'), `Primary link must have href attribute`).toBeTruthy();
       });
     });
 
@@ -203,21 +203,6 @@ describe('Footer USWDS Alignment Validation', () => {
 
       // Get all elements with classes
       const elementsWithClasses = element.querySelectorAll('[class]');
-      const requiredUSWDSClasses = [
-        'usa-footer',
-        'usa-footer__primary-section',
-        'usa-footer__nav',
-        'usa-footer__primary-content',
-        'usa-footer__primary-link',
-        'usa-footer__secondary-section',
-        'usa-footer__logo-heading',
-        'usa-footer__contact-heading',
-        'usa-footer__address',
-        'grid-container',
-        'grid-row',
-        'grid-gap',
-        'usa-list--unstyled'
-      ];
 
       elementsWithClasses.forEach(el => {
         const classes = Array.from(el.classList);

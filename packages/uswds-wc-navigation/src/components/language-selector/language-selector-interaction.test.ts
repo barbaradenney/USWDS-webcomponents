@@ -61,7 +61,6 @@ describe('Language Selector JavaScript Interaction Testing', () => {
 
       // Check for dropdown variant structure (default for multi-language)
       const button = element.querySelector('.usa-language-selector__button');
-      const submenu = element.querySelector('.usa-language__submenu');
 
       // Should have either button (dropdown) or simple button (two-language)
       const hasButton = button || element.querySelector('button');
@@ -124,9 +123,9 @@ describe('Language Selector JavaScript Interaction Testing', () => {
         }
 
         if (targetLink) {
-          let eventFired = false;
+          // Event listener for language change
           element.addEventListener('language-change', () => {
-            eventFired = true;
+            // Event tracking would happen here
           });
 
           // Click the language link
@@ -212,7 +211,6 @@ describe('Language Selector JavaScript Interaction Testing', () => {
     it('should maintain proper USWDS language selector structure', async () => {
       const languageContainer = element.querySelector('.usa-language-container');
       const button = element.querySelector('.usa-language-selector__button');
-      const list = element.querySelector('.usa-language__submenu');
       const primaryList = element.querySelector('.usa-language__primary');
 
       expect(languageContainer).toBeTruthy();
@@ -268,7 +266,6 @@ describe('Language Selector JavaScript Interaction Testing', () => {
 
     it('should handle accessibility attributes', async () => {
       const button = element.querySelector('.usa-language-selector__button') as HTMLButtonElement;
-      const list = element.querySelector('.usa-language__submenu') as HTMLElement;
 
       if (button) {
         // Check ARIA attributes on button

@@ -85,9 +85,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
       if (navLinks.length > 0) {
         const firstLink = navLinks[0] as HTMLAnchorElement;
 
-        let eventFired = false;
+        // Event listener for navigation link clicks
         element.addEventListener('nav-link-click', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         // Click the navigation link
@@ -114,9 +114,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
           targetElement.textContent = 'Test Section';
           document.body.appendChild(targetElement);
 
-          let scrollEventFired = false;
+          // Event listener for scroll to section
           element.addEventListener('scroll-to-section', () => {
-            scrollEventFired = true;
+            // Event tracking would happen here
           });
 
           // Click the link
@@ -138,9 +138,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
 
       if (firstLink) {
         // Simulate section being in view
-        let highlightEventFired = false;
+        // Event listener for section highlight
         element.addEventListener('section-highlight', () => {
-          highlightEventFired = true;
+          // Event tracking would happen here
         });
 
         // Mock intersection observer behavior
@@ -173,9 +173,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
         const sublist = parentWithChildren.querySelector('.usa-in-page-nav__list') as HTMLElement;
 
         if (parentLink && sublist) {
-          let expansionEventFired = false;
+          // Event listener for subnav toggle
           element.addEventListener('subnav-toggle', () => {
-            expansionEventFired = true;
+            // Event tracking would happen here
           });
 
           // Click the parent link
