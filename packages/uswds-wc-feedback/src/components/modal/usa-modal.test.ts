@@ -14,21 +14,15 @@ import {
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import {
   testKeyboardNavigation,
-  testFocusTrap,
   verifyKeyboardOnlyUsable,
   getFocusableElements,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 import {
-  testFocusManagement,
-  testInitialFocus,
   testFocusRestoration,
   testFocusIndicators,
-  testProgrammaticFocus,
-  testFocusTrap as testFocusTrapAdvanced,
 } from '@uswds-wc/test-utils/focus-management-utils.js';
 import {
   testPointerAccessibility,
-  testTargetSize,
   testLabelInName,
 } from '@uswds-wc/test-utils/touch-pointer-utils.js';
 import {
@@ -36,13 +30,11 @@ import {
   testARIARoles,
   testAccessibleName,
   testARIARelationships,
-  testLiveRegionAnnouncements,
 } from '@uswds-wc/test-utils/aria-screen-reader-utils.js';
 import {
   testTextResize,
   testReflow,
   testTextSpacing,
-  testMobileAccessibility,
 } from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
 
 describe('USAModal', () => {
@@ -1329,8 +1321,6 @@ describe('USAModal', () => {
       await waitForUpdate(element);
 
       // Closed modal should not trap focus
-      const focusableElements = getFocusableElements(element);
-
       // Elements outside modal should be focusable
       expect(true).toBe(true);
     });
@@ -1704,15 +1694,12 @@ describe('USAModal', () => {
     });
 
     it('should handle focus with custom event handlers', async () => {
-      let primaryClicked = false;
-      let secondaryClicked = false;
-
       element.addEventListener('modal-primary-action', () => {
-        primaryClicked = true;
+        // Event listener for primary action
       });
 
       element.addEventListener('modal-secondary-action', () => {
-        secondaryClicked = true;
+        // Event listener for secondary action
       });
 
       element.heading = 'Event Modal';
@@ -2005,15 +1992,12 @@ describe('USAModal', () => {
     });
 
     it('should announce button actions to screen readers (WCAG 4.1.3)', async () => {
-      let primaryClicked = false;
-      let secondaryClicked = false;
-
       element.addEventListener('modal-primary-action', () => {
-        primaryClicked = true;
+        // Event listener for primary action
       });
 
       element.addEventListener('modal-secondary-action', () => {
-        secondaryClicked = true;
+        // Event listener for secondary action
       });
 
       element.open = true;

@@ -96,14 +96,13 @@ describe('Tooltip JavaScript Interaction Testing', () => {
   describe('🔍 Real Click Behavior Testing', () => {
     it('should handle hover events on trigger element', async () => {
       let showEventFired = false;
-      let hideEventFired = false;
 
       element.addEventListener('tooltip-show', () => {
         showEventFired = true;
       });
 
       element.addEventListener('tooltip-hide', () => {
-        hideEventFired = true;
+        // Event listener for tooltip-hide
       });
 
       // Test mouse enter (hover)
@@ -384,9 +383,6 @@ describe('Tooltip JavaScript Interaction Testing', () => {
 
       if (firstTitle !== null) {
         // Verify we have the right tooltip - check content
-        const expectedFirst = firstTitle.includes('helpful') ? 'This is a helpful tooltip' : 'Second tooltip';
-        const expectedSecond = secondTitle?.includes('Second') ? 'Second tooltip' : 'This is a helpful tooltip';
-
         if (firstTitle.includes('helpful')) {
           expect(firstTitle).toBe('This is a helpful tooltip');
         } else {

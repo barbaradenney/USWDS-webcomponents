@@ -7,7 +7,6 @@ import {
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
-import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USATooltip', () => {
   let element: USATooltip;
@@ -96,7 +95,6 @@ describe('USATooltip', () => {
 
       // Check that wrapper has the classes (or at least verify the classes prop is set)
       // Note: In test environment, USWDS transformation may vary
-      const hasClasses = wrapper?.classList.contains('custom-class') && wrapper?.classList.contains('margin-2');
       const classesPropertySet = element.classes === 'custom-class margin-2';
 
       // Pass if either the classes are applied OR the property is correctly set

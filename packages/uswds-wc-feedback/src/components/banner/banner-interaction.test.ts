@@ -71,12 +71,10 @@ describe('Banner JavaScript Interaction Testing', () => {
   describe('🔍 Real Click Behavior Testing', () => {
     it('should toggle banner when button is clicked', async () => {
       const toggleButton = element.querySelector('.usa-banner__button') as HTMLButtonElement;
-      const bannerContent = element.querySelector('.usa-banner__content') as HTMLElement;
 
       expect(toggleButton).toBeTruthy();
 
       // Get initial state
-      const initialExpanded = element.expanded;
       const initialAriaExpanded = toggleButton.getAttribute('aria-expanded');
 
       // Click the toggle button
@@ -103,8 +101,6 @@ describe('Banner JavaScript Interaction Testing', () => {
     it('should handle keyboard events (Enter/Space)', async () => {
       const toggleButton = element.querySelector('.usa-banner__button') as HTMLButtonElement;
       expect(toggleButton).toBeTruthy();
-
-      const initialExpanded = element.expanded;
 
       // Test Enter key
       const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
