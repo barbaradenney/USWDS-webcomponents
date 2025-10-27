@@ -12,7 +12,14 @@ describe('USAList', () => {
     document.body.appendChild(element);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    // Wait for any pending updates to complete before cleanup
+    // to avoid "ChildPart has no parentNode" errors
+    if (element) {
+      await element.updateComplete;
+      // Give extra time for any async operations to complete
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
     element.remove();
   });
 
