@@ -1098,7 +1098,6 @@ describe('USACard', () => {
         // </usa-card>
 
         const container = element.querySelector('.usa-card__container');
-        const header = element.querySelector('.usa-card__header');
         const media = element.querySelector('.usa-card__media');
         const body = element.querySelector('.usa-card__body');
 

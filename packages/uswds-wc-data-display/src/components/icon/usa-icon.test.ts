@@ -13,7 +13,6 @@ import {
   validateComponentJavaScript,
 } from '@uswds-wc/test-utils/test-utils.js';
 import {
-  testKeyboardNavigation,
   getFocusableElements,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
