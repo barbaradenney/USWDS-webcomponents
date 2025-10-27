@@ -81,38 +81,14 @@ const APPROVED_SKIPS = {
     documented: 'USWDS global event delegation interferes with jsdom tests in CI - covered by Cypress',
   },
 
-  // JSDOM Limitation - Moved to Cypress (2025-10-26) ✅ JUSTIFIED
-  // Tests that require real browser DOM manipulation or USWDS transformation
-  'packages/uswds-wc-data-display/src/components/list/usa-list.test.ts': {
-    count: 3,
-    reason: 'JSDOM_LIMITATION',
-    documented: 'Accessibility tests require real browser DOM manipulation with innerHTML which conflicts with Lit rendering - covered in Cypress',
-  },
-  'packages/uswds-wc-feedback/src/components/modal/usa-modal.test.ts': {
-    count: 2,
-    reason: 'JSDOM_LIMITATION',
-    documented: 'Tests require USWDS modal behavior (moving modal to document.body) which is unreliable in jsdom - covered in Cypress',
-  },
-  'packages/uswds-wc-feedback/src/components/tooltip/tooltip-dom-validation.test.ts': {
-    count: 4,
-    reason: 'JSDOM_LIMITATION',
-    documented: 'Position and ARIA attributes are added by USWDS JavaScript in browser environment - requires real browser',
-  },
-  'packages/uswds-wc-forms/src/components/select/usa-select.test.ts': {
-    count: 3,
-    reason: 'JSDOM_LIMITATION',
-    documented: 'Form integration tests fundamentally broken - element renders once but innerHTML gets cleared before test executes',
-  },
-  'packages/uswds-wc-navigation/src/components/in-page-navigation/in-page-navigation-interaction.test.ts': {
-    count: 2,
-    reason: 'JSDOM_LIMITATION',
-    documented: 'Tests expect USWDS-transformed DOM structure with specific classes that may not be present immediately in jsdom - works in Cypress',
-  },
-  'packages/uswds-wc-navigation/src/components/language-selector/usa-language-selector.regression.test.ts': {
-    count: 1,
-    reason: 'JSDOM_LIMITATION',
-    documented: 'USWDS JavaScript interaction to toggle aria-expanded does not work reliably in jsdom - covered in Cypress',
-  },
+  // NOTE: Previously approved JSDOM limitation tests have been removed (2025-10-26)
+  // All tests moved to Cypress component tests where they can run in real browser:
+  // - usa-list.test.ts (3 tests) → usa-list.component.cy.ts
+  // - usa-modal.test.ts (2 tests) → modal-variants.cy.ts
+  // - tooltip-dom-validation.test.ts (4 tests) → tooltip-positioning.cy.ts + usa-tooltip.component.cy.ts
+  // - usa-select.test.ts (3 tests) → usa-select.component.cy.ts
+  // - in-page-navigation-interaction.test.ts (2 tests) → usa-in-page-navigation.component.cy.ts
+  // - usa-language-selector.regression.test.ts (1 test) → usa-language-selector.component.cy.ts
 
   // ALL OTHER SKIPS REMOVED - Tests deleted or moved to Cypress:
   // ✅ DELETED: 8 behavior contract test files → Cypress E2E coverage
