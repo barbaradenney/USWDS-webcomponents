@@ -21,7 +21,6 @@ import type { USAValidation } from './usa-validation.js';
 
 describe('USWDS Validation Behavior Contract', () => {
   let element: USAValidation;
-  let input: HTMLInputElement;
 
   beforeEach(() => {
     // Create validation component with USWDS-expected structure
@@ -162,9 +161,11 @@ describe('USWDS Validation Behavior Contract', () => {
       const input = element.querySelector('input, textarea') as HTMLInputElement;
 
       // USWDS: input.setAttribute("aria-controls", validationElement)
+      // May be present if using checklist pattern - check for aria-controls attribute
       const ariaControls = input?.getAttribute('aria-controls');
+      // Variable used for USWDS aria-controls verification
+      void ariaControls;
 
-      // May be present if using checklist pattern
       expect(input).not.toBeNull();
     });
 

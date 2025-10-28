@@ -91,7 +91,7 @@ describe('Accordion JavaScript Interaction Testing', () => {
       expect(contents.length).toBe(2);
 
       // Verify ARIA attributes required by USWDS
-      buttons.forEach((button, index) => {
+      buttons.forEach((button) => {
         expect(button.getAttribute('aria-expanded')).toBeTruthy();
         expect(button.getAttribute('aria-controls')).toBeTruthy();
       });

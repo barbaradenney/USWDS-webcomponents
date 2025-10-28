@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # Allow manual triggering
   push:
     paths:
-      - 'src/components/**'
+      - 'packages/*/src/components/**'
       - 'docs/**'
       - '*.md'
 
@@ -208,12 +208,12 @@ jobs:
       - name: Generate component coverage report
         run: |
           node scripts/sync-component-docs.js
-          
+
           # Create coverage badge data
-          TOTAL_COMPONENTS=$(find src/components -mindepth 1 -maxdepth 1 -type d | wc -l)
+          TOTAL_COMPONENTS=$(find packages/*/src/components -mindepth 1 -maxdepth 1 -type d | wc -l)
           COMPLETE_COMPONENTS=$(grep -o "Complete (90%+): [0-9]*" docs/component-status-report.md | grep -o "[0-9]*" || echo "0")
           COVERAGE_PERCENT=$(echo "scale=0; $COMPLETE_COMPONENTS * 100 / $TOTAL_COMPONENTS" | bc -l || echo "0")
-          
+
           echo "Component Coverage: $COVERAGE_PERCENT% ($COMPLETE_COMPONENTS/$TOTAL_COMPONENTS)"
           echo "COVERAGE_PERCENT=$COVERAGE_PERCENT" >> $GITHUB_ENV
 

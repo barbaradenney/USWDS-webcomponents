@@ -1077,7 +1077,7 @@ describe('USABreadcrumb', () => {
       expect(links.length).toBe(4);
 
       // Verify tab order is sequential
-      links.forEach((link, index) => {
+      links.forEach((link) => {
         expect((link as HTMLElement).tabIndex).toBeGreaterThanOrEqual(0);
       });
     });

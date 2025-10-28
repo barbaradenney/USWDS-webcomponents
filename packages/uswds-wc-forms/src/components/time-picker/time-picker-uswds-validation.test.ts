@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-time-picker.ts';
 import type { USATimePicker } from './usa-time-picker.js';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from './accessibility-utils.js';
 
 /**
  * USATimePicker USWDS Integration Validation

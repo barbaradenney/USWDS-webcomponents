@@ -72,8 +72,8 @@ jobs:
       - name: Test Behavioral Tests
         run: |
           echo "Verifying behavioral tests are current..."
-          # Check if date-picker behavioral tests exist and are valid
-          if [ -f "src/components/date-picker/usa-date-picker.behavioral.cy.ts" ]; then
+          # Check if date-picker behavioral tests exist and are valid (monorepo path)
+          if [ -f "packages/uswds-wc-forms/src/components/date-picker/usa-date-picker.behavioral.cy.ts" ]; then
             echo "✅ Behavioral tests present"
             # Verify they compile
             npx cypress verify

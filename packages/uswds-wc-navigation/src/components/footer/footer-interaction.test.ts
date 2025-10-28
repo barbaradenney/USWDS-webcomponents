@@ -91,9 +91,9 @@ describe('Footer JavaScript Interaction Testing', () => {
       if (footerLinks.length > 0) {
         const firstLink = footerLinks[0] as HTMLAnchorElement;
 
-        let eventFired = false;
+        // Event listener for footer link clicks
         element.addEventListener('footer-link-click', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         // Click the footer link
@@ -140,9 +140,9 @@ describe('Footer JavaScript Interaction Testing', () => {
       if (secondaryLinks.length > 0) {
         const firstSecondaryLink = secondaryLinks[0] as HTMLAnchorElement;
 
-        let eventFired = false;
+        // Event listener for secondary link clicks
         element.addEventListener('footer-secondary-link-click', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         // Click the secondary link

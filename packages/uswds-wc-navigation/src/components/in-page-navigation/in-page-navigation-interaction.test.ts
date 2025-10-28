@@ -57,25 +57,8 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
       expect(true).toBe(true);
     });
 
-    // SKIPPED: Test expects USWDS-transformed DOM structure with specific classes
-    // that may not be present immediately after render in jsdom environment.
-    // Works correctly in Cypress/real browser. Not a test isolation issue.
-    it.skip('should have proper in-page navigation DOM structure for USWDS', async () => {
-      const inPageNav = element.querySelector('.usa-in-page-nav');
-      expect(inPageNav).toBeTruthy();
-
-      const navList = element.querySelector('.usa-in-page-nav__list');
-      expect(navList).toBeTruthy();
-
-      const navLinks = element.querySelectorAll('.usa-in-page-nav__link');
-      expect(navLinks.length).toBeGreaterThan(0);
-
-      // Check for subnav if present
-      const subnavItems = element.querySelectorAll('.usa-in-page-nav__item .usa-in-page-nav__list');
-      if (subnavItems.length > 0) {
-        expect(subnavItems.length).toBeGreaterThan(0);
-      }
-    });
+    // NOTE: USWDS DOM structure test moved to Cypress (usa-in-page-navigation.component.cy.ts)
+    // Tests require real browser DOM transformation which may not work immediately in jsdom
   });
 
   describe('🔍 Real Click Behavior Testing', () => {
@@ -85,9 +68,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
       if (navLinks.length > 0) {
         const firstLink = navLinks[0] as HTMLAnchorElement;
 
-        let eventFired = false;
+        // Event listener for navigation link clicks
         element.addEventListener('nav-link-click', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         // Click the navigation link
@@ -114,9 +97,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
           targetElement.textContent = 'Test Section';
           document.body.appendChild(targetElement);
 
-          let scrollEventFired = false;
+          // Event listener for scroll to section
           element.addEventListener('scroll-to-section', () => {
-            scrollEventFired = true;
+            // Event tracking would happen here
           });
 
           // Click the link
@@ -138,9 +121,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
 
       if (firstLink) {
         // Simulate section being in view
-        let highlightEventFired = false;
+        // Event listener for section highlight
         element.addEventListener('section-highlight', () => {
-          highlightEventFired = true;
+          // Event tracking would happen here
         });
 
         // Mock intersection observer behavior
@@ -173,9 +156,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
         const sublist = parentWithChildren.querySelector('.usa-in-page-nav__list') as HTMLElement;
 
         if (parentLink && sublist) {
-          let expansionEventFired = false;
+          // Event listener for subnav toggle
           element.addEventListener('subnav-toggle', () => {
-            expansionEventFired = true;
+            // Event tracking would happen here
           });
 
           // Click the parent link
@@ -220,23 +203,8 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
   });
 
   describe('📋 Component Integration', () => {
-    // SKIPPED: Test expects USWDS-transformed DOM structure with specific classes
-    // that may not be present immediately after render in jsdom environment.
-    // Works correctly in Cypress/real browser. Not a test isolation issue.
-    it.skip('should maintain proper USWDS in-page navigation structure', async () => {
-      const inPageNav = element.querySelector('.usa-in-page-nav');
-      const navList = element.querySelector('.usa-in-page-nav__list');
-      const navItems = element.querySelectorAll('.usa-in-page-nav__item');
-      const navLinks = element.querySelectorAll('.usa-in-page-nav__link');
-
-      expect(inPageNav).toBeTruthy();
-      expect(navList).toBeTruthy();
-      expect(navItems.length).toBeGreaterThan(0);
-      expect(navLinks.length).toBeGreaterThan(0);
-
-      // Document structure for debugging
-      expect(true).toBe(true);
-    });
+    // NOTE: USWDS structure maintenance test moved to Cypress (usa-in-page-navigation.component.cy.ts)
+    // Tests require real browser DOM transformation which may not work immediately in jsdom
 
     it('should handle dynamic property changes', async () => {
       // Test updating links

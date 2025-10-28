@@ -75,9 +75,9 @@ describe('File Input JavaScript Interaction Testing', () => {
       const fileInput = element.querySelector('input[type="file"]') as HTMLInputElement;
 
       if (fileInputArea && fileInput) {
-        let eventFired = false;
+        // Event listener for file-input-click
         element.addEventListener('file-input-click', () => {
-          eventFired = true;
+          // Event tracking for file input click
         });
 
         // Click the file input area
@@ -102,9 +102,9 @@ describe('File Input JavaScript Interaction Testing', () => {
           writable: false
         });
 
-        let eventFired = false;
+        // Event listener for file-change
         element.addEventListener('file-change', () => {
-          eventFired = true;
+          // Event tracking for file change
         });
 
         const changeEvent = new Event('change', { bubbles: true });
@@ -120,13 +120,10 @@ describe('File Input JavaScript Interaction Testing', () => {
       const dropTarget = element.querySelector('.usa-file-input__target') as HTMLElement;
 
       if (dropTarget) {
-        let dragEnterFired = false;
-        let dragOverFired = false;
-        let dropFired = false;
-
-        element.addEventListener('drag-enter', () => { dragEnterFired = true; });
-        element.addEventListener('drag-over', () => { dragOverFired = true; });
-        element.addEventListener('file-drop', () => { dropFired = true; });
+        // Event listeners for drag and drop events
+        element.addEventListener('drag-enter', () => { /* Event tracking for drag enter */ });
+        element.addEventListener('drag-over', () => { /* Event tracking for drag over */ });
+        element.addEventListener('file-drop', () => { /* Event tracking for file drop */ });
 
         // Test drag enter
         const dragEnterEvent = new DragEvent('dragenter', { bubbles: true });
@@ -255,9 +252,9 @@ describe('File Input JavaScript Interaction Testing', () => {
           writable: false
         });
 
-        let errorEventFired = false;
+        // Event listener for file-validation-error
         element.addEventListener('file-validation-error', () => {
-          errorEventFired = true;
+          // Event tracking for validation error
         });
 
         const changeEvent = new Event('change', { bubbles: true });

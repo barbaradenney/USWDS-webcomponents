@@ -183,18 +183,10 @@ export class USASearch extends USWDSBaseComponent {
     if (this.toggleable) {
       return html`
         <header>
-          <button
-            type="button"
-            class="usa-button js-search-button"
-            aria-label="Toggle search"
-          >
+          <button type="button" class="usa-button js-search-button" aria-label="Toggle search">
             ${this.buttonText}
           </button>
-          <form
-            role="search"
-            class="usa-search ${sizeClass} js-search-form"
-            data-enhanced="false"
-          >
+          <form role="search" class="usa-search ${sizeClass} js-search-form" data-enhanced="false">
             <label class="usa-sr-only" for="${this.inputId}">${labelText}</label>
             <div role="search">
               <input
@@ -214,7 +206,9 @@ export class USASearch extends USWDSBaseComponent {
                 type="submit"
                 ?disabled="${this.disabled}"
               >
-                ${this.size !== 'small' ? html`<span class="usa-search__submit-text">${this.buttonText}</span>` : ''}
+                ${this.size !== 'small'
+                  ? html`<span class="usa-search__submit-text">${this.buttonText}</span>`
+                  : ''}
                 <img
                   src="${this.submitIconSrc}"
                   class="usa-search__submit-icon"
@@ -229,11 +223,7 @@ export class USASearch extends USWDSBaseComponent {
 
     // Render regular always-visible search
     return html`
-      <form
-        role="search"
-        class="usa-search ${sizeClass}"
-        data-enhanced="false"
-      >
+      <form role="search" class="usa-search ${sizeClass}" data-enhanced="false">
         <label class="usa-sr-only" for="${this.inputId}">${labelText}</label>
         <div role="search">
           <input
@@ -253,7 +243,9 @@ export class USASearch extends USWDSBaseComponent {
             type="submit"
             ?disabled="${this.disabled}"
           >
-            ${this.size !== 'small' ? html`<span class="usa-search__submit-text">${this.buttonText}</span>` : ''}
+            ${this.size !== 'small'
+              ? html`<span class="usa-search__submit-text">${this.buttonText}</span>`
+              : ''}
             <img
               src="${this.submitIconSrc}"
               class="usa-search__submit-icon"

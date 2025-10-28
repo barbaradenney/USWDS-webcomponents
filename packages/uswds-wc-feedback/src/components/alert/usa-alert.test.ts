@@ -16,7 +16,6 @@ import {
   testARIAAccessibility,
   testARIARoles,
   testAccessibleName,
-  testLiveRegionAnnouncements,
 } from '@uswds-wc/test-utils/aria-screen-reader-utils.js';
 
 type AlertVariant = 'info' | 'warning' | 'error' | 'success' | 'emergency';
@@ -619,7 +618,7 @@ describe('USAAlert', () => {
       expect(focusableElements.length).toBe(4);
 
       // Verify tab order is sequential
-      focusableElements.forEach((el, index) => {
+      focusableElements.forEach((el) => {
         expect((el as HTMLElement).tabIndex).toBeGreaterThanOrEqual(0);
       });
     });
@@ -645,9 +644,8 @@ describe('USAAlert', () => {
       const button = document.createElement('button');
       button.type = 'button';
       button.textContent = 'Dismiss';
-      let clicked = false;
       button.addEventListener('click', () => {
-        clicked = true;
+        // Event listener for button click
       });
 
       const content = document.createElement('div');

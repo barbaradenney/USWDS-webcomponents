@@ -20,18 +20,18 @@ import 'path/to/uswds-webcomponents/src/components/button/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `variant` | `ButtonVariant` | `'primary'` | Property description |
-| `size` | `'small' | 'medium' | 'big'` | `'medium'` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `type` | `ButtonType` | `'button'` | Property description |
+| Property   | Type            | Default     | Description          |
+| ---------- | --------------- | ----------- | -------------------- | ---------- | -------------------- |
+| `variant`  | `ButtonVariant` | `'primary'` | Property description |
+| `size`     | `'small'        | 'medium'    | 'big'`               | `'medium'` | Property description |
+| `disabled` | `any`           | `false`     | Property description |
+| `type`     | `ButtonType`    | `'button'`  | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

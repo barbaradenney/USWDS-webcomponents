@@ -115,9 +115,9 @@ describe('Header JavaScript Interaction Testing', () => {
       if (navLinks.length > 0) {
         const firstLink = navLinks[0] as HTMLAnchorElement;
 
-        let eventFired = false;
+        // Event listener for navigation link clicks
         element.addEventListener('nav-link-click', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         // Click the navigation link
@@ -167,9 +167,9 @@ describe('Header JavaScript Interaction Testing', () => {
         // Set search value
         searchInput.value = 'test search';
 
-        let eventFired = false;
+        // Event listener for search submit
         element.addEventListener('search-submit', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         // Click search button

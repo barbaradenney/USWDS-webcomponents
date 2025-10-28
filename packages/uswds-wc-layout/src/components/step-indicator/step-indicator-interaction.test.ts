@@ -91,9 +91,8 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
         }
 
         if (clickableStep) {
-          let eventFired = false;
           element.addEventListener('step-click', () => {
-            eventFired = true;
+            // Event listener for step-click
           });
 
           // Click the step segment
@@ -112,9 +111,8 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
       if (stepButtons.length > 0) {
         const firstButton = stepButtons[0] as HTMLButtonElement;
 
-        let eventFired = false;
         element.addEventListener('step-navigate', () => {
-          eventFired = true;
+          // Event listener for step-navigate
         });
 
         // Click the step button
@@ -127,11 +125,8 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
     });
 
     it('should handle current step updates', async () => {
-      const initialCurrentStep = element.currentStep;
-
-      let eventFired = false;
       element.addEventListener('current-step-change', () => {
-        eventFired = true;
+        // Event listener for current-step-change
       });
 
       // Programmatically change current step

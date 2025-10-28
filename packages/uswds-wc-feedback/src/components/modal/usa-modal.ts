@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { USWDSBaseComponent } from '@uswds-wc/core';
@@ -41,14 +41,8 @@ export class USAModal extends USWDSBaseComponent {
     return this;
   }
 
-  static override styles = css`
-    :host {
-      display: block;
-    }
-    :host([hidden]) {
-      display: none;
-    }
-  `;
+  // NOTE: static styles do NOT apply in Light DOM
+  // The display style is applied directly in connectedCallback()
 
   @property({ type: String })
   heading = '';
@@ -139,6 +133,9 @@ export class USAModal extends USWDSBaseComponent {
 
   override connectedCallback() {
     super.connectedCallback();
+
+    // Apply display style (required for Light DOM - static styles don't apply)
+    this.style.display = 'block';
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
