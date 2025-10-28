@@ -152,10 +152,17 @@ describe('USAModal', () => {
 
     it('should display primary button with custom text', async () => {
       element.primaryButtonText = 'Custom Primary';
+      await waitForUpdate(element); // Wait for property change to apply
       element.open = true;
-      await waitForUpdate(element);
+      await waitForUpdate(element); // Wait for modal to open
+      await waitForBehaviorInit(element); // Wait for USWDS transformation
 
+      // USWDS moves modal to document.body via wrapper, so check both locations
       const primaryButton = element.querySelector(
+        '.usa-modal__footer .usa-button:not(.usa-button--unstyled)'
+      ) || document.querySelector(
+        '.usa-modal-wrapper .usa-modal__footer .usa-button:not(.usa-button--unstyled)'
+      ) || document.querySelector(
         '.usa-modal__footer .usa-button:not(.usa-button--unstyled)'
       );
       expect(primaryButton?.textContent?.trim()).toBe('Custom Primary');
@@ -163,10 +170,15 @@ describe('USAModal', () => {
 
     it('should display secondary button with custom text', async () => {
       element.secondaryButtonText = 'Custom Secondary';
+      await waitForUpdate(element); // Wait for property change to apply
       element.open = true;
-      await waitForUpdate(element);
+      await waitForUpdate(element); // Wait for modal to open
+      await waitForBehaviorInit(element); // Wait for USWDS transformation
 
-      const secondaryButton = element.querySelector('.usa-modal__footer .usa-button--unstyled');
+      // USWDS moves modal to document.body via wrapper, so check both locations
+      const secondaryButton = element.querySelector('.usa-modal__footer .usa-button--unstyled') ||
+                               document.querySelector('.usa-modal-wrapper .usa-modal__footer .usa-button--unstyled') ||
+                               document.querySelector('.usa-modal__footer .usa-button--unstyled');
       expect(secondaryButton?.textContent?.trim()).toBe('Custom Secondary');
     });
 
@@ -182,9 +194,14 @@ describe('USAModal', () => {
   describe('Modal Variants', () => {
     it('should apply large class when large is true', async () => {
       element.large = true;
-      await waitForUpdate(element);
+      element.open = true;
+      await waitForUpdate(element); // Wait for property changes and modal to open
+      await waitForBehaviorInit(element); // Wait for USWDS transformation
 
-      const modal = element.querySelector('.usa-modal');
+      // USWDS moves modal to document.body via wrapper, so check both locations
+      const modal = element.querySelector('.usa-modal') ||
+                    document.querySelector('.usa-modal-wrapper .usa-modal') ||
+                    document.querySelector('.usa-modal');
       expect(modal?.classList.contains('usa-modal--lg')).toBe(true);
     });
 
@@ -209,8 +226,12 @@ describe('USAModal', () => {
       element.forceAction = false;
       element.open = true; // Open the modal to render the content
       await waitForUpdate(element);
+      await waitForBehaviorInit(element);
 
-      const closeButton = element.querySelector('.usa-modal__close');
+      // USWDS moves modal to document.body via wrapper, so check both locations
+      const closeButton = element.querySelector('.usa-modal__close') ||
+                           document.querySelector('.usa-modal-wrapper .usa-modal__close') ||
+                           document.querySelector('.usa-modal__close');
       expect(closeButton).toBeTruthy();
     });
   });
