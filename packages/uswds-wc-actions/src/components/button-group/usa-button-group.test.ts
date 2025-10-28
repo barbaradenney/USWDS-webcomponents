@@ -857,52 +857,56 @@ describe('USAButtonGroup', () => {
   describe('Accessibility Compliance (CRITICAL)', () => {
     // CI Environment: Increased timeout for comprehensive accessibility testing (6 sequential axe-core runs)
     // Passes locally in <7s, but CI environment is slower. Timeout of 10s provides buffer for CI overhead.
-    it('should pass comprehensive accessibility tests (same as Storybook)', { timeout: 10000 }, async () => {
-      // Test with empty button group (slot mode)
-      element.buttons = [];
-      await waitForUpdate(element);
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+    it(
+      'should pass comprehensive accessibility tests (same as Storybook)',
+      { timeout: 10000 },
+      async () => {
+        // Test with empty button group (slot mode)
+        element.buttons = [];
+        await waitForUpdate(element);
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test with single button
-      element.buttons = [{ text: 'Single Button', variant: 'primary', type: 'button' }];
-      await waitForUpdate(element);
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+        // Test with single button
+        element.buttons = [{ text: 'Single Button', variant: 'primary', type: 'button' }];
+        await waitForUpdate(element);
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test with multiple buttons of different variants
-      element.buttons = [
-        { text: 'Primary Action', variant: 'primary', type: 'button' },
-        { text: 'Secondary Action', variant: 'secondary', type: 'button' },
-        { text: 'Outline Action', variant: 'outline', type: 'button' },
-        { text: 'Base Action', variant: 'base', type: 'button' },
-      ];
-      await waitForUpdate(element);
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+        // Test with multiple buttons of different variants
+        element.buttons = [
+          { text: 'Primary Action', variant: 'primary', type: 'button' },
+          { text: 'Secondary Action', variant: 'secondary', type: 'button' },
+          { text: 'Outline Action', variant: 'outline', type: 'button' },
+          { text: 'Base Action', variant: 'base', type: 'button' },
+        ];
+        await waitForUpdate(element);
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test with mixed button types and states
-      element.buttons = [
-        { text: 'Submit Form', variant: 'primary', type: 'submit' },
-        { text: 'Reset Form', variant: 'secondary', type: 'reset' },
-        { text: 'Cancel', variant: 'outline', type: 'button' },
-        { text: 'Disabled Action', variant: 'base', type: 'button', disabled: true },
-      ];
-      await waitForUpdate(element);
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+        // Test with mixed button types and states
+        element.buttons = [
+          { text: 'Submit Form', variant: 'primary', type: 'submit' },
+          { text: 'Reset Form', variant: 'secondary', type: 'reset' },
+          { text: 'Cancel', variant: 'outline', type: 'button' },
+          { text: 'Disabled Action', variant: 'base', type: 'button', disabled: true },
+        ];
+        await waitForUpdate(element);
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test segmented button group
-      element.type = 'segmented';
-      element.buttons = [
-        { text: 'View', variant: 'outline', type: 'button' },
-        { text: 'Edit', variant: 'outline', type: 'button' },
-        { text: 'Delete', variant: 'outline', type: 'button', disabled: true },
-      ];
-      await waitForUpdate(element);
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+        // Test segmented button group
+        element.type = 'segmented';
+        element.buttons = [
+          { text: 'View', variant: 'outline', type: 'button' },
+          { text: 'Edit', variant: 'outline', type: 'button' },
+          { text: 'Delete', variant: 'outline', type: 'button', disabled: true },
+        ];
+        await waitForUpdate(element);
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test with aria-label
-      element.ariaLabel = 'Document actions';
-      await waitForUpdate(element);
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
-    });
+        // Test with aria-label
+        element.ariaLabel = 'Document actions';
+        await waitForUpdate(element);
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+      }
+    );
 
     it('should maintain accessibility during dynamic button updates', async () => {
       // Start with basic configuration
@@ -936,8 +940,7 @@ describe('USAButtonGroup', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/button-group/usa-button-group.ts`;
+        const componentPath = `${process.cwd()}/src/components/button-group/usa-button-group.ts`;
         const validation = validateComponentJavaScript(componentPath, 'button-group');
 
         if (!validation.isValid) {

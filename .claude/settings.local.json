@@ -121,7 +121,9 @@
       "Bash(gh pr view:*)",
       "Bash(gh run view:*)",
       "Bash(pnpm --filter @uswds-wc/forms run lint:*)",
-      "Bash(pnpm --filter @uswds-wc/data-display test:*)"
+      "Bash(pnpm --filter @uswds-wc/data-display test:*)",
+      "Bash(pnpm --filter @uswds-wc/feedback test:*)",
+      "Bash(pnpm validate:ai-quality:*)"
     ],
     "deny": [],
     "ask": []

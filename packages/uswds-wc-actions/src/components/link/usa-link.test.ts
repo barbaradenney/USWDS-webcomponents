@@ -610,8 +610,7 @@ describe('USALink', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/link/usa-link.ts`;
+        const componentPath = `${process.cwd()}/src/components/link/usa-link.ts`;
         const validation = validateComponentJavaScript(componentPath, 'link');
 
         if (!validation.isValid) {
@@ -763,9 +762,7 @@ describe('USALink', () => {
       expect(anchor).toBeTruthy();
 
       const result = await testKeyboardNavigation(anchor!, {
-        shortcuts: [
-          { key: 'Enter', description: 'Activate link' },
-        ],
+        shortcuts: [{ key: 'Enter', description: 'Activate link' }],
         testEscapeKey: false,
         testArrowKeys: false,
       });
@@ -855,7 +852,9 @@ describe('USALink', () => {
       document.body.appendChild(wrapper);
       await element.updateComplete;
 
-      const allFocusable = [link1, element.querySelector('a')!, link2].filter((el) => el.tabIndex >= 0);
+      const allFocusable = [link1, element.querySelector('a')!, link2].filter(
+        (el) => el.tabIndex >= 0
+      );
       expect(allFocusable.length).toBe(3);
 
       wrapper.remove();

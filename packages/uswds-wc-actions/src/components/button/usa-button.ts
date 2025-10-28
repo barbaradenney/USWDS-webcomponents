@@ -140,14 +140,15 @@ export class USAButton extends LitElement {
   }
 
   private async initializeUSWDSButton() {
-    
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
+      console.log(
+        `⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`
+      );
       return;
     }
 
-console.log(`🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)`);
+    console.log(`🔘 Button: Initializing (presentational component - no USWDS JavaScript needed)`);
 
     try {
       // Check if global USWDS is available for potential future enhancements
@@ -205,10 +206,12 @@ console.log(`🔘 Button: Initializing (presentational component - no USWDS Java
     this.buttonElement?.click();
 
     // Then dispatch a custom click event on the host element
-    this.dispatchEvent(new MouseEvent('click', {
-      bubbles: true,
-      cancelable: true
-    }));
+    this.dispatchEvent(
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
   }
 
   override render() {

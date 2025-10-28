@@ -23,7 +23,7 @@ describe('Search JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -34,10 +34,11 @@ describe('Search JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('initialized') ||
-        call[0]?.includes('pre-loaded')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('initialized') ||
+          call[0]?.includes('pre-loaded')
       );
 
       if (!hasUSWDSLoadMessage) {

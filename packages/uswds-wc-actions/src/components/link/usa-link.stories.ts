@@ -339,4 +339,3 @@ export const EventHandling: Story = {
     </div>
   `,
 };
-

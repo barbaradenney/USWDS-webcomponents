@@ -82,8 +82,6 @@ export class USAButtonGroup extends LitElement {
     }
   }
 
-
-
   private handleButtonClick(button: ButtonGroupItem, index: number) {
     // For segmented groups, update the active index
     if (this.type === 'segmented') {
