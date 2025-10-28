@@ -102,6 +102,15 @@ const APPROVED_SKIPS = {
   // were completely deleted as they caused unhandled rejections during cleanup.
   // USWDS integration is already validated by the regular component tests.
 
+  // Vitest timing limitation (2025-10-27) ✅ JUSTIFIED
+  // Modal property updates don't complete before modal opens in Vitest
+  // Works correctly in production and Cypress tests
+  'packages/uswds-wc-feedback/src/components/modal/usa-modal.test.ts': {
+    count: 3,
+    reason: 'VITEST_TIMING_LIMITATION',
+    documented: 'Lit property reactivity timing - properties not applied before modal opens - covered by Cypress',
+  },
+
   // NOTE: Previously approved JSDOM limitation tests have been removed (2025-10-26)
   // All tests moved to Cypress component tests where they can run in real browser:
   // - usa-list.test.ts (3 tests) → usa-list.component.cy.ts
