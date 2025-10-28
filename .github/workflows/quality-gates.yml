@@ -240,7 +240,7 @@ jobs:
       - name: Check for missing documentation
         run: |
           echo "Checking for components without README files..."
-          for dir in src/components/*/; do
+          for dir in packages/*/src/components/*/; do
             if [ ! -f "$dir/README.md" ]; then
               echo "⚠️ Missing README.md in $dir"
               exit 1
@@ -255,7 +255,7 @@ jobs:
       - name: Check Storybook stories exist
         run: |
           echo "Checking for components without Storybook stories..."
-          for dir in src/components/*/; do
+          for dir in packages/*/src/components/*/; do
             component=$(basename "$dir")
             if [ ! -f "$dir/usa-$component.stories.ts" ]; then
               echo "⚠️ Missing Storybook story for $component"

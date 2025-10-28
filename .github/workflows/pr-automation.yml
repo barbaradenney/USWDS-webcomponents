@@ -30,10 +30,10 @@ jobs:
           CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
 
           # Detect critical components (require Phase 2 validation)
-          CRITICAL_COMPONENTS=$(echo "$CHANGED_FILES" | grep -E "src/components/(combo-box|date-picker|time-picker|modal|tooltip|accordion|table)/" | cut -d'/' -f3 | sort -u | tr '\n' ',' | sed 's/,$//')
+          CRITICAL_COMPONENTS=$(echo "$CHANGED_FILES" | grep -E "packages/.*/src/components/(combo-box|date-picker|time-picker|modal|tooltip|accordion|table)/" | sed 's|packages/.*/src/components/||' | cut -d'/' -f1 | sort -u | tr '\n' ',' | sed 's/,$//')
 
           # Detect all component changes
-          ALL_COMPONENTS=$(echo "$CHANGED_FILES" | grep -E "src/components/[^/]+/" | cut -d'/' -f3 | sort -u | tr '\n' ',' | sed 's/,$//')
+          ALL_COMPONENTS=$(echo "$CHANGED_FILES" | grep -E "packages/.*/src/components/[^/]+/" | sed 's|packages/.*/src/components/||' | cut -d'/' -f1 | sort -u | tr '\n' ',' | sed 's/,$//')
 
           # Determine validation needs
           NEEDS_VALIDATION="false"
