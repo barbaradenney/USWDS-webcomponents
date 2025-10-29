@@ -340,7 +340,7 @@
     "test:mobile": "playwright test --project mobile-chrome --project mobile-safari",
     "test:smoke": "playwright test --project chromium --grep 'smoke|critical'",
     "test:accessibility": "playwright test --project accessibility-chrome --grep 'accessibility|a11y|aria'",
-    "test:bundle-size": "node scripts/bundle-size-test.js",
+    "test:bundle-size": "node scripts/test/bundle-size-test.cjs",
     "// INTEGRATION TESTING": "",
     "// COMPREHENSIVE TESTING (Phase 4)": "",
     "test:comprehensive": "node scripts/test-orchestrator.js",
