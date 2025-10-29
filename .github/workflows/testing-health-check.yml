@@ -1,15 +1,11 @@
-name: 🏥 Testing Infrastructure Health Check
+name: 🏥 Testing Infrastructure Health Check (Disabled - Needs Monorepo Update)
 
 on:
-  schedule:
-    # Run weekly on Mondays at 9 AM
-    - cron: '0 9 * * 1'
-  workflow_dispatch: # Allow manual triggers
-  push:
-    paths:
-      - 'scripts/**/*.js'
-      - '.github/workflows/*.yml'
-      - 'package.json'
+  # Disabled - Script needs to be updated for monorepo structure
+  # schedule:
+  #   # Run weekly on Mondays at 9 AM
+  #   - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual triggers for testing
 
 jobs:
   health-check:
