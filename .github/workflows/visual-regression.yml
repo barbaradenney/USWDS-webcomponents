@@ -64,31 +64,28 @@ jobs:
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
-      # TODO: Chromatic integration disabled - requires CHROMATIC_PROJECT_TOKEN secret
-      # Uncomment and configure secret to enable visual regression testing with Chromatic
-      # - name: Run Chromatic tests
-      #   uses: chromaui/action@v1
-      #   with:
-      #     projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-      #     buildScriptName: build-storybook
-      #     storybookBuildDir: storybook-static
-      #     exitZeroOnChanges: true
-      #     exitOnceUploaded: ${{ github.event_name == 'push' }}
-      #     onlyChanged: true
-      #     skip: 'dependabot/**'
-      #     ignoreLastBuildOnBranch: main
-      #     uploadMetadata: true
+      - name: Run Chromatic visual regression tests
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: build-storybook
+          storybookBuildDir: storybook-static
+          exitZeroOnChanges: true
+          exitOnceUploaded: ${{ github.event_name == 'push' }}
+          onlyChanged: true
+          skip: 'dependabot/**'
+          ignoreLastBuildOnBranch: main
+          uploadMetadata: true
 
-      # TODO: Archive and comment steps disabled until Chromatic is configured
-      # - name: Archive Chromatic results
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: chromatic-results
-      #     path: |
-      #       chromatic-junit.xml
-      #       build-storybook.log
-      #     retention-days: 30
+      - name: Archive Chromatic results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chromatic-results
+          path: |
+            chromatic-junit.xml
+            build-storybook.log
+          retention-days: 30
 
   # TODO: Temporarily disabled - requires configuration and fixes for monorepo structure
   # Uncomment and fix when ready to implement:
