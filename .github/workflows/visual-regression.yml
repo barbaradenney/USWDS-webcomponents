@@ -52,11 +52,12 @@ jobs:
           pnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
-      - name: Initialize USWDS
-        run: pnpm run uswds:init
+      # TODO: Temporarily disabled due to gulp/undici compatibility issue
+      # - name: Initialize USWDS
+      #   run: pnpm run uswds:init
 
-      - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+      # - name: Compile USWDS styles
+      #   run: pnpm run uswds:compile
 
       - name: Build Storybook
         run: pnpm run build-storybook
@@ -185,11 +186,12 @@ jobs:
           pnpm install --frozen-lockfile
           npx playwright install --with-deps ${{ matrix.browser }}
 
-      - name: Initialize USWDS
-        run: pnpm run uswds:init
+      # TODO: Temporarily disabled due to gulp/undici compatibility issue
+      # - name: Initialize USWDS
+      #   run: pnpm run uswds:init
 
-      - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+      # - name: Compile USWDS styles
+      #   run: pnpm run uswds:compile
 
       - name: Build Storybook
         run: pnpm run build-storybook
@@ -239,11 +241,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Initialize USWDS
-        run: pnpm run uswds:init
+      # TODO: Temporarily disabled due to gulp/undici compatibility issue
+      # - name: Initialize USWDS
+      #   run: pnpm run uswds:init
 
-      - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+      # - name: Compile USWDS styles
+      #   run: pnpm run uswds:compile
 
       - name: Build Storybook
         run: pnpm run build-storybook
@@ -292,11 +295,12 @@ jobs:
           pnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
-      - name: Initialize USWDS
-        run: pnpm run uswds:init
+      # TODO: Temporarily disabled due to gulp/undici compatibility issue
+      # - name: Initialize USWDS
+      #   run: pnpm run uswds:init
 
-      - name: Compile USWDS styles
-        run: pnpm run uswds:compile
+      # - name: Compile USWDS styles
+      #   run: pnpm run uswds:compile
 
       - name: Build Storybook
         run: pnpm run build-storybook
