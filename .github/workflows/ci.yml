@@ -38,7 +38,6 @@ jobs:
 
       - name: Run ESLint
         run: pnpm run lint
-        continue-on-error: true # Don't fail on warnings for now
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -169,13 +168,13 @@ jobs:
           pnpm run validate:bundle-size
           echo ""
           echo "📊 Bundle Analysis:"
-          ls -lah dist/ | head -20
+          ls -lah packages/*/dist/ | head -20
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist/
+          path: packages/*/dist/
           retention-days: 7
 
       - name: Upload Storybook build
@@ -365,11 +364,15 @@ jobs:
         run: |
           echo "📊 Bundle Analysis Report"
           echo "========================"
-          echo "Main bundle stats:"
-          stat -c "Size: %s bytes" dist/index.js 2>/dev/null || stat -f "Size: %z bytes" dist/index.js 2>/dev/null || echo "Bundle not found"
+          echo "Package bundle stats:"
+          for pkg in packages/*/dist/index.js; do
+            if [ -f "$pkg" ]; then
+              stat -c "Size: %s bytes" "$pkg" 2>/dev/null || stat -f "Size: %z bytes" "$pkg" 2>/dev/null
+            fi
+          done
           echo ""
           echo "All distribution files:"
-          du -sh dist/* | sort -h | tail -20
+          du -sh packages/*/dist/* 2>/dev/null | sort -h | tail -20 || echo "No dist files found"
 
       - name: Check performance metrics
         run: |
