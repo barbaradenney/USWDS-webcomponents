@@ -243,9 +243,7 @@ const enhanceComboBox = (_comboBoxEl: HTMLElement) => {
    * `for` attribute. Otherwise, set the ID to match the <ul> aria-labelledby
    */
   if (!selectLabel || !selectLabel.matches(`label[for="${selectId}"]`)) {
-    throw new Error(
-      `${COMBO_BOX} for ${selectId} is either missing a label or a "for" attribute`
-    );
+    throw new Error(`${COMBO_BOX} for ${selectId} is either missing a label or a "for" attribute`);
   } else {
     selectLabel.setAttribute('id', listIdLabel);
   }
@@ -459,8 +457,7 @@ const displayList = (el: HTMLElement) => {
   const optionMatchesQuery = (option: HTMLOptionElement) => regex.test(option.text);
 
   const arrayNeedsUpdate = (option: HTMLOptionElement) =>
-    option.value &&
-    (disableFiltering || isPristine || !inputValue || optionMatchesQuery(option));
+    option.value && (disableFiltering || isPristine || !inputValue || optionMatchesQuery(option));
 
   const isFirstMatch = (option: HTMLOptionElement) =>
     disableFiltering && !firstFoundId && optionMatchesQuery(option);

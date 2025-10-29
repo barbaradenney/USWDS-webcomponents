@@ -25,22 +25,22 @@ describe('Footer JavaScript Interaction Testing', () => {
         title: 'About',
         links: [
           { text: 'Our Mission', href: '/about/mission' },
-          { text: 'Our Team', href: '/about/team' }
-        ]
+          { text: 'Our Team', href: '/about/team' },
+        ],
       },
       {
         title: 'Contact',
         links: [
           { text: 'Contact Us', href: '/contact' },
-          { text: 'Privacy', href: '/privacy' }
-        ]
-      }
+          { text: 'Privacy', href: '/privacy' },
+        ],
+      },
     ];
     document.body.appendChild(element);
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -51,10 +51,11 @@ describe('Footer JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('footer') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('footer') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -77,7 +78,9 @@ describe('Footer JavaScript Interaction Testing', () => {
       expect(footerLinks.length).toBeGreaterThan(0);
 
       // Check for collapsible sections if present
-      const collapsibleButtons = element.querySelectorAll('.usa-footer__primary-link[aria-expanded]');
+      const collapsibleButtons = element.querySelectorAll(
+        '.usa-footer__primary-link[aria-expanded]'
+      );
       if (collapsibleButtons.length > 0) {
         expect(collapsibleButtons.length).toBeGreaterThan(0);
       }
@@ -107,7 +110,9 @@ describe('Footer JavaScript Interaction Testing', () => {
     });
 
     it('should handle collapsible section toggles', async () => {
-      const collapsibleButtons = element.querySelectorAll('.usa-footer__primary-link[aria-expanded]');
+      const collapsibleButtons = element.querySelectorAll(
+        '.usa-footer__primary-link[aria-expanded]'
+      );
 
       if (collapsibleButtons.length > 0) {
         const firstButton = collapsibleButtons[0] as HTMLButtonElement;
@@ -212,7 +217,7 @@ describe('Footer JavaScript Interaction Testing', () => {
       // Test updating sections
       element.sections = [
         { title: 'New Section 1', links: [{ text: 'New Link 1', href: '/new1' }] },
-        { title: 'New Section 2', links: [{ text: 'New Link 2', href: '/new2' }] }
+        { title: 'New Section 2', links: [{ text: 'New Link 2', href: '/new2' }] },
       ];
       await waitForUpdate(element);
 
@@ -240,7 +245,7 @@ describe('Footer JavaScript Interaction Testing', () => {
       // Test adding contact information
       element.contactLinks = [
         { text: 'Phone: (555) 123-4567', href: 'tel:+15551234567' },
-        { text: 'Email: contact@test.gov', href: 'mailto:contact@test.gov' }
+        { text: 'Email: contact@test.gov', href: 'mailto:contact@test.gov' },
       ];
       await waitForUpdate(element);
 

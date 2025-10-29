@@ -23,7 +23,7 @@ describe('Banner JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -34,10 +34,11 @@ describe('Banner JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('initialized') ||
-        call[0]?.includes('pre-loaded')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('initialized') ||
+          call[0]?.includes('pre-loaded')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -86,13 +87,16 @@ describe('Banner JavaScript Interaction Testing', () => {
       const afterClickExpanded = element.expanded;
       const afterClickAriaExpanded = toggleButton.getAttribute('aria-expanded');
 
-      const stateChanged = (afterClickExpanded !== initialExpanded) ||
-                          (afterClickAriaExpanded !== initialAriaExpanded);
+      const stateChanged =
+        afterClickExpanded !== initialExpanded || afterClickAriaExpanded !== initialAriaExpanded;
 
       if (!stateChanged) {
         console.warn('⚠️ Banner toggle may not be working - no state change detected');
         console.warn('Initial:', { expanded: initialExpanded, aria: initialAriaExpanded });
-        console.warn('After click:', { expanded: afterClickExpanded, aria: afterClickAriaExpanded });
+        console.warn('After click:', {
+          expanded: afterClickExpanded,
+          aria: afterClickAriaExpanded,
+        });
       }
 
       // This test documents behavior but doesn't fail since USWDS might handle it differently

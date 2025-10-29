@@ -340,8 +340,7 @@ describe('USAAlert', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/alert/usa-alert.ts`;
+        const componentPath = `${process.cwd()}/src/components/alert/usa-alert.ts`;
         const validation = validateComponentJavaScript(componentPath, 'alert');
 
         if (!validation.isValid) {
@@ -519,7 +518,8 @@ describe('USAAlert', () => {
       element.heading = 'System Update';
 
       const content = document.createElement('div');
-      content.innerHTML = 'Please review the <a href="/updates">latest updates</a> and <a href="/settings">configure your settings</a>.';
+      content.innerHTML =
+        'Please review the <a href="/updates">latest updates</a> and <a href="/settings">configure your settings</a>.';
       element.appendChild(content);
 
       await element.updateComplete;
@@ -540,7 +540,8 @@ describe('USAAlert', () => {
       element.heading = 'Action Required';
 
       const content = document.createElement('div');
-      content.innerHTML = 'Your session will expire soon. <button type="button">Extend Session</button> or <a href="/logout">log out now</a>.';
+      content.innerHTML =
+        'Your session will expire soon. <button type="button">Extend Session</button> or <a href="/logout">log out now</a>.';
       element.appendChild(content);
 
       await element.updateComplete;
@@ -555,7 +556,8 @@ describe('USAAlert', () => {
       element.heading = 'Error';
 
       const content = document.createElement('div');
-      content.innerHTML = 'An error occurred. <a href="/help">Get help</a> or <a href="/retry">try again</a>.';
+      content.innerHTML =
+        'An error occurred. <a href="/help">Get help</a> or <a href="/retry">try again</a>.';
       element.appendChild(content);
 
       await element.updateComplete;
@@ -574,7 +576,8 @@ describe('USAAlert', () => {
       element.heading = 'Success';
 
       const content = document.createElement('div');
-      content.innerHTML = 'Operation completed. View <a href="/results">results</a>, <a href="/history">history</a>, or <a href="/reports">reports</a>.';
+      content.innerHTML =
+        'Operation completed. View <a href="/results">results</a>, <a href="/history">history</a>, or <a href="/reports">reports</a>.';
       element.appendChild(content);
 
       await element.updateComplete;

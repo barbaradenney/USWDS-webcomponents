@@ -53,12 +53,12 @@ export const Default: Story = {
     width: 'default',
   },
   render: (args) => html`
-    <usa-prose 
-      variant="${args.variant}" 
-      width="${args.width}"
-    >
+    <usa-prose variant="${args.variant}" width="${args.width}">
       <h2>Content Formatting Overview</h2>
-      <p>The prose component provides consistent formatting for various types of content including articles, documentation, and structured text.</p>
+      <p>
+        The prose component provides consistent formatting for various types of content including
+        articles, documentation, and structured text.
+      </p>
       <h3>Supported Content Types</h3>
       <ul>
         <li>Articles and blog posts</li>
@@ -68,7 +68,9 @@ export const Default: Story = {
         <li>User guides</li>
       </ul>
       <blockquote>
-        <p>"Well-formatted content improves readability and user experience across all platforms."</p>
+        <p>
+          "Well-formatted content improves readability and user experience across all platforms."
+        </p>
       </blockquote>
     </usa-prose>
   `,
@@ -84,7 +86,10 @@ export const AllVariants: Story = {
         <h3 class="margin-bottom-2">Default Spacing</h3>
         <usa-prose variant="default">
           <h4>Application Process</h4>
-          <p>The application process has been streamlined to provide better service to users. Our digital-first approach ensures faster processing times and improved accessibility.</p>
+          <p>
+            The application process has been streamlined to provide better service to users. Our
+            digital-first approach ensures faster processing times and improved accessibility.
+          </p>
           <ul>
             <li>Online application submission</li>
             <li>Document upload portal</li>
@@ -92,12 +97,15 @@ export const AllVariants: Story = {
           </ul>
         </usa-prose>
       </div>
-      
+
       <div>
         <h3 class="margin-bottom-2">Condensed Spacing</h3>
         <usa-prose variant="condensed">
           <h4>Application Process</h4>
-          <p>The application process has been streamlined to provide better service to users. Our digital-first approach ensures faster processing times and improved accessibility.</p>
+          <p>
+            The application process has been streamlined to provide better service to users. Our
+            digital-first approach ensures faster processing times and improved accessibility.
+          </p>
           <ul>
             <li>Online application submission</li>
             <li>Document upload portal</li>
@@ -105,12 +113,15 @@ export const AllVariants: Story = {
           </ul>
         </usa-prose>
       </div>
-      
+
       <div>
         <h3 class="margin-bottom-2">Expanded Spacing</h3>
         <usa-prose variant="expanded">
           <h4>Application Process</h4>
-          <p>The application process has been streamlined to provide better service to users. Our digital-first approach ensures faster processing times and improved accessibility.</p>
+          <p>
+            The application process has been streamlined to provide better service to users. Our
+            digital-first approach ensures faster processing times and improved accessibility.
+          </p>
           <ul>
             <li>Online application submission</li>
             <li>Document upload portal</li>
@@ -131,28 +142,38 @@ export const AllWidths: Story = {
       <div>
         <h3 class="margin-bottom-2">Narrow Width (45ex)</h3>
         <usa-prose width="narrow">
-          <p>This content is displayed in a narrow column, ideal for focused reading and mobile-friendly layouts. The reduced line length improves readability and comprehension for detailed information.</p>
+          <p>
+            This content is displayed in a narrow column, ideal for focused reading and
+            mobile-friendly layouts. The reduced line length improves readability and comprehension
+            for detailed information.
+          </p>
         </usa-prose>
       </div>
-      
+
       <div>
         <h3 class="margin-bottom-2">Default Width (68ex)</h3>
         <usa-prose width="default">
-          <p>This content uses the standard reading width, optimized for most content and documentation. It provides a balanced approach between readability and efficient use of screen space.</p>
+          <p>
+            This content uses the standard reading width, optimized for most content and
+            documentation. It provides a balanced approach between readability and efficient use of
+            screen space.
+          </p>
         </usa-prose>
       </div>
-      
+
       <div>
         <h3 class="margin-bottom-2">Wide Width (85ex)</h3>
         <usa-prose width="wide">
-          <p>This content spans a wider column, suitable for detailed technical documentation, data tables, or content that benefits from additional horizontal space. Use this width when displaying complex information or when screen real estate allows.</p>
+          <p>
+            This content spans a wider column, suitable for detailed technical documentation, data
+            tables, or content that benefits from additional horizontal space. Use this width when
+            displaying complex information or when screen real estate allows.
+          </p>
         </usa-prose>
       </div>
     </div>
   `,
 };
-
-
 
 export const WithHTMLContent: Story = {
   args: {
@@ -174,7 +195,8 @@ export const WithHTMLContent: Story = {
 
 export const MixedContent: Story = {
   args: {
-    content: '<p><strong>Property content:</strong> This content was set via the content property.</p>',
+    content:
+      '<p><strong>Property content:</strong> This content was set via the content property.</p>',
   },
   render: (args) => html`
     <usa-prose content="${args.content}">
@@ -183,11 +205,6 @@ export const MixedContent: Story = {
     </usa-prose>
   `,
 };
-
-
-
-
-
 
 export const CustomContent: Story = {
   parameters: {

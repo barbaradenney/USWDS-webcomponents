@@ -17,9 +17,7 @@ import {
   verifyKeyboardOnlyUsable,
   getFocusableElements,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
-import {
-  testFocusIndicators,
-} from '@uswds-wc/test-utils/focus-management-utils.js';
+import { testFocusIndicators } from '@uswds-wc/test-utils/focus-management-utils.js';
 
 describe('USAHeader', () => {
   let element: USAHeader;
@@ -444,7 +442,7 @@ describe('USAHeader', () => {
     it('should handle slotted content alongside navigation items', async () => {
       element.navItems = [
         { label: 'Home', href: '/' },
-        { label: 'About', href: '/about' }
+        { label: 'About', href: '/about' },
       ];
 
       const secondaryContent = document.createElement('div');
@@ -594,8 +592,8 @@ describe('USAHeader', () => {
         expect(element.querySelectorAll('.usa-nav__submenu-item').length).toBe(12);
 
         // Verify search is configured for department
-      const usaSearch2 = await waitForSearchComponent(element);
-      const usaSearch = usaSearch2;
+        const usaSearch2 = await waitForSearchComponent(element);
+        const usaSearch = usaSearch2;
         const searchInput = usaSearch?.querySelector('.usa-search__input') as HTMLInputElement;
         expect(searchInput?.placeholder).toBe('Search Department of Examples');
       });
@@ -1274,8 +1272,7 @@ describe('USAHeader', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/header/usa-header.ts`;
+        const componentPath = `${process.cwd()}/src/components/header/usa-header.ts`;
         const validation = validateComponentJavaScript(componentPath, 'header');
 
         if (!validation.isValid) {
@@ -1351,9 +1348,7 @@ describe('USAHeader', () => {
       expect(header).toBeTruthy();
 
       const result = await testKeyboardNavigation(header!, {
-        shortcuts: [
-          { key: 'Enter', description: 'Activate link' },
-        ],
+        shortcuts: [{ key: 'Enter', description: 'Activate link' }],
         testEscapeKey: false,
         testArrowKeys: false,
       });
@@ -1601,8 +1596,10 @@ describe('USAHeader', () => {
 
         // CRITICAL: usa-search should be sibling of usa-nav__secondary-links
         const children = Array.from(secondary?.children || []);
-        const linksIndex = children.findIndex(el => el.classList.contains('usa-nav__secondary-links'));
-        const searchIndex = children.findIndex(el => el.tagName.toLowerCase() === 'usa-search');
+        const linksIndex = children.findIndex((el) =>
+          el.classList.contains('usa-nav__secondary-links')
+        );
+        const searchIndex = children.findIndex((el) => el.tagName.toLowerCase() === 'usa-search');
 
         expect(searchIndex).toBe(linksIndex + 1); // search comes after links
       });
@@ -1664,7 +1661,7 @@ describe('USAHeader', () => {
         // usa-search component has the form inside it, which is correct
         // We need to check for forms that are NOT inside the usa-search component
         const allSearchForms = element.querySelectorAll('form.usa-search');
-        const inlineSearchForms = Array.from(allSearchForms).filter(form => {
+        const inlineSearchForms = Array.from(allSearchForms).filter((form) => {
           // Check if form is inside usa-search component
           return !form.closest('usa-search');
         });

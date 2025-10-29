@@ -37,14 +37,12 @@ describe('USA Pagination Component Tests', () => {
       const pagination = win.document.getElementById('test-pagination') as any;
       const changeSpy = cy.stub();
       pagination.addEventListener('usa-pagination:change', changeSpy);
-      
+
       // Click page 3
       cy.get('.usa-pagination__button').contains('3').click();
-      
+
       cy.then(() => {
-        expect(changeSpy).to.have.been.calledWith(
-          Cypress.sinon.match.hasNested('detail.page', 3)
-        );
+        expect(changeSpy).to.have.been.calledWith(Cypress.sinon.match.hasNested('detail.page', 3));
       });
     });
   });
@@ -62,14 +60,12 @@ describe('USA Pagination Component Tests', () => {
       const pagination = win.document.getElementById('test-pagination') as any;
       const changeSpy = cy.stub();
       pagination.addEventListener('usa-pagination:change', changeSpy);
-      
+
       // Click next button
       cy.get('.usa-pagination__next-page').click();
-      
+
       cy.then(() => {
-        expect(changeSpy).to.have.been.calledWith(
-          Cypress.sinon.match.hasNested('detail.page', 4)
-        );
+        expect(changeSpy).to.have.been.calledWith(Cypress.sinon.match.hasNested('detail.page', 4));
       });
     });
   });
@@ -87,14 +83,12 @@ describe('USA Pagination Component Tests', () => {
       const pagination = win.document.getElementById('test-pagination') as any;
       const changeSpy = cy.stub();
       pagination.addEventListener('usa-pagination:change', changeSpy);
-      
+
       // Click previous button
       cy.get('.usa-pagination__previous-page').click();
-      
+
       cy.then(() => {
-        expect(changeSpy).to.have.been.calledWith(
-          Cypress.sinon.match.hasNested('detail.page', 4)
-        );
+        expect(changeSpy).to.have.been.calledWith(Cypress.sinon.match.hasNested('detail.page', 4));
       });
     });
   });
@@ -137,7 +131,7 @@ describe('USA Pagination Component Tests', () => {
     // Should show ellipsis for large page ranges
     cy.get('.usa-pagination__overflow').should('exist');
     cy.get('.usa-pagination__overflow').should('contain.text', '…');
-    
+
     // Should show current page and surrounding pages
     cy.get('.usa-pagination__button').contains('10').should('exist');
     cy.get('.usa-pagination__button').contains('9').should('exist');
@@ -156,15 +150,15 @@ describe('USA Pagination Component Tests', () => {
     // Tab through pagination items
     cy.get('.usa-pagination__previous-page').focus();
     cy.focused().should('have.class', 'usa-pagination__previous-page');
-    
+
     // Tab to page buttons
     cy.focused().tab();
     cy.focused().should('contain.text', '1');
-    
+
     // Arrow right to navigate between pages
     cy.focused().type('{rightarrow}');
     cy.focused().should('contain.text', '2');
-    
+
     // Enter to select page
     cy.focused().type('{enter}');
   });
@@ -180,7 +174,7 @@ describe('USA Pagination Component Tests', () => {
     `);
 
     cy.get('.usa-pagination').should('have.class', 'usa-pagination--compact');
-    
+
     // Compact version shows fewer page numbers
     cy.get('.usa-pagination__item').should('have.length.lessThan', 10);
   });
@@ -196,7 +190,7 @@ describe('USA Pagination Component Tests', () => {
     `);
 
     cy.get('.usa-pagination').should('have.class', 'usa-pagination--unbounded');
-    
+
     // Unbounded shows current page without total
     cy.get('.usa-pagination__current-page').should('contain.text', '5');
   });
@@ -219,7 +213,7 @@ describe('USA Pagination Component Tests', () => {
     // Should show page size selector
     cy.get('.usa-pagination__page-size').should('exist');
     cy.get('.usa-pagination__page-size select').should('exist');
-    
+
     // Change page size
     cy.get('.usa-pagination__page-size select').select('25');
     cy.get('.usa-pagination__page-size select').should('have.value', '25');
@@ -255,19 +249,17 @@ describe('USA Pagination Component Tests', () => {
     // Should show jump to page input
     cy.get('.usa-pagination__jump').should('exist');
     cy.get('.usa-pagination__jump input').should('exist');
-    
+
     cy.window().then((win) => {
       const pagination = win.document.getElementById('test-pagination') as any;
       const changeSpy = cy.stub();
       pagination.addEventListener('usa-pagination:change', changeSpy);
-      
+
       // Type page number and press Enter
       cy.get('.usa-pagination__jump input').type('25{enter}');
-      
+
       cy.then(() => {
-        expect(changeSpy).to.have.been.calledWith(
-          Cypress.sinon.match.hasNested('detail.page', 25)
-        );
+        expect(changeSpy).to.have.been.calledWith(Cypress.sinon.match.hasNested('detail.page', 25));
       });
     });
   });
@@ -285,26 +277,22 @@ describe('USA Pagination Component Tests', () => {
     // Should show first and last buttons
     cy.get('.usa-pagination__first-page').should('exist');
     cy.get('.usa-pagination__last-page').should('exist');
-    
+
     cy.window().then((win) => {
       const pagination = win.document.getElementById('test-pagination') as any;
       const changeSpy = cy.stub();
       pagination.addEventListener('usa-pagination:change', changeSpy);
-      
+
       // Click first page
       cy.get('.usa-pagination__first-page').click();
       cy.then(() => {
-        expect(changeSpy).to.have.been.calledWith(
-          Cypress.sinon.match.hasNested('detail.page', 1)
-        );
+        expect(changeSpy).to.have.been.calledWith(Cypress.sinon.match.hasNested('detail.page', 1));
       });
-      
+
       // Click last page
       cy.get('.usa-pagination__last-page').click();
       cy.then(() => {
-        expect(changeSpy).to.have.been.calledWith(
-          Cypress.sinon.match.hasNested('detail.page', 20)
-        );
+        expect(changeSpy).to.have.been.calledWith(Cypress.sinon.match.hasNested('detail.page', 20));
       });
     });
   });
@@ -321,10 +309,10 @@ describe('USA Pagination Component Tests', () => {
 
     cy.window().then((win) => {
       const pagination = win.document.getElementById('test-pagination') as any;
-      
+
       // Should update URL when page changes
       cy.get('.usa-pagination__button').contains('3').click();
-      
+
       // URL should contain page parameter
       cy.url().should('include', 'page=3');
     });
@@ -342,7 +330,7 @@ describe('USA Pagination Component Tests', () => {
 
     cy.get('.usa-pagination').should('have.class', 'usa-pagination--loading');
     cy.get('.usa-pagination__button').should('be.disabled');
-    
+
     // Should show loading indicator
     cy.get('.usa-pagination__loading').should('exist');
   });
@@ -358,9 +346,9 @@ describe('USA Pagination Component Tests', () => {
 
     // Set mobile viewport
     cy.viewport(375, 667);
-    
+
     cy.get('.usa-pagination').should('have.class', 'usa-pagination--mobile');
-    
+
     // Should show fewer page numbers on mobile
     cy.get('.usa-pagination__item').should('have.length.lessThan', 7);
   });
@@ -376,10 +364,10 @@ describe('USA Pagination Component Tests', () => {
 
     cy.window().then((win) => {
       const pagination = win.document.getElementById('test-pagination') as any;
-      
+
       // Set page programmatically
       pagination.currentPage = 7;
-      
+
       cy.get('.usa-pagination__button[aria-current="page"]').should('contain.text', '7');
     });
   });
@@ -410,7 +398,7 @@ describe('USA Pagination Component Tests', () => {
     // Should disable navigation buttons
     cy.get('.usa-pagination__previous-page').should('be.disabled');
     cy.get('.usa-pagination__next-page').should('be.disabled');
-    
+
     // Should still show current page
     cy.get('.usa-pagination__button').should('contain.text', '1');
     cy.get('.usa-pagination__button[aria-current="page"]').should('exist');
@@ -428,10 +416,10 @@ describe('USA Pagination Component Tests', () => {
 
     cy.get('.usa-pagination').should('have.attr', 'role', 'navigation');
     cy.get('.usa-pagination').should('have.attr', 'aria-label', 'Search results pagination');
-    
+
     // Current page should have aria-current
     cy.get('.usa-pagination__button[aria-current="page"]').should('contain.text', '5');
-    
+
     // Navigation buttons should have proper labels
     cy.get('.usa-pagination__previous-page').should('have.attr', 'aria-label', 'Previous page');
     cy.get('.usa-pagination__next-page').should('have.attr', 'aria-label', 'Next page');
@@ -448,11 +436,11 @@ describe('USA Pagination Component Tests', () => {
 
     cy.window().then((win) => {
       const pagination = win.document.getElementById('test-pagination') as any;
-      
+
       // Try to set invalid page (too high)
       pagination.currentPage = 15;
       cy.get('.usa-pagination__button[aria-current="page"]').should('contain.text', '10');
-      
+
       // Try to set invalid page (too low)
       pagination.currentPage = -1;
       cy.get('.usa-pagination__button[aria-current="page"]').should('contain.text', '1');
@@ -505,14 +493,14 @@ describe('USA Pagination Component Tests', () => {
 
     cy.window().then((win) => {
       const pagination = win.document.getElementById('test-pagination') as any;
-      
+
       // Initially 5 pages
       cy.get('.usa-pagination__button').should('have.length', 5);
-      
+
       // Update to 10 pages
       pagination.totalPages = 10;
       cy.get('.usa-pagination__button').should('have.length.greaterThan', 5);
-      
+
       // Update to 2 pages (should adjust current page if needed)
       pagination.totalPages = 2;
       cy.get('.usa-pagination__button[aria-current="page"]').should('contain.text', '2');
@@ -530,7 +518,7 @@ describe('USA Pagination Component Tests', () => {
 
     // Touch next button
     cy.get('.usa-pagination__next-page').trigger('touchstart');
-    
+
     // Touch page number
     cy.get('.usa-pagination__button').contains('7').trigger('touchstart');
   });

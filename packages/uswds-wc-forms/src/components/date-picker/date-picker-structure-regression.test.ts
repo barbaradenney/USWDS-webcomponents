@@ -38,7 +38,10 @@ describe('Date Picker Structure Regression Prevention', () => {
 
       // CRITICAL: All three elements must exist for basic functionality
       expect(label, 'Label should be present').toBeTruthy();
-      expect(input, 'Input field should be present - this was missing in the regression').toBeTruthy();
+      expect(
+        input,
+        'Input field should be present - this was missing in the regression'
+      ).toBeTruthy();
       expect(datePicker, 'Date picker container should be present').toBeTruthy();
 
       // Verify label text is visible
@@ -75,8 +78,13 @@ describe('Date Picker Structure Regression Prevention', () => {
       // </div>
 
       // This structure should NOT exist in the initial render
-      const incorrectWrapper = element.querySelector('.usa-date-picker__wrapper .usa-date-picker .usa-input');
-      expect(incorrectWrapper, 'Should NOT have nested wrapper structure in initial render').toBeNull();
+      const incorrectWrapper = element.querySelector(
+        '.usa-date-picker__wrapper .usa-date-picker .usa-input'
+      );
+      expect(
+        incorrectWrapper,
+        'Should NOT have nested wrapper structure in initial render'
+      ).toBeNull();
 
       // The correct structure should be: usa-date-picker > input (direct child)
       const correctStructure = element.querySelector('.usa-date-picker > .usa-input');
@@ -234,7 +242,7 @@ describe('Date Picker Structure Regression Prevention', () => {
 
       // Get all visible elements
       const allElements = element.querySelectorAll('*');
-      const visibleElements = Array.from(allElements).filter(el => {
+      const visibleElements = Array.from(allElements).filter((el) => {
         const style = window.getComputedStyle(el);
         return style.display !== 'none' && style.visibility !== 'hidden';
       });
@@ -252,11 +260,19 @@ describe('Date Picker Structure Regression Prevention', () => {
       expect(datePicker, 'REGRESSION: Date picker container missing').toBeTruthy();
 
       // The bug was that only label was visible, so we specifically verify:
-      expect(visibleElements.length, 'Should have multiple visible elements, not just label').toBeGreaterThan(3);
+      expect(
+        visibleElements.length,
+        'Should have multiple visible elements, not just label'
+      ).toBeGreaterThan(3);
 
       // Verify the structure that caused the regression is NOT present
-      const nestedWrapperStructure = element.querySelector('.usa-date-picker__wrapper > .usa-date-picker > .usa-input');
-      expect(nestedWrapperStructure, 'REGRESSION: Nested wrapper structure should not exist').toBeNull();
+      const nestedWrapperStructure = element.querySelector(
+        '.usa-date-picker__wrapper > .usa-date-picker > .usa-input'
+      );
+      expect(
+        nestedWrapperStructure,
+        'REGRESSION: Nested wrapper structure should not exist'
+      ).toBeNull();
     });
   });
 });

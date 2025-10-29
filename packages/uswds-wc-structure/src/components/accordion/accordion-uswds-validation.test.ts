@@ -59,14 +59,14 @@ describe('USAAccordion USWDS Integration Validation', () => {
     it('should apply attributes before USWDS initialization', async () => {
       // Set accordion items with proper expanded state
       element.items = [
-        { id: 'test-item', title: 'Test Item', content: 'Test Content', expanded: false }
+        { id: 'test-item', title: 'Test Item', content: 'Test Content', expanded: false },
       ];
 
       await element.updateComplete;
 
       // Check that the accordion button has the correct aria-expanded attribute
       const button = element.querySelector('.usa-accordion__button');
-      expect(button?.getAttribute("aria-expanded")).toBe("false");
+      expect(button?.getAttribute('aria-expanded')).toBe('false');
     });
   });
 
@@ -85,14 +85,14 @@ describe('USAAccordion USWDS Integration Validation', () => {
           events.push('first-updated');
           // Should delay USWDS initialization
           setTimeout(() => events.push('initialize-uswds'), 10);
-        }
+        },
       };
 
       mockLifecycle.connectedCallback();
       mockLifecycle.firstUpdated();
 
       // Wait for async initialization
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 20));
 
       // Validate proper sequence
       expect(events).toContain('connected');
@@ -106,11 +106,9 @@ describe('USAAccordion USWDS Integration Validation', () => {
     });
 
     it('should handle property updates through all phases', async () => {
-      
       element.expanded = true;
       await element.updateComplete;
       expect(element.expanded).toBe(true);
-    
     });
   });
 
@@ -127,7 +125,7 @@ describe('USAAccordion USWDS Integration Validation', () => {
 
       // Strategy 1: Direct children access
       const directChildren = Array.from(element.children).filter(
-        child => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
+        (child) => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
       );
       expect(directChildren.length).toBeGreaterThan(0);
 
@@ -142,25 +140,20 @@ describe('USAAccordion USWDS Integration Validation', () => {
 
     it('should handle content updates dynamically', async () => {
       // Accordion component renders its own structure, so we test via items property
-      element.items = [
-        { id: 'initial', title: 'Initial Item', content: 'Initial content' }
-      ];
+      element.items = [{ id: 'initial', title: 'Initial Item', content: 'Initial content' }];
       await element.updateComplete;
 
       const initialItems = element.items.length;
       expect(initialItems).toBe(1);
 
       // Add new content via items property
-      element.items = [
-        ...element.items,
-        { id: 'new', title: 'New Item', content: 'New content' }
-      ];
+      element.items = [...element.items, { id: 'new', title: 'New Item', content: 'New content' }];
       await element.updateComplete;
 
       expect(element.items.length).toBe(2);
 
       // Remove content via items property
-      element.items = element.items.filter(item => item.id !== 'initial');
+      element.items = element.items.filter((item) => item.id !== 'initial');
       await element.updateComplete;
 
       expect(element.items.length).toBe(1);

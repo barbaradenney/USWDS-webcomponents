@@ -24,14 +24,14 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
       { label: 'Household Status', status: 'complete' },
       { label: 'Supporting Documents', status: 'current' },
       { label: 'Signature', status: 'incomplete' },
-      { label: 'Review and Submit', status: 'incomplete' }
+      { label: 'Review and Submit', status: 'incomplete' },
     ];
     element.currentStep = 2;
     document.body.appendChild(element);
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -42,10 +42,11 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('step-indicator') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('step-indicator') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -222,7 +223,7 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
       element.steps = [
         { label: 'Step 1', status: 'complete' },
         { label: 'Step 2', status: 'current' },
-        { label: 'Step 3', status: 'incomplete' }
+        { label: 'Step 3', status: 'incomplete' },
       ];
       await waitForUpdate(element);
 
@@ -275,7 +276,7 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
         expect(segments.getAttribute('role')).toBe('list');
 
         const stepElements = element.querySelectorAll('.usa-step-indicator__segment');
-        stepElements.forEach(step => {
+        stepElements.forEach((step) => {
           expect(step.getAttribute('role')).toBe('listitem');
         });
 

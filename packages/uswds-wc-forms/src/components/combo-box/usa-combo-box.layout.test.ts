@@ -16,7 +16,7 @@ describe('USAComboBox Layout Tests', () => {
     element.options = [
       { value: 'option1', label: 'Option 1' },
       { value: 'option2', label: 'Option 2' },
-      { value: 'option3', label: 'Option 3' }
+      { value: 'option3', label: 'Option 3' },
     ];
     element.placeholder = 'Select an option';
     document.body.appendChild(element);
@@ -41,10 +41,7 @@ describe('USAComboBox Layout Tests', () => {
     expect(select, 'Combo box select should exist').toBeTruthy();
 
     // Verify USWDS structure hierarchy
-    expect(
-      formGroup.contains(select),
-      'Select should be inside form group container'
-    ).toBe(true);
+    expect(formGroup.contains(select), 'Select should be inside form group container').toBe(true);
   });
 
   it('should position toggle button correctly within combo box', async () => {
@@ -97,10 +94,7 @@ describe('USAComboBox Layout Tests', () => {
     expect(comboBox, 'Combo box container should exist').toBeTruthy();
 
     if (list) {
-      expect(
-        comboBox.contains(list),
-        'List should be inside combo box container'
-      ).toBe(true);
+      expect(comboBox.contains(list), 'List should be inside combo box container').toBe(true);
 
       // List should appear after the input group
       const comboBoxChildren = Array.from(comboBox.children);
@@ -145,26 +139,26 @@ describe('USAComboBox Layout Tests', () => {
     if (select) {
       expect(select.disabled, 'Select should be disabled').toBe(true);
     }
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/combo-box/usa-combo-box.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'combo-box');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/combo-box/usa-combo-box.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'combo-box');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {

@@ -135,8 +135,6 @@ export class USASiteAlert extends LitElement {
     }
   }
 
-
-
   override disconnectedCallback() {
     super.disconnectedCallback();
     // Clean up USWDS behavior
@@ -173,9 +171,7 @@ export class USASiteAlert extends LitElement {
         <div class="usa-alert">
           <div class="usa-alert__body">
             <h3 class="usa-alert__heading">${this.heading}</h3>
-            <div class="usa-alert__text">
-              ${this.renderAlertText()}
-            </div>
+            <div class="usa-alert__text">${this.renderAlertText()}</div>
           </div>
         </div>
       </section>

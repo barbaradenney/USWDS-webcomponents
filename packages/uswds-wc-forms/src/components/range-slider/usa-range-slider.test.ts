@@ -330,7 +330,6 @@ describe('USARangeSlider', () => {
       expect(input).toBeTruthy();
       expect(input.type).toBe('range');
 
-
       // Component delegates keyboard navigation to native HTML range input
       // Test that the input can receive keyboard events
       const event = new KeyboardEvent('keydown', { key: 'Home', bubbles: true });
@@ -817,8 +816,7 @@ describe('USARangeSlider', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/range-slider/usa-range-slider.ts`;
+        const componentPath = `${process.cwd()}/src/components/range-slider/usa-range-slider.ts`;
         const validation = validateComponentJavaScript(componentPath, 'range-slider');
 
         if (!validation.isValid) {

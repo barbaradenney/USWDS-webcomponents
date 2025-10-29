@@ -190,9 +190,7 @@ const updateCountMessage = (inputEl: HTMLInputElement | HTMLTextAreaElement) => 
   const currentLength = inputEl.value.length;
   const maxLength = parseInt(characterCountEl.getAttribute('data-maxlength') || '0', 10);
   const statusMessage = characterCountEl.querySelector(STATUS_MESSAGE) as HTMLElement;
-  const srStatusMessage = characterCountEl.querySelector(
-    STATUS_MESSAGE_SR_ONLY
-  ) as HTMLElement;
+  const srStatusMessage = characterCountEl.querySelector(STATUS_MESSAGE_SR_ONLY) as HTMLElement;
   const currentStatusMessage = getCountMessage(currentLength, maxLength);
 
   if (!maxLength) return;
@@ -250,9 +248,7 @@ const enhanceCharacterCount = (inputEl: HTMLInputElement | HTMLTextAreaElement) 
  * @param root - Root element or document
  * @returns Cleanup function
  */
-export function initializeCharacterCount(
-  root: HTMLElement | Document = document
-): () => void {
+export function initializeCharacterCount(root: HTMLElement | Document = document): () => void {
   const inputs = selectOrMatches(INPUT, root);
 
   // Initialize each input

@@ -12,9 +12,7 @@ import {
   assertDOMStructure,
   validateComponentJavaScript,
 } from '@uswds-wc/test-utils/test-utils.js';
-import {
-  getFocusableElements,
-} from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
+import { getFocusableElements } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
 
 describe('USAIcon', () => {
   let element: USAIcon;
@@ -797,8 +795,7 @@ describe('USAIcon', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/icon/usa-icon.ts`;
+        const componentPath = `${process.cwd()}/src/components/icon/usa-icon.ts`;
         const validation = validateComponentJavaScript(componentPath, 'icon');
 
         if (!validation.isValid) {

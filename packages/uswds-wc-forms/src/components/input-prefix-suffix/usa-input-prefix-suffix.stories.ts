@@ -281,9 +281,7 @@ export const InteractiveDemo: Story = {
         ></usa-input-prefix-suffix>
       </div>
 
-      <div
-        class="margin-top-2 padding-1 bg-base-lightest radius-md"
-      >
+      <div class="margin-top-2 padding-1 bg-base-lightest radius-md">
         <h4>Event Information</h4>
         <p>Open browser console to see input-change events with detailed information:</p>
         <ul>
@@ -349,9 +347,7 @@ export const AccessibilityShowcase: Story = {
         </div>
       </div>
 
-      <div
-        class="margin-top-2 padding-1 bg-primary-lighter border border-primary radius-md"
-      >
+      <div class="margin-top-2 padding-1 bg-primary-lighter border border-primary radius-md">
         <h4>Accessibility Features</h4>
         <ul>
           <li><strong>Label Association:</strong> Each input has a properly associated label</li>
@@ -368,9 +364,7 @@ export const AccessibilityShowcase: Story = {
             <strong>Icon Accessibility:</strong> Icons marked as decorative for screen readers
           </li>
           <li><strong>Keyboard Navigation:</strong> Full keyboard accessibility maintained</li>
-          <li>
-            <strong>Autocomplete:</strong> Proper autocomplete attributes for forms
-          </li>
+          <li><strong>Autocomplete:</strong> Proper autocomplete attributes for forms</li>
           <li><strong>Input Types:</strong> Semantic input types for better mobile experience</li>
         </ul>
 

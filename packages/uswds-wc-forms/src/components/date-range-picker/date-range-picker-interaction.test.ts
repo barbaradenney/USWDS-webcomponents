@@ -25,7 +25,7 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -36,10 +36,11 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('date-range-picker') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('date-range-picker') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -74,7 +75,9 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
 
   describe('🔍 Real Click Behavior Testing', () => {
     it('should handle start date calendar button clicks', async () => {
-      const startCalendarButton = element.querySelector('.usa-date-range-picker__range-start .usa-date-picker__button') as HTMLButtonElement;
+      const startCalendarButton = element.querySelector(
+        '.usa-date-range-picker__range-start .usa-date-picker__button'
+      ) as HTMLButtonElement;
 
       if (startCalendarButton) {
         let eventFired = false;
@@ -88,7 +91,7 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
 
         // Check if calendar appeared or event fired
         const calendar = element.querySelector('.usa-date-picker__calendar');
-        const calendarVisible = calendar && !calendar.hasAttribute('hidden') || eventFired;
+        const calendarVisible = (calendar && !calendar.hasAttribute('hidden')) || eventFired;
 
         if (!calendarVisible) {
           console.warn('⚠️ Start date calendar may not be responding to button clicks');
@@ -100,7 +103,9 @@ describe('Date Range Picker JavaScript Interaction Testing', () => {
     });
 
     it('should handle end date calendar button clicks', async () => {
-      const endCalendarButton = element.querySelector('.usa-date-range-picker__range-end .usa-date-picker__button') as HTMLButtonElement;
+      const endCalendarButton = element.querySelector(
+        '.usa-date-range-picker__range-end .usa-date-picker__button'
+      ) as HTMLButtonElement;
 
       if (endCalendarButton) {
         // Event listener for end-calendar-toggle

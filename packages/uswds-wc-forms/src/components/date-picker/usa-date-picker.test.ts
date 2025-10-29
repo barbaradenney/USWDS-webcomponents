@@ -5,7 +5,7 @@ import type { USADatePicker } from './usa-date-picker.js';
 // Helper to wait for date picker button structure to be created
 async function waitForDatePickerButton(element: USADatePicker): Promise<HTMLButtonElement | null> {
   // Wait for fallback structure creation (component creates it after 100ms)
-  await new Promise(resolve => setTimeout(resolve, 150));
+  await new Promise((resolve) => setTimeout(resolve, 150));
   return element.querySelector('.usa-date-picker__button');
 }
 import {
@@ -44,7 +44,7 @@ describe('USADatePicker', () => {
     await element.updateComplete;
 
     // Give USWDS time to complete any async operations
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Clean up - wrap in try-catch to handle any async cleanup errors
     try {
@@ -61,7 +61,6 @@ describe('USADatePicker', () => {
       expect(element).toBeTruthy();
       expect(element.tagName).toBe('USA-DATE-PICKER');
     });
-
   });
 
   describe('Properties', () => {
@@ -73,7 +72,9 @@ describe('USADatePicker', () => {
         async (el, value) => {
           expect(el.value).toBe(value);
           // Get the visible input - USWDS creates an external input that users interact with
-          const externalInput = el.querySelector('.usa-date-picker__external-input') as HTMLInputElement;
+          const externalInput = el.querySelector(
+            '.usa-date-picker__external-input'
+          ) as HTMLInputElement;
           const originalInput = el.querySelector(`#${el.inputId}`) as HTMLInputElement;
           const visibleInput = externalInput || originalInput;
           expect(visibleInput?.value).toBe(value);
@@ -127,11 +128,13 @@ describe('USADatePicker', () => {
       await waitForUpdate(element);
 
       // Wait for USWDS to enhance and for state sync
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Check both the original input and USWDS-created external input
       const input = element.querySelector('input') as HTMLInputElement;
-      const externalInput = element.querySelector('.usa-date-picker__external-input') as HTMLInputElement;
+      const externalInput = element.querySelector(
+        '.usa-date-picker__external-input'
+      ) as HTMLInputElement;
       const button = element.querySelector('.usa-date-picker__button') as HTMLButtonElement;
 
       // The external input (if created by USWDS) should be disabled
@@ -173,7 +176,7 @@ describe('USADatePicker', () => {
       await waitForUpdate(element);
 
       // Wait for fallback structure creation
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       const formGroup = element.querySelector('.usa-form-group');
       const label = element.querySelector('.usa-label');
@@ -265,7 +268,6 @@ describe('USADatePicker', () => {
       expect(button?.getAttribute('aria-haspopup')).toBe('true');
       expect(button?.getAttribute('aria-label')).toBe('Toggle calendar');
     });
-
   });
 
   describe('Events', () => {
@@ -292,7 +294,6 @@ describe('USADatePicker', () => {
       expect(eventDetail.date).toBeInstanceOf(Date);
       expect(element.value).toBe('2024-01-15');
     });
-
 
     it('should handle null date in event detail for empty value', async () => {
       let eventDetail: any = null;
@@ -564,7 +565,7 @@ describe('USADatePicker', () => {
       await waitForUpdate(newElement);
 
       // Wait for fallback structure creation when USWDS is not available
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
       // Component should render basic structure regardless of USWDS availability
       const input = newElement.querySelector('input');
@@ -576,7 +577,6 @@ describe('USADatePicker', () => {
 
       newElement.remove();
     });
-
 
     it('should handle enhancement errors gracefully', async () => {
       // Mock USWDS with failing enhancement
@@ -607,8 +607,7 @@ describe('USADatePicker', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/date-picker/usa-date-picker.ts`;
+        const componentPath = `${process.cwd()}/src/components/date-picker/usa-date-picker.ts`;
         const validation = validateComponentJavaScript(componentPath, 'date-picker');
 
         if (!validation.isValid) {
@@ -627,14 +626,13 @@ describe('USADatePicker', () => {
     });
   });
 
-
   describe('USWDS JavaScript Integration', () => {
     it('should successfully integrate with USWDS JavaScript (primary test)', async () => {
       element.label = 'Test Date';
       await waitForUpdate(element);
 
       // Wait for fallback button structure to be created (happens after 100ms)
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Run comprehensive USWDS integration test
       const result = await testUSWDSIntegration(
@@ -685,7 +683,7 @@ describe('USADatePicker', () => {
         await waitForUpdate(testElement);
 
         // Wait for fallback structure creation when USWDS import fails
-        await new Promise(resolve => setTimeout(resolve, 250));
+        await new Promise((resolve) => setTimeout(resolve, 250));
 
         // Should gracefully fall back to web component behavior
         const buttons = testElement.querySelectorAll('.usa-date-picker__button');
@@ -913,7 +911,7 @@ describe('USADatePicker', () => {
       await waitForUpdate(testElement);
 
       // Wait additional time for USWDS transformation and value sync
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // CRITICAL: Value must persist after USWDS initialization
       expect(testElement.value).toBe('2024-03-15');
@@ -934,7 +932,7 @@ describe('USADatePicker', () => {
 
       document.body.appendChild(testElement);
       await waitForUpdate(testElement);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Value set via attribute must persist
       expect(testElement.value).toBe('2024-12-25');
@@ -942,7 +940,6 @@ describe('USADatePicker', () => {
 
       testElement.remove();
     });
-
 
     it('should handle empty initial value correctly', async () => {
       // Ensure empty values don't cause issues
@@ -952,7 +949,7 @@ describe('USADatePicker', () => {
 
       document.body.appendChild(testElement);
       await waitForUpdate(testElement);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Empty value should remain empty
       expect(testElement.value).toBe('');
@@ -971,7 +968,7 @@ describe('USADatePicker', () => {
 
       document.body.appendChild(testElement);
       await waitForUpdate(testElement);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Change the value
       testElement.value = '2024-12-31';

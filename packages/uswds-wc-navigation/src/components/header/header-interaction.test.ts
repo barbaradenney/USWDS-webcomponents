@@ -28,15 +28,15 @@ describe('Header JavaScript Interaction Testing', () => {
         href: '/services',
         submenu: [
           { label: 'Service 1', href: '/services/1' },
-          { label: 'Service 2', href: '/services/2' }
-        ]
-      }
+          { label: 'Service 2', href: '/services/2' },
+        ],
+      },
     ];
     document.body.appendChild(element);
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -47,10 +47,11 @@ describe('Header JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('header') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('header') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -247,7 +248,7 @@ describe('Header JavaScript Interaction Testing', () => {
       // Test updating navItems
       element.navItems = [
         { label: 'New Item 1', href: '/new1' },
-        { label: 'New Item 2', href: '/new2' }
+        { label: 'New Item 2', href: '/new2' },
       ];
       await waitForUpdate(element);
 

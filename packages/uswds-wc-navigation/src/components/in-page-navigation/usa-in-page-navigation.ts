@@ -115,7 +115,11 @@ export class USAInPageNavigation extends USWDSBaseComponent {
     ];
   }
 
-  override attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
+  override attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string | null
+  ) {
     super.attributeChangedCallback(name, oldValue, newValue);
 
     // Sync data attributes to properties when they change
@@ -240,9 +244,7 @@ export class USAInPageNavigation extends USWDSBaseComponent {
         data-scroll-offset="${this.scrollOffset}"
         data-threshold="${this.threshold}"
         data-root-margin="${this.rootMargin}"
-      >
-      </aside>
+      ></aside>
     `;
   }
-
 }

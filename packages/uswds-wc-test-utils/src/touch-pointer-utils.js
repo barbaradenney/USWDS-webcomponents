@@ -17,7 +17,7 @@ export async function simulateTouch(element, eventType, options = {}) {
     target: element,
     clientX: options.clientX || 0,
     clientY: options.clientY || 0,
-    ...options
+    ...options,
   });
 
   const touchEvent = new TouchEvent(eventType, {
@@ -25,11 +25,11 @@ export async function simulateTouch(element, eventType, options = {}) {
     bubbles: true,
     touches: [touch],
     targetTouches: [touch],
-    changedTouches: [touch]
+    changedTouches: [touch],
   });
 
   element.dispatchEvent(touchEvent);
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -46,11 +46,11 @@ export async function simulatePointer(element, eventType, options = {}) {
     clientX: options.clientX || 0,
     clientY: options.clientY || 0,
     pointerType: options.pointerType || 'mouse',
-    ...options
+    ...options,
   });
 
   element.dispatchEvent(pointerEvent);
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -99,15 +99,17 @@ export function supportsTouchEvents() {
  */
 export function testTargetSize(container, minSize = 44) {
   const violations = [];
-  const interactiveElements = container.querySelectorAll('button, a, input, [role="button"], [tabindex]:not([tabindex="-1"])');
+  const interactiveElements = container.querySelectorAll(
+    'button, a, input, [role="button"], [tabindex]:not([tabindex="-1"])'
+  );
 
-  interactiveElements.forEach(element => {
+  interactiveElements.forEach((element) => {
     const rect = element.getBoundingClientRect();
     if (rect.width < minSize || rect.height < minSize) {
       violations.push({
         element,
         size: { width: rect.width, height: rect.height },
-        message: `Element smaller than ${minSize}x${minSize}px`
+        message: `Element smaller than ${minSize}x${minSize}px`,
       });
     }
   });
@@ -115,7 +117,7 @@ export function testTargetSize(container, minSize = 44) {
   return {
     compliant: violations.length === 0,
     violations,
-    totalTested: interactiveElements.length
+    totalTested: interactiveElements.length,
   };
 }
 
@@ -126,9 +128,11 @@ export function testTargetSize(container, minSize = 44) {
  */
 export function testLabelInName(container) {
   const violations = [];
-  const interactiveElements = container.querySelectorAll('button, a, input[type="button"], input[type="submit"], [role="button"]');
+  const interactiveElements = container.querySelectorAll(
+    'button, a, input[type="button"], input[type="submit"], [role="button"]'
+  );
 
-  interactiveElements.forEach(element => {
+  interactiveElements.forEach((element) => {
     const visibleText = element.textContent.trim();
     const ariaLabel = element.getAttribute('aria-label') || '';
     const ariaLabelledby = element.getAttribute('aria-labelledby');
@@ -142,7 +146,7 @@ export function testLabelInName(container) {
           element,
           visibleText,
           accessibleName: labelText,
-          message: 'Accessible name does not include visible text'
+          message: 'Accessible name does not include visible text',
         });
       }
     } else if (ariaLabel && visibleText && !ariaLabel.includes(visibleText)) {
@@ -150,14 +154,14 @@ export function testLabelInName(container) {
         element,
         visibleText,
         accessibleName: ariaLabel,
-        message: 'Accessible name does not include visible text'
+        message: 'Accessible name does not include visible text',
       });
     }
   });
 
   return {
     correct: violations.length === 0,
-    violations
+    violations,
   };
 }
 
@@ -172,7 +176,7 @@ export async function testPointerAccessibility(container, options = {}) {
     minTargetSize = 44,
     testCancellation: _testCancellation = true, // eslint-disable-line @typescript-eslint/no-unused-vars
     testLabelInName: shouldTestLabelInName = true,
-    testMultiPointGestures: _testMultiPointGestures = true // eslint-disable-line @typescript-eslint/no-unused-vars
+    testMultiPointGestures: _testMultiPointGestures = true, // eslint-disable-line @typescript-eslint/no-unused-vars
   } = options;
 
   const errors = [];
@@ -184,11 +188,11 @@ export async function testPointerAccessibility(container, options = {}) {
   }
 
   if (!targetSizeResult.compliant) {
-    errors.push(...targetSizeResult.violations.map(v => v.message));
+    errors.push(...targetSizeResult.violations.map((v) => v.message));
   }
 
   if (!labelInNameResult.correct) {
-    errors.push(...labelInNameResult.violations.map(v => v.message));
+    errors.push(...labelInNameResult.violations.map((v) => v.message));
   }
 
   return {
@@ -197,7 +201,7 @@ export async function testPointerAccessibility(container, options = {}) {
     details: {
       targetSizeCompliant: targetSizeResult.compliant,
       labelInNameCorrect: labelInNameResult.correct,
-      noMultiPointGestures: true // Simplified - would need complex gesture detection
-    }
+      noMultiPointGestures: true, // Simplified - would need complex gesture detection
+    },
   };
 }

@@ -879,8 +879,7 @@ describe('USALanguageSelector', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/language-selector/usa-language-selector.ts`;
+        const componentPath = `${process.cwd()}/src/components/language-selector/usa-language-selector.ts`;
         const validation = validateComponentJavaScript(componentPath, 'language-selector');
 
         if (!validation.isValid) {
@@ -934,7 +933,7 @@ describe('USALanguageSelector', () => {
 
     it('REGRESSION: should initialize with document-level event listeners', async () => {
       // Wait for firstUpdated to complete and behavior to initialize
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Verify behavior was initialized (cleanup function exists)
       expect(element['cleanup']).toBeDefined();

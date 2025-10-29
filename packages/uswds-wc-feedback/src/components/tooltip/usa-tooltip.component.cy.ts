@@ -8,7 +8,7 @@ describe('USA Tooltip Component Tests', () => {
         <button>Hover me</button>
       </usa-tooltip>
     `);
-    
+
     cy.get('usa-tooltip').should('exist');
     cy.get('.usa-tooltip').should('exist');
     cy.get('.usa-tooltip__body').should('exist');
@@ -25,7 +25,7 @@ describe('USA Tooltip Component Tests', () => {
     // Initially hidden
     cy.get('.usa-tooltip__body').should('have.attr', 'aria-hidden', 'true');
     cy.get('.usa-tooltip__body').should('not.have.class', 'is-visible');
-    
+
     // Hover to show
     cy.get('.usa-tooltip__trigger').trigger('mouseenter');
     cy.get('.usa-tooltip__body').should('have.attr', 'aria-hidden', 'false');
@@ -43,7 +43,7 @@ describe('USA Tooltip Component Tests', () => {
     // Show tooltip first
     cy.get('.usa-tooltip__trigger').trigger('mouseenter');
     cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
-    
+
     // Hide on mouse leave
     cy.get('.usa-tooltip__trigger').trigger('mouseleave');
     cy.get('.usa-tooltip__body').should('not.have.class', 'is-visible');
@@ -72,7 +72,7 @@ describe('USA Tooltip Component Tests', () => {
     // Show tooltip first
     cy.get('.usa-tooltip__trigger').focus();
     cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
-    
+
     // Hide on blur
     cy.get('.usa-tooltip__trigger').blur();
     cy.get('.usa-tooltip__body').should('not.have.class', 'is-visible');
@@ -88,7 +88,7 @@ describe('USA Tooltip Component Tests', () => {
     // Show tooltip first
     cy.get('.usa-tooltip__trigger').trigger('mouseenter');
     cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
-    
+
     // Hide on Escape key
     cy.get('body').type('{esc}');
     cy.get('.usa-tooltip__body').should('not.have.class', 'is-visible');
@@ -96,8 +96,8 @@ describe('USA Tooltip Component Tests', () => {
 
   it('should handle different positions', () => {
     const positions = ['top', 'bottom', 'left', 'right'];
-    
-    positions.forEach(position => {
+
+    positions.forEach((position) => {
       cy.mount(`
         <usa-tooltip text="Position test" position="${position}">
           <button>Test ${position}</button>
@@ -121,9 +121,9 @@ describe('USA Tooltip Component Tests', () => {
       const tooltip = win.document.querySelector('usa-tooltip') as any;
       const showSpy = cy.stub();
       tooltip.addEventListener('tooltip-show', showSpy);
-      
+
       cy.get('.usa-tooltip__trigger').trigger('mouseenter');
-      
+
       cy.then(() => {
         expect(showSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.text', 'Event test tooltip')
@@ -143,11 +143,11 @@ describe('USA Tooltip Component Tests', () => {
       const tooltip = win.document.querySelector('usa-tooltip') as any;
       const hideSpy = cy.stub();
       tooltip.addEventListener('tooltip-hide', hideSpy);
-      
+
       // Show first, then hide
       cy.get('.usa-tooltip__trigger').trigger('mouseenter');
       cy.get('.usa-tooltip__trigger').trigger('mouseleave');
-      
+
       cy.then(() => {
         expect(hideSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.text', 'Event test tooltip')
@@ -167,7 +167,7 @@ describe('USA Tooltip Component Tests', () => {
 
     // All elements should get trigger class
     cy.get('.usa-tooltip__trigger').should('have.length', 3);
-    
+
     // Each should be able to trigger tooltip
     cy.get('.usa-tooltip__trigger').each(($trigger) => {
       cy.wrap($trigger).trigger('mouseenter');
@@ -189,7 +189,7 @@ describe('USA Tooltip Component Tests', () => {
     // Non-focusable elements should get tabindex
     cy.get('span.usa-tooltip__trigger').should('have.attr', 'tabindex', '0');
     cy.get('div.usa-tooltip__trigger').should('have.attr', 'tabindex', '0');
-    
+
     // Button should not get tabindex (already focusable)
     cy.get('button.usa-tooltip__trigger').should('not.have.attr', 'tabindex');
   });
@@ -251,11 +251,11 @@ describe('USA Tooltip Component Tests', () => {
 
     cy.window().then((win) => {
       const tooltip = win.document.querySelector('usa-tooltip') as any;
-      
+
       // Show programmatically
       tooltip.show();
       cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
-      
+
       // Hide programmatically
       tooltip.hide();
       cy.get('.usa-tooltip__body').should('not.have.class', 'is-visible');
@@ -271,11 +271,11 @@ describe('USA Tooltip Component Tests', () => {
 
     cy.window().then((win) => {
       const tooltip = win.document.querySelector('usa-tooltip') as any;
-      
+
       // Toggle to show
       tooltip.toggle();
       cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
-      
+
       // Toggle to hide
       tooltip.toggle();
       cy.get('.usa-tooltip__body').should('not.have.class', 'is-visible');
@@ -292,11 +292,11 @@ describe('USA Tooltip Component Tests', () => {
     `);
 
     cy.get('.usa-tooltip__trigger').trigger('mouseenter');
-    
+
     // Should have positioning styles applied
     cy.get('.usa-tooltip__body').should('have.class', 'usa-tooltip__body--top');
     cy.get('.usa-tooltip__body').should('have.class', 'is-set');
-    
+
     // Check that positioning styles are applied
     cy.get('.usa-tooltip__body').should(($el) => {
       const style = $el[0].style;
@@ -313,12 +313,12 @@ describe('USA Tooltip Component Tests', () => {
     `);
 
     cy.get('.usa-tooltip__body').should('contain.text', 'Initial text');
-    
+
     cy.window().then((win) => {
       const tooltip = win.document.getElementById('dynamic-tooltip') as any;
       tooltip.text = 'Updated text';
     });
-    
+
     cy.get('.usa-tooltip__body').should('contain.text', 'Updated text');
   });
 
@@ -332,10 +332,10 @@ describe('USA Tooltip Component Tests', () => {
     // Show tooltip
     cy.get('.usa-tooltip__trigger').trigger('mouseenter');
     cy.get('.usa-tooltip__body').should('have.class', 'is-set');
-    
+
     // Hide tooltip
     cy.get('.usa-tooltip__trigger').trigger('mouseleave');
-    
+
     // Positioning should be reset
     cy.get('.usa-tooltip__body').should(($el) => {
       const style = $el[0].style;
@@ -358,12 +358,12 @@ describe('USA Tooltip Component Tests', () => {
       const tooltip = win.document.querySelector('usa-tooltip') as any;
       const showSpy = cy.stub();
       tooltip.addEventListener('tooltip-show', showSpy);
-      
+
       // Trigger multiple show events
       cy.get('.usa-tooltip__trigger').trigger('mouseenter');
       cy.get('.usa-tooltip__trigger').trigger('mouseenter');
       cy.get('.usa-tooltip__trigger').trigger('mouseenter');
-      
+
       cy.then(() => {
         // Should only fire once
         expect(showSpy).to.have.been.calledOnce;
@@ -382,7 +382,7 @@ describe('USA Tooltip Component Tests', () => {
     `);
 
     cy.get('.complex-trigger').should('have.class', 'usa-tooltip__trigger');
-    
+
     // Should work with complex content
     cy.get('.complex-trigger').trigger('mouseenter');
     cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
@@ -404,7 +404,7 @@ describe('USA Tooltip Component Tests', () => {
     // Tab to first tooltip trigger
     cy.get('button').first().focus();
     cy.get('.usa-tooltip__body').first().should('have.class', 'is-visible');
-    
+
     // Tab to second tooltip trigger
     cy.get('button').first().tab();
     cy.get('.usa-tooltip__body').first().should('not.have.class', 'is-visible');
@@ -429,11 +429,11 @@ describe('USA Tooltip Component Tests', () => {
     // Form elements should not get tabindex (already focusable)
     cy.get('input.usa-tooltip__trigger').should('not.have.attr', 'tabindex');
     cy.get('select.usa-tooltip__trigger').should('not.have.attr', 'tabindex');
-    
+
     // Should work with form elements
     cy.get('input').focus();
     cy.get('.usa-tooltip__body').first().should('have.class', 'is-visible');
-    
+
     cy.get('select').focus();
     cy.get('.usa-tooltip__body').first().should('not.have.class', 'is-visible');
     cy.get('.usa-tooltip__body').last().should('have.class', 'is-visible');
@@ -449,14 +449,13 @@ describe('USA Tooltip Component Tests', () => {
     `);
 
     cy.window().then((_win) => {
-
       // Verify tooltip exists and works
       cy.get('.usa-tooltip__trigger').trigger('mouseenter');
       cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
-      
+
       // Remove tooltip from DOM
       container!.removeChild(tooltip);
-      
+
       // Should not cause errors when removed
       cy.get('body').type('{esc}'); // This should not cause errors
     });
@@ -476,10 +475,10 @@ describe('USA Tooltip Component Tests', () => {
     `);
 
     cy.injectAxe();
-    
+
     // Test with tooltip hidden
     cy.checkAccessibility();
-    
+
     // Test with tooltip visible
     cy.get('.usa-tooltip__trigger').focus();
     cy.checkAccessibility();
@@ -498,7 +497,7 @@ describe('USA Tooltip Component Tests', () => {
 
     // Set small viewport
     cy.viewport(400, 400);
-    
+
     cy.get('.usa-tooltip__trigger').trigger('mouseenter');
     cy.get('.usa-tooltip__body').should('have.class', 'usa-tooltip__body--bottom');
     cy.get('.usa-tooltip__body').should('have.class', 'is-visible');
@@ -514,7 +513,7 @@ describe('USA Tooltip Component Tests', () => {
     // Touch events should work similar to mouse events
     cy.get('.usa-tooltip__trigger').trigger('touchstart');
     // Note: Actual touch behavior may vary by implementation
-    
+
     // Focus should still work on touch devices
     cy.get('.usa-tooltip__trigger').focus();
     cy.get('.usa-tooltip__body').should('have.class', 'is-visible');

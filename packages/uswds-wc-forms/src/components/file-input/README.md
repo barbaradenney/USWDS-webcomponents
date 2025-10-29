@@ -20,24 +20,24 @@ import 'path/to/uswds-webcomponents/src/components/file-input/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `name` | `any` | `'file-input'` | Property description |
-| `inputId` | `any` | `'file-input'` | Property description |
-| `label` | `any` | `'Select file'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `multiple` | `any` | `false` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `accept` | `any` | `''` | Property description |
-| `maxFileSize` | `any` | `''` | Property description |
-| `selectedFiles` | `File[]` | `[]` | Property description |
+| Property        | Type     | Default         | Description          |
+| --------------- | -------- | --------------- | -------------------- |
+| `name`          | `any`    | `'file-input'`  | Property description |
+| `inputId`       | `any`    | `'file-input'`  | Property description |
+| `label`         | `any`    | `'Select file'` | Property description |
+| `hint`          | `any`    | `''`            | Property description |
+| `multiple`      | `any`    | `false`         | Property description |
+| `disabled`      | `any`    | `false`         | Property description |
+| `required`      | `any`    | `false`         | Property description |
+| `accept`        | `any`    | `''`            | Property description |
+| `maxFileSize`   | `any`    | `''`            | Property description |
+| `selectedFiles` | `File[]` | `[]`            | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

@@ -43,9 +43,7 @@ export function assertHasAllClasses(element, classNames) {
  * @returns {Array<string>} Array of USWDS class names
  */
 export function getUSWDSClasses(element) {
-  return Array.from(element.classList).filter(className =>
-    className.startsWith('usa-')
-  );
+  return Array.from(element.classList).filter((className) => className.startsWith('usa-'));
 }
 
 /**
@@ -131,7 +129,9 @@ export function validateUSWDSClassPattern(element, baseClass, expectedModifiers 
 
     // Validate modifier follows USWDS BEM pattern if it's a modifier
     if (modifier.includes('--') && !modifier.startsWith(baseClass.split('__')[0] + '--')) {
-      throw new Error(`Modifier "${modifier}" doesn't follow USWDS BEM pattern for base "${baseClass}"`);
+      throw new Error(
+        `Modifier "${modifier}" doesn't follow USWDS BEM pattern for base "${baseClass}"`
+      );
     }
   }
 }

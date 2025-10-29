@@ -468,9 +468,7 @@ export const AccessibilityShowcase: Story = {
       .navItems=${args.navItems}
     ></usa-header>
 
-    <div
-      class="margin-top-2 padding-205 bg-base-lightest border-left-05 border-primary"
-    >
+    <div class="margin-top-2 padding-205 bg-base-lightest border-left-05 border-primary">
       <h3 id="main-content">WCAG 2.1 AA Compliance Features</h3>
       <div class="display-grid grid-row grid-gap-2 margin-top-1">
         <div>

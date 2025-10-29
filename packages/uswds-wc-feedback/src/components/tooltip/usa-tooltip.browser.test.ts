@@ -45,7 +45,10 @@ describe('USATooltip Browser Tests', () => {
 
       const trigger = element.querySelector('.usa-tooltip') as HTMLElement;
       expect(trigger, 'Should have trigger element').toBeTruthy();
-      expect(trigger.classList.contains('usa-tooltip'), 'Trigger should have usa-tooltip class').toBe(true);
+      expect(
+        trigger.classList.contains('usa-tooltip'),
+        'Trigger should have usa-tooltip class'
+      ).toBe(true);
 
       const triggerRect = trigger.getBoundingClientRect();
       expect(triggerRect.width, 'Trigger should have width').toBeGreaterThan(0);
@@ -92,7 +95,9 @@ describe('USATooltip Browser Tests', () => {
         await new Promise((resolve) => setTimeout(resolve, 50));
 
         const trigger = element.querySelector('.usa-tooltip') as HTMLElement;
-        expect(trigger?.getAttribute('data-position'), `Should have ${position} position`).toBe(position);
+        expect(trigger?.getAttribute('data-position'), `Should have ${position} position`).toBe(
+          position
+        );
 
         const tooltipBody = document.querySelector('.usa-tooltip__body') as HTMLElement;
         if (tooltipBody) {
@@ -190,7 +195,10 @@ describe('USATooltip Browser Tests', () => {
 
       if (triggers.length >= 2) {
         const firstTrigger = triggers[0] as HTMLElement;
-        expect(firstTrigger.getAttribute('data-position'), 'First trigger should have position').toBe('top');
+        expect(
+          firstTrigger.getAttribute('data-position'),
+          'First trigger should have position'
+        ).toBe('top');
       }
     });
 
@@ -201,10 +209,9 @@ describe('USATooltip Browser Tests', () => {
 
       const trigger = element.querySelector('.usa-tooltip') as HTMLElement;
       if (trigger) {
-        expect(
-          trigger.classList.contains('custom-tooltip-class'),
-          'Should have custom class'
-        ).toBe(true);
+        expect(trigger.classList.contains('custom-tooltip-class'), 'Should have custom class').toBe(
+          true
+        );
       }
     });
 

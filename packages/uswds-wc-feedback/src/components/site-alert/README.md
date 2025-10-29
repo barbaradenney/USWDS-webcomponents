@@ -20,21 +20,21 @@ import 'path/to/uswds-webcomponents/src/components/site-alert/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `type` | `SiteAlertType` | `'info'` | Property description |
-| `heading` | `any` | `''` | Property description |
-| `content` | `any` | `''` | Property description |
-| `slim` | `any` | `false` | Property description |
-| `noIcon` | `any` | `false` | Property description |
-| `closable` | `any` | `false` | Property description |
-| `visible` | `any` | `true` | Property description |
-| `closeLabel` | `any` | `'Close'` | Property description |
+| Property     | Type            | Default   | Description          |
+| ------------ | --------------- | --------- | -------------------- |
+| `type`       | `SiteAlertType` | `'info'`  | Property description |
+| `heading`    | `any`           | `''`      | Property description |
+| `content`    | `any`           | `''`      | Property description |
+| `slim`       | `any`           | `false`   | Property description |
+| `noIcon`     | `any`           | `false`   | Property description |
+| `closable`   | `any`           | `false`   | Property description |
+| `visible`    | `any`           | `true`    | Property description |
+| `closeLabel` | `any`           | `'Close'` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event              | Type        | Description       |
+| ------------------ | ----------- | ----------------- |
 | `site-alert-close` | CustomEvent | Event description |
 
 ## Accessibility

@@ -163,14 +163,16 @@ export class USACard extends LitElement {
     const detail = {
       heading: this.heading,
       href: this.href,
-      target: this.target
+      target: this.target,
     };
 
-    this.dispatchEvent(new CustomEvent('card-click', {
-      detail,
-      bubbles: true,
-      cancelable: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('card-click', {
+        detail,
+        bubbles: true,
+        cancelable: true,
+      })
+    );
   }
 
   override disconnectedCallback() {
@@ -323,11 +325,6 @@ export class USACard extends LitElement {
 
     // USWDS Compliance: Only use official USWDS class 'usa-card__container'
     // No custom modifier classes - actionable behavior is handled via role/tabindex attributes
-    return html`
-      <div class="usa-card__container">
-        ${cardContent}
-      </div>
-    `;
+    return html` <div class="usa-card__container">${cardContent}</div> `;
   }
-
 }

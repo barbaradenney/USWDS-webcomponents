@@ -21,11 +21,11 @@ describe('Combo Box JavaScript Interaction Testing', () => {
     element.options = [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
-      { value: 'cherry', label: 'Cherry' }
+      { value: 'cherry', label: 'Cherry' },
     ];
     document.body.appendChild(element);
     await waitForUpdate(element);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -35,10 +35,11 @@ describe('Combo Box JavaScript Interaction Testing', () => {
 
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('combo-box') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('combo-box') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {

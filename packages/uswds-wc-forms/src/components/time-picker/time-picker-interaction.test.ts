@@ -25,24 +25,25 @@ describe('Time Picker JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(async () => {
     mockConsoleLog.mockRestore();
     // Wait for any pending async operations to complete before cleanup
     // Time picker initialization includes async combo-box transformation
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     element.remove();
   });
 
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('time-picker') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('time-picker') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -183,7 +184,9 @@ describe('Time Picker JavaScript Interaction Testing', () => {
         await waitForUpdate(element);
 
         // Check for visible options (not hidden)
-        const visibleOptions = element.querySelectorAll('.usa-time-picker__list-option:not([hidden])');
+        const visibleOptions = element.querySelectorAll(
+          '.usa-time-picker__list-option:not([hidden])'
+        );
         // Variable used to check visible options
         void visibleOptions;
 
@@ -269,7 +272,7 @@ describe('Time Picker JavaScript Interaction Testing', () => {
       element.requestUpdate();
       await waitForUpdate(element);
       // Additional wait for USWDS sync
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Check that component property was updated
       expect(element.value).toBe('10:30 AM');
@@ -329,7 +332,7 @@ describe('Time Picker JavaScript Interaction Testing', () => {
       element.requestUpdate();
       await waitForUpdate(element);
       // Additional wait for DOM updates
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Check component property
       expect(element.disabled).toBe(true);
@@ -360,7 +363,7 @@ describe('Time Picker JavaScript Interaction Testing', () => {
         expect(listbox.getAttribute('role')).toBe('listbox');
 
         const options = element.querySelectorAll('.usa-time-picker__list-option');
-        options.forEach(option => {
+        options.forEach((option) => {
           expect(option.getAttribute('role')).toBe('option');
         });
       }

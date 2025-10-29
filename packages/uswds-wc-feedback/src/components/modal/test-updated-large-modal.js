@@ -7,7 +7,7 @@ async function testUpdatedLargeModal() {
   const page = await browser.newPage();
 
   // Enable console logging
-  page.on('console', msg => {
+  page.on('console', (msg) => {
     console.log(`BROWSER: ${msg.text()}`);
   });
 
@@ -19,10 +19,10 @@ async function testUpdatedLargeModal() {
     console.log('✅ Page loaded');
 
     // Wait for Storybook to load
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // Check the iframe
-    const frame = page.frames().find(f => f.name() === 'storybook-preview-iframe');
+    const frame = page.frames().find((f) => f.name() === 'storybook-preview-iframe');
     if (!frame) {
       console.log('❌ Could not find storybook iframe');
       return;
@@ -35,7 +35,7 @@ async function testUpdatedLargeModal() {
     console.log('✅ Clicked open button');
 
     // Wait for modal to open
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Check modal dimensions
     const modalInfo = await frame.evaluate(() => {
@@ -51,16 +51,18 @@ async function testUpdatedLargeModal() {
         modal: {
           width: rect.width,
           maxWidth: computedStyles.maxWidth,
-          classes: modal.className
+          classes: modal.className,
         },
-        table: tableRect ? {
-          width: tableRect.width,
-          height: tableRect.height
-        } : null,
+        table: tableRect
+          ? {
+              width: tableRect.width,
+              height: tableRect.height,
+            }
+          : null,
         viewport: {
           width: window.innerWidth,
-          height: window.innerHeight
-        }
+          height: window.innerHeight,
+        },
       };
     });
 
@@ -71,16 +73,18 @@ async function testUpdatedLargeModal() {
 
     // Close current modal
     await frame.keyboard.press('Escape');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Navigate to default modal
-    await page.goto('http://localhost:6006/?path=/story/components-modal--default', { waitUntil: 'networkidle0' });
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await page.goto('http://localhost:6006/?path=/story/components-modal--default', {
+      waitUntil: 'networkidle0',
+    });
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const defaultFrame = page.frames().find(f => f.name() === 'storybook-preview-iframe');
+    const defaultFrame = page.frames().find((f) => f.name() === 'storybook-preview-iframe');
     if (defaultFrame) {
       await defaultFrame.click('button[data-open-modal]');
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const defaultModalInfo = await defaultFrame.evaluate(() => {
         const modal = document.querySelector('.usa-modal');
@@ -93,8 +97,8 @@ async function testUpdatedLargeModal() {
           modal: {
             width: rect.width,
             maxWidth: computedStyles.maxWidth,
-            classes: modal.className
-          }
+            classes: modal.className,
+          },
         };
       });
 
@@ -114,7 +118,6 @@ async function testUpdatedLargeModal() {
         }
       }
     }
-
   } catch (error) {
     console.error('Error:', error);
   }

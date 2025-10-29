@@ -852,8 +852,7 @@ describe('USADateRangePicker', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/date-range-picker/usa-date-range-picker.ts`;
+        const componentPath = `${process.cwd()}/src/components/date-range-picker/usa-date-range-picker.ts`;
         const validation = validateComponentJavaScript(componentPath, 'date-range-picker');
 
         if (!validation.isValid) {

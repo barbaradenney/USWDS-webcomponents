@@ -48,7 +48,6 @@ export class USATable extends USWDSBaseComponent {
     :host([hidden]) {
       display: none;
     }
-
   `;
 
   @property({ type: String })
@@ -141,7 +140,9 @@ export class USATable extends USWDSBaseComponent {
     // This allows using BOTH property-based data AND custom slotted table content
     if (this.childNodes.length > 0) {
       this.slottedContent = Array.from(this.childNodes)
-        .map(node => node.nodeType === Node.TEXT_NODE ? node.textContent : (node as Element).outerHTML || '')
+        .map((node) =>
+          node.nodeType === Node.TEXT_NODE ? node.textContent : (node as Element).outerHTML || ''
+        )
         .join('');
       // Clear content to prevent duplication
       this.innerHTML = '';
@@ -183,10 +184,12 @@ export class USATable extends USWDSBaseComponent {
 
     // Mark as initialized for tests
     this._initialized = true;
-    this.dispatchEvent(new CustomEvent('table-initialized', {
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('table-initialized', {
+        bubbles: true,
+        composed: true,
+      })
+    );
 
     // Bridge USWDS behavior with component state
     // Listen for clicks on sort buttons to sync USWDS sorting with component properties
@@ -228,7 +231,7 @@ export class USATable extends USWDSBaseComponent {
           if (nodes.length > 0) {
             // Insert nodes before slot
             this.slottedContentApplied = true;
-            nodes.forEach(node => {
+            nodes.forEach((node) => {
               slotElement.parentNode?.insertBefore(node, slotElement);
             });
             // Remove the slot
@@ -382,15 +385,17 @@ export class USATable extends USWDSBaseComponent {
           this.requestUpdate('data', oldData);
 
           // Dispatch event synchronously for external listeners
-          this.dispatchEvent(new CustomEvent('table-sort', {
-            detail: {
-              column: column.key,
-              direction: this.sortDirection,
-              sortType: column.sortType || 'text'
-            },
-            bubbles: true,
-            composed: true
-          }));
+          this.dispatchEvent(
+            new CustomEvent('table-sort', {
+              detail: {
+                column: column.key,
+                direction: this.sortDirection,
+                sortType: column.sortType || 'text',
+              },
+              bubbles: true,
+              composed: true,
+            })
+          );
 
           // DO NOT update aria-sort here! USWDS behavior has already set it correctly.
           // We are just syncing our component state with what USWDS did.
@@ -399,14 +404,13 @@ export class USATable extends USWDSBaseComponent {
     });
   }
 
-
   /**
    * Sort the table data based on current sort column and direction
    */
   private sortData() {
     if (!this.sortColumn || !this.data) return;
 
-    const column = this.headers.find(h => h.key === this.sortColumn);
+    const column = this.headers.find((h) => h.key === this.sortColumn);
     if (!column || !column.sortable) return;
 
     // Create a sorted copy of the data
@@ -505,7 +509,13 @@ export class USATable extends USWDSBaseComponent {
           role="columnheader"
           scope="col"
           data-sortable
-          aria-sort="${ifDefined(this.sortColumn === column.key ? (this.sortDirection === 'asc' ? 'ascending' : 'descending') : undefined)}"
+          aria-sort="${ifDefined(
+            this.sortColumn === column.key
+              ? this.sortDirection === 'asc'
+                ? 'ascending'
+                : 'descending'
+              : undefined
+          )}"
         >
           ${column.label}
         </th>
@@ -592,7 +602,7 @@ export class USATable extends USWDSBaseComponent {
     return html`
       <thead class="usa-table__head">
         <tr>
-          ${this.headers.map(column => this.renderHeaderCell(column))}
+          ${this.headers.map((column) => this.renderHeaderCell(column))}
         </tr>
       </thead>
     `;
@@ -633,9 +643,7 @@ export class USATable extends USWDSBaseComponent {
 
     return html`
       <table class="${tableClasses}" role="table">
-        ${this.renderCaption()}
-        ${this.renderTableHead()}
-        ${this.renderTableBody()}
+        ${this.renderCaption()} ${this.renderTableHead()} ${this.renderTableBody()}
 
         <!-- Allow for custom content -->
         <slot></slot>
@@ -650,7 +658,7 @@ export class USATable extends USWDSBaseComponent {
     return this as any;
   }
 
-    override render() {
+  override render() {
     // Always include table container wrapper for USWDS compatibility
     const containerClasses = [
       'usa-table-container',

@@ -20,29 +20,29 @@ import 'path/to/uswds-webcomponents/src/components/textarea/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `name` | `any` | `''` | Property description |
-| `value` | `any` | `''` | Property description |
-| `placeholder` | `any` | `''` | Property description |
-| `label` | `any` | `''` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
-| `success` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `readonly` | `any` | `false` | Property description |
-| `rows` | `any` | `4` | Property description |
-| `cols` | `number | null` | `null` | Property description |
-| `maxlength` | `number | null` | `null` | Property description |
-| `minlength` | `number | null` | `null` | Property description |
-| `autocomplete` | `any` | `''` | Property description |
+| Property       | Type    | Default | Description          |
+| -------------- | ------- | ------- | -------------------- | -------------------- |
+| `name`         | `any`   | `''`    | Property description |
+| `value`        | `any`   | `''`    | Property description |
+| `placeholder`  | `any`   | `''`    | Property description |
+| `label`        | `any`   | `''`    | Property description |
+| `hint`         | `any`   | `''`    | Property description |
+| `error`        | `any`   | `''`    | Property description |
+| `success`      | `any`   | `''`    | Property description |
+| `disabled`     | `any`   | `false` | Property description |
+| `required`     | `any`   | `false` | Property description |
+| `readonly`     | `any`   | `false` | Property description |
+| `rows`         | `any`   | `4`     | Property description |
+| `cols`         | `number | null`   | `null`               | Property description |
+| `maxlength`    | `number | null`   | `null`               | Property description |
+| `minlength`    | `number | null`   | `null`               | Property description |
+| `autocomplete` | `any`   | `''`    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `input` | CustomEvent | Event description |
+| Event    | Type        | Description       |
+| -------- | ----------- | ----------------- |
+| `input`  | CustomEvent | Event description |
 | `change` | CustomEvent | Event description |
 
 ## Accessibility

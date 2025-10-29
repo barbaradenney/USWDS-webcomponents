@@ -67,7 +67,7 @@ describe('USAHeader USWDS Integration Validation', () => {
       await element.updateComplete;
 
       // Attributes should be applied to element
-      expect(testElement.getAttribute("class")).toBeTruthy();
+      expect(testElement.getAttribute('class')).toBeTruthy();
     });
   });
 
@@ -84,7 +84,7 @@ describe('USAHeader USWDS Integration Validation', () => {
 
       // Strategy 1: Direct children access
       const directChildren = Array.from(element.children).filter(
-        child => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
+        (child) => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
       );
       expect(directChildren.length).toBeGreaterThan(0);
 
@@ -123,7 +123,6 @@ describe('USAHeader USWDS Integration Validation', () => {
 
   describe('USWDS Module Optimization', () => {
     it('should handle USWDS module loading', async () => {
-      
       // Test USWDS module import pattern
       try {
         // This is the pattern used in components:
@@ -137,8 +136,8 @@ describe('USAHeader USWDS Integration Validation', () => {
             },
             off: (element: HTMLElement) => {
               element.removeAttribute('data-uswds-initialized');
-            }
-          }
+            },
+          },
         };
 
         // Test module functionality
@@ -147,12 +146,10 @@ describe('USAHeader USWDS Integration Validation', () => {
 
         mockModule.default.off(element);
         expect(element.getAttribute('data-uswds-initialized')).toBeNull();
-
       } catch (error) {
         // Module loading may fail in test environment
         console.warn('USWDS module test failed in test environment:', error);
       }
-      
     });
 
     it('should handle module loading failures gracefully', async () => {

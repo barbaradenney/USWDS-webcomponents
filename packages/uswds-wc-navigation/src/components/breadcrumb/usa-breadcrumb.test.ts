@@ -2,7 +2,8 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-breadcrumb.ts';
 import type { USABreadcrumb, BreadcrumbItem } from './usa-breadcrumb.js';
 import {
-  waitForUpdate, testPropertyChanges,
+  waitForUpdate,
+  testPropertyChanges,
   validateComponentJavaScript,
 } from '@uswds-wc/test-utils/test-utils.js';
 import {
@@ -847,26 +848,26 @@ describe('USABreadcrumb', () => {
         expect(element.isConnected).toBe(true);
       }
     });
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/breadcrumb/usa-breadcrumb.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'breadcrumb');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/breadcrumb/usa-breadcrumb.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'breadcrumb');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('CRITICAL: Storybook Integration', () => {
@@ -1083,10 +1084,7 @@ describe('USABreadcrumb', () => {
     });
 
     it('should handle Enter key activation on links', async () => {
-      element.items = [
-        { label: 'Home', href: '/' },
-        { label: 'Current' },
-      ];
+      element.items = [{ label: 'Home', href: '/' }, { label: 'Current' }];
       await waitForUpdate(element);
 
       const link = element.querySelector('a') as HTMLAnchorElement;
@@ -1193,10 +1191,7 @@ describe('USABreadcrumb', () => {
     });
 
     it('should provide accessible name for navigation landmark', async () => {
-      element.items = [
-        { label: 'Home', href: '/' },
-        { label: 'Current' },
-      ];
+      element.items = [{ label: 'Home', href: '/' }, { label: 'Current' }];
       await waitForUpdate(element);
 
       // Navigation landmark should have accessible name

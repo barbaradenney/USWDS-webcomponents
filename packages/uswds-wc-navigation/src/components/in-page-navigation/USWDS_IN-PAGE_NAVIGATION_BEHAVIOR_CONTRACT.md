@@ -17,10 +17,12 @@
 The In-Page Navigation component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/in-page-navigation/usa-in-page-navigation-behavior.ts` - USWDS behavior mirror
 - `src/components/in-page-navigation/usa-in-page-navigation.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/in-page-navigation/usa-in-page-navigation-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The In-Page Navigation component mirrors USWDS JavaScript behavior exactly to ma
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should scroll spy functionality', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should scroll spy functionality', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should active section tracking', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should active section tracking', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should smooth scrolling', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -104,11 +112,13 @@ it('should smooth scrolling', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should threshold detection', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -120,7 +130,6 @@ it('should threshold detection', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -139,58 +148,65 @@ it('should threshold detection', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`once()`** - Line 1
+
   ```javascript
-  const once = require("receptor/once");
+  const once = require('receptor/once');
   ```
 
 - **`keymap()`** - Line 2
+
   ```javascript
-  const keymap = require("receptor/keymap");
+  const keymap = require('receptor/keymap');
   ```
 
 - **`selectOrMatches()`** - Line 3
+
   ```javascript
-  const selectOrMatches = require("../../uswds-core/src/js/utils/select-or-matches");
+  const selectOrMatches = require('../../uswds-core/src/js/utils/select-or-matches');
   ```
 
 - **`behavior()`** - Line 4
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`Sanitizer()`** - Line 7
+
   ```javascript
-  const Sanitizer = require("../../uswds-core/src/js/utils/sanitizer");
+  const Sanitizer = require('../../uswds-core/src/js/utils/sanitizer');
   ```
 
 - **`CURRENT_CLASS()`** - Line 9
+
   ```javascript
   const CURRENT_CLASS = `${PREFIX}-current`;
   ```
 
 - **`IN_PAGE_NAV_HEADINGS()`** - Line 10
+
   ```javascript
-  const IN_PAGE_NAV_HEADINGS = "h2 h3";
+  const IN_PAGE_NAV_HEADINGS = 'h2 h3';
   ```
 
 - **`IN_PAGE_NAV_VALID_HEADINGS()`** - Line 11
+
   ```javascript
-  const IN_PAGE_NAV_VALID_HEADINGS = ["h1", "h2", "h3", "h4", "h5", "h6"];
+  const IN_PAGE_NAV_VALID_HEADINGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
   ```
 
 - **`IN_PAGE_NAV_TITLE_TEXT()`** - Line 12
+
   ```javascript
-  const IN_PAGE_NAV_TITLE_TEXT = "On this page";
+  const IN_PAGE_NAV_TITLE_TEXT = 'On this page';
   ```
 
 - **`IN_PAGE_NAV_TITLE_HEADING_LEVEL()`** - Line 13
   ```javascript
-  const IN_PAGE_NAV_TITLE_HEADING_LEVEL = "h4";
+  const IN_PAGE_NAV_TITLE_HEADING_LEVEL = 'h4';
   ```
 
-
-*...and 28 more functions*
-
+_...and 28 more functions_
 
 ---
 
@@ -206,11 +222,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -218,6 +236,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-in-page-navigation-behavior.test.ts
 ```
@@ -230,10 +249,12 @@ npm test -- usa-in-page-navigation-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Component behavior requires USWDS source mirroring
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

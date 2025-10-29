@@ -403,7 +403,7 @@ describe('USACard', () => {
           description: 'Card body slot',
           testContent: '<p>Test body content</p>',
           expectedWrapperSelector: '.usa-card__body',
-        }
+        },
       ]);
 
       expect(validation.isValid).toBe(true);
@@ -419,7 +419,7 @@ describe('USACard', () => {
           description: 'Card footer slot',
           testContent: '<button class="usa-button">Test Button</button>',
           expectedWrapperSelector: '.usa-card__footer',
-        }
+        },
       ]);
 
       expect(validation.isValid).toBe(true);
@@ -441,7 +441,7 @@ describe('USACard', () => {
           description: 'Card footer slot',
           testContent: '<button class="usa-button">Test Button</button>',
           expectedWrapperSelector: '.usa-card__footer',
-        }
+        },
       ]);
 
       expect(validation.isValid).toBe(true);
@@ -460,11 +460,10 @@ describe('USACard', () => {
           slotName: 'body',
           description: 'Card body',
           testContent: '<p>Test</p>',
-          expectedWrapperSelector: '.usa-card__body'
-        }
+          expectedWrapperSelector: '.usa-card__body',
+        },
       ]);
     });
-
 
     it('should handle complex slotted content', async () => {
       const validation = await testSlottedContent(element, [
@@ -482,13 +481,12 @@ describe('USACard', () => {
             </div>
           `,
           expectedWrapperSelector: '.usa-card__body',
-        }
+        },
       ]);
 
       expect(validation.isValid).toBe(true);
       expect(validation.issues).toHaveLength(0);
     });
-
   });
 
   describe('USWDS CSS Classes', () => {
@@ -936,8 +934,7 @@ describe('USACard', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/card/usa-card.ts`;
+        const componentPath = `${process.cwd()}/src/components/card/usa-card.ts`;
         const validation = validateComponentJavaScript(componentPath, 'card');
 
         if (!validation.isValid) {

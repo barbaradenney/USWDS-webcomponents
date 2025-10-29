@@ -77,8 +77,10 @@ describe('USATooltip USWDS Integration Validation', () => {
       // Should have adequate space for positioning
       const computedStyle = window.getComputedStyle(container);
       // Parse rem values properly - getComputedStyle returns pixel values in browser
-      const marginValue = parseFloat(computedStyle.marginTop) || parseFloat(computedStyle.margin) || 0;
-      const paddingValue = parseFloat(computedStyle.paddingTop) || parseFloat(computedStyle.padding) || 0;
+      const marginValue =
+        parseFloat(computedStyle.marginTop) || parseFloat(computedStyle.margin) || 0;
+      const paddingValue =
+        parseFloat(computedStyle.paddingTop) || parseFloat(computedStyle.padding) || 0;
 
       // In test environment, values might be in rem units, so check for either px or rem
       const expectedMargin = marginValue >= 64 || marginValue >= 4; // 64px or 4rem
@@ -90,11 +92,10 @@ describe('USATooltip USWDS Integration Validation', () => {
 
     it('should validate USWDS module optimization', () => {
       // Test that required USWDS module is optimized
-      
+
       const requiredModule = '@uswds/uswds/js/usa-tooltip';
       // In production, this module should be pre-optimized
       expect(requiredModule).toBeTruthy();
-      
     });
   });
 
@@ -113,14 +114,14 @@ describe('USATooltip USWDS Integration Validation', () => {
           events.push('first-updated');
           // Should delay USWDS initialization
           setTimeout(() => events.push('initialize-uswds'), 10);
-        }
+        },
       };
 
       mockLifecycle.connectedCallback();
       mockLifecycle.firstUpdated();
 
       // Wait for async initialization
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 20));
 
       // Validate proper sequence
       expect(events).toContain('connected');
@@ -134,7 +135,6 @@ describe('USATooltip USWDS Integration Validation', () => {
     });
 
     it('should handle property updates through all phases', async () => {
-      
       element.position = 'top';
       await element.updateComplete;
       expect(element.position).toBe('top');
@@ -142,7 +142,6 @@ describe('USATooltip USWDS Integration Validation', () => {
       element.position = 'bottom';
       await element.updateComplete;
       expect(element.position).toBe('bottom');
-    
     });
   });
 
@@ -159,7 +158,7 @@ describe('USATooltip USWDS Integration Validation', () => {
 
       // Strategy 1: Direct children access
       const directChildren = Array.from(element.children).filter(
-        child => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
+        (child) => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
       );
       expect(directChildren.length).toBeGreaterThan(0);
 
@@ -175,7 +174,7 @@ describe('USATooltip USWDS Integration Validation', () => {
     it('should handle content updates dynamically', () => {
       // Helper function to count non-slot children
       const countContentChildren = () => {
-        return Array.from(element.children).filter(child => child.tagName !== 'SLOT').length;
+        return Array.from(element.children).filter((child) => child.tagName !== 'SLOT').length;
       };
 
       // Add initial content
@@ -200,7 +199,6 @@ describe('USATooltip USWDS Integration Validation', () => {
 
   describe('USWDS Module Optimization', () => {
     it('should handle USWDS module loading', async () => {
-      
       // Test USWDS module import pattern
       try {
         // This is the pattern used in components:
@@ -214,8 +212,8 @@ describe('USATooltip USWDS Integration Validation', () => {
             },
             off: (element: HTMLElement) => {
               element.removeAttribute('data-uswds-initialized');
-            }
-          }
+            },
+          },
         };
 
         // Test module functionality
@@ -224,12 +222,10 @@ describe('USATooltip USWDS Integration Validation', () => {
 
         mockModule.default.off(element);
         expect(element.getAttribute('data-uswds-initialized')).toBeNull();
-
       } catch (error) {
         // Module loading may fail in test environment
         console.warn('USWDS module test failed in test environment:', error);
       }
-      
     });
 
     it('should handle module loading failures gracefully', async () => {

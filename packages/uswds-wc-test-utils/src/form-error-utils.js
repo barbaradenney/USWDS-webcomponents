@@ -11,7 +11,7 @@
  */
 export function getFormErrors(container) {
   const errorElements = container.querySelectorAll('.usa-error-message');
-  return Array.from(errorElements).map(el => el.textContent.trim());
+  return Array.from(errorElements).map((el) => el.textContent.trim());
 }
 
 /**
@@ -21,7 +21,7 @@ export function getFormErrors(container) {
  */
 export function assertFormHasError(form, expectedError) {
   const errors = getFormErrors(form);
-  if (!errors.some(error => error.includes(expectedError))) {
+  if (!errors.some((error) => error.includes(expectedError))) {
     throw new Error(`Expected form to have error: "${expectedError}"`);
   }
 }
@@ -117,7 +117,7 @@ export function testErrorSuggestion(input) {
           /try\s+([^.]+)/i,
           /use\s+([^.]+)/i,
           /like\s+([^.]+)/i,
-          /such as\s+([^.]+)/i
+          /such as\s+([^.]+)/i,
         ];
 
         for (const pattern of suggestionPatterns) {
@@ -128,7 +128,11 @@ export function testErrorSuggestion(input) {
         }
 
         // Also check if the entire message contains helpful guidance
-        if (errorText.includes(':') || errorText.includes('format') || errorText.includes('example')) {
+        if (
+          errorText.includes(':') ||
+          errorText.includes('format') ||
+          errorText.includes('example')
+        ) {
           // Message likely contains a suggestion even if we didn't extract it
           if (suggestions.length === 0) {
             suggestions.push(errorText.trim());
@@ -142,11 +146,15 @@ export function testErrorSuggestion(input) {
   const formGroup = input.closest('.usa-form-group');
   if (formGroup) {
     const errorMessages = formGroup.querySelectorAll('.usa-error-message');
-    errorMessages.forEach(errorElement => {
+    errorMessages.forEach((errorElement) => {
       const errorText = errorElement.textContent || '';
       if (errorText && !suggestions.includes(errorText.trim())) {
         // Check for suggestion patterns
-        if (errorText.includes(':') || errorText.includes('format') || errorText.includes('example')) {
+        if (
+          errorText.includes(':') ||
+          errorText.includes('format') ||
+          errorText.includes('example')
+        ) {
           suggestions.push(errorText.trim());
         }
       }
@@ -155,7 +163,7 @@ export function testErrorSuggestion(input) {
 
   return {
     hasSuggestion: suggestions.length > 0,
-    suggestions
+    suggestions,
   };
 }
 
@@ -190,7 +198,7 @@ export function testLabelsOrInstructions(input) {
 
   return {
     compliant: errors.length === 0,
-    errors
+    errors,
   };
 }
 
@@ -227,7 +235,7 @@ export function testErrorIdentification(input) {
       const errorElements = formGroup.querySelectorAll('.usa-error-message');
       if (errorElements.length > 0) {
         hasErrorMessage = true;
-        errorElements.forEach(el => {
+        errorElements.forEach((el) => {
           errorMessages.push(el.textContent.trim());
         });
       }
@@ -239,8 +247,8 @@ export function testErrorIdentification(input) {
       hasAriaInvalid,
       hasAriaDescribedby,
       hasErrorMessage,
-      errorMessages
-    }
+      errorMessages,
+    },
   };
 }
 
@@ -259,7 +267,7 @@ export function testFormErrorAccessibility(input) {
       labelsProvided: labelsResult.compliant,
       labelErrors: labelsResult.errors,
       errorIdentification: errorResult.details,
-      errorSuggestions: suggestionResult
-    }
+      errorSuggestions: suggestionResult,
+    },
   };
 }

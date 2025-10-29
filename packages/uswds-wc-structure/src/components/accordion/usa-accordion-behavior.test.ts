@@ -40,7 +40,7 @@ describe('USWDS Accordion Behavior Contract', () => {
 
     // Wait for any pending async operations to complete before cleanup
     // USWDS behavior needs time to fully detach event listeners
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   describe('Contract 1: Button Click Toggle', () => {
@@ -249,9 +249,13 @@ describe('USWDS Accordion Behavior Contract', () => {
       ];
       await waitForBehaviorInit(element);
 
-      const button1 = element.querySelector('[aria-controls="test-1-content"]') as HTMLButtonElement;
+      const button1 = element.querySelector(
+        '[aria-controls="test-1-content"]'
+      ) as HTMLButtonElement;
       const content1 = element.querySelector('#test-1-content') as HTMLElement;
-      const button2 = element.querySelector('[aria-controls="test-2-content"]') as HTMLButtonElement;
+      const button2 = element.querySelector(
+        '[aria-controls="test-2-content"]'
+      ) as HTMLButtonElement;
       const content2 = element.querySelector('#test-2-content') as HTMLElement;
 
       expect(button1.getAttribute('aria-expanded')).toBe('true');
@@ -266,7 +270,7 @@ describe('USWDS Accordion Behavior Contract', () => {
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         const contentId = button.getAttribute('aria-controls');
         const content = element.querySelector(`#${contentId}`) as HTMLElement;
         const expanded = button.getAttribute('aria-expanded') === 'true';

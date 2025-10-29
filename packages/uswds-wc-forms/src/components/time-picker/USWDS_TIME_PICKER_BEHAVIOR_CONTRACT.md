@@ -17,10 +17,12 @@
 The Time Picker component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/time-picker/usa-time-picker-behavior.ts` - USWDS behavior mirror
 - `src/components/time-picker/usa-time-picker.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/time-picker/usa-time-picker-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Time Picker component mirrors USWDS JavaScript behavior exactly to maintain 
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should combo box transformation', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should combo box transformation', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should time filtering', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should time filtering', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should step increment validation', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -104,11 +112,13 @@ it('should step increment validation', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should input formatting', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -120,7 +130,6 @@ it('should input formatting', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -139,46 +148,55 @@ it('should input formatting', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`behavior()`** - Line 1
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`selectOrMatches()`** - Line 2
+
   ```javascript
-  const selectOrMatches = require("../../uswds-core/src/js/utils/select-or-matches");
+  const selectOrMatches = require('../../uswds-core/src/js/utils/select-or-matches');
   ```
 
 - **`TIME_PICKER_CLASS()`** - Line 9
+
   ```javascript
   const TIME_PICKER_CLASS = `${PREFIX}-time-picker`;
   ```
 
 - **`TIME_PICKER()`** - Line 10
+
   ```javascript
   const TIME_PICKER = `.${TIME_PICKER_CLASS}`;
   ```
 
 - **`MAX_TIME()`** - Line 11
+
   ```javascript
   const MAX_TIME = 60 * 24 - 1;
   ```
 
 - **`MIN_TIME()`** - Line 12
+
   ```javascript
   const MIN_TIME = 0;
   ```
 
 - **`DEFAULT_STEP()`** - Line 13
+
   ```javascript
   const DEFAULT_STEP = 30;
   ```
 
 - **`MIN_STEP()`** - Line 14
+
   ```javascript
   const MIN_STEP = 1;
   ```
 
 - **`FILTER_DATASET()`** - Line 16
+
   ```javascript
   const FILTER_DATASET = {
   ```
@@ -188,9 +206,7 @@ Key functions from USWDS source (for reference during implementation):
   const parseTimeString = (timeStr) => {
   ```
 
-
-*...and 2 more functions*
-
+_...and 2 more functions_
 
 ---
 
@@ -206,11 +222,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -218,6 +236,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-time-picker-behavior.test.ts
 ```
@@ -230,10 +249,12 @@ npm test -- usa-time-picker-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Complex behavior requiring direct USWDS source replication
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

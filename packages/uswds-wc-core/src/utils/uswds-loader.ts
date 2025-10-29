@@ -75,7 +75,9 @@ export async function loadUSWDSModule(moduleName: string): Promise<USWDSModule |
     const normalizedName = moduleName.replace('-', '');
 
     // Try both normalized and original name
-    const preloadedModule = (window as any).__USWDS_MODULES__[normalizedName] || (window as any).__USWDS_MODULES__[moduleName];
+    const preloadedModule =
+      (window as any).__USWDS_MODULES__[normalizedName] ||
+      (window as any).__USWDS_MODULES__[moduleName];
     if (preloadedModule) {
       console.log(`✅ Using pre-loaded USWDS ${moduleName} module from Storybook`);
       moduleCache.set(moduleName, preloadedModule); // Cache it
@@ -89,11 +91,12 @@ export async function loadUSWDSModule(moduleName: string): Promise<USWDSModule |
     const { getUSWDSModule } = await import('./uswds-modules-registry.js');
     const uswdsModule = getUSWDSModule(moduleName);
 
-    if (uswdsModule && (
-      typeof uswdsModule.on === 'function' ||
-      typeof uswdsModule.init === 'function' ||
-      typeof uswdsModule === 'function'
-    )) {
+    if (
+      uswdsModule &&
+      (typeof uswdsModule.on === 'function' ||
+        typeof uswdsModule.init === 'function' ||
+        typeof uswdsModule === 'function')
+    ) {
       console.log(`✅ Loaded '${moduleName}' from USWDS static registry`);
       moduleCache.set(moduleName, uswdsModule); // Cache successful load
       return uswdsModule;
@@ -125,7 +128,8 @@ export async function loadUSWDSModule(moduleName: string): Promise<USWDSModule |
         console.log(`ℹ️ Creating ${moduleName} module wrapper for global USWDS behavior`);
 
         // Check if the module was exported from the bundle
-        const bundleModule = (uswdsBundle as any)[moduleName] || (uswdsBundle as any).default?.[moduleName];
+        const bundleModule =
+          (uswdsBundle as any)[moduleName] || (uswdsBundle as any).default?.[moduleName];
 
         if (bundleModule && typeof bundleModule.init === 'function') {
           console.log(`✅ Found ${moduleName} in USWDS bundle exports`);
@@ -217,7 +221,7 @@ export async function loadUSWDSModule(moduleName: string): Promise<USWDSModule |
                 console.log(`✅ Triggered manual modal initialization`);
               }
             }
-          }
+          },
         };
         moduleCache.set(moduleName, wrapperModule); // Cache wrapper module
         return wrapperModule;
@@ -230,7 +234,11 @@ export async function loadUSWDSModule(moduleName: string): Promise<USWDSModule |
       moduleCache.set(moduleName, null); // Cache failure
       return null;
     } catch (bundleError) {
-      console.warn(`🚫 USWDS Module '${moduleName}' not available (tried both individual and bundle):`, error, bundleError);
+      console.warn(
+        `🚫 USWDS Module '${moduleName}' not available (tried both individual and bundle):`,
+        error,
+        bundleError
+      );
       moduleCache.set(moduleName, null); // Cache failure
       return null;
     }
@@ -244,7 +252,9 @@ export async function loadUSWDSModule(moduleName: string): Promise<USWDSModule |
  * @param moduleNames - Array of USWDS module names
  * @returns Promise<Record<string, USWDSModule | null>>
  */
-export async function loadUSWDSModules(moduleNames: string[]): Promise<Record<string, USWDSModule | null>> {
+export async function loadUSWDSModules(
+  moduleNames: string[]
+): Promise<Record<string, USWDSModule | null>> {
   const results: Record<string, USWDSModule | null> = {};
 
   await Promise.all(
@@ -294,7 +304,19 @@ export async function initializeUSWDSComponent(
     // CRITICAL: Search uses behavior() with init() method to initialize button toggle state
     // CRITICAL: Banner uses behavior() with init() method to initialize button expanded state
     // CRITICAL: Accordion uses behavior() with init() method to set initial expanded/collapsed state
-    if (moduleName === 'modal' || moduleName === 'combo-box' || moduleName === 'file-input' || moduleName === 'time-picker' || moduleName === 'tooltip' || moduleName === 'table' || moduleName === 'character-count' || moduleName === 'header' || moduleName === 'search' || moduleName === 'banner' || moduleName === 'accordion') {
+    if (
+      moduleName === 'modal' ||
+      moduleName === 'combo-box' ||
+      moduleName === 'file-input' ||
+      moduleName === 'time-picker' ||
+      moduleName === 'tooltip' ||
+      moduleName === 'table' ||
+      moduleName === 'character-count' ||
+      moduleName === 'header' ||
+      moduleName === 'search' ||
+      moduleName === 'banner' ||
+      moduleName === 'accordion'
+    ) {
       // These components require init() method to create proper DOM structure
       if (typeof module.init === 'function') {
         // Add debug logging for combo-box specifically
@@ -318,7 +340,9 @@ export async function initializeUSWDSComponent(
             : element.querySelector('.usa-combo-box');
 
           if (comboBoxElement) {
-            console.log(`🔍 USWDS time-picker created combo-box, now activating combo-box behavior`);
+            console.log(
+              `🔍 USWDS time-picker created combo-box, now activating combo-box behavior`
+            );
             try {
               const comboBoxModule = await import('@uswds/uswds/js/usa-combo-box');
               if (typeof comboBoxModule.default?.on === 'function') {
@@ -334,7 +358,10 @@ export async function initializeUSWDSComponent(
         module.on(element);
         console.log(`✅ USWDS ${moduleName} initialized with .on() method (fallback)`);
       } else {
-        console.warn(`⚠️ USWDS ${moduleName} module loaded but no suitable initialization method found`, module);
+        console.warn(
+          `⚠️ USWDS ${moduleName} module loaded but no suitable initialization method found`,
+          module
+        );
       }
     } else {
       // Other components prefer on() method
@@ -349,7 +376,10 @@ export async function initializeUSWDSComponent(
         (module as any)(element);
         console.log(`✅ USWDS ${moduleName} initialized as function`);
       } else {
-        console.warn(`⚠️ USWDS ${moduleName} module loaded but no suitable initialization method found`, module);
+        console.warn(
+          `⚠️ USWDS ${moduleName} module loaded but no suitable initialization method found`,
+          module
+        );
       }
     }
   } else {
@@ -417,8 +447,8 @@ export const CSS_ONLY_USWDS_MODULES = [
   'select',
 ] as const;
 
-export type SupportedUSWDSModule = typeof SUPPORTED_USWDS_MODULES[number];
-export type CSSOnlyUSWDSModule = typeof CSS_ONLY_USWDS_MODULES[number];
+export type SupportedUSWDSModule = (typeof SUPPORTED_USWDS_MODULES)[number];
+export type CSSOnlyUSWDSModule = (typeof CSS_ONLY_USWDS_MODULES)[number];
 
 /**
  * Check if a USWDS component is CSS-only (doesn't need JavaScript initialization)

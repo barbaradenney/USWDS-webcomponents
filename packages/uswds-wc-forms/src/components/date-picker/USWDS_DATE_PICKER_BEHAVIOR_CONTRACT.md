@@ -17,10 +17,12 @@
 The Date Picker component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/date-picker/usa-date-picker-behavior.ts` - USWDS behavior mirror
 - `src/components/date-picker/usa-date-picker.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/date-picker/usa-date-picker-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Date Picker component mirrors USWDS JavaScript behavior exactly to maintain 
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should calendar rendering', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should calendar rendering', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should date selection', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should date selection', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should keyboard navigation', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -104,11 +112,13 @@ it('should keyboard navigation', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should min/max date validation', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -128,11 +138,13 @@ it('should min/max date validation', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should input formatting', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -144,7 +156,6 @@ it('should input formatting', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -163,46 +174,55 @@ it('should input formatting', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`keymap()`** - Line 1
+
   ```javascript
-  const keymap = require("receptor/keymap");
+  const keymap = require('receptor/keymap');
   ```
 
 - **`behavior()`** - Line 2
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`select()`** - Line 3
+
   ```javascript
-  const select = require("../../uswds-core/src/js/utils/select");
+  const select = require('../../uswds-core/src/js/utils/select');
   ```
 
 - **`selectOrMatches()`** - Line 4
+
   ```javascript
-  const selectOrMatches = require("../../uswds-core/src/js/utils/select-or-matches");
+  const selectOrMatches = require('../../uswds-core/src/js/utils/select-or-matches');
   ```
 
 - **`activeElement()`** - Line 7
+
   ```javascript
-  const activeElement = require("../../uswds-core/src/js/utils/active-element");
+  const activeElement = require('../../uswds-core/src/js/utils/active-element');
   ```
 
 - **`isIosDevice()`** - Line 8
+
   ```javascript
-  const isIosDevice = require("../../uswds-core/src/js/utils/is-ios-device");
+  const isIosDevice = require('../../uswds-core/src/js/utils/is-ios-device');
   ```
 
 - **`Sanitizer()`** - Line 9
+
   ```javascript
-  const Sanitizer = require("../../uswds-core/src/js/utils/sanitizer");
+  const Sanitizer = require('../../uswds-core/src/js/utils/sanitizer');
   ```
 
 - **`DATE_PICKER_CLASS()`** - Line 11
+
   ```javascript
   const DATE_PICKER_CLASS = `${PREFIX}-date-picker`;
   ```
 
 - **`DATE_PICKER_WRAPPER_CLASS()`** - Line 12
+
   ```javascript
   const DATE_PICKER_WRAPPER_CLASS = `${DATE_PICKER_CLASS}__wrapper`;
   ```
@@ -212,9 +232,7 @@ Key functions from USWDS source (for reference during implementation):
   const DATE_PICKER_INITIALIZED_CLASS = `${DATE_PICKER_CLASS}--initialized`;
   ```
 
-
-*...and 171 more functions*
-
+_...and 171 more functions_
 
 ---
 
@@ -230,11 +248,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -242,6 +262,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-date-picker-behavior.test.ts
 ```
@@ -254,10 +275,12 @@ npm test -- usa-date-picker-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Complex behavior requiring direct USWDS source replication
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

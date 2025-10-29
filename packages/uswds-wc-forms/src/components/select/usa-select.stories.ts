@@ -212,12 +212,7 @@ export const FormIntegration: Story = {
   },
   render: () => html`
     <form id="select-form" class="maxw-card">
-      <usa-select
-        label="Department"
-        name="department"
-        hint="Select your department"
-        required
-      >
+      <usa-select label="Department" name="department" hint="Select your department" required>
         <option value="">- Select -</option>
         <option value="hr">Human Resources</option>
         <option value="it">Information Technology</option>
@@ -359,7 +354,8 @@ export const AccessibilityDemo: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Demonstrates accessibility features including labels, ARIA attributes, and keyboard navigation.',
+        story:
+          'Demonstrates accessibility features including labels, ARIA attributes, and keyboard navigation.',
       },
     },
   },
@@ -399,7 +395,6 @@ export const AccessibilityDemo: Story = {
     </div>
   `,
 };
-
 
 export const CustomContent: Story = {
   parameters: {

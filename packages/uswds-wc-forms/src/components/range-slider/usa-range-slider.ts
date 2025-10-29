@@ -102,7 +102,7 @@ export class USARangeSlider extends LitElement {
       await this.updateComplete;
 
       // Wait one frame to ensure DOM is queryable
-      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
       // NOTE: We render the wrapper ourselves to have control over showValue property
       // USWDS.range.on() would create a duplicate wrapper, so we don't call it
@@ -149,16 +149,16 @@ export class USARangeSlider extends LitElement {
     return `${value}${this.unit || ''}`;
   }
 
-
   private getAriaDescribedBy(): string | undefined {
     const descriptions = [
       this.hint ? `${this.inputId}-hint` : '',
-      this.error ? `${this.inputId}-error` : ''
-    ].filter(Boolean).join(' ');
+      this.error ? `${this.inputId}-error` : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return descriptions || undefined;
   }
-
 
   override disconnectedCallback() {
     super.disconnectedCallback();
@@ -207,16 +207,18 @@ export class USARangeSlider extends LitElement {
   }
 
   private dispatchRangeChange(newValue: number) {
-    this.dispatchEvent(new CustomEvent('range-change', {
-      detail: {
-        value: newValue,
-        formattedValue: this.formatValue(newValue).replace(this.unit, ''), // Remove unit for formatted value
-        percentage: this.calculatePercentage(newValue),
-        target: this
-      },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('range-change', {
+        detail: {
+          value: newValue,
+          formattedValue: this.formatValue(newValue).replace(this.unit, ''), // Remove unit for formatted value
+          percentage: this.calculatePercentage(newValue),
+          target: this,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private handleInput(event: Event) {
@@ -285,29 +287,20 @@ export class USARangeSlider extends LitElement {
       .filter(Boolean)
       .join(' ');
 
-    const labelClasses = [
-      'usa-label',
-      hasError ? 'usa-label--error' : ''
-    ]
+    const labelClasses = ['usa-label', hasError ? 'usa-label--error' : '']
       .filter(Boolean)
       .join(' ');
 
-    const inputClasses = [
-      'usa-range',
-      'usa-range__input',
-      hasError ? 'usa-range--error' : ''
-    ]
+    const inputClasses = ['usa-range', 'usa-range__input', hasError ? 'usa-range--error' : '']
       .filter(Boolean)
       .join(' ');
 
     return html`
       <div class="${formGroupClasses}">
         <label class="${labelClasses}" for="${this.inputId}">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
+          ${this.label} ${this.renderRequiredIndicator()}
         </label>
-        ${this.renderHint()}
-        ${this.renderError()}
+        ${this.renderHint()} ${this.renderError()}
 
         <div class="usa-range__wrapper">
           <input

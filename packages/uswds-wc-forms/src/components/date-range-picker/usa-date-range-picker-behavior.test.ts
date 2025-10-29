@@ -32,7 +32,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 1: Component Initialization', () => {
     it('should add range start and end classes to date pickers', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const rangePicker = element.querySelector('.usa-date-range-picker');
       expect(rangePicker).not.toBeNull();
@@ -80,7 +80,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 2: Range Start Updates', () => {
     it('should update end picker min date when start date changes', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.startDate = '2023-06-15';
       await waitForBehaviorInit(element);
@@ -89,13 +89,14 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
       // USWDS updates rangeEndEl.dataset.minDate = updatedDate
       // End picker's min date should be the start date
-      const endMinDate = endPicker?.minDate || endPicker?.dataset?.minDate || endPicker?.getAttribute('minDate');
+      const endMinDate =
+        endPicker?.minDate || endPicker?.dataset?.minDate || endPicker?.getAttribute('minDate');
       expect(endMinDate).toBe('2023-06-15');
     });
 
     it('should set range date on end picker when start date is valid', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.startDate = '2023-06-15';
       await waitForBehaviorInit(element);
@@ -117,7 +118,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should update calendar if visible when start date changes', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const startPicker = element.querySelector('[data-range-start]') as any;
 
@@ -140,7 +141,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 3: Range End Updates', () => {
     it('should update start picker max date when end date changes', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.endDate = '2023-12-31';
       await waitForBehaviorInit(element);
@@ -148,13 +149,16 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
       const startPicker = element.querySelector('[data-range-start]') as any;
 
       // USWDS updates rangeStartEl.dataset.maxDate = updatedDate
-      const startMaxDate = startPicker?.maxDate || startPicker?.dataset?.maxDate || startPicker?.getAttribute('maxDate');
+      const startMaxDate =
+        startPicker?.maxDate ||
+        startPicker?.dataset?.maxDate ||
+        startPicker?.getAttribute('maxDate');
       expect(startMaxDate).toBe('2023-12-31');
     });
 
     it('should set range date on start picker when end date is valid', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.endDate = '2023-12-31';
       await waitForBehaviorInit(element);
@@ -162,14 +166,15 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
       const startPicker = element.querySelector('[data-range-start]') as any;
 
       // USWDS sets rangeStartEl.dataset.rangeDate = updatedDate
-      const rangeDate = startPicker?.dataset?.rangeDate || startPicker?.getAttribute('data-range-date');
+      const rangeDate =
+        startPicker?.dataset?.rangeDate || startPicker?.getAttribute('data-range-date');
 
       expect(rangeDate !== undefined).toBe(true);
     });
 
     it('should update calendar if visible when end date changes', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const endPicker = element.querySelector('[data-range-end]') as any;
 
@@ -191,7 +196,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 4: Date Range Validation', () => {
     it('should enforce start date is before or equal to end date', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.startDate = '2023-06-15';
       element.endDate = '2023-06-10'; // Invalid: end before start
@@ -205,7 +210,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should allow start and end date to be the same day', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.startDate = '2023-06-15';
       element.endDate = '2023-06-15';
@@ -220,7 +225,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
       element.minDate = '2023-01-01';
       element.maxDate = '2023-12-31';
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.startDate = '2023-06-15';
       element.endDate = '2023-08-20';
@@ -252,7 +257,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 5: Event Handling', () => {
     it('should listen for input and change events on range start', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const startPicker = element.querySelector('[data-range-start]');
       expect(startPicker).not.toBeNull();
@@ -270,7 +275,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should listen for input and change events on range end', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const endPicker = element.querySelector('[data-range-end]');
       expect(endPicker).not.toBeNull();
@@ -286,7 +291,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should handle rapid successive date changes', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Rapidly change dates
       element.startDate = '2023-06-15';
@@ -307,7 +312,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 6: Context Management', () => {
     it('should find date range picker context from child elements', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // USWDS: el.closest(DATE_RANGE_PICKER)
       const rangePicker = element.querySelector('.usa-date-range-picker');
@@ -318,7 +323,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should maintain references to both start and end pickers', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // USWDS stores: { dateRangePickerEl, rangeStartEl, rangeEndEl }
       const startPicker = element.querySelector('[data-range-start]');
@@ -330,7 +335,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should query internal input elements from date pickers', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // USWDS: const { internalInputEl } = getDatePickerContext(rangeStartEl)
       const startPicker = element.querySelector('[data-range-start]');
@@ -364,7 +369,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should maintain individual date picker accessibility', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const startPicker = element.querySelector('[data-range-start]');
       const endPicker = element.querySelector('[data-range-end]');
@@ -382,9 +387,10 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
       await waitForBehaviorInit(element);
 
       // Component should indicate required state
-      const hasRequired = element.hasAttribute('required') ||
-                         element.querySelector('[required]') ||
-                         element.querySelector('.usa-hint--required');
+      const hasRequired =
+        element.hasAttribute('required') ||
+        element.querySelector('[required]') ||
+        element.querySelector('.usa-hint--required');
 
       expect(hasRequired).toBeTruthy();
     });
@@ -393,12 +399,12 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Contract 8: Cleanup', () => {
     it('should clean up event listeners on disconnect', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const startPicker = element.querySelector('[data-range-start]');
 
       element.remove();
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Dispatch events after removal should not cause errors
       startPicker?.dispatchEvent(new Event('change', { bubbles: true }));
@@ -408,13 +414,13 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
 
     it('should remove all date picker elements on disconnect', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const rangePicker = document.querySelector('.usa-date-range-picker');
       expect(rangePicker).not.toBeNull();
 
       element.remove();
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Component and its children should be removed
       const afterRemoval = document.body.contains(element);
@@ -425,7 +431,7 @@ describe('USWDS Date Range Picker Behavior Contract', () => {
   describe('Prohibited Behaviors (must NOT be present)', () => {
     it('should NOT allow end date before start date', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       element.startDate = '2023-08-20';
       element.endDate = '2023-06-15'; // Invalid

@@ -20,7 +20,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
     mockConsoleLog = vi.spyOn(console, 'log').mockImplementation(() => {});
 
     element = document.createElement('usa-tooltip') as USATooltip;
-    element.text = 'This is a helpful tooltip';  // Use text instead of label
+    element.text = 'This is a helpful tooltip'; // Use text instead of label
     element.position = 'top';
 
     // Create and append child element BEFORE adding to DOM (matches working pattern)
@@ -32,13 +32,13 @@ describe('Tooltip JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for component to apply tooltip attributes
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Get the slotted element that has been enhanced with usa-tooltip class
     triggerElement = element.querySelector('.usa-tooltip') as HTMLElement;
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -49,10 +49,11 @@ describe('Tooltip JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('tooltip') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('tooltip') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -74,7 +75,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       expect(triggerElement.classList.contains('usa-tooltip')).toBe(true);
 
       // Wait for attributes to be applied (they are set asynchronously)
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Check that attributes are applied (may be null in test environment due to async nature)
       const position = triggerElement.getAttribute('data-position');
@@ -113,9 +114,9 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       // Check if tooltip became visible
       const tooltipBody = element.querySelector('.usa-tooltip__body') as HTMLElement;
       if (tooltipBody) {
-        const isVisible = tooltipBody.style.display !== 'none' &&
-                         !tooltipBody.hasAttribute('hidden') ||
-                         showEventFired;
+        const isVisible =
+          (tooltipBody.style.display !== 'none' && !tooltipBody.hasAttribute('hidden')) ||
+          showEventFired;
 
         if (!isVisible) {
           console.warn('⚠️ Tooltip may not be showing on hover');
@@ -146,9 +147,9 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       // Check if tooltip became visible
       const tooltipBody = element.querySelector('.usa-tooltip__body') as HTMLElement;
       if (tooltipBody) {
-        const isVisible = tooltipBody.style.display !== 'none' &&
-                         !tooltipBody.hasAttribute('hidden') ||
-                         showEventFired;
+        const isVisible =
+          (tooltipBody.style.display !== 'none' && !tooltipBody.hasAttribute('hidden')) ||
+          showEventFired;
 
         if (!isVisible) {
           console.warn('⚠️ Tooltip may not be showing on focus');
@@ -191,8 +192,8 @@ describe('Tooltip JavaScript Interaction Testing', () => {
 
       const tooltipBody = element.querySelector('.usa-tooltip__body') as HTMLElement;
       if (tooltipBody) {
-        const isVisible = tooltipBody.style.display !== 'none' &&
-                         !tooltipBody.hasAttribute('hidden');
+        const isVisible =
+          tooltipBody.style.display !== 'none' && !tooltipBody.hasAttribute('hidden');
 
         if (isVisible) {
           expect(isVisible).toBe(true);
@@ -246,7 +247,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       expect(tooltip.classList.contains('usa-tooltip')).toBe(true);
 
       // Wait for attributes to be applied (they are set asynchronously)
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Note: .usa-tooltip__body is created dynamically by USWDS when tooltip is shown
       // In test environment, we verify the trigger element has correct attributes
@@ -271,7 +272,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       await waitForUpdate(element);
 
       // Wait for attributes to be applied
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Check if trigger element has updated title attribute
       const tooltip = element.querySelector('.usa-tooltip');
@@ -287,7 +288,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       await waitForUpdate(element);
 
       // Wait for attributes to be applied
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       if (tooltip) {
         const position = tooltip.getAttribute('data-position');
@@ -307,7 +308,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       expect(triggerElement.classList.contains('usa-tooltip')).toBe(true);
 
       // Wait for attributes to be applied
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Note: aria-describedby is set dynamically by USWDS when tooltip is activated
       // In test environment, we verify the trigger element is properly configured for USWDS
@@ -361,7 +362,7 @@ describe('Tooltip JavaScript Interaction Testing', () => {
       await waitForUpdate(secondTooltip);
 
       // Wait for components to apply tooltip attributes
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Get the internal trigger from the second tooltip
       const secondTrigger = secondTooltip.querySelector('.usa-tooltip') as HTMLElement;

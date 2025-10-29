@@ -20,17 +20,17 @@ import 'path/to/uswds-webcomponents/src/components/tag/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `text` | `any` | `''` | Property description |
-| `big` | `any` | `false` | Property description |
+| Property    | Type  | Default | Description          |
+| ----------- | ----- | ------- | -------------------- |
+| `text`      | `any` | `''`    | Property description |
+| `big`       | `any` | `false` | Property description |
 | `removable` | `any` | `false` | Property description |
-| `value` | `any` | `''` | Property description |
+| `value`     | `any` | `''`    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event        | Type        | Description       |
+| ------------ | ----------- | ----------------- |
 | `tag-remove` | CustomEvent | Event description |
 
 ## Accessibility

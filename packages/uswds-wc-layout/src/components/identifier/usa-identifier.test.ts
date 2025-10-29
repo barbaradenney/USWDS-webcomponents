@@ -1007,8 +1007,7 @@ describe('USAIdentifier', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/identifier/usa-identifier.ts`;
+        const componentPath = `${process.cwd()}/src/components/identifier/usa-identifier.ts`;
         const validation = validateComponentJavaScript(componentPath, 'identifier');
 
         if (!validation.isValid) {
@@ -1113,9 +1112,7 @@ describe('USAIdentifier', () => {
       expect(identifier).toBeTruthy();
 
       const result = await testKeyboardNavigation(identifier!, {
-        shortcuts: [
-          { key: 'Enter', description: 'Activate link' },
-        ],
+        shortcuts: [{ key: 'Enter', description: 'Activate link' }],
         testEscapeKey: false,
         testArrowKeys: false,
       });

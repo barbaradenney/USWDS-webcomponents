@@ -18,7 +18,7 @@ describe('USAList', () => {
     if (element) {
       await element.updateComplete;
       // Give extra time for any async operations to complete
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
     }
     element.remove();
   });
@@ -597,8 +597,7 @@ describe('USAList', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/list/usa-list.ts`;
+        const componentPath = `${process.cwd()}/src/components/list/usa-list.ts`;
         const validation = validateComponentJavaScript(componentPath, 'list');
 
         if (!validation.isValid) {

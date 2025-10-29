@@ -160,13 +160,12 @@ describe('USAModal', () => {
       await waitForBehaviorInit(element); // Wait for USWDS transformation
 
       // USWDS moves modal to document.body via wrapper, so check both locations
-      const primaryButton = element.querySelector(
-        '.usa-modal__footer .usa-button:not(.usa-button--unstyled)'
-      ) || document.querySelector(
-        '.usa-modal-wrapper .usa-modal__footer .usa-button:not(.usa-button--unstyled)'
-      ) || document.querySelector(
-        '.usa-modal__footer .usa-button:not(.usa-button--unstyled)'
-      );
+      const primaryButton =
+        element.querySelector('.usa-modal__footer .usa-button:not(.usa-button--unstyled)') ||
+        document.querySelector(
+          '.usa-modal-wrapper .usa-modal__footer .usa-button:not(.usa-button--unstyled)'
+        ) ||
+        document.querySelector('.usa-modal__footer .usa-button:not(.usa-button--unstyled)');
       expect(primaryButton?.textContent?.trim()).toBe('Custom Primary');
     });
 
@@ -180,9 +179,10 @@ describe('USAModal', () => {
       await waitForBehaviorInit(element); // Wait for USWDS transformation
 
       // USWDS moves modal to document.body via wrapper, so check both locations
-      const secondaryButton = element.querySelector('.usa-modal__footer .usa-button--unstyled') ||
-                               document.querySelector('.usa-modal-wrapper .usa-modal__footer .usa-button--unstyled') ||
-                               document.querySelector('.usa-modal__footer .usa-button--unstyled');
+      const secondaryButton =
+        element.querySelector('.usa-modal__footer .usa-button--unstyled') ||
+        document.querySelector('.usa-modal-wrapper .usa-modal__footer .usa-button--unstyled') ||
+        document.querySelector('.usa-modal__footer .usa-button--unstyled');
       expect(secondaryButton?.textContent?.trim()).toBe('Custom Secondary');
     });
 
@@ -205,9 +205,10 @@ describe('USAModal', () => {
       await waitForBehaviorInit(element); // Wait for USWDS transformation
 
       // USWDS moves modal to document.body via wrapper, so check both locations
-      const modal = element.querySelector('.usa-modal') ||
-                    document.querySelector('.usa-modal-wrapper .usa-modal') ||
-                    document.querySelector('.usa-modal');
+      const modal =
+        element.querySelector('.usa-modal') ||
+        document.querySelector('.usa-modal-wrapper .usa-modal') ||
+        document.querySelector('.usa-modal');
       expect(modal?.classList.contains('usa-modal--lg')).toBe(true);
     });
 
@@ -221,7 +222,9 @@ describe('USAModal', () => {
 
       if (closeButton) {
         // If button exists due to template rendering issues, it should be hidden
-        expect(closeButton.hasAttribute('hidden') || closeButton.style.display === 'none').toBe(true);
+        expect(closeButton.hasAttribute('hidden') || closeButton.style.display === 'none').toBe(
+          true
+        );
       } else {
         // Ideal case: button should not exist at all when forceAction is true
         expect(closeButton).toBeFalsy();
@@ -235,9 +238,10 @@ describe('USAModal', () => {
       await waitForBehaviorInit(element);
 
       // USWDS moves modal to document.body via wrapper, so check both locations
-      const closeButton = element.querySelector('.usa-modal__close') ||
-                           document.querySelector('.usa-modal-wrapper .usa-modal__close') ||
-                           document.querySelector('.usa-modal__close');
+      const closeButton =
+        element.querySelector('.usa-modal__close') ||
+        document.querySelector('.usa-modal-wrapper .usa-modal__close') ||
+        document.querySelector('.usa-modal__close');
       expect(closeButton).toBeTruthy();
     });
   });
@@ -609,7 +613,9 @@ describe('USAModal', () => {
 
       // Content should still exist
       expect(element.querySelector('.persistent-slot-content')).toBeTruthy();
-      expect(element.querySelector('.persistent-slot-content')?.textContent).toBe('Persistent content');
+      expect(element.querySelector('.persistent-slot-content')?.textContent).toBe(
+        'Persistent content'
+      );
     });
 
     it('should support interactive slotted elements', async () => {
@@ -743,9 +749,10 @@ describe('USAModal', () => {
       // CRITICAL: Modal should still exist in DOM even when closed
       expect(document.body.contains(element)).toBe(true);
       // Check for modal in element or document (USWDS may move it)
-      const modal = element.querySelector('.usa-modal') ||
-                    document.querySelector('.usa-modal-wrapper .usa-modal') ||
-                    document.querySelector('.usa-modal');
+      const modal =
+        element.querySelector('.usa-modal') ||
+        document.querySelector('.usa-modal-wrapper .usa-modal') ||
+        document.querySelector('.usa-modal');
       expect(modal).toBeTruthy();
     });
 
@@ -785,7 +792,6 @@ describe('USAModal', () => {
       // Verify element is still in DOM
       expect(document.body.contains(element)).toBe(true);
     });
-
   });
 
   describe('Storybook Integration Tests (CRITICAL)', () => {
@@ -1191,8 +1197,7 @@ describe('USAModal', () => {
 
     it('should pass JavaScript implementation validation', async () => {
       // Validate USWDS JavaScript implementation patterns
-      const componentPath =
-        `${process.cwd()}/src/components/modal/usa-modal.ts`;
+      const componentPath = `${process.cwd()}/src/components/modal/usa-modal.ts`;
       const validation = validateComponentJavaScript(componentPath, 'modal');
 
       if (!validation.isValid) {
@@ -1339,8 +1344,9 @@ describe('USAModal', () => {
       element.open = true;
       await waitForUpdate(element);
 
-      const primaryButton = element.querySelector('.usa-modal__primary-action') ||
-                           element.querySelector('.usa-button[type="button"]');
+      const primaryButton =
+        element.querySelector('.usa-modal__primary-action') ||
+        element.querySelector('.usa-button[type="button"]');
 
       if (primaryButton) {
         const enterEvent = new KeyboardEvent('keydown', {
@@ -1366,8 +1372,9 @@ describe('USAModal', () => {
       element.open = true;
       await waitForUpdate(element);
 
-      const secondaryButton = element.querySelector('.usa-modal__secondary-action') ||
-                              element.querySelector('.usa-button--unstyled');
+      const secondaryButton =
+        element.querySelector('.usa-modal__secondary-action') ||
+        element.querySelector('.usa-button--unstyled');
 
       if (secondaryButton) {
         const enterEvent = new KeyboardEvent('keydown', {
@@ -1466,9 +1473,10 @@ describe('USAModal', () => {
 
       // In browser, USWDS moves modal to document.body via wrapper
       // In tests, modal stays in element's Light DOM
-      const dialog = element.querySelector('.usa-modal') ||
-                     document.querySelector('.usa-modal-wrapper .usa-modal') ||
-                     document.querySelector('.usa-modal');
+      const dialog =
+        element.querySelector('.usa-modal') ||
+        document.querySelector('.usa-modal-wrapper .usa-modal') ||
+        document.querySelector('.usa-modal');
       expect(dialog).toBeTruthy();
 
       // Get focusable elements from the whole element (includes slotted content)
@@ -2244,7 +2252,8 @@ describe('USAModal', () => {
 
     it('should support text spacing adjustments (WCAG 1.4.12)', async () => {
       element.heading = 'Text Spacing Test';
-      element.description = 'Testing text spacing with line height, letter spacing, and word spacing';
+      element.description =
+        'Testing text spacing with line height, letter spacing, and word spacing';
       element.open = true;
       await waitForUpdate(element);
 

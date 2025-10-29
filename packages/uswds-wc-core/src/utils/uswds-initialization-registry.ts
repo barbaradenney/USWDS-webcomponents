@@ -48,7 +48,7 @@ class USWDSInitializationRegistry {
       componentType,
       elementId,
       timestamp: Date.now(),
-      module
+      module,
     });
 
     console.log(`✅ Registered ${componentType}:${elementId} for USWDS initialization`);
@@ -84,7 +84,7 @@ class USWDSInitializationRegistry {
     return Array.from(this.initialized.entries()).map(([key, record]) => ({
       component: key,
       initialized: true,
-      timestamp: record.timestamp
+      timestamp: record.timestamp,
     }));
   }
 
@@ -137,11 +137,13 @@ export function initializeUSWDSComponent(
   }
 
   // Initialize and register
-  return initializationFn().then(module => {
-    uswdsRegistry.register(componentType, elementId, module);
-  }).catch(error => {
-    console.warn(`❌ Failed to initialize ${componentType}:${elementId}:`, error);
-  });
+  return initializationFn()
+    .then((module) => {
+      uswdsRegistry.register(componentType, elementId, module);
+    })
+    .catch((error) => {
+      console.warn(`❌ Failed to initialize ${componentType}:${elementId}:`, error);
+    });
 }
 
 /**

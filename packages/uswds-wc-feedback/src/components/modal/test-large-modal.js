@@ -7,7 +7,7 @@ async function testLargeModal() {
   const page = await browser.newPage();
 
   // Enable console logging
-  page.on('console', msg => {
+  page.on('console', (msg) => {
     console.log(`BROWSER: ${msg.text()}`);
   });
 
@@ -19,10 +19,10 @@ async function testLargeModal() {
     console.log('✅ Page loaded');
 
     // Wait for Storybook to load
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // Check the iframe
-    const frame = page.frames().find(f => f.name() === 'storybook-preview-iframe');
+    const frame = page.frames().find((f) => f.name() === 'storybook-preview-iframe');
     if (!frame) {
       console.log('❌ Could not find storybook iframe');
       return;
@@ -40,7 +40,7 @@ async function testLargeModal() {
         hasLargeAttribute: modal?.hasAttribute('large'),
         largeAttributeValue: modal?.getAttribute('large'),
         modalDivClasses: modalDiv?.className,
-        innerHTML: modal?.innerHTML?.substring(0, 200)
+        innerHTML: modal?.innerHTML?.substring(0, 200),
       };
     });
 
@@ -51,7 +51,7 @@ async function testLargeModal() {
     console.log('✅ Clicked open button');
 
     // Wait for modal to open
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Check modal after opening - look in document body
     const afterOpen = await frame.evaluate(() => {
@@ -67,23 +67,22 @@ async function testLargeModal() {
         original: {
           exists: !!originalModal,
           divClasses: originalDiv?.className,
-          hasPlaceholder: !!originalModal?.querySelector('[data-placeholder-for]')
+          hasPlaceholder: !!originalModal?.querySelector('[data-placeholder-for]'),
         },
         moved: {
           exists: !!movedModal,
           classes: movedModal?.className,
-          parentClasses: movedModal?.parentElement?.className
+          parentClasses: movedModal?.parentElement?.className,
         },
-        allModals: allModals.map(m => ({
+        allModals: allModals.map((m) => ({
           classes: m.className,
           id: m.id,
-          parent: m.parentElement?.tagName
-        }))
+          parent: m.parentElement?.tagName,
+        })),
       };
     });
 
     console.log('After opening:', JSON.stringify(afterOpen, null, 2));
-
   } catch (error) {
     console.error('Error:', error);
   }

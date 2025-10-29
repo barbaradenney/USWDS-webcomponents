@@ -83,10 +83,13 @@ describe('File Input Visual Regression Prevention', () => {
       await element.updateComplete;
 
       // Give time for USWDS initialization
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const input = element.querySelector('.usa-file-input');
-      expect(input, 'File input with correct class should exist for USWDS enhancement').toBeTruthy();
+      expect(
+        input,
+        'File input with correct class should exist for USWDS enhancement'
+      ).toBeTruthy();
 
       // The input should be ready for USWDS transformation
       // Note: After USWDS transformation, the structure may change but original input should still exist
@@ -103,7 +106,7 @@ describe('File Input Visual Regression Prevention', () => {
       await element.updateComplete;
 
       // Give time for USWDS initialization
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       const input = element.querySelector('.usa-file-input');
 
@@ -135,12 +138,13 @@ describe('File Input Visual Regression Prevention', () => {
       await element.updateComplete;
 
       // Give time for any initialization attempts
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Component should remain functional even without USWDS enhancement
       const formGroup = element.querySelector('.usa-form-group');
       const label = element.querySelector('.usa-label');
-      const input = element.querySelector('.usa-file-input') || element.querySelector('input[type="file"]');
+      const input =
+        element.querySelector('.usa-file-input') || element.querySelector('input[type="file"]');
 
       expect(formGroup, 'Form group should remain intact').toBeTruthy();
       expect(label, 'Label should remain intact').toBeTruthy();
@@ -156,14 +160,18 @@ describe('File Input Visual Regression Prevention', () => {
 
       // In test environment after USWDS transformation, check if we can find any file input
       const allInputs = element.querySelectorAll('input');
-      const fileInput2 = Array.from(allInputs).find(inp => inp.type === 'file' || inp.getAttribute('type') === 'file');
+      const fileInput2 = Array.from(allInputs).find(
+        (inp) => inp.type === 'file' || inp.getAttribute('type') === 'file'
+      );
 
       if (fileInput2) {
         expect(fileInput2.type || fileInput2.getAttribute('type')).toBe('file');
       } else {
         // If no file input found, at least verify the original structure exists
         expect(input, 'Some input-related element should exist').toBeTruthy();
-        console.warn('No file input found after USWDS transformation, test environment may not support full functionality');
+        console.warn(
+          'No file input found after USWDS transformation, test environment may not support full functionality'
+        );
       }
       // Check disabled state more flexibly
       if (fileInput2) {
@@ -184,7 +192,9 @@ describe('File Input Visual Regression Prevention', () => {
 
       // Skip if DataTransfer not available (test environment)
       if (typeof DataTransfer === 'undefined') {
-        console.warn('DataTransfer not available in test environment, skipping file selection test');
+        console.warn(
+          'DataTransfer not available in test environment, skipping file selection test'
+        );
         return;
       }
 
@@ -205,14 +215,14 @@ describe('File Input Visual Regression Prevention', () => {
       // Simulate file selection
       Object.defineProperty(input, 'files', {
         value: dataTransfer.files,
-        configurable: true
+        configurable: true,
       });
 
       // Trigger change event
       input.dispatchEvent(new Event('change', { bubbles: true }));
 
       // Wait for event processing
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(eventFired, 'File change event should be fired').toBe(true);
       expect(eventDetail?.files).toBeTruthy();
@@ -223,7 +233,9 @@ describe('File Input Visual Regression Prevention', () => {
     it('should handle multiple file selection when enabled', async () => {
       // Skip if DataTransfer not available (test environment)
       if (typeof DataTransfer === 'undefined') {
-        console.warn('DataTransfer not available in test environment, skipping multiple file selection test');
+        console.warn(
+          'DataTransfer not available in test environment, skipping multiple file selection test'
+        );
         return;
       }
 
@@ -249,18 +261,16 @@ describe('File Input Visual Regression Prevention', () => {
       // Simulate multiple file selection
       Object.defineProperty(input, 'files', {
         value: dataTransfer.files,
-        configurable: true
+        configurable: true,
       });
 
       input.dispatchEvent(new Event('change', { bubbles: true }));
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(eventDetail?.files).toHaveLength(2);
       expect(eventDetail?.files[0].name).toBe('test1.txt');
       expect(eventDetail?.files[1].name).toBe('test2.txt');
     });
-
-
   });
 
   describe('Visual State Validation (Prevents invisible components)', () => {
@@ -298,8 +308,13 @@ describe('File Input Visual Regression Prevention', () => {
       await element.updateComplete;
 
       // Should show required indicator
-      const requiredIndicator = element.querySelector('.usa-hint--required, [title="required"], abbr[title="required"]');
-      expect(requiredIndicator, 'Required indicator should be visible when required=true').toBeTruthy();
+      const requiredIndicator = element.querySelector(
+        '.usa-hint--required, [title="required"], abbr[title="required"]'
+      );
+      expect(
+        requiredIndicator,
+        'Required indicator should be visible when required=true'
+      ).toBeTruthy();
 
       // Form group should have required class
       const formGroup = element.querySelector('.usa-form-group--required');
@@ -330,11 +345,16 @@ describe('File Input Visual Regression Prevention', () => {
       expect(input, 'File input should exist').toBeTruthy();
 
       // Must have USWDS class for styling
-      expect(input?.classList.contains('usa-file-input'), 'File input must have usa-file-input class for USWDS styling').toBe(true);
+      expect(
+        input?.classList.contains('usa-file-input'),
+        'File input must have usa-file-input class for USWDS styling'
+      ).toBe(true);
 
       // Should be wrapped in proper form structure
       const formGroup = element.querySelector('.usa-form-group');
-      expect(formGroup?.contains(input as Node), 'Input should be within usa-form-group').toBe(true);
+      expect(formGroup?.contains(input as Node), 'Input should be within usa-form-group').toBe(
+        true
+      );
 
       // Label should exist and be connected
       const label = element.querySelector('.usa-label');
@@ -367,23 +387,29 @@ describe('File Input Visual Regression Prevention', () => {
       await element.updateComplete;
 
       // Give time for USWDS initialization
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const input = element.querySelector('.usa-file-input') || element.querySelector('input[type="file"]') as HTMLInputElement;
+      const input =
+        element.querySelector('.usa-file-input') ||
+        (element.querySelector('input[type="file"]') as HTMLInputElement);
 
       // Component should be functional regardless of USWDS availability
       expect(input, 'Input should be functional').toBeTruthy();
 
       // In test environment after USWDS transformation, check if we can find any file input
       const allInputs = element.querySelectorAll('input');
-      const fileInput2 = Array.from(allInputs).find(inp => inp.type === 'file' || inp.getAttribute('type') === 'file');
+      const fileInput2 = Array.from(allInputs).find(
+        (inp) => inp.type === 'file' || inp.getAttribute('type') === 'file'
+      );
 
       if (fileInput2) {
         expect(fileInput2.type || fileInput2.getAttribute('type')).toBe('file');
       } else {
         // If no file input found, at least verify the original structure exists
         expect(input, 'Some input-related element should exist').toBeTruthy();
-        console.warn('No file input found after USWDS transformation, test environment may not support full functionality');
+        console.warn(
+          'No file input found after USWDS transformation, test environment may not support full functionality'
+        );
       }
       // Check disabled state more flexibly
       if (fileInput2) {
@@ -395,7 +421,9 @@ describe('File Input Visual Regression Prevention', () => {
 
       // Skip file testing if DataTransfer not available (test environment)
       if (typeof DataTransfer === 'undefined') {
-        console.warn('DataTransfer not available in test environment, skipping file manipulation test');
+        console.warn(
+          'DataTransfer not available in test environment, skipping file manipulation test'
+        );
         return;
       }
 
@@ -406,14 +434,16 @@ describe('File Input Visual Regression Prevention', () => {
 
       Object.defineProperty(input, 'files', {
         value: dataTransfer.files,
-        configurable: true
+        configurable: true,
       });
 
       let eventFired = false;
-      element.addEventListener('file-change', () => { eventFired = true; });
+      element.addEventListener('file-change', () => {
+        eventFired = true;
+      });
 
       input.dispatchEvent(new Event('change', { bubbles: true }));
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(eventFired, 'Component should work without USWDS enhancement').toBe(true);
     });

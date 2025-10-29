@@ -44,12 +44,7 @@ const ANNOUNCEMENT_REGION = `.${PREFIX}-table__announcement-region[aria-live="po
  */
 const getCellValue = (tr: HTMLTableRowElement, index: number): string => {
   const cell = tr.children[index] as HTMLElement;
-  return (
-    cell.getAttribute(SORT_OVERRIDE) ||
-    cell.innerText ||
-    cell.textContent ||
-    ''
-  );
+  return cell.getAttribute(SORT_OVERRIDE) || cell.innerText || cell.textContent || '';
 };
 
 /**
@@ -69,12 +64,7 @@ const compareFunction =
     const value2 = getCellValue(isAscending ? nextRow : thisRow, index);
 
     // if neither value is empty, and if both values are already numbers, compare numerically
-    if (
-      value1 &&
-      value2 &&
-      !Number.isNaN(Number(value1)) &&
-      !Number.isNaN(Number(value2))
-    ) {
+    if (value1 && value2 && !Number.isNaN(Number(value1)) && !Number.isNaN(Number(value2))) {
       return Number(value1) - Number(value2);
     }
     // Otherwise, compare alphabetically based on current user locale
@@ -95,7 +85,9 @@ const compareFunction =
  */
 const getColumnHeaders = (table: HTMLTableElement): HTMLTableHeaderCellElement[] => {
   const headers = selectOrMatches(SORTABLE_HEADER, table);
-  return headers.filter((header) => header.closest(TABLE) === table) as HTMLTableHeaderCellElement[];
+  return headers.filter(
+    (header) => header.closest(TABLE) === table
+  ) as HTMLTableHeaderCellElement[];
 };
 
 /**
@@ -114,9 +106,7 @@ const updateSortLabel = (header: HTMLTableHeaderCellElement): void => {
     header.getAttribute(SORTED) === DESCENDING ||
     false;
   const headerLabel = `${headerName}, sortable column, currently ${
-    isSorted
-      ? `${sortedAscending ? `sorted ${ASCENDING}` : `sorted ${DESCENDING}`}`
-      : 'unsorted'
+    isSorted ? `${sortedAscending ? `sorted ${ASCENDING}` : `sorted ${DESCENDING}`}` : 'unsorted'
   }`;
   const headerButtonLabel = `Click to sort by ${headerName} in ${
     sortedAscending ? DESCENDING : ASCENDING
@@ -174,9 +164,7 @@ const sortRows = (header: HTMLTableHeaderCellElement, isAscending: boolean): boo
   const allHeaders = [].slice.call((header.parentNode as HTMLElement).children) as HTMLElement[];
   const thisHeaderIndex = allHeaders.indexOf(header);
   allRows.sort(compareFunction(thisHeaderIndex, !isAscending)).forEach((tr) => {
-    [].slice
-      .call(tr.children)
-      .forEach((td: HTMLElement) => td.removeAttribute('data-sort-active'));
+    [].slice.call(tr.children).forEach((td: HTMLElement) => td.removeAttribute('data-sort-active'));
     (tr.children[thisHeaderIndex] as HTMLElement).setAttribute('data-sort-active', 'true');
     tbody.appendChild(tr);
   });
@@ -192,7 +180,10 @@ const sortRows = (header: HTMLTableHeaderCellElement, isAscending: boolean): boo
  * @param table - Table element
  * @param sortedHeader - Sorted header element
  */
-const updateLiveRegion = (table: HTMLTableElement, sortedHeader: HTMLTableHeaderCellElement): void => {
+const updateLiveRegion = (
+  table: HTMLTableElement,
+  sortedHeader: HTMLTableHeaderCellElement
+): void => {
   const captionElement = table.querySelector('caption');
   const caption = captionElement ? captionElement.innerText : '';
   const sortedAscending = sortedHeader.getAttribute(SORTED) === ASCENDING;

@@ -246,22 +246,18 @@ export class USALanguageSelector extends USWDSBaseComponent {
           @click="${(e: Event) => this.handleLanguageSelect(language, e)}"
           class="${language.code === this.currentLanguage ? 'usa-current' : ''}"
         >
-          <span lang="${language.code}" xml:lang="${language.code}">
-            ${language.nativeName}
-          </span>
+          <span lang="${language.code}" xml:lang="${language.code}"> ${language.nativeName} </span>
         </a>
       </li>
     `;
   }
-
-
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
     return this as any;
   }
 
-    override render() {
+  override render() {
     // Automatically choose variant based on number of languages if not specified
     let effectiveVariant = this.variant;
     if (this.variant === 'two-languages' && this.languages.length > 2) {

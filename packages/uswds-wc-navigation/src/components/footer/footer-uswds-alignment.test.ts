@@ -28,7 +28,7 @@ describe('Footer USWDS Alignment Validation', () => {
       element.agencyName = 'Test Agency';
       element.sections = [
         { title: 'About', links: [{ label: 'Mission', href: '/mission' }] },
-        { title: 'Services', links: [{ label: 'Digital', href: '/digital' }] }
+        { title: 'Services', links: [{ label: 'Digital', href: '/digital' }] },
       ];
       await element.updateComplete;
     });
@@ -48,7 +48,9 @@ describe('Footer USWDS Alignment Validation', () => {
       // Verify proper nesting: primary-section > nav > grid-container > grid-row
       expect(primarySection?.contains(nav!), 'Nav must be inside primary section').toBe(true);
       expect(nav?.contains(gridContainer!), 'Grid container must be inside nav').toBe(true);
-      expect(gridContainer?.contains(gridRow!), 'Grid row must be inside grid container').toBe(true);
+      expect(gridContainer?.contains(gridRow!), 'Grid row must be inside grid container').toBe(
+        true
+      );
     });
 
     it('should use primary links as <a> elements (not headings) per USWDS medium pattern', () => {
@@ -57,7 +59,10 @@ describe('Footer USWDS Alignment Validation', () => {
       expect(primaryLinks.length, 'Should have primary links').toBeGreaterThan(0);
 
       primaryLinks.forEach((link) => {
-        expect(link.tagName.toLowerCase(), `Primary link must be <a> element for medium footer`).toBe('a');
+        expect(
+          link.tagName.toLowerCase(),
+          `Primary link must be <a> element for medium footer`
+        ).toBe('a');
         expect(link.getAttribute('href'), `Primary link must have href attribute`).toBeTruthy();
       });
     });
@@ -67,7 +72,10 @@ describe('Footer USWDS Alignment Validation', () => {
       const listItems = element.querySelectorAll('.usa-footer__nav li');
 
       expect(mainList, 'Main navigation list must exist').toBeTruthy();
-      expect(mainList?.classList.contains('usa-list--unstyled'), 'List must be unstyled (no bullets)').toBe(true);
+      expect(
+        mainList?.classList.contains('usa-list--unstyled'),
+        'List must be unstyled (no bullets)'
+      ).toBe(true);
       expect(mainList?.classList.contains('grid-row'), 'List must have grid-row class').toBe(true);
       expect(listItems.length, 'Should have list items for each section').toBe(2);
     });
@@ -95,16 +103,16 @@ describe('Footer USWDS Alignment Validation', () => {
           title: 'About',
           links: [
             { label: 'Mission', href: '/mission' },
-            { label: 'History', href: '/history' }
-          ]
+            { label: 'History', href: '/history' },
+          ],
         },
         {
           title: 'Services',
           links: [
             { label: 'Digital', href: '/digital' },
-            { label: 'Support', href: '/support' }
-          ]
-        }
+            { label: 'Support', href: '/support' },
+          ],
+        },
       ];
       await element.updateComplete;
     });
@@ -112,7 +120,9 @@ describe('Footer USWDS Alignment Validation', () => {
     it('should have correct big footer grid structure per USWDS', () => {
       // USWDS Big Footer: Primary section > grid-container > grid-row > tablet:grid-col-8 + tablet:grid-col-4
       const primarySection = element.querySelector('.usa-footer__primary-section');
-      const outerGridContainer = element.querySelector('.usa-footer__primary-section > .grid-container');
+      const outerGridContainer = element.querySelector(
+        '.usa-footer__primary-section > .grid-container'
+      );
       const outerGridRow = element.querySelector('.usa-footer__primary-section .grid-row');
       const contentColumn = element.querySelector('.tablet\\:grid-col-8');
       const sidebarColumn = element.querySelector('.tablet\\:grid-col-4');
@@ -130,14 +140,24 @@ describe('Footer USWDS Alignment Validation', () => {
       expect(primaryLinks.length, 'Should have primary headings').toBeGreaterThan(0);
 
       primaryLinks.forEach((heading, index) => {
-        expect(heading.tagName.toLowerCase(), `Primary heading ${index} must be <h4> element for big footer`).toBe('h4');
-        expect(heading.getAttribute('href'), `Primary heading ${index} should not have href attribute`).toBe(null);
+        expect(
+          heading.tagName.toLowerCase(),
+          `Primary heading ${index} must be <h4> element for big footer`
+        ).toBe('h4');
+        expect(
+          heading.getAttribute('href'),
+          `Primary heading ${index} should not have href attribute`
+        ).toBe(null);
       });
     });
 
     it('should have collapsible sections with sublists per USWDS big pattern', () => {
-      const collapsibleSections = element.querySelectorAll('.usa-footer__primary-content--collapsible');
-      const sublists = element.querySelectorAll('.usa-footer__primary-content--collapsible .usa-list--unstyled');
+      const collapsibleSections = element.querySelectorAll(
+        '.usa-footer__primary-content--collapsible'
+      );
+      const sublists = element.querySelectorAll(
+        '.usa-footer__primary-content--collapsible .usa-list--unstyled'
+      );
       const secondaryLinks = element.querySelectorAll('.usa-footer__secondary-link');
 
       expect(collapsibleSections.length, 'Should have collapsible sections').toBe(2);
@@ -153,8 +173,12 @@ describe('Footer USWDS Alignment Validation', () => {
     });
 
     it('should have proper grid layout for big footer sections', () => {
-      const sectionContainers = element.querySelectorAll('.mobile-lg\\:grid-col-6.desktop\\:grid-col-3');
-      const innerGridRow = element.querySelector('.usa-footer__nav .grid-row-gap-4, .usa-footer__nav .grid-row.grid-gap-4');
+      const sectionContainers = element.querySelectorAll(
+        '.mobile-lg\\:grid-col-6.desktop\\:grid-col-3'
+      );
+      const innerGridRow = element.querySelector(
+        '.usa-footer__nav .grid-row-gap-4, .usa-footer__nav .grid-row.grid-gap-4'
+      );
 
       expect(sectionContainers.length, 'Should have proper grid containers for sections').toBe(2);
       expect(innerGridRow, 'Should have inner grid row with gap-4').toBeTruthy();
@@ -181,7 +205,9 @@ describe('Footer USWDS Alignment Validation', () => {
       const footer = element.querySelector('footer');
 
       expect(footer?.classList.contains('usa-footer'), 'Footer must have base class').toBe(true);
-      expect(footer?.classList.contains('usa-footer--big'), 'Footer must have variant class').toBe(true);
+      expect(footer?.classList.contains('usa-footer--big'), 'Footer must have variant class').toBe(
+        true
+      );
     });
 
     it('should have proper semantic structure', async () => {
@@ -204,9 +230,9 @@ describe('Footer USWDS Alignment Validation', () => {
       // Get all elements with classes
       const elementsWithClasses = element.querySelectorAll('[class]');
 
-      elementsWithClasses.forEach(el => {
+      elementsWithClasses.forEach((el) => {
         const classes = Array.from(el.classList);
-        classes.forEach(className => {
+        classes.forEach((className) => {
           // Allow USWDS classes, grid classes, responsive classes, and standard semantic classes
           const isValidClass =
             className.startsWith('usa-') ||
@@ -219,7 +245,9 @@ describe('Footer USWDS Alignment Validation', () => {
             className.startsWith('desktop-') ||
             ['role'].includes(className);
 
-          expect(isValidClass, `Class "${className}" should be official USWDS or grid class`).toBe(true);
+          expect(isValidClass, `Class "${className}" should be official USWDS or grid class`).toBe(
+            true
+          );
         });
       });
     });

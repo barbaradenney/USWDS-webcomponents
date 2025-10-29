@@ -1,6 +1,10 @@
 // Component tests for usa-date-range-picker
 import './index.ts';
-import { testRapidClicking, testRapidKeyboardInteraction, COMMON_BUG_PATTERNS } from '../../cypress/support/rapid-interaction-tests.ts';
+import {
+  testRapidClicking,
+  testRapidKeyboardInteraction,
+  COMMON_BUG_PATTERNS,
+} from '../../cypress/support/rapid-interaction-tests.ts';
 
 describe('DateRangePicker Component Tests', () => {
   beforeEach(() => {
@@ -16,23 +20,17 @@ describe('DateRangePicker Component Tests', () => {
     cy.get('usa-date-range-picker').should('be.visible');
   });
 
-  
   it('should handle rapid clicking without visual glitches', () => {
     cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-    
+
     // Rapid clicking without waiting - simulates real user behavior
     cy.get('usa-date-range-picker').as('component');
-    
+
     // Multiple rapid clicks
-    cy.get('@component')
-      .click()
-      .click()
-      .click()
-      .click()
-      .click();
-    
+    cy.get('@component').click().click().click().click().click();
+
     cy.wait(500); // Let events settle
-    
+
     // Component should remain functional
     cy.get('@component').should('exist');
     cy.get('@component').should('be.visible');
@@ -40,14 +38,12 @@ describe('DateRangePicker Component Tests', () => {
 
   it('should handle interaction during CSS transitions', () => {
     cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-    
+
     // Click during potential transitions
-    cy.get('usa-date-range-picker')
-      .click()
-      .click(); // Immediate second click
-    
+    cy.get('usa-date-range-picker').click().click(); // Immediate second click
+
     cy.wait(1000); // Wait for animations
-    
+
     // Should be in consistent state
     cy.get('usa-date-range-picker').should('exist');
   });
@@ -56,31 +52,26 @@ describe('DateRangePicker Component Tests', () => {
   describe('Stress Testing', () => {
     it('should handle event listener duplication pattern', () => {
       cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-      
+
       // Test for event listener duplication
       testRapidClicking({
         selector: 'usa-date-range-picker',
         clickCount: 15,
-        description: 'event listener duplication'
+        description: 'event listener duplication',
       });
     });
 
     it('should handle race condition patterns', () => {
       cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-      
+
       // Test for race conditions during state changes
       cy.get('usa-date-range-picker').as('component');
-      
+
       // Rapid interactions that might cause race conditions
-      cy.get('@component')
-        .click()
-        .click()
-        .trigger('focus')
-        .trigger('blur')
-        .click();
-      
+      cy.get('@component').click().click().trigger('focus').trigger('blur').click();
+
       cy.wait(1000); // Wait for all async operations
-      
+
       // Component should still be functional
       cy.get('@component').should('exist');
       cy.get('@component').should('be.visible');
@@ -90,7 +81,7 @@ describe('DateRangePicker Component Tests', () => {
   // Accessibility testing - critical for government components
   it('should be accessible', () => {
     cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-    
+
     cy.injectAxe();
     cy.checkAccessibility();
   });
@@ -98,17 +89,12 @@ describe('DateRangePicker Component Tests', () => {
   // Test that component maintains accessibility after interactions
   it('should maintain accessibility after rapid interactions', () => {
     cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-    
+
     // Perform various rapid interactions
-    cy.get('usa-date-range-picker')
-      .click()
-      .focus()
-      .blur()
-      .click()
-      .click();
-    
+    cy.get('usa-date-range-picker').click().focus().blur().click().click();
+
     cy.wait(500);
-    
+
     // Accessibility should still be intact
     cy.injectAxe();
     cy.checkAccessibility();
@@ -127,7 +113,7 @@ describe('DateRangePicker Component Tests', () => {
   // Console error test - should not generate any JavaScript errors
   it('should not generate console errors during interactions', () => {
     cy.mount('<usa-date-range-picker></usa-date-range-picker>');
-    
+
     // Various interactions that might cause errors
     cy.get('usa-date-range-picker')
       .click()
@@ -135,9 +121,9 @@ describe('DateRangePicker Component Tests', () => {
       .trigger('mouseleave')
       .focus()
       .blur();
-    
+
     cy.wait(500);
-    
+
     // No console errors should have occurred
     cy.get('@consoleError').should('not.have.been.called');
   });

@@ -177,9 +177,7 @@ export class USAFooter extends USWDSBaseComponent {
           <div class="grid-row grid-gap">
             <div class="tablet:grid-col-8">
               <nav class="usa-footer__nav" aria-label="Footer navigation">
-                <div class="grid-row grid-gap-4">
-                  ${this.renderBigFooterSections()}
-                </div>
+                <div class="grid-row grid-gap-4">${this.renderBigFooterSections()}</div>
               </nav>
             </div>
             <div class="tablet:grid-col-4">
@@ -203,11 +201,13 @@ export class USAFooter extends USWDSBaseComponent {
         <div class="grid-container">
           <div class="grid-row grid-gap">
             <div class="usa-footer__logo grid-row mobile-lg:grid-col-6 mobile-lg:grid-gap-2">
-              ${this.agencyName ? html`
-                <div class="mobile-lg:grid-col-auto">
-                  <p class="usa-footer__logo-heading">${this.agencyName}</p>
-                </div>
-              ` : ''}
+              ${this.agencyName
+                ? html`
+                    <div class="mobile-lg:grid-col-auto">
+                      <p class="usa-footer__logo-heading">${this.agencyName}</p>
+                    </div>
+                  `
+                : ''}
             </div>
             <div class="usa-footer__contact-links mobile-lg:grid-col-6">
               <p class="usa-footer__contact-heading">Agency Contact Center</p>
@@ -234,11 +234,16 @@ export class USAFooter extends USWDSBaseComponent {
 
   private renderMediumFooterSection(section: FooterSection) {
     // For medium footer, render section title as primary link (USWDS pattern)
-    const primaryLink = section.links.length > 0 ? section.links[0] : { label: section.title, href: '#' };
+    const primaryLink =
+      section.links.length > 0 ? section.links[0] : { label: section.title, href: '#' };
 
     return html`
       <li class="mobile-lg:grid-col-4 desktop:grid-col-auto usa-footer__primary-content">
-        <a class="usa-footer__primary-link" href="${primaryLink.href}" @click="${(e: Event) => this.handleLinkClick(primaryLink, e)}">
+        <a
+          class="usa-footer__primary-link"
+          href="${primaryLink.href}"
+          @click="${(e: Event) => this.handleLinkClick(primaryLink, e)}"
+        >
           ${section.title}
         </a>
       </li>
@@ -287,9 +292,7 @@ export class USAFooter extends USWDSBaseComponent {
 
     return html`
       <footer class="${footerClasses}" role="contentinfo">
-        ${this.renderFooterNav()}
-
-        ${this.renderFooterSecondary()}
+        ${this.renderFooterNav()} ${this.renderFooterSecondary()}
 
         <!-- Custom content slot -->
         <slot></slot>

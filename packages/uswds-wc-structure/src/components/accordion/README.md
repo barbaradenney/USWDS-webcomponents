@@ -20,17 +20,17 @@ import 'path/to/uswds-webcomponents/src/components/accordion/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `items` | `AccordionItem[]` | `[]` | Property description |
-| `multiselectable` | `any` | `false` | Property description |
-| `bordered` | `any` | `false` | Property description |
+| Property          | Type              | Default | Description          |
+| ----------------- | ----------------- | ------- | -------------------- |
+| `items`           | `AccordionItem[]` | `[]`    | Property description |
+| `multiselectable` | `any`             | `false` | Property description |
+| `bordered`        | `any`             | `false` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

@@ -23,13 +23,13 @@ describe('Language Selector JavaScript Interaction Testing', () => {
       { code: 'en', label: 'English', selected: true },
       { code: 'es', label: 'Español' },
       { code: 'fr', label: 'Français' },
-      { code: 'zh', label: '中文' }
+      { code: 'zh', label: '中文' },
     ];
     document.body.appendChild(element);
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -40,10 +40,11 @@ describe('Language Selector JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('language-selector') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('language-selector') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -116,7 +117,10 @@ describe('Language Selector JavaScript Interaction Testing', () => {
         let targetLink: HTMLAnchorElement | null = null;
         for (const link of languageLinks) {
           const listItem = link.closest('.usa-language__submenu-item');
-          if (listItem && !listItem.classList.contains('usa-language-selector__list-item--selected')) {
+          if (
+            listItem &&
+            !listItem.classList.contains('usa-language-selector__list-item--selected')
+          ) {
             targetLink = link as HTMLAnchorElement;
             break;
           }
@@ -229,7 +233,7 @@ describe('Language Selector JavaScript Interaction Testing', () => {
       // Test updating languages (2 languages will use two-languages variant)
       element.languages = [
         { code: 'en', name: 'English', nativeName: 'English' },
-        { code: 'de', name: 'German', nativeName: 'Deutsch' }
+        { code: 'de', name: 'German', nativeName: 'Deutsch' },
       ];
       await waitForUpdate(element);
 

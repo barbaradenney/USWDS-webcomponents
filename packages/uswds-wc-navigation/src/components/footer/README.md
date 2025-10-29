@@ -20,17 +20,17 @@ import 'path/to/uswds-webcomponents/src/components/footer/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `variant` | `'slim' | 'medium' | 'big'` | `'medium'` | Property description |
-| `agencyName` | `any` | `''` | Property description |
-| `sections` | `FooterSection[]` | `[]` | Property description |
+| Property     | Type              | Default  | Description          |
+| ------------ | ----------------- | -------- | -------------------- | ---------- | -------------------- |
+| `variant`    | `'slim'           | 'medium' | 'big'`               | `'medium'` | Property description |
+| `agencyName` | `any`             | `''`     | Property description |
+| `sections`   | `FooterSection[]` | `[]`     | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

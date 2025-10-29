@@ -20,28 +20,28 @@ import 'path/to/uswds-webcomponents/src/components/input-prefix-suffix/index.js'
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | `any` | `''` | Property description |
-| `name` | `any` | `'input-prefix-suffix'` | Property description |
-| `inputId` | `any` | `'input-prefix-suffix'` | Property description |
-| `label` | `any` | `'Input'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `placeholder` | `any` | `''` | Property description |
-| `suffix` | `any` | `''` | Property description |
-| `prefixIcon` | `any` | `''` | Property description |
-| `suffixIcon` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `readonly` | `any` | `false` | Property description |
-| `type` | `any` | `'text'` | Property description |
-| `autocomplete` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
+| Property       | Type  | Default                 | Description          |
+| -------------- | ----- | ----------------------- | -------------------- |
+| `value`        | `any` | `''`                    | Property description |
+| `name`         | `any` | `'input-prefix-suffix'` | Property description |
+| `inputId`      | `any` | `'input-prefix-suffix'` | Property description |
+| `label`        | `any` | `'Input'`               | Property description |
+| `hint`         | `any` | `''`                    | Property description |
+| `placeholder`  | `any` | `''`                    | Property description |
+| `suffix`       | `any` | `''`                    | Property description |
+| `prefixIcon`   | `any` | `''`                    | Property description |
+| `suffixIcon`   | `any` | `''`                    | Property description |
+| `disabled`     | `any` | `false`                 | Property description |
+| `required`     | `any` | `false`                 | Property description |
+| `readonly`     | `any` | `false`                 | Property description |
+| `type`         | `any` | `'text'`                | Property description |
+| `autocomplete` | `any` | `''`                    | Property description |
+| `error`        | `any` | `''`                    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event          | Type        | Description       |
+| -------------- | ----------- | ----------------- |
 | `input-change` | CustomEvent | Event description |
 
 ## Accessibility

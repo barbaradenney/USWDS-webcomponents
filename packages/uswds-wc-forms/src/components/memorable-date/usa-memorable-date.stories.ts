@@ -176,7 +176,7 @@ export const InteractiveExample: Story = {
     docs: {
       description: {
         story: 'Interactive demonstration showing real-time date validation and event handling.',
-        },
+      },
     },
   },
   render: () => html`
@@ -243,7 +243,7 @@ export const FormIntegration: Story = {
     docs: {
       description: {
         story: 'Example of memorable date component integrated with form controls and validation.',
-        },
+      },
     },
   },
   render: () => html`
@@ -292,7 +292,7 @@ export const AccessibilityDemo: Story = {
     docs: {
       description: {
         story: 'Demonstrates the accessibility features built into the memorable date component.',
-        },
+      },
     },
   },
   render: () => html`
@@ -321,4 +321,3 @@ export const AccessibilityDemo: Story = {
     </div>
   `,
 };
-

@@ -5,9 +5,7 @@ import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
-import {
-  waitForUpdate, testPropertyChanges,
-} from '@uswds-wc/test-utils/test-utils.js';
+import { waitForUpdate, testPropertyChanges } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
@@ -113,7 +111,6 @@ describe('USAFileInput', () => {
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input.accept).toBe('.pdf,.doc,.docx');
     });
-
   });
 
   describe('Rendering', () => {
@@ -197,11 +194,9 @@ describe('USAFileInput', () => {
       expect(input?.getAttribute('aria-describedby')).toBe('test-file-hint');
       expect(hint?.id).toBe('test-file-hint');
     });
-
   });
 
   describe('File Selection', () => {
-
     it('should handle multiple file selection', async () => {
       element.multiple = true;
       await waitForUpdate(element);
@@ -218,7 +213,6 @@ describe('USAFileInput', () => {
     });
 
     // selectedFiles property doesn't trigger USWDS preview rendering
-
   });
 
   describe('Drag and Drop', () => {
@@ -243,7 +237,6 @@ describe('USAFileInput', () => {
       expect(element.selectedFiles).toHaveLength(0);
     });
   });
-
 
   describe('Form Integration', () => {
     it('should work within a form', async () => {
@@ -298,9 +291,6 @@ describe('USAFileInput', () => {
       expect(input.files?.[0]?.name).toBe('test.txt');
     });
   });
-
-
-
 
   describe('Component Lifecycle Stability (CRITICAL)', () => {
     it('should remain in DOM after property updates (not auto-dismiss)', async () => {
@@ -375,8 +365,6 @@ describe('USAFileInput', () => {
       expect(element.isConnected).toBe(true);
     });
   });
-
-
 
   describe('Accessibility Compliance (CRITICAL)', () => {
     it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
@@ -460,7 +448,7 @@ describe('USAFileInput', () => {
           fileInputModule.on(inputElement);
 
           // Wait for transformation
-          await new Promise(resolve => setTimeout(resolve, 200));
+          await new Promise((resolve) => setTimeout(resolve, 200));
 
           // After transformation, should have drag-drop structure
           const target = element.querySelector('.usa-file-input__target');
@@ -533,8 +521,8 @@ describe('USAFileInput', () => {
       }
 
       // Should not have excessive duplicate transformation warnings
-      const duplicateWarnings = consoleWarnings.filter(msg =>
-        msg.includes('Already transformed') || msg.includes('duplicate')
+      const duplicateWarnings = consoleWarnings.filter(
+        (msg) => msg.includes('Already transformed') || msg.includes('duplicate')
       );
 
       // In fixed version, this should be handled gracefully

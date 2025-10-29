@@ -20,25 +20,25 @@ import 'path/to/uswds-webcomponents/src/components/select/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `name` | `any` | `''` | Property description |
-| `value` | `any` | `''` | Property description |
-| `label` | `any` | `''` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
-| `success` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `options` | `Array<{ value: string` | `` | Property description |
-| `defaultOption` | `any` | `''` | Property description |
+| Property        | Type                    | Default | Description          |
+| --------------- | ----------------------- | ------- | -------------------- |
+| `name`          | `any`                   | `''`    | Property description |
+| `value`         | `any`                   | `''`    | Property description |
+| `label`         | `any`                   | `''`    | Property description |
+| `hint`          | `any`                   | `''`    | Property description |
+| `error`         | `any`                   | `''`    | Property description |
+| `success`       | `any`                   | `''`    | Property description |
+| `disabled`      | `any`                   | `false` | Property description |
+| `required`      | `any`                   | `false` | Property description |
+| `options`       | `Array<{ value: string` | ``      | Property description |
+| `defaultOption` | `any`                   | `''`    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event    | Type        | Description       |
+| -------- | ----------- | ----------------- |
 | `change` | CustomEvent | Event description |
-| `input` | CustomEvent | Event description |
+| `input`  | CustomEvent | Event description |
 
 ## Accessibility
 

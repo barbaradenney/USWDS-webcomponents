@@ -356,7 +356,9 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       const textarea = element.querySelector('textarea');
-      expect(textarea?.getAttribute('aria-describedby')).toBe('test-field-info test-field-status test-field-hint');
+      expect(textarea?.getAttribute('aria-describedby')).toBe(
+        'test-field-info test-field-status test-field-hint'
+      );
     });
 
     it('should have aria-describedby without hint', async () => {
@@ -701,7 +703,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       // Wait for potential USWDS initialization
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
@@ -720,7 +722,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       // Wait for any async operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
@@ -739,7 +741,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       // Wait for any async operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
@@ -757,7 +759,7 @@ describe('USACharacterCount', () => {
         await freshElement.updateComplete;
 
         // Wait for USWDS initialization to complete
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 200));
 
         const messages = freshElement.querySelectorAll('.usa-character-count__message');
         expect(messages.length).toBe(1);
@@ -792,7 +794,7 @@ describe('USACharacterCount', () => {
       await element.updateComplete;
 
       // Wait for any async operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const messages = element.querySelectorAll('.usa-character-count__message');
       expect(messages.length).toBe(1);
@@ -816,7 +818,7 @@ describe('USACharacterCount', () => {
         await element2.updateComplete;
 
         // Wait for initialization
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         const message1 = element1.querySelector('.usa-character-count__message');
         const message2 = element2.querySelector('.usa-character-count__message');

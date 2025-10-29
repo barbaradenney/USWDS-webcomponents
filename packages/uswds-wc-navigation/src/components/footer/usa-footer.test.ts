@@ -494,15 +494,14 @@ describe('USAFooter', () => {
       expect(element.isConnected).toBe(true);
       expect(element.querySelector('.usa-footer')).toBeTruthy();
       expect(element.querySelector('.usa-footer--big')).toBeTruthy();
-      expect(
-        element.querySelector('.usa-footer__logo-heading')?.textContent?.trim()
-      ).toContain('Storybook Test Agency');
+      expect(element.querySelector('.usa-footer__logo-heading')?.textContent?.trim()).toContain(
+        'Storybook Test Agency'
+      );
     });
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/footer/usa-footer.ts`;
+        const componentPath = `${process.cwd()}/src/components/footer/usa-footer.ts`;
         const validation = validateComponentJavaScript(componentPath, 'footer');
 
         if (!validation.isValid) {
@@ -669,9 +668,7 @@ describe('USAFooter', () => {
       expect(footer).toBeTruthy();
 
       const result = await testKeyboardNavigation(footer!, {
-        shortcuts: [
-          { key: 'Enter', description: 'Activate link' },
-        ],
+        shortcuts: [{ key: 'Enter', description: 'Activate link' }],
         testEscapeKey: false,
         testArrowKeys: false,
       });
@@ -878,8 +875,8 @@ describe('USAFooter', () => {
       await waitForUpdate(element);
 
       const links = element.querySelectorAll('a');
-      const contactLinks = Array.from(links).filter((link) =>
-        link.href.startsWith('mailto:') || link.href.startsWith('tel:')
+      const contactLinks = Array.from(links).filter(
+        (link) => link.href.startsWith('mailto:') || link.href.startsWith('tel:')
       );
 
       expect(contactLinks.length).toBeGreaterThanOrEqual(2);
@@ -976,7 +973,9 @@ describe('USAFooter', () => {
           const hasGridClass = Array.from(section.classList).some(
             (cls) => cls.startsWith('tablet:grid-col') || cls.startsWith('desktop:grid-col')
           );
-          expect(hasGridClass || section.classList.contains('usa-footer__primary-content')).toBe(true);
+          expect(hasGridClass || section.classList.contains('usa-footer__primary-content')).toBe(
+            true
+          );
         });
       });
 
@@ -1046,7 +1045,9 @@ describe('USAFooter', () => {
       });
 
       it('should render navigation sections as visible', async () => {
-        const primarySections = element.querySelectorAll('.usa-footer__primary-content') as NodeListOf<HTMLElement>;
+        const primarySections = element.querySelectorAll(
+          '.usa-footer__primary-content'
+        ) as NodeListOf<HTMLElement>;
 
         primarySections.forEach((section) => {
           // Section should exist and be in DOM

@@ -138,14 +138,15 @@ export class USAHeader extends USWDSBaseComponent {
   override shouldUpdate(changedProperties: Map<string, any>): boolean {
     // Protect USWDS transformations from re-rendering after enhancement
     const componentElement = this.querySelector('.usa-header');
-    const hasEnhancedElements = componentElement?.querySelector('.usa-header__button') ||
-                               componentElement?.querySelector('.usa-header__wrapper') ||
-                               componentElement?.querySelector('.usa-header__list');
+    const hasEnhancedElements =
+      componentElement?.querySelector('.usa-header__button') ||
+      componentElement?.querySelector('.usa-header__wrapper') ||
+      componentElement?.querySelector('.usa-header__list');
 
     if (hasEnhancedElements) {
       // Only allow critical property updates that need DOM changes
       const criticalProps = ['disabled', 'required', 'readonly', 'value', 'error', 'placeholder'];
-      const hasCriticalChange = Array.from(changedProperties.keys()).some(prop =>
+      const hasCriticalChange = Array.from(changedProperties.keys()).some((prop) =>
         criticalProps.includes(prop as string)
       );
 
@@ -283,7 +284,11 @@ export class USAHeader extends USWDSBaseComponent {
         <em class="usa-logo__text">
           <a href="${this.logoHref}" title="Home" aria-label="Home">
             ${this.logoImageSrc
-              ? html`<img class="usa-logo__img" src="${this.logoImageSrc}" alt="${this.logoImageAlt}" />`
+              ? html`<img
+                  class="usa-logo__img"
+                  src="${this.logoImageSrc}"
+                  alt="${this.logoImageAlt}"
+                />`
               : this.logoText}
           </a>
         </em>
@@ -334,7 +339,10 @@ export class USAHeader extends USWDSBaseComponent {
                       ${column.links.map(
                         (link) => html`
                           <li class="usa-nav__submenu-item">
-                            <a href="${link.href || '#'}" @click="${(e: Event) => this.handleNavClick(e, link)}">
+                            <a
+                              href="${link.href || '#'}"
+                              @click="${(e: Event) => this.handleNavClick(e, link)}"
+                            >
                               ${link.label}
                             </a>
                           </li>
@@ -368,7 +376,11 @@ export class USAHeader extends USWDSBaseComponent {
             ${item.submenu?.map(
               (subItem) => html`
                 <li class="usa-nav__submenu-item">
-                  <a href="${subItem.href || '#'}" class="usa-nav__submenu-link" @click="${(e: Event) => this.handleNavClick(e, subItem)}">
+                  <a
+                    href="${subItem.href || '#'}"
+                    class="usa-nav__submenu-link"
+                    @click="${(e: Event) => this.handleNavClick(e, subItem)}"
+                  >
                     ${subItem.label}
                   </a>
                 </li>
@@ -409,9 +421,17 @@ export class USAHeader extends USWDSBaseComponent {
             Menu
           </button>
         </div>
-        <nav class="usa-nav ${this.mobileMenuOpen ? 'is-visible' : ''}" aria-label="Primary navigation" id="header-nav">
+        <nav
+          class="usa-nav ${this.mobileMenuOpen ? 'is-visible' : ''}"
+          aria-label="Primary navigation"
+          id="header-nav"
+        >
           <div class="usa-nav__inner">
-            <button class="usa-nav__close" aria-label="Close" @click="${this.handleMobileMenuClose}">
+            <button
+              class="usa-nav__close"
+              aria-label="Close"
+              @click="${this.handleMobileMenuClose}"
+            >
               <img src="/img/usa-icons/close.svg" role="img" alt="Close" />
             </button>
             <ul class="usa-nav__primary usa-accordion">
@@ -458,7 +478,11 @@ export class USAHeader extends USWDSBaseComponent {
           Menu
         </button>
       </div>
-      <nav class="usa-nav ${this.mobileMenuOpen ? 'is-visible' : ''}" aria-label="Primary navigation" id="header-nav">
+      <nav
+        class="usa-nav ${this.mobileMenuOpen ? 'is-visible' : ''}"
+        aria-label="Primary navigation"
+        id="header-nav"
+      >
         <div class="usa-nav__inner">
           <button class="usa-nav__close" aria-label="Close" @click="${this.handleMobileMenuClose}">
             <img src="/img/usa-icons/close.svg" role="img" alt="Close" />

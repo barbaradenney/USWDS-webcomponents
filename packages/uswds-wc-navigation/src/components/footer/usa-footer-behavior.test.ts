@@ -217,7 +217,9 @@ describe('USWDS Footer Behavior Contract', () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const buttons = element.querySelectorAll('.usa-footer__primary-link') as NodeListOf<HTMLButtonElement>;
+      const buttons = element.querySelectorAll(
+        '.usa-footer__primary-link'
+      ) as NodeListOf<HTMLButtonElement>;
 
       if (buttons.length < 2) {
         // Skip test if not enough buttons

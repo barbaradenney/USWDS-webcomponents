@@ -239,8 +239,8 @@ describe('USWDS Validation Behavior Contract', () => {
       expect(input).not.toBeNull();
 
       // Should have accessibility attributes
-      const hasA11y = input?.hasAttribute('aria-describedby') ||
-                     input?.hasAttribute('aria-controls');
+      const hasA11y =
+        input?.hasAttribute('aria-describedby') || input?.hasAttribute('aria-controls');
 
       expect(input || hasA11y).toBeTruthy();
     });
@@ -248,9 +248,7 @@ describe('USWDS Validation Behavior Contract', () => {
 
   describe('Contract 6: Validation Triggering', () => {
     it('should validate on input change', async () => {
-      element.rules = [
-        { type: 'minlength', message: 'Too short', minlength: 5 },
-      ];
+      element.rules = [{ type: 'minlength', message: 'Too short', minlength: 5 }];
       await waitForBehaviorInit(element);
 
       const input = element.querySelector('input, textarea') as HTMLInputElement;
@@ -340,7 +338,9 @@ describe('USWDS Validation Behavior Contract', () => {
       await waitForBehaviorInit(element);
 
       // USWDS: selectOrMatches(VALIDATE_INPUT, root)
-      const inputs = element.querySelectorAll('input[data-validation-element], textarea[data-validation-element]');
+      const inputs = element.querySelectorAll(
+        'input[data-validation-element], textarea[data-validation-element]'
+      );
 
       // May use different selector but should find validation inputs
       expect(element.querySelector('input, textarea') || inputs.length > 0).toBeTruthy();
@@ -393,7 +393,7 @@ describe('USWDS Validation Behavior Contract', () => {
 
     it('should NOT create duplicate status elements on re-initialization', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const initialStatusElements = element.querySelectorAll('[data-validation-status]');
       const initialCount = initialStatusElements.length;

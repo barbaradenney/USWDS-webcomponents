@@ -14,7 +14,7 @@ export function quickUSWDSComplianceTest(element) {
   const issues = [];
 
   // Check for USWDS class naming convention
-  const hasUSWDSClasses = Array.from(element.classList).some(className =>
+  const hasUSWDSClasses = Array.from(element.classList).some((className) =>
     className.startsWith('usa-')
   );
 
@@ -24,7 +24,7 @@ export function quickUSWDSComplianceTest(element) {
 
   return {
     passed: issues.length === 0,
-    issues
+    issues,
   };
 }
 
@@ -38,7 +38,7 @@ export function validateUSWDSStructure(element, componentType) {
   return {
     isValid: true,
     componentType,
-    issues: []
+    issues: [],
   };
 }
 

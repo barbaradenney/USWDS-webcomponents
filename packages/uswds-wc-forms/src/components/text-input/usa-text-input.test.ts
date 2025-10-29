@@ -1000,8 +1000,7 @@ describe('USATextInput', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/text-input/usa-text-input.ts`;
+        const componentPath = `${process.cwd()}/src/components/text-input/usa-text-input.ts`;
         const validation = validateComponentJavaScript(componentPath, 'text-input');
 
         if (!validation.isValid) {

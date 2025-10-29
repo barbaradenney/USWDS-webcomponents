@@ -61,7 +61,7 @@ describe('USADateRangePicker Layout Tests', () => {
     await element.updateComplete;
 
     // Wait for USWDS to enhance the date pickers
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     const startInputGroup = element.querySelector(
       'usa-date-picker[data-range-start="true"] .usa-date-picker__wrapper'
@@ -69,12 +69,14 @@ describe('USADateRangePicker Layout Tests', () => {
     const endInputGroup = element.querySelector(
       'usa-date-picker[data-range-end="true"] .usa-date-picker__wrapper'
     );
-    const startInput = element.querySelector(
-      'usa-date-picker[data-range-start="true"] .usa-date-picker__external-input'
-    ) || element.querySelector('usa-date-picker[data-range-start="true"] input');
-    const endInput = element.querySelector(
-      'usa-date-picker[data-range-end="true"] .usa-date-picker__external-input'
-    ) || element.querySelector('usa-date-picker[data-range-end="true"] input');
+    const startInput =
+      element.querySelector(
+        'usa-date-picker[data-range-start="true"] .usa-date-picker__external-input'
+      ) || element.querySelector('usa-date-picker[data-range-start="true"] input');
+    const endInput =
+      element.querySelector(
+        'usa-date-picker[data-range-end="true"] .usa-date-picker__external-input'
+      ) || element.querySelector('usa-date-picker[data-range-end="true"] input');
 
     expect(startInputGroup, 'Start input group should exist').toBeTruthy();
     expect(endInputGroup, 'End input group should exist').toBeTruthy();
@@ -90,7 +92,7 @@ describe('USADateRangePicker Layout Tests', () => {
     await element.updateComplete;
 
     // Wait for USWDS to enhance the date pickers
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     const startButton = element.querySelector(
       'usa-date-picker[data-range-start="true"] .usa-date-picker__button'
@@ -183,26 +185,26 @@ describe('USADateRangePicker Layout Tests', () => {
     if (endInputGroup) {
       expect(endInputGroup.classList.contains('usa-date-picker__wrapper--error')).toBe(true);
     }
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/date-range-picker/usa-date-range-picker.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'date-range-picker');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/date-range-picker/usa-date-range-picker.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'date-range-picker');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {
@@ -227,12 +229,14 @@ describe('USADateRangePicker Layout Tests', () => {
       await element.updateComplete;
 
       // Wait for USWDS to enhance the date pickers
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       const startInput = element.querySelector(
         'usa-date-picker[data-range-start="true"] .usa-date-picker__external-input'
       );
-      const endInput = element.querySelector('usa-date-picker[data-range-end="true"] .usa-date-picker__external-input');
+      const endInput = element.querySelector(
+        'usa-date-picker[data-range-end="true"] .usa-date-picker__external-input'
+      );
       const startButton = element.querySelector(
         'usa-date-picker[data-range-start="true"] .usa-date-picker__button'
       );
@@ -307,7 +311,9 @@ describe('USADateRangePicker Layout Tests', () => {
       const startInput = element.querySelector(
         'usa-date-picker[data-range-start="true"] .usa-date-picker__external-input'
       );
-      const endInput = element.querySelector('usa-date-picker[data-range-end="true"] .usa-date-picker__external-input');
+      const endInput = element.querySelector(
+        'usa-date-picker[data-range-end="true"] .usa-date-picker__external-input'
+      );
       const startLabel = element.querySelector(
         'usa-date-picker[data-range-start="true"] .usa-label'
       );

@@ -29,17 +29,48 @@ Icons can be rendered either as inline SVGs or using an external sprite file for
       control: 'select',
       options: [
         // Navigation
-        'menu', 'close', 'search', 'arrow_back', 'arrow_forward',
-        'chevron_left', 'chevron_right', 'expand_more', 'expand_less',
+        'menu',
+        'close',
+        'search',
+        'arrow_back',
+        'arrow_forward',
+        'chevron_left',
+        'chevron_right',
+        'expand_more',
+        'expand_less',
         // Status & Alerts
-        'check_circle', 'error', 'warning', 'info', 'help',
+        'check_circle',
+        'error',
+        'warning',
+        'info',
+        'help',
         // Actions
-        'add', 'edit', 'delete', 'cancel', 'file_download', 'file_upload',
+        'add',
+        'edit',
+        'delete',
+        'cancel',
+        'file_download',
+        'file_upload',
         // Contact & Social
-        'phone', 'mail', 'location_on', 'facebook', 'twitter', 'github', 'instagram',
+        'phone',
+        'mail',
+        'location_on',
+        'facebook',
+        'twitter',
+        'github',
+        'instagram',
         // Common UI
-        'settings', 'home', 'person', 'lock', 'visibility', 'notifications',
-        'calendar_today', 'schedule', 'bookmark', 'favorite', 'share',
+        'settings',
+        'home',
+        'person',
+        'lock',
+        'visibility',
+        'notifications',
+        'calendar_today',
+        'schedule',
+        'bookmark',
+        'favorite',
+        'share',
       ],
       description: 'Icon name to display (all 241 USWDS icons available)',
     },
@@ -146,28 +177,27 @@ Click any card to copy the size value to your clipboard.
         { size: '7', label: 'Size 7', class: 'usa-icon--size-7' },
         { size: '8', label: 'Size 8', class: 'usa-icon--size-8' },
         { size: '9', label: 'Size 9', class: 'usa-icon--size-9' },
-      ].map((item) => html`
-        <div
-          class="size-card"
-          @click=${() => {
-            navigator.clipboard.writeText(item.size || 'default');
-            const feedback = document.createElement('div');
-            feedback.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
-            feedback.textContent = `Copied size="${item.size || ''}" to clipboard!`;
-            document.body.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 2000);
-          }}
-          title="Click to copy size value"
-        >
-          <usa-icon
-            name="flag"
-            size="${item.size}"
-            aria-label="${item.label}"
-          ></usa-icon>
-          <span class="size-label">${item.label}</span>
-          <code class="size-class">${item.class}</code>
-        </div>
-      `)}
+      ].map(
+        (item) => html`
+          <div
+            class="size-card"
+            @click=${() => {
+              navigator.clipboard.writeText(item.size || 'default');
+              const feedback = document.createElement('div');
+              feedback.style.cssText =
+                'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
+              feedback.textContent = `Copied size="${item.size || ''}" to clipboard!`;
+              document.body.appendChild(feedback);
+              setTimeout(() => feedback.remove(), 2000);
+            }}
+            title="Click to copy size value"
+          >
+            <usa-icon name="flag" size="${item.size}" aria-label="${item.label}"></usa-icon>
+            <span class="size-label">${item.label}</span>
+            <code class="size-class">${item.class}</code>
+          </div>
+        `
+      )}
     </div>
   `,
 };
@@ -178,7 +208,8 @@ export const NavigationIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Common icons used for navigation and interface controls. Click any card to copy the icon name.',
+        story:
+          'Common icons used for navigation and interface controls. Click any card to copy the icon name.',
       },
     },
   },
@@ -229,24 +260,27 @@ export const NavigationIcons: Story = {
         { name: 'close', label: 'Close' },
         { name: 'search', label: 'Search' },
         { name: 'settings', label: 'Settings' },
-      ].map((icon) => html`
-        <div
-          class="category-card"
-          @click=${() => {
-            navigator.clipboard.writeText(icon.name);
-            const feedback = document.createElement('div');
-            feedback.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
-            feedback.textContent = `Copied "${icon.name}" to clipboard!`;
-            document.body.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 2000);
-          }}
-          title="Click to copy icon name"
-        >
-          <usa-icon name="${icon.name}" size="5" aria-label="${icon.label}"></usa-icon>
-          <span class="category-label">${icon.label}</span>
-          <code class="category-name">${icon.name}</code>
-        </div>
-      `)}
+      ].map(
+        (icon) => html`
+          <div
+            class="category-card"
+            @click=${() => {
+              navigator.clipboard.writeText(icon.name);
+              const feedback = document.createElement('div');
+              feedback.style.cssText =
+                'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
+              feedback.textContent = `Copied "${icon.name}" to clipboard!`;
+              document.body.appendChild(feedback);
+              setTimeout(() => feedback.remove(), 2000);
+            }}
+            title="Click to copy icon name"
+          >
+            <usa-icon name="${icon.name}" size="5" aria-label="${icon.label}"></usa-icon>
+            <span class="category-label">${icon.label}</span>
+            <code class="category-name">${icon.name}</code>
+          </div>
+        `
+      )}
     </div>
   `,
 };
@@ -257,7 +291,8 @@ export const ArrowIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Directional arrow icons for navigation and pagination. Click any card to copy the icon name.',
+        story:
+          'Directional arrow icons for navigation and pagination. Click any card to copy the icon name.',
       },
     },
   },
@@ -308,24 +343,27 @@ export const ArrowIcons: Story = {
         { name: 'arrow_forward', label: 'Forward' },
         { name: 'arrow_upward', label: 'Up' },
         { name: 'arrow_downward', label: 'Down' },
-      ].map((icon) => html`
-        <div
-          class="category-card"
-          @click=${() => {
-            navigator.clipboard.writeText(icon.name);
-            const feedback = document.createElement('div');
-            feedback.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
-            feedback.textContent = `Copied "${icon.name}" to clipboard!`;
-            document.body.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 2000);
-          }}
-          title="Click to copy icon name"
-        >
-          <usa-icon name="${icon.name}" size="5" aria-label="${icon.label}"></usa-icon>
-          <span class="category-label">${icon.label}</span>
-          <code class="category-name">${icon.name}</code>
-        </div>
-      `)}
+      ].map(
+        (icon) => html`
+          <div
+            class="category-card"
+            @click=${() => {
+              navigator.clipboard.writeText(icon.name);
+              const feedback = document.createElement('div');
+              feedback.style.cssText =
+                'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
+              feedback.textContent = `Copied "${icon.name}" to clipboard!`;
+              document.body.appendChild(feedback);
+              setTimeout(() => feedback.remove(), 2000);
+            }}
+            title="Click to copy icon name"
+          >
+            <usa-icon name="${icon.name}" size="5" aria-label="${icon.label}"></usa-icon>
+            <span class="category-label">${icon.label}</span>
+            <code class="category-name">${icon.name}</code>
+          </div>
+        `
+      )}
     </div>
   `,
 };
@@ -336,7 +374,8 @@ export const StatusIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Icons for displaying status, alerts, and feedback messages with appropriate semantic colors. Click any card to copy the icon name.',
+        story:
+          'Icons for displaying status, alerts, and feedback messages with appropriate semantic colors. Click any card to copy the icon name.',
       },
     },
   },
@@ -390,34 +429,42 @@ export const StatusIcons: Story = {
 
     <div class="icon-category-grid">
       ${[
-        { name: 'check_circle', label: 'Success', colorClass: 'text-success', badge: 'text-success' },
+        {
+          name: 'check_circle',
+          label: 'Success',
+          colorClass: 'text-success',
+          badge: 'text-success',
+        },
         { name: 'error', label: 'Error', colorClass: 'text-error', badge: 'text-error' },
         { name: 'warning', label: 'Warning', colorClass: 'text-warning', badge: 'text-warning' },
         { name: 'info', label: 'Info', colorClass: 'text-info-dark', badge: 'text-info-dark' },
-      ].map((icon) => html`
-        <div
-          class="category-card"
-          @click=${() => {
-            navigator.clipboard.writeText(icon.name);
-            const feedback = document.createElement('div');
-            feedback.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
-            feedback.textContent = `Copied "${icon.name}" to clipboard!`;
-            document.body.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 2000);
-          }}
-          title="Click to copy icon name"
-        >
-          <usa-icon
-            name="${icon.name}"
-            size="5"
-            aria-label="${icon.label}"
-            class="${icon.colorClass}"
-          ></usa-icon>
-          <span class="category-label">${icon.label}</span>
-          <code class="category-name">${icon.name}</code>
-          <span class="color-badge ${icon.colorClass}">${icon.badge}</span>
-        </div>
-      `)}
+      ].map(
+        (icon) => html`
+          <div
+            class="category-card"
+            @click=${() => {
+              navigator.clipboard.writeText(icon.name);
+              const feedback = document.createElement('div');
+              feedback.style.cssText =
+                'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
+              feedback.textContent = `Copied "${icon.name}" to clipboard!`;
+              document.body.appendChild(feedback);
+              setTimeout(() => feedback.remove(), 2000);
+            }}
+            title="Click to copy icon name"
+          >
+            <usa-icon
+              name="${icon.name}"
+              size="5"
+              aria-label="${icon.label}"
+              class="${icon.colorClass}"
+            ></usa-icon>
+            <span class="category-label">${icon.label}</span>
+            <code class="category-name">${icon.name}</code>
+            <span class="color-badge ${icon.colorClass}">${icon.badge}</span>
+          </div>
+        `
+      )}
     </div>
   `,
 };
@@ -428,7 +475,8 @@ export const ContactIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Icons for contact information and communication. Click any card to copy the icon name.',
+        story:
+          'Icons for contact information and communication. Click any card to copy the icon name.',
       },
     },
   },
@@ -478,24 +526,27 @@ export const ContactIcons: Story = {
         { name: 'phone', label: 'Phone' },
         { name: 'email', label: 'Email' },
         { name: 'location_on', label: 'Location' },
-      ].map((icon) => html`
-        <div
-          class="category-card"
-          @click=${() => {
-            navigator.clipboard.writeText(icon.name);
-            const feedback = document.createElement('div');
-            feedback.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
-            feedback.textContent = `Copied "${icon.name}" to clipboard!`;
-            document.body.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 2000);
-          }}
-          title="Click to copy icon name"
-        >
-          <usa-icon name="${icon.name}" size="5" aria-label="${icon.label}"></usa-icon>
-          <span class="category-label">${icon.label}</span>
-          <code class="category-name">${icon.name}</code>
-        </div>
-      `)}
+      ].map(
+        (icon) => html`
+          <div
+            class="category-card"
+            @click=${() => {
+              navigator.clipboard.writeText(icon.name);
+              const feedback = document.createElement('div');
+              feedback.style.cssText =
+                'position: fixed; top: 20px; right: 20px; background: #00a91c; color: white; padding: 0.75rem 1rem; border-radius: 0.25rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999;';
+              feedback.textContent = `Copied "${icon.name}" to clipboard!`;
+              document.body.appendChild(feedback);
+              setTimeout(() => feedback.remove(), 2000);
+            }}
+            title="Click to copy icon name"
+          >
+            <usa-icon name="${icon.name}" size="5" aria-label="${icon.label}"></usa-icon>
+            <span class="category-label">${icon.label}</span>
+            <code class="category-name">${icon.name}</code>
+          </div>
+        `
+      )}
     </div>
   `,
 };
@@ -536,9 +587,7 @@ export const ExpandCollapse: Story = {
         Expand Section
         <usa-icon name="expand_more" size="4" aria-label="Expand"></usa-icon>
       </button>
-      <button
-        class="display-flex flex-align-center gap-1 padding-1 margin-top-2"
-      >
+      <button class="display-flex flex-align-center gap-1 padding-1 margin-top-2">
         Collapse Section
         <usa-icon name="expand_less" size="4" aria-label="Collapse"></usa-icon>
       </button>
@@ -596,18 +645,20 @@ This example shows how to configure the component for sprite usage.
       <div class="usa-alert usa-alert--info">
         <div class="usa-alert__body">
           <p class="usa-alert__text">
-            <strong>Note:</strong> This is a documentation example. The actual sprite file would need to be
-            included in your project from the USWDS package or CDN.
+            <strong>Note:</strong> This is a documentation example. The actual sprite file would
+            need to be included in your project from the USWDS package or CDN.
           </p>
         </div>
       </div>
 
       <div class="example-section">
         <div class="example-title">1. Install USWDS and locate the sprite file:</div>
-        <pre class="code-example">npm install @uswds/uswds
+        <pre class="code-example">
+npm install @uswds/uswds
 
 # Sprite file location:
-node_modules/@uswds/uswds/dist/img/sprite.svg</pre>
+node_modules/@uswds/uswds/dist/img/sprite.svg</pre
+        >
       </div>
 
       <div class="example-section">
@@ -617,23 +668,27 @@ node_modules/@uswds/uswds/dist/img/sprite.svg</pre>
 
       <div class="example-section">
         <div class="example-title">3. Use icons with sprite file:</div>
-        <pre class="code-example">&lt;usa-icon
+        <pre class="code-example">
+&lt;usa-icon
   name="search"
   size="5"
   aria-label="Search"
   useSprite
   spriteUrl="/img/sprite.svg"
-&gt;&lt;/usa-icon&gt;</pre>
+&gt;&lt;/usa-icon&gt;</pre
+        >
       </div>
 
       <div class="example-section">
         <div class="example-title">4. Set global sprite URL (optional):</div>
-        <pre class="code-example">// Set once for all icons in your app
+        <pre class="code-example">
+// Set once for all icons in your app
 const icons = document.querySelectorAll('usa-icon');
 icons.forEach(icon => {
   icon.useSprite = true;
   icon.spriteUrl = '/img/sprite.svg';
-});</pre>
+});</pre
+        >
       </div>
 
       <div class="example-section">
@@ -649,8 +704,8 @@ icons.forEach(icon => {
       <div class="usa-alert usa-alert--success">
         <div class="usa-alert__body">
           <p class="usa-alert__text">
-            <strong>Best Practice:</strong> Use inline SVGs (current implementation) for a few icons,
-            switch to sprites when using 10+ icons on a page for optimal performance.
+            <strong>Best Practice:</strong> Use inline SVGs (current implementation) for a few
+            icons, switch to sprites when using 10+ icons on a page for optimal performance.
           </p>
         </div>
       </div>
@@ -663,15 +718,8 @@ export const OrganizationBanner: Story = {
     controls: { disable: true }, // Static demo - no interactive controls needed
   },
   render: () => html`
-    <div
-      class="bg-base-lightest padding-2 display-flex flex-align-center gap-1"
-    >
-      <usa-icon
-        name="check_circle"
-        size="4"
-        aria-label="Verified"
-        class="text-success"
-      ></usa-icon>
+    <div class="bg-base-lightest padding-2 display-flex flex-align-center gap-1">
+      <usa-icon name="check_circle" size="4" aria-label="Verified" class="text-success"></usa-icon>
       <div>
         <strong>Verified organization website</strong>
         <br />
@@ -684,55 +732,247 @@ export const OrganizationBanner: Story = {
 // All 241 USWDS icons available in the sprite file
 // Extracted from: /public/img/sprite.svg
 const availableIcons = [
-  'accessibility_new', 'accessible_forward', 'account_balance', 'account_box', 'account_circle',
-  'add', 'add_circle', 'add_circle_outline', 'alarm', 'alternate_email',
-  'announcement', 'api', 'arrow_back', 'arrow_downward', 'arrow_drop_down',
-  'arrow_drop_up', 'arrow_forward', 'arrow_upward', 'assessment', 'attach_file',
-  'attach_money', 'autorenew', 'backpack', 'bathtub', 'bedding',
-  'bookmark', 'bug_report', 'build', 'calendar_today', 'campaign',
-  'camping', 'cancel', 'chat', 'check', 'check_box_outline_blank',
-  'check_circle', 'check_circle_outline', 'checkroom', 'chevron_left', 'chevron_right',
-  'clean_hands', 'close', 'closed_caption', 'clothes', 'cloud',
-  'code', 'comment', 'connect_without_contact', 'construction', 'construction_worker',
-  'contact_page', 'content_copy', 'coronavirus', 'credit_card', 'deck',
-  'delete', 'device_thermostat', 'directions', 'directions_bike', 'directions_bus',
-  'directions_car', 'directions_walk', 'do_not_disturb', 'do_not_touch', 'drag_handle',
-  'eco', 'edit', 'electrical_services', 'emoji_events', 'error',
-  'error_outline', 'event', 'expand_less', 'expand_more', 'facebook',
-  'fast_forward', 'fast_rewind', 'favorite', 'favorite_border', 'file_download',
-  'file_present', 'file_upload', 'filter_alt', 'filter_list', 'fingerprint',
-  'first_page', 'flag', 'flickr', 'flight', 'flooding',
-  'folder', 'folder_open', 'format_quote', 'format_size', 'forum',
-  'github', 'grid_view', 'group_add', 'groups', 'hearing',
-  'help', 'help_outline', 'highlight_off', 'history', 'home',
-  'hospital', 'hotel', 'hourglass_empty', 'hurricane', 'identification',
-  'image', 'info', 'info_outline', 'insights', 'instagram',
-  'keyboard', 'label', 'language', 'last_page', 'launch',
-  'lightbulb', 'lightbulb_outline', 'link', 'link_off', 'list',
-  'local_cafe', 'local_fire_department', 'local_gas_station', 'local_grocery_store', 'local_hospital',
-  'local_laundry_service', 'local_library', 'local_offer', 'local_parking', 'local_pharmacy',
-  'local_police', 'local_taxi', 'location_city', 'location_on', 'lock',
-  'lock_open', 'lock_outline', 'login', 'logout', 'loop',
-  'mail', 'mail_outline', 'map', 'masks', 'medical_services',
-  'menu', 'military_tech', 'more_horiz', 'more_vert', 'my_location',
-  'navigate_before', 'navigate_far_before', 'navigate_far_next', 'navigate_next', 'near_me',
-  'notifications', 'notifications_active', 'notifications_none', 'notifications_off', 'park',
-  'people', 'person', 'pets', 'phone', 'photo_camera',
-  'print', 'priority_high', 'public', 'push_pin', 'radio_button_unchecked',
-  'rain', 'reduce_capacity', 'remove', 'report', 'restaurant',
-  'rss_feed', 'safety_divider', 'sanitizer', 'save_alt', 'schedule',
-  'school', 'science', 'search', 'security', 'send',
-  'sentiment_dissatisfied', 'sentiment_neutral', 'sentiment_satisfied', 'sentiment_satisfied_alt', 'sentiment_very_dissatisfied',
-  'settings', 'severe_weather', 'share', 'shield', 'shopping_basket',
-  'snow', 'soap', 'social_distance', 'sort_arrow', 'spellcheck',
-  'star', 'star_half', 'star_outline', 'store', 'support',
-  'support_agent', 'text_fields', 'thumb_down_alt', 'thumb_up_alt', 'timer',
-  'toggle_off', 'toggle_on', 'topic', 'tornado', 'translate',
-  'trending_down', 'trending_up', 'twitter', 'undo', 'unfold_less',
-  'unfold_more', 'update', 'upload_file', 'verified', 'verified_user',
-  'visibility', 'visibility_off', 'volume_off', 'warning', 'wash',
-  'wifi', 'work', 'youtube', 'zoom_in', 'zoom_out',
-  'zoom_out_map'
+  'accessibility_new',
+  'accessible_forward',
+  'account_balance',
+  'account_box',
+  'account_circle',
+  'add',
+  'add_circle',
+  'add_circle_outline',
+  'alarm',
+  'alternate_email',
+  'announcement',
+  'api',
+  'arrow_back',
+  'arrow_downward',
+  'arrow_drop_down',
+  'arrow_drop_up',
+  'arrow_forward',
+  'arrow_upward',
+  'assessment',
+  'attach_file',
+  'attach_money',
+  'autorenew',
+  'backpack',
+  'bathtub',
+  'bedding',
+  'bookmark',
+  'bug_report',
+  'build',
+  'calendar_today',
+  'campaign',
+  'camping',
+  'cancel',
+  'chat',
+  'check',
+  'check_box_outline_blank',
+  'check_circle',
+  'check_circle_outline',
+  'checkroom',
+  'chevron_left',
+  'chevron_right',
+  'clean_hands',
+  'close',
+  'closed_caption',
+  'clothes',
+  'cloud',
+  'code',
+  'comment',
+  'connect_without_contact',
+  'construction',
+  'construction_worker',
+  'contact_page',
+  'content_copy',
+  'coronavirus',
+  'credit_card',
+  'deck',
+  'delete',
+  'device_thermostat',
+  'directions',
+  'directions_bike',
+  'directions_bus',
+  'directions_car',
+  'directions_walk',
+  'do_not_disturb',
+  'do_not_touch',
+  'drag_handle',
+  'eco',
+  'edit',
+  'electrical_services',
+  'emoji_events',
+  'error',
+  'error_outline',
+  'event',
+  'expand_less',
+  'expand_more',
+  'facebook',
+  'fast_forward',
+  'fast_rewind',
+  'favorite',
+  'favorite_border',
+  'file_download',
+  'file_present',
+  'file_upload',
+  'filter_alt',
+  'filter_list',
+  'fingerprint',
+  'first_page',
+  'flag',
+  'flickr',
+  'flight',
+  'flooding',
+  'folder',
+  'folder_open',
+  'format_quote',
+  'format_size',
+  'forum',
+  'github',
+  'grid_view',
+  'group_add',
+  'groups',
+  'hearing',
+  'help',
+  'help_outline',
+  'highlight_off',
+  'history',
+  'home',
+  'hospital',
+  'hotel',
+  'hourglass_empty',
+  'hurricane',
+  'identification',
+  'image',
+  'info',
+  'info_outline',
+  'insights',
+  'instagram',
+  'keyboard',
+  'label',
+  'language',
+  'last_page',
+  'launch',
+  'lightbulb',
+  'lightbulb_outline',
+  'link',
+  'link_off',
+  'list',
+  'local_cafe',
+  'local_fire_department',
+  'local_gas_station',
+  'local_grocery_store',
+  'local_hospital',
+  'local_laundry_service',
+  'local_library',
+  'local_offer',
+  'local_parking',
+  'local_pharmacy',
+  'local_police',
+  'local_taxi',
+  'location_city',
+  'location_on',
+  'lock',
+  'lock_open',
+  'lock_outline',
+  'login',
+  'logout',
+  'loop',
+  'mail',
+  'mail_outline',
+  'map',
+  'masks',
+  'medical_services',
+  'menu',
+  'military_tech',
+  'more_horiz',
+  'more_vert',
+  'my_location',
+  'navigate_before',
+  'navigate_far_before',
+  'navigate_far_next',
+  'navigate_next',
+  'near_me',
+  'notifications',
+  'notifications_active',
+  'notifications_none',
+  'notifications_off',
+  'park',
+  'people',
+  'person',
+  'pets',
+  'phone',
+  'photo_camera',
+  'print',
+  'priority_high',
+  'public',
+  'push_pin',
+  'radio_button_unchecked',
+  'rain',
+  'reduce_capacity',
+  'remove',
+  'report',
+  'restaurant',
+  'rss_feed',
+  'safety_divider',
+  'sanitizer',
+  'save_alt',
+  'schedule',
+  'school',
+  'science',
+  'search',
+  'security',
+  'send',
+  'sentiment_dissatisfied',
+  'sentiment_neutral',
+  'sentiment_satisfied',
+  'sentiment_satisfied_alt',
+  'sentiment_very_dissatisfied',
+  'settings',
+  'severe_weather',
+  'share',
+  'shield',
+  'shopping_basket',
+  'snow',
+  'soap',
+  'social_distance',
+  'sort_arrow',
+  'spellcheck',
+  'star',
+  'star_half',
+  'star_outline',
+  'store',
+  'support',
+  'support_agent',
+  'text_fields',
+  'thumb_down_alt',
+  'thumb_up_alt',
+  'timer',
+  'toggle_off',
+  'toggle_on',
+  'topic',
+  'tornado',
+  'translate',
+  'trending_down',
+  'trending_up',
+  'twitter',
+  'undo',
+  'unfold_less',
+  'unfold_more',
+  'update',
+  'upload_file',
+  'verified',
+  'verified_user',
+  'visibility',
+  'visibility_off',
+  'volume_off',
+  'warning',
+  'wash',
+  'wifi',
+  'work',
+  'youtube',
+  'zoom_in',
+  'zoom_out',
+  'zoom_out_map',
 ];
 
 // Note: USWDS includes 241 total icons in the official sprite file.
@@ -836,32 +1076,37 @@ See the [USWDS Icon Documentation](https://designsystem.digital.gov/components/i
     <div class="usa-alert usa-alert--success usa-alert--slim margin-bottom-2">
       <div class="usa-alert__body">
         <p class="usa-alert__text">
-          <strong>Sprite-First Architecture:</strong> All ${availableIcons.length} USWDS icons are now available using the official sprite file.
-          This provides better performance than inline SVGs - the sprite loads once and is cached by your browser.
-          See the <a href="https://designsystem.digital.gov/components/icon/" target="_blank" rel="noopener">USWDS Icon Documentation</a> for usage guidelines.
+          <strong>Sprite-First Architecture:</strong> All ${availableIcons.length} USWDS icons are
+          now available using the official sprite file. This provides better performance than inline
+          SVGs - the sprite loads once and is cached by your browser. See the
+          <a href="https://designsystem.digital.gov/components/icon/" target="_blank" rel="noopener"
+            >USWDS Icon Documentation</a
+          >
+          for usage guidelines.
         </p>
       </div>
     </div>
 
     <div class="icon-gallery">
-      ${availableIcons.map((iconName) => html`
-        <div
-          class="icon-item"
-          @click=${() => {
-            navigator.clipboard.writeText(iconName);
-            const feedback = document.createElement('div');
-            feedback.className = 'copy-feedback';
-            feedback.textContent = `Copied "${iconName}" to clipboard!`;
-            document.body.appendChild(feedback);
-            setTimeout(() => feedback.remove(), 2000);
-          }}
-          title="Click to copy '${iconName}'"
-        >
-          <usa-icon name="${iconName}" size="5" aria-label="${iconName}"></usa-icon>
-          <span class="icon-name">${iconName}</span>
-        </div>
-      `)}
+      ${availableIcons.map(
+        (iconName) => html`
+          <div
+            class="icon-item"
+            @click=${() => {
+              navigator.clipboard.writeText(iconName);
+              const feedback = document.createElement('div');
+              feedback.className = 'copy-feedback';
+              feedback.textContent = `Copied "${iconName}" to clipboard!`;
+              document.body.appendChild(feedback);
+              setTimeout(() => feedback.remove(), 2000);
+            }}
+            title="Click to copy '${iconName}'"
+          >
+            <usa-icon name="${iconName}" size="5" aria-label="${iconName}"></usa-icon>
+            <span class="icon-name">${iconName}</span>
+          </div>
+        `
+      )}
     </div>
   `,
 };
-

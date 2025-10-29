@@ -79,11 +79,7 @@ const getTooltipElements = (trigger: HTMLElement): TooltipElements => {
  * @param tooltipTrigger - Tooltip trigger element
  * @param position - Tooltip position
  */
-const showToolTip = (
-  tooltipBody: HTMLElement,
-  tooltipTrigger: HTMLElement,
-  position: string
-) => {
+const showToolTip = (tooltipBody: HTMLElement, tooltipTrigger: HTMLElement, position: string) => {
   // Null safety: if elements are missing (e.g., during test cleanup), exit early
   if (!tooltipBody || !tooltipTrigger) return;
 
@@ -197,9 +193,7 @@ const showToolTip = (
 
     setPositionClass('right');
     e.style.top = `50%`;
-    e.style.left = `${
-      tooltipTrigger.offsetLeft + tooltipTrigger.offsetWidth + TRIANGLE_SIZE
-    }px`;
+    e.style.left = `${tooltipTrigger.offsetLeft + tooltipTrigger.offsetWidth + TRIANGLE_SIZE}px`;
     e.style.margin = `-${topMargin / 2}px 0 0 0`;
   };
 

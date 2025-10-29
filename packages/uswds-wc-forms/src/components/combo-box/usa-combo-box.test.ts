@@ -32,7 +32,7 @@ describe('USAComboBox', () => {
     await element.updateComplete;
 
     // Give USWDS time to complete any async operations
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Clean up - wrap in try-catch to handle any async cleanup errors
     try {

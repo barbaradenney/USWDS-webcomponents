@@ -22,16 +22,20 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
     element.sections = [
       { text: 'Section 1', href: '#section1' },
       { text: 'Section 2', href: '#section2' },
-      { text: 'Section 3', href: '#section3', children: [
-        { text: 'Subsection 3.1', href: '#section3-1' },
-        { text: 'Subsection 3.2', href: '#section3-2' }
-      ]}
+      {
+        text: 'Section 3',
+        href: '#section3',
+        children: [
+          { text: 'Subsection 3.1', href: '#section3-1' },
+          { text: 'Subsection 3.2', href: '#section3-2' },
+        ],
+      },
     ];
     document.body.appendChild(element);
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -42,10 +46,11 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('in-page-nav') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('in-page-nav') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -128,7 +133,7 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
 
         // Mock intersection observer behavior
         const mockIntersectionEvent = new CustomEvent('intersection', {
-          detail: { targetId: 'section1', isIntersecting: true }
+          detail: { targetId: 'section1', isIntersecting: true },
         });
         element.dispatchEvent(mockIntersectionEvent);
         await waitForUpdate(element);
@@ -152,7 +157,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
       }
 
       if (parentWithChildren) {
-        const parentLink = parentWithChildren.querySelector('.usa-in-page-nav__link') as HTMLAnchorElement;
+        const parentLink = parentWithChildren.querySelector(
+          '.usa-in-page-nav__link'
+        ) as HTMLAnchorElement;
         const sublist = parentWithChildren.querySelector('.usa-in-page-nav__list') as HTMLElement;
 
         if (parentLink && sublist) {
@@ -210,7 +217,7 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
       // Test updating links
       element.links = [
         { text: 'New Section 1', href: '#new1' },
-        { text: 'New Section 2', href: '#new2' }
+        { text: 'New Section 2', href: '#new2' },
       ];
       await waitForUpdate(element);
 
@@ -251,7 +258,9 @@ describe('In-Page Navigation JavaScript Interaction Testing', () => {
       const nestedItems = element.querySelectorAll('.usa-in-page-nav__item .usa-in-page-nav__list');
 
       if (nestedItems.length > 0) {
-        const nestedLinks = element.querySelectorAll('.usa-in-page-nav__item .usa-in-page-nav__item .usa-in-page-nav__link');
+        const nestedLinks = element.querySelectorAll(
+          '.usa-in-page-nav__item .usa-in-page-nav__item .usa-in-page-nav__link'
+        );
         expect(nestedLinks.length).toBeGreaterThan(0);
 
         // Check that nested items have proper structure

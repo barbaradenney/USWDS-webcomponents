@@ -42,12 +42,12 @@ export async function testFocusTrap(container) {
   const tabEvent = new KeyboardEvent('keydown', {
     key: 'Tab',
     bubbles: true,
-    cancelable: true
+    cancelable: true,
   });
 
   document.activeElement.dispatchEvent(tabEvent);
 
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
   // Check if focus is still in container
   return container.contains(document.activeElement);
@@ -65,7 +65,7 @@ export function getFocusableElements(container) {
     'input:not([disabled])',
     'select:not([disabled])',
     'textarea:not([disabled])',
-    '[tabindex]:not([tabindex="-1"])'
+    '[tabindex]:not([tabindex="-1"])',
   ].join(', ');
 
   return Array.from(container.querySelectorAll(selector));
@@ -113,10 +113,7 @@ export function hasVisibleFocusIndicator(element) {
   // Note: jsdom doesn't support getComputedStyle with pseudoElt parameter
   // We test the base element styles instead
   const styles = window.getComputedStyle(element);
-  return (
-    styles.outlineWidth !== '0px' ||
-    styles.boxShadow !== 'none'
-  );
+  return styles.outlineWidth !== '0px' || styles.boxShadow !== 'none';
 }
 
 /**
@@ -129,7 +126,7 @@ export async function testFocusManagement(container, options = {}) {
   const {
     testFocusTrap: shouldTestFocusTrap = false,
     testFocusRestore: _testFocusRestore = false, // eslint-disable-line @typescript-eslint/no-unused-vars
-    testFocusOrder = true
+    testFocusOrder = true,
   } = options;
 
   const errors = [];
@@ -163,7 +160,7 @@ export async function testFocusManagement(container, options = {}) {
   return {
     passed: errors.length === 0,
     errors,
-    focusableCount: focusableElements.length
+    focusableCount: focusableElements.length,
   };
 }
 
@@ -176,7 +173,7 @@ export function testFocusIndicators(container) {
   const focusableElements = getFocusableElements(container);
   const metrics = [];
 
-  focusableElements.forEach(element => {
+  focusableElements.forEach((element) => {
     const hasIndicator = hasVisibleFocusIndicator(element);
     // Note: jsdom doesn't support getComputedStyle with pseudoElt parameter
     // We test the base element styles instead
@@ -187,16 +184,16 @@ export function testFocusIndicators(container) {
       hasVisibleIndicator: hasIndicator,
       outlineWidth: styles.outlineWidth || '0px',
       outlineStyle: styles.outlineStyle || 'none',
-      boxShadow: styles.boxShadow || 'none'
+      boxShadow: styles.boxShadow || 'none',
     });
   });
 
-  const allVisible = metrics.every(m => m.hasVisibleIndicator);
+  const allVisible = metrics.every((m) => m.hasVisibleIndicator);
 
   return {
     allVisible,
     metrics,
-    totalTested: focusableElements.length
+    totalTested: focusableElements.length,
   };
 }
 
@@ -210,7 +207,7 @@ export async function testProgrammaticFocus(element) {
 
   // Try to focus the element
   element.focus();
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
   const successful = document.activeElement === element;
 
@@ -224,7 +221,7 @@ export async function testProgrammaticFocus(element) {
     element,
     message: successful
       ? 'Element received focus programmatically'
-      : 'Element did not receive focus programmatically'
+      : 'Element did not receive focus programmatically',
   };
 }
 
@@ -234,9 +231,7 @@ export async function testProgrammaticFocus(element) {
  * @returns {Object} Test result with present status and skipLinks array
  */
 export function testSkipLinks(container) {
-  const skipLinks = Array.from(
-    container.querySelectorAll('a[href^="#"]')
-  ).filter(link => {
+  const skipLinks = Array.from(container.querySelectorAll('a[href^="#"]')).filter((link) => {
     const text = link.textContent.toLowerCase();
     return text.includes('skip') || text.includes('jump');
   });
@@ -244,7 +239,7 @@ export function testSkipLinks(container) {
   return {
     present: skipLinks.length > 0,
     skipLinks,
-    count: skipLinks.length
+    count: skipLinks.length,
   };
 }
 
@@ -264,7 +259,7 @@ export async function testFocusRestoration(element) {
     works: hasProperStructure !== null,
     message: hasProperStructure
       ? 'Element has proper structure for focus restoration'
-      : 'Element lacks proper structure for focus restoration'
+      : 'Element lacks proper structure for focus restoration',
   };
 }
 
@@ -279,22 +274,20 @@ export async function testInitialFocus(element) {
   if (focusableElements.length === 0) {
     return {
       correct: false,
-      message: 'No focusable elements found for initial focus'
+      message: 'No focusable elements found for initial focus',
     };
   }
 
   // First focusable element should be able to receive focus
   const firstFocusable = focusableElements[0];
   firstFocusable.focus();
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
   const focused = document.activeElement === firstFocusable;
 
   return {
     correct: focused,
     element: firstFocusable,
-    message: focused
-      ? 'Initial focus set correctly'
-      : 'Initial focus not set'
+    message: focused ? 'Initial focus set correctly' : 'Initial focus not set',
   };
 }

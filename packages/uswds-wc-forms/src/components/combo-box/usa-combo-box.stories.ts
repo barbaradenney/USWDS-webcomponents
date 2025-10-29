@@ -6,13 +6,7 @@ import type { USAComboBox } from './usa-combo-box.js';
 const meta: Meta<USAComboBox> = {
   title: 'Forms/Combo Box',
   component: 'usa-combo-box',
-  decorators: [
-    (story) => html`
-      <div class="position-relative overflow-visible">
-        ${story()}
-      </div>
-    `,
-  ],
+  decorators: [(story) => html` <div class="position-relative overflow-visible">${story()}</div> `],
   parameters: {
     layout: 'padded',
     docs: {
@@ -247,4 +241,3 @@ export const Disabled: Story = {
     },
   },
 };
-

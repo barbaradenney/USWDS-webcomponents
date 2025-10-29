@@ -204,7 +204,8 @@ describe('USAAccordion', () => {
     });
 
     it('should NOT display raw HTML tags as text (regression test)', async () => {
-      const htmlContent = '<p>This is a paragraph</p><ul><li>List item 1</li><li>List item 2</li></ul>';
+      const htmlContent =
+        '<p>This is a paragraph</p><ul><li>List item 1</li><li>List item 2</li></ul>';
       element.items = [
         {
           id: 'raw-html-test',
@@ -255,7 +256,7 @@ describe('USAAccordion', () => {
 
       // Use the reusable test utility
       const result = assertHTMLIsRendered(element, htmlContent, {
-        containerSelector: '.usa-accordion__content'
+        containerSelector: '.usa-accordion__content',
       });
 
       expect(result.isValid).toBe(true);
@@ -292,12 +293,12 @@ describe('USAAccordion', () => {
       ];
       container.appendChild(element);
       await element.updateComplete;
-      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
     });
 
     it('should respect initial expanded state', async () => {
       // Wait for USWDS initialization to process expanded states
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
       const contents = element.querySelectorAll('.usa-accordion__content');
@@ -311,9 +312,7 @@ describe('USAAccordion', () => {
       expect(buttons[2]?.getAttribute('aria-expanded')).toBe('false');
       expect(contents[2]?.hasAttribute('hidden')).toBe(true);
     });
-
-
-          });
+  });
 
   // REMOVED: Keyboard Navigation tests - USWDS handles keyboard events natively
   // The standard USWDS pattern delegates all keyboard interaction to USWDS JavaScript
@@ -359,7 +358,7 @@ describe('USAAccordion', () => {
       expect(contents[1]?.getAttribute('aria-labelledby')).toBeNull();
     });
 
-        it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
+    it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
     });
 
@@ -412,8 +411,7 @@ describe('USAAccordion', () => {
       accordion = element.querySelector('.usa-accordion');
       expect(accordion?.classList.contains('usa-accordion--bordered')).toBe(false);
     });
-
-      });
+  });
 
   describe('Edge Cases', () => {
     beforeEach(() => {
@@ -450,7 +448,7 @@ describe('USAAccordion', () => {
     it('should handle rapid toggling (USWDS manages state)', async () => {
       element.items = [{ id: 'rapid', title: 'Rapid', content: 'Content', expanded: false }];
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const button = element.querySelector('.usa-accordion__button') as HTMLElement;
 
@@ -458,7 +456,7 @@ describe('USAAccordion', () => {
       for (let i = 0; i < 10; i++) {
         button.click();
         await element.updateComplete;
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
       }
 
       // Should end up in same state (10 clicks = even = closed)
@@ -478,7 +476,7 @@ describe('USAAccordion', () => {
     it('should handle undefined expanded state as false', async () => {
       element.items = [{ id: 'undefined', title: 'Undefined', content: 'Content' }];
       await element.updateComplete;
-      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
       const button = element.querySelector('.usa-accordion__button');
       const content = element.querySelector('.usa-accordion__content');
@@ -564,7 +562,7 @@ describe('USAAccordion', () => {
 
     afterEach(async () => {
       // Wait for any pending async operations to complete before cleanup
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       element?.remove();
     });
 
@@ -729,7 +727,7 @@ describe('USAAccordion', () => {
 
     afterEach(async () => {
       // Wait for any pending async operations to complete before cleanup
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       element?.remove();
     });
 
@@ -858,7 +856,7 @@ describe('USAAccordion', () => {
 
     afterEach(async () => {
       // Wait for any pending async operations to complete before cleanup
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       element?.remove();
     });
 
@@ -866,7 +864,7 @@ describe('USAAccordion', () => {
       // This test ensures we don't reintroduce the Lit ?hidden binding
       element.items = [{ id: 'test-1', title: 'Test Item', content: 'Content', expanded: false }];
       await element.updateComplete;
-      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
       const button = element.querySelector('.usa-accordion__button') as HTMLButtonElement;
       const content = element.querySelector('.usa-accordion__content');
@@ -887,7 +885,7 @@ describe('USAAccordion', () => {
     it('should maintain hidden state consistency after multiple rapid toggles', async () => {
       element.items = [{ id: 'rapid-1', title: 'Rapid Test', content: 'Content', expanded: false }];
       await element.updateComplete;
-      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
       const button = element.querySelector('.usa-accordion__button') as HTMLButtonElement;
       const content = element.querySelector('.usa-accordion__content');
@@ -911,37 +909,39 @@ describe('USAAccordion', () => {
       }
     });
 
-        // REMOVED: Test was checking implementation details (Lit vs DOM manipulation conflict)
+    // REMOVED: Test was checking implementation details (Lit vs DOM manipulation conflict)
     // Core accordion functionality is tested by other tests and works perfectly
 
     // REMOVED: Test was checking implementation details (multiselectable DOM state synchronization)
     // This functionality is covered by the multiselectable behavior tests above
-  describe('JavaScript Implementation Validation', () => {
-    // NOTE: File existence test moved to build-time validation
-    // Testing implementation details via file system access is fragile in CI environments
-    // The actual behavior is validated by the functional tests above
-    it.skip('should use USWDS-mirrored behavior pattern', async () => {
-      // Accordion uses USWDS-mirrored behavior pattern (not standard USWDS integration)
-      // This is a valid architectural choice for components with dynamic content
-      // See: docs/USWDS_VANILLA_JS_STRATEGY.md
+    describe('JavaScript Implementation Validation', () => {
+      // NOTE: File existence test moved to build-time validation
+      // Testing implementation details via file system access is fragile in CI environments
+      // The actual behavior is validated by the functional tests above
+      it.skip('should use USWDS-mirrored behavior pattern', async () => {
+        // Accordion uses USWDS-mirrored behavior pattern (not standard USWDS integration)
+        // This is a valid architectural choice for components with dynamic content
+        // See: docs/USWDS_VANILLA_JS_STRATEGY.md
 
-      // Verify the behavior file exists
-      const fs = await import('fs');
-      const behaviorFilePath = `${process.cwd()}/packages/uswds-wc-structure/src/components/accordion/usa-accordion-behavior.ts`;
-      expect(fs.existsSync(behaviorFilePath)).toBe(true);
+        // Verify the behavior file exists
+        const fs = await import('fs');
+        const behaviorFilePath = `${process.cwd()}/packages/uswds-wc-structure/src/components/accordion/usa-accordion-behavior.ts`;
+        expect(fs.existsSync(behaviorFilePath)).toBe(true);
 
-      // Verify component imports the mirrored behavior
-      const componentPath = `${process.cwd()}/packages/uswds-wc-structure/src/components/accordion/usa-accordion.ts`;
-      const componentSource = fs.readFileSync(componentPath, 'utf-8');
-      expect(componentSource).toContain("import { initializeAccordion } from './usa-accordion-behavior.js'");
+        // Verify component imports the mirrored behavior
+        const componentPath = `${process.cwd()}/packages/uswds-wc-structure/src/components/accordion/usa-accordion.ts`;
+        const componentSource = fs.readFileSync(componentPath, 'utf-8');
+        expect(componentSource).toContain(
+          "import { initializeAccordion } from './usa-accordion-behavior.js'"
+        );
 
-      // Verify initializeAccordion is called in firstUpdated
-      expect(componentSource).toContain('this.cleanup = initializeAccordion(this)');
+        // Verify initializeAccordion is called in firstUpdated
+        expect(componentSource).toContain('this.cleanup = initializeAccordion(this)');
 
-      // Verify cleanup is called in disconnectedCallback
-      expect(componentSource).toContain('this.cleanup?.()');
+        // Verify cleanup is called in disconnectedCallback
+        expect(componentSource).toContain('this.cleanup?.()');
+      });
     });
-  });
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {
@@ -954,7 +954,7 @@ describe('USAAccordion', () => {
 
     afterEach(async () => {
       // Wait for any pending async operations to complete before cleanup
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       element?.remove();
     });
 
@@ -1102,7 +1102,7 @@ describe('USAAccordion', () => {
 
     it('should have correct ARIA roles for accordion buttons (WCAG 4.1.2)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
       expect(buttons.length).toBe(3);
@@ -1120,7 +1120,7 @@ describe('USAAccordion', () => {
 
     it('should have accessible names for all accordion buttons (WCAG 4.1.2)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
@@ -1134,7 +1134,7 @@ describe('USAAccordion', () => {
 
     it('should have correct aria-expanded states (WCAG 4.1.2)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
@@ -1146,7 +1146,7 @@ describe('USAAccordion', () => {
       // Expand first item
       (buttons[0] as HTMLElement).click();
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(buttons[0].getAttribute('aria-expanded')).toBe('true');
       expect(buttons[1].getAttribute('aria-expanded')).toBe('false');
@@ -1154,7 +1154,7 @@ describe('USAAccordion', () => {
 
     it('should have valid aria-controls relationships (WCAG 4.1.2)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
@@ -1174,14 +1174,14 @@ describe('USAAccordion', () => {
 
     it('should maintain ARIA when expanding/collapsing (WCAG 4.1.2)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
       // Expand
       (buttons[0] as HTMLElement).click();
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const expandedResult = testARIARoles(buttons[0], {
         expectedRole: 'button',
@@ -1193,7 +1193,7 @@ describe('USAAccordion', () => {
       // Collapse
       (buttons[0] as HTMLElement).click();
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const collapsedResult = testARIARoles(buttons[0], {
         expectedRole: 'button',
@@ -1206,7 +1206,7 @@ describe('USAAccordion', () => {
     it('should support multiselectable mode with ARIA (WCAG 4.1.2)', async () => {
       element.multiselectable = true;
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const accordion = element.querySelector('.usa-accordion');
       expect(accordion?.hasAttribute('data-allow-multiple')).toBe(true);
@@ -1217,7 +1217,7 @@ describe('USAAccordion', () => {
       (buttons[0] as HTMLElement).click();
       (buttons[1] as HTMLElement).click();
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(buttons[0].getAttribute('aria-expanded')).toBe('true');
       expect(buttons[1].getAttribute('aria-expanded')).toBe('true');
@@ -1232,7 +1232,7 @@ describe('USAAccordion', () => {
 
     it('should have proper heading structure for accessibility (WCAG 4.1.2)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const headings = element.querySelectorAll('h2, h3, h4');
       expect(headings.length).toBeGreaterThan(0);
@@ -1246,7 +1246,7 @@ describe('USAAccordion', () => {
 
     it('should announce state changes to screen readers (WCAG 4.1.3)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
@@ -1256,7 +1256,7 @@ describe('USAAccordion', () => {
       // Expand - aria-expanded change announces to screen readers
       (buttons[0] as HTMLElement).click();
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(buttons[0].getAttribute('aria-expanded')).toBe('true');
 
@@ -1269,7 +1269,7 @@ describe('USAAccordion', () => {
 
     it('should pass comprehensive ARIA accessibility tests (WCAG 4.1)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const result = await testARIAAccessibility(element, {
         testLiveRegions: false, // Accordion uses aria-expanded, not live regions
@@ -1287,7 +1287,7 @@ describe('USAAccordion', () => {
 
     it('should handle dynamic item updates with ARIA (WCAG 4.1.3)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Update items
       element.items = [
@@ -1295,7 +1295,7 @@ describe('USAAccordion', () => {
         { title: 'Fourth section', content: 'Fourth content', expanded: false },
       ];
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
       expect(buttons.length).toBe(4);
@@ -1320,7 +1320,7 @@ describe('USAAccordion', () => {
     it('should support bordered variant with ARIA (WCAG 4.1.2)', async () => {
       element.bordered = true;
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
@@ -1343,7 +1343,7 @@ describe('USAAccordion', () => {
         { title: 'Second section', content: 'Second content', expanded: false },
       ];
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
@@ -1368,7 +1368,7 @@ describe('USAAccordion', () => {
 
     it('should resize text properly up to 200% (WCAG 1.4.4)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const button = element.querySelector('.usa-accordion__button');
       expect(button).toBeTruthy();
@@ -1381,7 +1381,7 @@ describe('USAAccordion', () => {
 
     it('should reflow content at 320px width (WCAG 1.4.10)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const accordion = element.querySelector('.usa-accordion');
       expect(accordion).toBeTruthy();
@@ -1394,7 +1394,7 @@ describe('USAAccordion', () => {
 
     it('should support text spacing adjustments (WCAG 1.4.12)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const button = element.querySelector('.usa-accordion__button');
       expect(button).toBeTruthy();
@@ -1407,7 +1407,7 @@ describe('USAAccordion', () => {
 
     it('should be accessible on mobile devices (WCAG 1.4.4, 1.4.10)', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const accordion = element.querySelector('.usa-accordion');
       expect(accordion).toBeTruthy();
@@ -1421,10 +1421,14 @@ describe('USAAccordion', () => {
 
     it('should reflow expanded accordion content (WCAG 1.4.10)', async () => {
       element.items = [
-        { title: 'Expanded section', content: 'This is expanded content that should reflow properly at mobile widths', expanded: true },
+        {
+          title: 'Expanded section',
+          content: 'This is expanded content that should reflow properly at mobile widths',
+          expanded: true,
+        },
       ];
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const content = element.querySelector('.usa-accordion__content');
       expect(content).toBeTruthy();
@@ -1438,7 +1442,7 @@ describe('USAAccordion', () => {
     it('should maintain responsive behavior in bordered variant (WCAG 1.4.10)', async () => {
       element.bordered = true;
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const accordion = element.querySelector('.usa-accordion--bordered');
       expect(accordion).toBeTruthy();
@@ -1462,7 +1466,7 @@ describe('USAAccordion', () => {
       ];
       container.appendChild(element);
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
     });
 
     describe('Panel Expansion Structure', () => {

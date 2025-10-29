@@ -127,8 +127,12 @@ export class USADateRangePicker extends USWDSBaseComponent {
     super.updated(changedProperties);
 
     // Validate date range whenever properties change
-    if (changedProperties.has('startDate') || changedProperties.has('endDate') ||
-        changedProperties.has('minDate') || changedProperties.has('maxDate')) {
+    if (
+      changedProperties.has('startDate') ||
+      changedProperties.has('endDate') ||
+      changedProperties.has('minDate') ||
+      changedProperties.has('maxDate')
+    ) {
       this.validateDateRange();
     }
   }
@@ -312,7 +316,6 @@ export class USADateRangePicker extends USWDSBaseComponent {
     // Same day should return 1 day, not 0
     return diffDays === 0 ? 1 : diffDays;
   }
-  
 
   private async cleanupUSWDS() {
     try {
@@ -344,9 +347,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
   }
 
   private renderHint() {
-    return this.hint
-      ? html`<div class="usa-hint" id="${this.name}-hint">${this.hint}</div>`
-      : '';
+    return this.hint ? html`<div class="usa-hint" id="${this.name}-hint">${this.hint}</div>` : '';
   }
 
   private renderRangeSummary() {
@@ -376,7 +377,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
     return this as any;
   }
 
-    override render() {
+  override render() {
     const groupClasses = [
       'usa-form-group',
       'usa-date-range-picker',
@@ -389,10 +390,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
     return html`
       <fieldset class="${groupClasses}" aria-label="${this.label || 'Date range picker'}">
         ${this.renderError()}
-        <legend class="usa-legend">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
-        </legend>
+        <legend class="usa-legend">${this.label} ${this.renderRequiredIndicator()}</legend>
         ${this.renderHint()}
 
         <div class="grid-row grid-gap">

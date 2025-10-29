@@ -25,7 +25,7 @@ describe('Pagination JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -36,10 +36,11 @@ describe('Pagination JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('initialized') ||
-        call[0]?.includes('pagination')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('initialized') ||
+          call[0]?.includes('pagination')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -94,7 +95,9 @@ describe('Pagination JavaScript Interaction Testing', () => {
 
     it('should handle next/previous button clicks', async () => {
       const nextButton = element.querySelector('.usa-pagination__next-page') as HTMLButtonElement;
-      const prevButton = element.querySelector('.usa-pagination__previous-page') as HTMLButtonElement;
+      const prevButton = element.querySelector(
+        '.usa-pagination__previous-page'
+      ) as HTMLButtonElement;
 
       if (nextButton) {
         nextButton.click();

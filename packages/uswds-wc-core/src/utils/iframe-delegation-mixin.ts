@@ -35,7 +35,7 @@ export function IframeEventDelegationMixin<T extends new (...args: any[]) => any
         if (debug) {
           console.log(`🔍 Checking iframe event delegation for ${interactiveSelector}:`, {
             found: interactiveElements.length,
-            isIframe: this.isInIframe()
+            isIframe: this.isInIframe(),
           });
         }
 

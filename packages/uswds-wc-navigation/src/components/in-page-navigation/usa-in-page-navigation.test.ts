@@ -620,7 +620,7 @@ describe('USAInPageNavigation', () => {
           '0px 0px 0px 0px',
           '10px 0px -50% 0px',
           '0% 0px -40% 0px',
-          '-10% 0px -35% 0px'
+          '-10% 0px -35% 0px',
         ];
 
         for (const rootMargin of rootMargins) {

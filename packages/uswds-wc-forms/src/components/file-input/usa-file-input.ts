@@ -114,7 +114,7 @@ export class USAFileInput extends USWDSBaseComponent {
 
   // Light DOM is handled by USWDSBaseComponent
 
-    override render() {
+  override render() {
     const groupClasses = ['usa-form-group', this.required ? 'usa-form-group--required' : '']
       .filter(Boolean)
       .join(' ');
@@ -127,8 +127,7 @@ export class USAFileInput extends USWDSBaseComponent {
     return html`
       <div class="${groupClasses}">
         <label class="usa-label" for="${this.inputId}">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
+          ${this.label} ${this.renderRequiredIndicator()}
         </label>
         ${this.renderHint()}
         <input

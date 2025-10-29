@@ -215,14 +215,20 @@ describe('Table Timing and Initialization Regression Tests', () => {
       cy.wait(500);
 
       // Initial state - unsorted
-      cy.get('th[data-sortable]').first().should('have.attr', 'aria-label').and('include', 'unsorted');
+      cy.get('th[data-sortable]')
+        .first()
+        .should('have.attr', 'aria-label')
+        .and('include', 'unsorted');
 
       // Click to sort
       cy.get('.usa-table__header__button').first().click();
       cy.wait(100);
 
       // Label should update immediately
-      cy.get('th[data-sortable]').first().should('have.attr', 'aria-label').and('include', 'sorted');
+      cy.get('th[data-sortable]')
+        .first()
+        .should('have.attr', 'aria-label')
+        .and('include', 'sorted');
     });
 
     it('should handle multiple sortable headers independently', () => {

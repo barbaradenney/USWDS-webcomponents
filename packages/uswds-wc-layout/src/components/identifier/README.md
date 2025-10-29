@@ -20,12 +20,13 @@ import 'path/to/uswds-webcomponents/src/components/identifier/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `domain` | `any` | `''` | Property description |
-| `agency` | `any` | `''` | Property description |
-| `description` | `any` | `''` | Property description |
-| `requiredLinks` | `IdentifierLink[]` | `[
+| Property        | Type               | Default | Description          |
+| --------------- | ------------------ | ------- | -------------------- |
+| `domain`        | `any`              | `''`    | Property description |
+| `agency`        | `any`              | `''`    | Property description |
+| `description`   | `any`              | `''`    | Property description |
+| `requiredLinks` | `IdentifierLink[]` | `[      |
+
     { href: '/about', text: 'About' },
     { href: '/accessibility', text: 'Accessibility support' },
     { href: '/foia', text: 'FOIA requests' },
@@ -33,19 +34,20 @@ import 'path/to/uswds-webcomponents/src/components/identifier/index.js';
     { href: '/inspector-general', text: 'Office of the Inspector General' },
     { href: '/performance', text: 'Performance reports' },
     { href: '/privacy', text: 'Privacy policy' },
-  ]` | Property description |
-| `logos` | `IdentifierLogo[]` | `[]` | Property description |
-| `parentAgency` | `any` | `''` | Property description |
-| `parentAgencyHref` | `any` | `''` | Property description |
-| `showLogos` | `any` | `true` | Property description |
-| `showRequiredLinks` | `any` | `true` | Property description |
-| `mastheadLogoSrc` | `any` | `'data:image/svg+xml` | Property description |
-| `mastheadLogoAlt` | `any` | `''` | Property description |
+
+]`| Property description |
+|`logos`|`IdentifierLogo[]`|`[]`| Property description |
+|`parentAgency`|`any`|`''`| Property description |
+|`parentAgencyHref`|`any`|`''`| Property description |
+|`showLogos`|`any`|`true`| Property description |
+|`showRequiredLinks`|`any`|`true`| Property description |
+|`mastheadLogoSrc`|`any`|`'data:image/svg+xml`| Property description |
+|`mastheadLogoAlt`|`any`|`''` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event        | Type        | Description       |
+| ------------ | ----------- | ----------------- |
 | `link-click` | CustomEvent | Event description |
 
 ## Accessibility

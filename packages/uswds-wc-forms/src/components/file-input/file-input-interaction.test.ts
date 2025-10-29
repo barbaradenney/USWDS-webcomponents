@@ -25,7 +25,7 @@ describe('File Input JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -36,10 +36,11 @@ describe('File Input JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('file-input') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('file-input') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -99,7 +100,7 @@ describe('File Input JavaScript Interaction Testing', () => {
         // Mock the files property (Note: In real browser, this would be set by file dialog)
         Object.defineProperty(fileInput, 'files', {
           value: [mockFile],
-          writable: false
+          writable: false,
         });
 
         // Event listener for file-change
@@ -121,9 +122,15 @@ describe('File Input JavaScript Interaction Testing', () => {
 
       if (dropTarget) {
         // Event listeners for drag and drop events
-        element.addEventListener('drag-enter', () => { /* Event tracking for drag enter */ });
-        element.addEventListener('drag-over', () => { /* Event tracking for drag over */ });
-        element.addEventListener('file-drop', () => { /* Event tracking for file drop */ });
+        element.addEventListener('drag-enter', () => {
+          /* Event tracking for drag enter */
+        });
+        element.addEventListener('drag-over', () => {
+          /* Event tracking for drag over */
+        });
+        element.addEventListener('file-drop', () => {
+          /* Event tracking for file drop */
+        });
 
         // Test drag enter
         const dragEnterEvent = new DragEvent('dragenter', { bubbles: true });
@@ -138,12 +145,12 @@ describe('File Input JavaScript Interaction Testing', () => {
         // Test drop (with mock files)
         const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' });
         const mockDataTransfer = {
-          files: [mockFile]
+          files: [mockFile],
         } as DataTransfer;
 
         const dropEvent = new DragEvent('drop', {
           bubbles: true,
-          dataTransfer: mockDataTransfer
+          dataTransfer: mockDataTransfer,
         });
         dropTarget.dispatchEvent(dropEvent);
         await waitForUpdate(element);
@@ -249,7 +256,7 @@ describe('File Input JavaScript Interaction Testing', () => {
         const mockInvalidFile = new File(['test'], 'test.txt', { type: 'text/plain' });
         Object.defineProperty(fileInput, 'files', {
           value: [mockInvalidFile],
-          writable: false
+          writable: false,
         });
 
         // Event listener for file-validation-error
