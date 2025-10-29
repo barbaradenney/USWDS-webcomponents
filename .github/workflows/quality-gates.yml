@@ -31,7 +31,6 @@ jobs:
 
       - name: Run ESLint
         run: npx eslint packages/uswds-wc-*/src --ext .ts,.js --format json --output-file eslint-report.json
-        continue-on-error: true
 
       - name: Upload ESLint report
         if: always()
@@ -154,7 +153,7 @@ jobs:
 
       - name: Analyze code complexity
         run: |
-          npx cr --format json --output complexity-report.json src/**/*.ts
+          npx cr --format json --output complexity-report.json packages/*/src/**/*.ts
 
       - name: Check complexity thresholds
         run: |
@@ -254,7 +253,7 @@ jobs:
       - name: Validate JSDoc comments
         run: |
           pnpm install -g documentation
-          documentation lint src/**/*.ts
+          documentation lint packages/*/src/**/*.ts
 
       - name: Check Storybook stories exist
         run: |
