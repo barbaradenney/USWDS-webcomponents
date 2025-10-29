@@ -32,3 +32,18 @@ export type USWDSFontWeightToken = string;
 export type USWDSBorderRadiusToken = string;
 export type USWDSShadowToken = string;
 export type USWDSZIndexToken = string;
+
+/**
+ * Button component types
+ */
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'accent-cool'
+  | 'accent-warm'
+  | 'base'
+  | 'outline'
+  | 'inverse'
+  | 'unstyled';
+
+export type ButtonType = 'button' | 'submit' | 'reset';
