@@ -418,7 +418,7 @@
     "uswds:detect-issues": "node scripts/validate/auto-detect-component-issues.js",
     "uswds:validate-alignment": "node scripts/validate/validate-all-components-compliance.js",
     "uswds:validate-datepicker": "echo 'Use npm run validate:uswds-compliance instead'",
-    "uswds:validate-critical": "node scripts/validate-critical-components.js",
+    "uswds:validate-critical": "node scripts/validate/validate-critical-components.js",
     "uswds:validate-javascript": "node scripts/uswds-javascript-validation.js",
     "uswds:extract-classes": "node scripts/extract-complete-uswds-classes.js",
     "uswds:update-classes": "node scripts/auto-update-uswds-classes.js",

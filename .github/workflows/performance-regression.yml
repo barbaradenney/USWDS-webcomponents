@@ -31,7 +31,22 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
-        run: npx playwright install chromium
+        run: |
+          # Retry Playwright installation up to 3 times (fixes timeout issues in CI)
+          for i in 1 2 3; do
+            if npx playwright install chromium --with-deps; then
+              echo "✅ Playwright installed successfully"
+              break
+            else
+              if [ $i -lt 3 ]; then
+                echo "⏳ Playwright install attempt $i failed, retrying..."
+                sleep 10
+              else
+                echo "❌ Playwright install failed after 3 attempts"
+                exit 1
+              fi
+            fi
+          done
 
       - name: Build project
         run: pnpm run build
