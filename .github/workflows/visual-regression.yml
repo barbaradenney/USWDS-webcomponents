@@ -65,6 +65,8 @@ jobs:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
       - name: Run Chromatic tests
+        # Skip if CHROMATIC_PROJECT_TOKEN is not set
+        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
         uses: chromaui/action@v1
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
@@ -198,11 +200,13 @@ jobs:
 
       - name: Start Storybook server
         run: |
-          npx http-server storybook-static -p 6006 -s &
+          # Use port 6007 to avoid conflict with main visual-tests job
+          npx http-server storybook-static -p 6007 -s &
           sleep 10
 
       - name: Run cross-browser visual tests
         run: |
+          # Update Playwright to use port 6007
           npx playwright test --project=${{ matrix.browser }} \
             --config=playwright.visual.config.ts \
             --reporter=html
