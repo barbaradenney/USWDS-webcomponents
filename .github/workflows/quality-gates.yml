@@ -30,7 +30,6 @@ jobs:
 
       - name: Run ESLint
         run: pnpm run lint -- --format json --output-file eslint-report.json
-        continue-on-error: true
 
       - name: Upload ESLint report
         if: always()
@@ -40,7 +39,7 @@ jobs:
           path: eslint-report.json
 
       - name: Check Prettier formatting
-        run: npx prettier --check "src/**/*.{ts,js,css,json,md}"
+        run: npx prettier --check "packages/*/src/**/*.{ts,js,css,json,md}"
 
       - name: Annotate ESLint results
         uses: ataylorme/eslint-annotate-action@v3
@@ -151,7 +150,7 @@ jobs:
 
       - name: Analyze code complexity
         run: |
-          npx cr --format json --output complexity-report.json src/**/*.ts
+          npx cr --format json --output complexity-report.json packages/*/src/**/*.ts
 
       - name: Check complexity thresholds
         run: |
@@ -240,7 +239,7 @@ jobs:
       - name: Check for missing documentation
         run: |
           echo "Checking for components without README files..."
-          for dir in src/components/*/; do
+          for dir in packages/*/src/components/*/; do
             if [ ! -f "$dir/README.md" ]; then
               echo "⚠️ Missing README.md in $dir"
               exit 1
@@ -250,12 +249,12 @@ jobs:
       - name: Validate JSDoc comments
         run: |
           pnpm install -g documentation
-          documentation lint src/**/*.ts
+          documentation lint packages/*/src/**/*.ts
 
       - name: Check Storybook stories exist
         run: |
           echo "Checking for components without Storybook stories..."
-          for dir in src/components/*/; do
+          for dir in packages/*/src/components/*/; do
             component=$(basename "$dir")
             if [ ! -f "$dir/usa-$component.stories.ts" ]; then
               echo "⚠️ Missing Storybook story for $component"
