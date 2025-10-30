@@ -101,7 +101,7 @@ const APPROVED_SKIPS = {
   // Modal tests require actual browser for USWDS DOM transformation and behavior
   // Comprehensive Cypress coverage: 84 tests across 3 files
   'packages/uswds-wc-feedback/src/components/modal/usa-modal.browser.test.ts': {
-    count: 1,
+    count: 5,
     reason: 'BROWSER_ENVIRONMENT_LIMITATION',
     documented: 'Browser-dependent modal tests require USWDS JS initialization, DOM transformation, visibility, positioning, and focus management - fully covered by 84 Cypress tests',
   },
