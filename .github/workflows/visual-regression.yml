@@ -28,6 +28,8 @@ jobs:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Skip if CHROMATIC_PROJECT_TOKEN is not set (optional feature)
+    if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
 
     steps:
       - name: Checkout code
