@@ -9,7 +9,6 @@ on:
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
-    continue-on-error: true  # TODO: Fix for monorepo structure - needs pnpm workspace configuration
 
     strategy:
       matrix:
@@ -60,7 +59,9 @@ jobs:
 
   component-tests:
     runs-on: ubuntu-latest
-    if: false  # TEMPORARILY DISABLED: Tests hang for 3+ hours, blocking CI
+    if: false  # DISABLED: Tests hang for 3+ hours, blocking CI
+               # These tests are now covered by ci.yml workflow (Component Tests job)
+               # which uses cypress-io/github-action with proper timeouts
 
     steps:
       - name: Checkout code
@@ -96,7 +97,10 @@ jobs:
 
   accessibility-tests:
     runs-on: ubuntu-latest
-    if: false  # TEMPORARILY DISABLED: Tests hang for 3+ hours, blocking CI
+    if: false  # DISABLED: Tests hang for 3+ hours, blocking CI
+               # Accessibility testing is covered by:
+               # 1. ci.yml - Cross-Browser Testing job (Playwright accessibility tests)
+               # 2. Unit tests - Every component includes axe-core validation
 
     steps:
       - name: Checkout code
@@ -146,7 +150,6 @@ jobs:
 
   bundle-analysis:
     runs-on: ubuntu-latest
-    continue-on-error: true  # TODO: Fix for monorepo structure - needs to analyze packages/*/dist folders
 
     steps:
       - name: Checkout code
