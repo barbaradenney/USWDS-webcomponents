@@ -89,6 +89,23 @@ const APPROVED_SKIPS = {
     documented: 'File existence test via file system is fragile in CI environments - behavior validated by functional tests',
   },
 
+  // Browser Environment Limitation (2025-10-30) ✅ JUSTIFIED
+  // Browser-dependent tests require actual browser behavior, not jsdom
+  'packages/uswds-wc-feedback/src/components/tooltip/usa-tooltip.browser.test.ts': {
+    count: 1,
+    reason: 'BROWSER_ENVIRONMENT_LIMITATION',
+    documented: 'Browser-dependent tests require actual browser behavior (getBoundingClientRect, mouse/focus events, USWDS JS initialization) - should only run in browser test environment',
+  },
+
+  // Browser Environment Limitation - Modal (2025-10-30) ✅ JUSTIFIED
+  // Modal tests require actual browser for USWDS DOM transformation and behavior
+  // Comprehensive Cypress coverage: 84 tests across 3 files
+  'packages/uswds-wc-feedback/src/components/modal/usa-modal.browser.test.ts': {
+    count: 1,
+    reason: 'BROWSER_ENVIRONMENT_LIMITATION',
+    documented: 'Browser-dependent modal tests require USWDS JS initialization, DOM transformation, visibility, positioning, and focus management - fully covered by 84 Cypress tests',
+  },
+
   // CI Environment Performance (2025-10-27) ✅ JUSTIFIED
   // Performance test and comprehensive accessibility test timeout in slower CI environment
   'packages/uswds-wc-layout/src/components/process-list/usa-process-list.test.ts': {
