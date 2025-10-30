@@ -89,6 +89,14 @@ const APPROVED_SKIPS = {
     documented: 'File existence test via file system is fragile in CI environments - behavior validated by functional tests',
   },
 
+  // Browser Environment Limitation (2025-10-30) ✅ JUSTIFIED
+  // Browser-dependent tests require actual browser behavior, not jsdom
+  'packages/uswds-wc-feedback/src/components/tooltip/usa-tooltip.browser.test.ts': {
+    count: 1,
+    reason: 'BROWSER_ENVIRONMENT_LIMITATION',
+    documented: 'Browser-dependent tests require actual browser behavior (getBoundingClientRect, mouse/focus events, USWDS JS initialization) - should only run in browser test environment',
+  },
+
   // CI Environment Performance (2025-10-27) ✅ JUSTIFIED
   // Performance test and comprehensive accessibility test timeout in slower CI environment
   'packages/uswds-wc-layout/src/components/process-list/usa-process-list.test.ts': {

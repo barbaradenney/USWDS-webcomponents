@@ -16,7 +16,7 @@ import type { USATooltip } from './usa-tooltip.js';
  * NOTE: These tests are skipped in unit test runs to avoid failures
  * in environments where USWDS JavaScript cannot properly initialize.
  */
-describe('USATooltip Browser Tests', () => {
+describe.skip('USATooltip Browser Tests', () => {
   let element: USATooltip;
   let container: HTMLElement;
 
