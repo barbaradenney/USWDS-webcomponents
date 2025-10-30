@@ -145,6 +145,19 @@ const APPROVED_SKIPS = {
   // - in-page-navigation-interaction.test.ts (2 tests) → usa-in-page-navigation.component.cy.ts
   // - usa-language-selector.regression.test.ts (1 test) → usa-language-selector.component.cy.ts
 
+  // JSDOM limitation (2025-10-30) ✅ JUSTIFIED
+  // File input focus and Vite bundling validation not supported in JSDOM
+  'packages/uswds-wc-forms/src/components/file-input/usa-file-input.test.ts': {
+    count: 1,
+    reason: 'JSDOM_LIMITATION',
+    documented: 'File input focus not supported in JSDOM - covered by Cypress component tests',
+  },
+  'packages/uswds-wc-forms/src/components/date-picker/usa-date-picker.test.ts': {
+    count: 1,
+    reason: 'JSDOM_LIMITATION',
+    documented: 'window.matchMedia not supported in JSDOM - Vite bundling is build-time concern, not runtime',
+  },
+
   // ALL OTHER SKIPS REMOVED - Tests deleted or moved to Cypress:
   // ✅ DELETED: 8 behavior contract test files → Cypress E2E coverage
   // ✅ DELETED: 6 individual browser/JSDOM limitation tests → Cypress coverage
