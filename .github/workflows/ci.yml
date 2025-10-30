@@ -43,7 +43,7 @@ jobs:
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Check code formatting
-        run: pnpm run format:check || true # Non-blocking for now
+        run: pnpm run format:check
 
   # Job 2: Security Audit
   security:

@@ -12,16 +12,16 @@
  */
 
 // All @use rules must come first in SASS
-@use "@uswds/uswds/packages/uswds-core" as *;
+@use '@uswds/uswds/packages/uswds-core' as *;
 
 // Typography essentials
-@use "@uswds/uswds/packages/uswds-fonts";
+@use '@uswds/uswds/packages/uswds-fonts';
 
 // Grid system (used by most components)
-@use "@uswds/uswds/packages/usa-layout-grid";
+@use '@uswds/uswds/packages/usa-layout-grid';
 
 // Core utility classes that components depend on
-@use "@uswds/uswds/packages/uswds-utilities";
+@use '@uswds/uswds/packages/uswds-utilities';
 
 // Media block (used by many components)
-@use "@uswds/uswds/packages/usa-media-block";
+@use '@uswds/uswds/packages/usa-media-block';
