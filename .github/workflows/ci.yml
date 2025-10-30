@@ -207,7 +207,6 @@ jobs:
           wait-on: 'http://localhost:6006'
           wait-on-timeout: 120
           command: pnpm run cypress:run
-        continue-on-error: true # Don't fail for now
 
       - name: Upload Cypress screenshots
         uses: actions/upload-artifact@v4
@@ -262,26 +261,36 @@ jobs:
 
       - name: Run cross-browser accessibility tests
         run: npx playwright test tests/playwright/accessibility-cross-browser.spec.ts --reporter=html
-        continue-on-error: true
 
       - name: Run cross-browser component tests
         run: |
           npx playwright test tests/playwright/modal-cross-browser.spec.ts --reporter=line
           npx playwright test tests/playwright/combo-box-cross-browser.spec.ts --reporter=line
           npx playwright test tests/playwright/accordion-cross-browser.spec.ts --reporter=line
-        continue-on-error: true
 
       - name: Run browser-required tests (USWDS integration)
         run: pnpm run test:browser-required
-        continue-on-error: true
 
       - name: Run production smoke tests (critical flows)
         run: pnpm run test:production:smoke:critical
-        continue-on-error: true
 
-      # Note: Dev server and Puppeteer tests temporarily disabled due to port conflicts
-      # The Storybook server (port 6006) is already running for Playwright tests above
-      # TODO: Re-enable when dev server tests are configured on a different port
+      # =========================================================================
+      # PUPPETEER TESTS - DISABLED (Port Conflict)
+      # =========================================================================
+      # Status: Temporarily disabled due to port conflicts with Storybook
+      # Issue: Both Storybook (Playwright tests) and dev server use port 6006
+      # Solution needed: Configure dev server on different port (e.g., 5173)
+      #
+      # These tests would provide:
+      # - Cross-browser validation (Chrome, Firefox, Safari simulation)
+      # - Performance monitoring (page load times, bundle analysis)
+      # - Visual regression testing (screenshot comparisons)
+      #
+      # To re-enable:
+      # 1. Update dev server config to use port 5173 (or other available port)
+      # 2. Uncomment the sections below
+      # 3. Verify no port conflicts in CI environment
+      # =========================================================================
       # - name: Install Puppeteer for Phase 2 validation
       #   run: |
       #     echo "🌐 Setting up Puppeteer browser automation..."
