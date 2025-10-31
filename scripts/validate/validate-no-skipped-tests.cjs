@@ -161,9 +161,9 @@ const APPROVED_SKIPS = {
   // CI Environment Limitations (2025-10-30) ✅ JUSTIFIED
   // Language selector tests that timeout or are too slow in CI environment
   'packages/uswds-wc-navigation/src/components/language-selector/usa-language-selector.test.ts': {
-    count: 1,
+    count: 2,
     reason: 'CI_ENVIRONMENT_PERFORMANCE',
-    documented: 'Comprehensive accessibility tests timeout in CI (>5s) - covered by Storybook and Cypress',
+    documented: 'Accessibility tests timeout in CI (>5s) - covered by Storybook and Cypress',
   },
 
   // Footer JSDOM Limitations (2025-10-30) ✅ JUSTIFIED
