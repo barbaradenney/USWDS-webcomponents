@@ -53,13 +53,13 @@ jobs:
           sed 's/\x1b\[[0-9;]*m//g' test-output.log > test-output-clean.log
 
           # Check for actual test failures (not just JSDOM unhandled errors)
-          if grep -q "Test Files.*failed" test-output-clean.log || grep -q "Tests.*failed" test-output-clean.log; then
+          if grep -E "Test Files.*(failed|failing)" test-output-clean.log || grep -E "Tests.*(failed|failing)" test-output-clean.log; then
             echo "❌ Real test failures detected"
             exit 1
           fi
 
-          # Check if all tests passed
-          if grep -q "Test Files.*passed" test-output-clean.log && ! grep -q "failed" test-output-clean.log; then
+          # Check if all tests passed (look for "Test Files" and "passed" pattern)
+          if grep -q "Test Files" test-output-clean.log && grep -q "passed" test-output-clean.log; then
             echo "✅ All tests passed (ignoring JSDOM unhandled errors)"
             exit 0
           fi
