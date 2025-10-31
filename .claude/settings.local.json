@@ -123,7 +123,10 @@
       "Bash(pnpm --filter @uswds-wc/forms run lint:*)",
       "Bash(pnpm --filter @uswds-wc/data-display test:*)",
       "Bash(pnpm --filter @uswds-wc/feedback test:*)",
-      "Bash(pnpm validate:ai-quality:*)"
+      "Bash(pnpm validate:ai-quality:*)",
+      "Bash(pnpm turbo typecheck:*)",
+      "Bash(pnpm --filter @uswds-wc/navigation test:*)",
+      "Bash(CI=1 pnpm --filter @uswds-wc/navigation test:*)"
     ],
     "deny": [],
     "ask": []
