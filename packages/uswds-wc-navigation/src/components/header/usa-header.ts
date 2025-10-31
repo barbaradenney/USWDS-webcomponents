@@ -8,7 +8,8 @@ import { initializeHeader } from './usa-header-behavior.js';
 import '@uswds-wc/core/styles.css';
 
 // Import usa-search component from actions package
-import '@uswds-wc/actions/components/search/index.js';
+// Using main package entry point since component subpaths are not built separately
+import '@uswds-wc/actions';
 
 // Import usa-language-selector component
 import '../language-selector/index.js';
