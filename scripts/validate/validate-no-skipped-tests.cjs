@@ -146,11 +146,11 @@ const APPROVED_SKIPS = {
   // - usa-language-selector.regression.test.ts (1 test) → usa-language-selector.component.cy.ts
 
   // JSDOM limitation (2025-10-30) ✅ JUSTIFIED
-  // File input focus and Vite bundling validation not supported in JSDOM
+  // File input focus and USWDS enhancement validation not supported in JSDOM
   'packages/uswds-wc-forms/src/components/file-input/usa-file-input.test.ts': {
-    count: 1,
+    count: 4,
     reason: 'JSDOM_LIMITATION',
-    documented: 'File input focus not supported in JSDOM - covered by Cypress component tests',
+    documented: 'File input focus and USWDS enhancement class validation require browser - covered by Cypress component tests',
   },
   'packages/uswds-wc-forms/src/components/date-picker/usa-date-picker.test.ts': {
     count: 2,
