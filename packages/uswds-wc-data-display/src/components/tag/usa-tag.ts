@@ -114,6 +114,7 @@ export class USATag extends LitElement {
   private renderRemoveButton() {
     if (!this.removable) return '';
 
+    // prettier-ignore
     return html`<button
       type="button"
       class="usa-button usa-button--unstyled"

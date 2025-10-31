@@ -789,35 +789,31 @@ describe('USATable', () => {
   });
 
   describe('Performance Considerations', () => {
-    it(
-      'should handle large datasets efficiently',
-      async () => {
-        const largeDataset = Array.from({ length: 1000 }, (_, i) => ({
-          id: i,
-          name: `User ${i}`,
-          email: `user${i}@example.gov`,
-        }));
+    it('should handle large datasets efficiently', async () => {
+      const largeDataset = Array.from({ length: 1000 }, (_, i) => ({
+        id: i,
+        name: `User ${i}`,
+        email: `user${i}@example.gov`,
+      }));
 
-        element.headers = [
-          { key: 'id', label: 'ID' },
-          { key: 'name', label: 'Name' },
-          { key: 'email', label: 'Email' },
-        ];
-        element.data = largeDataset;
+      element.headers = [
+        { key: 'id', label: 'ID' },
+        { key: 'name', label: 'Name' },
+        { key: 'email', label: 'Email' },
+      ];
+      element.data = largeDataset;
 
-        const startTime = performance.now();
-        await element.updateComplete;
-        const endTime = performance.now();
+      const startTime = performance.now();
+      await element.updateComplete;
+      const endTime = performance.now();
 
-        const rows = element.querySelectorAll('tbody tr');
-        expect(rows.length).toBe(1000);
+      const rows = element.querySelectorAll('tbody tr');
+      expect(rows.length).toBe(1000);
 
-        // Should complete rendering within reasonable time (15 seconds for large dataset in CI environment)
-        // CI environments are slower than local, so increased from 5s to 15s
-        expect(endTime - startTime).toBeLessThan(15000);
-      },
-      20000
-    ); // Increased timeout to 20s for CI environment
+      // Should complete rendering within reasonable time (15 seconds for large dataset in CI environment)
+      // CI environments are slower than local, so increased from 5s to 15s
+      expect(endTime - startTime).toBeLessThan(15000);
+    }, 20000); // Increased timeout to 20s for CI environment
   });
 
   // CRITICAL TESTS - Component Lifecycle Stability (Auto-dismiss Prevention)
@@ -991,36 +987,32 @@ describe('USATable', () => {
   });
 
   describe('Data Rendering Stability (CRITICAL)', () => {
-    it(
-      'should handle large dataset changes without disconnection',
-      async () => {
-        // Test large dataset operations
-        const datasets = [
-          Array.from({ length: 100 }, (_, i) => ({ id: i, value: `Value ${i}` })),
-          Array.from({ length: 500 }, (_, i) => ({ id: i, value: `Large ${i}` })),
-          Array.from({ length: 10 }, (_, i) => ({ id: i, value: `Small ${i}` })),
-          Array.from({ length: 1000 }, (_, i) => ({ id: i, value: `Huge ${i}` })),
-        ];
+    it('should handle large dataset changes without disconnection', async () => {
+      // Test large dataset operations
+      const datasets = [
+        Array.from({ length: 100 }, (_, i) => ({ id: i, value: `Value ${i}` })),
+        Array.from({ length: 500 }, (_, i) => ({ id: i, value: `Large ${i}` })),
+        Array.from({ length: 10 }, (_, i) => ({ id: i, value: `Small ${i}` })),
+        Array.from({ length: 1000 }, (_, i) => ({ id: i, value: `Huge ${i}` })),
+      ];
 
-        element.headers = [
-          { key: 'id', label: 'ID', sortable: true },
-          { key: 'value', label: 'Value', sortable: true },
-        ];
+      element.headers = [
+        { key: 'id', label: 'ID', sortable: true },
+        { key: 'value', label: 'Value', sortable: true },
+      ];
 
-        for (const dataset of datasets) {
-          element.data = dataset;
-          await element.updateComplete;
+      for (const dataset of datasets) {
+        element.data = dataset;
+        await element.updateComplete;
 
-          // Verify table renders correctly
-          const table = element.querySelector('table');
-          expect(table).toBeTruthy();
-        }
+        // Verify table renders correctly
+        const table = element.querySelector('table');
+        expect(table).toBeTruthy();
+      }
 
-        expect(document.body.contains(element)).toBe(true);
-        expect(element.isConnected).toBe(true);
-      },
-      20000
-    ); // Increased timeout to 20s for large dataset operations in CI
+      expect(document.body.contains(element)).toBe(true);
+      expect(element.isConnected).toBe(true);
+    }, 20000); // Increased timeout to 20s for large dataset operations in CI
 
     it('should handle complex column structure changes', async () => {
       // Test complex column configurations
