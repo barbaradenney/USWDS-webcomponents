@@ -119,7 +119,9 @@ export class USATag extends LitElement {
       class="usa-button usa-button--unstyled"
       aria-label="Remove tag: ${this.text}"
       @click="${this.handleRemove}"
-    >✕</button>`;
+    >
+      ✕
+    </button>`;
   }
 
   override render() {

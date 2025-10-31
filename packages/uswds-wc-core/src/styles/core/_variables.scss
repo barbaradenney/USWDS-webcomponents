@@ -22,8 +22,14 @@ $usa-color-gray-cool-10: #dfe1e2;
 $usa-color-gray-50: #757575;
 
 // Typography
-$usa-font-sans: "Source Sans Pro Web", Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
-$usa-font-serif: "Merriweather Web", Georgia, Cambria, "Times New Roman", Times, serif;
+$usa-font-sans:
+  'Source Sans Pro Web',
+  Helvetica Neue,
+  Helvetica,
+  Roboto,
+  Arial,
+  sans-serif;
+$usa-font-serif: 'Merriweather Web', Georgia, Cambria, 'Times New Roman', Times, serif;
 
 // Spacing
 $usa-spacing-1: 0.25rem;
