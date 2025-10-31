@@ -169,9 +169,9 @@ const APPROVED_SKIPS = {
   // Footer JSDOM Limitations (2025-10-30) ✅ JUSTIFIED
   // Footer accordion behavior requires real browser for USWDS event delegation
   'packages/uswds-wc-navigation/src/components/footer/usa-footer-behavior.test.ts': {
-    count: 4,
+    count: 5,
     reason: 'JSDOM_LIMITATION',
-    documented: 'Footer accordion and event delegation require browser - covered by Cypress component tests',
+    documented: 'Footer accordion, event delegation, and matchMedia cleanup require browser - covered by Cypress component tests',
   },
 
   // ALL OTHER SKIPS REMOVED - Tests deleted or moved to Cypress:
