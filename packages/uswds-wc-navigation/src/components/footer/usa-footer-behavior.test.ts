@@ -213,7 +213,9 @@ describe('USWDS Footer Behavior Contract', () => {
     // Skipped in jsdom - requires Cypress for USWDS JavaScript interaction
     // Coverage: src/components/footer/usa-footer.component.cy.ts
 
-    it('should collapse other panels when opening one', async () => {
+    // SKIP: JSDOM limitation - requires real browser for USWDS footer accordion behavior
+    // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it.skip('should collapse other panels when opening one', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -243,7 +245,9 @@ describe('USWDS Footer Behavior Contract', () => {
       expect(firstButton.getAttribute('aria-expanded')).toBe('false');
     });
 
-    it('should use accordion behavior only on mobile', async () => {
+    // SKIP: JSDOM limitation - requires real browser for USWDS footer accordion behavior
+    // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it.skip('should use accordion behavior only on mobile', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -356,7 +360,9 @@ describe('USWDS Footer Behavior Contract', () => {
       });
     });
 
-    it('should use event delegation for button clicks', async () => {
+    // SKIP: JSDOM limitation - requires real browser for USWDS event delegation
+    // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it.skip('should use event delegation for button clicks', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -369,7 +375,9 @@ describe('USWDS Footer Behavior Contract', () => {
       expect(button.getAttribute('aria-expanded')).toBe('true');
     });
 
-    it('should handle clicks on button children', async () => {
+    // SKIP: JSDOM limitation - requires real browser for USWDS event delegation
+    // Coverage: src/components/footer/usa-footer.component.cy.ts
+    it.skip('should handle clicks on button children', async () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
