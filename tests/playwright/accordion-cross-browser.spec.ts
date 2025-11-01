@@ -9,7 +9,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Accordion Component Cross-Browser Tests', () => {
 
   test.beforeEach(async ({ page, browserName }) => {
-    await page.goto('/iframe.html?id=components-accordion--default');
+    await page.goto('/iframe.html?id=structure-accordion--default');
     await page.waitForLoadState('networkidle');
 
     // Wait for web component to be fully initialized

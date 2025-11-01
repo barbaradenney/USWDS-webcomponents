@@ -9,7 +9,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Combo Box Component Cross-Browser Tests', () => {
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/iframe.html?id=components-combo-box--default');
+    await page.goto('/iframe.html?id=forms-combo-box--default');
     await page.waitForLoadState('networkidle');
   });
 

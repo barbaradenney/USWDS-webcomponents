@@ -11,7 +11,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
   test.describe('Modal Accessibility', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/iframe.html?id=components-modal--default');
+      await page.goto('/iframe.html?id=feedback-modal--default');
       await page.waitForLoadState('networkidle');
     });
 
@@ -62,7 +62,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
   test.describe('Combo Box Accessibility', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/iframe.html?id=components-combo-box--default');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
     });
 
@@ -117,7 +117,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
   test.describe('Accordion Accessibility', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
     });
 
@@ -167,7 +167,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
   test.describe('Keyboard Navigation Accessibility', () => {
     test('should support Tab navigation across components @a11y', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       // Start from first focusable element
@@ -193,7 +193,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
     });
 
     test('should support Shift+Tab reverse navigation @a11y', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-modal--default');
+      await page.goto('/iframe.html?id=feedback-modal--default');
       await page.waitForLoadState('networkidle');
 
       // Open modal to test focus trapping
@@ -222,7 +222,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
   test.describe('Screen Reader Compatibility', () => {
     test('should provide appropriate labels and descriptions @a11y', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-combo-box--default');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
 
       // Test that form elements have labels
@@ -243,7 +243,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
     });
 
     test('should announce state changes appropriately @a11y', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       const firstButton = page.locator('.usa-accordion__button').first();
@@ -275,7 +275,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
         test.skip('Safari does not support forced-colors media query');
       }
 
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       // Emulate high contrast mode
@@ -305,7 +305,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
     });
 
     test('should support reduced motion preferences @a11y', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
 
       // Emulate reduced motion preference
       await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -331,7 +331,7 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
   test.describe('Color Contrast Accessibility', () => {
     test('should maintain sufficient color contrast @a11y', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       // Run axe-core with specific focus on color contrast

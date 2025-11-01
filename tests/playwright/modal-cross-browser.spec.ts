@@ -9,7 +9,7 @@ import { test, expect, devices } from '@playwright/test';
 test.describe('Modal Component Cross-Browser Tests', () => {
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/iframe.html?id=components-modal--default');
+    await page.goto('/iframe.html?id=feedback-modal--default');
     await page.waitForLoadState('networkidle');
   });
 

@@ -41,7 +41,7 @@ test.describe('Smoke Tests @smoke @critical', () => {
 
   test('Should load a basic component story', async ({ page }) => {
     // Navigate directly to a button story (common component)
-    await page.goto('/?path=/story/components-button--default');
+    await page.goto('/?path=/story/actions-button--default');
 
     // Wait for the story to load
     await page.waitForSelector('iframe#storybook-preview-iframe, [data-test-id="story-root"]', {
