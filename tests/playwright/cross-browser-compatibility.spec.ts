@@ -141,7 +141,7 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should load components within performance budget', async ({ page }) => {
       const startTime = Date.now();
 
-      await page.goto('/iframe.html?id=data-display-table--with-large-dataset');
+      await page.goto('/iframe.html?id=data-display-table--large-dataset');
       await page.waitForLoadState('networkidle');
 
       const loadTime = Date.now() - startTime;
@@ -160,7 +160,7 @@ test.describe('Cross-Browser Compatibility', () => {
     });
 
     test('should handle rapid interactions without performance degradation', async ({ page }) => {
-      await page.goto('/iframe.html?id=structure-accordion--multiple-items');
+      await page.goto('/iframe.html?id=structure-accordion--multiselectable');
       await page.waitForLoadState('networkidle');
 
       const accordionButtons = page.locator('usa-accordion button');
@@ -185,7 +185,7 @@ test.describe('Cross-Browser Compatibility', () => {
 
   test.describe('Form Integration Tests', () => {
     test('should integrate properly with native forms', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-text-input--in-form');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       const textInput = page.locator('usa-text-input input').first();
@@ -215,7 +215,8 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should handle slow network conditions', async ({ page, context }) => {
       // Simulate slow 3G network
       await context.route('**/*', async (route) => {
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+        // Use Promise delay for network simulation (auto-resolves, no clearTimeout needed)
+        await page.waitForTimeout(100);
         await route.continue();
       });
 

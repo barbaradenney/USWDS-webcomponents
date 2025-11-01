@@ -80,11 +80,11 @@ function extractStoryIdsFromStorybook() {
   storyFiles.forEach(storyFile => {
     const content = fs.readFileSync(storyFile, 'utf-8');
 
-    // Extract title from meta
-    const titleMatch = content.match(/title:\s*['"]([^'"]+)['"]/);
-    if (!titleMatch) return;
+    // Extract title from meta object (looking for 'const meta' followed by 'title:')
+    const metaMatch = content.match(/const meta[^{]*\{[^}]*title:\s*['"]([^'"]+)['"]/s);
+    if (!metaMatch) return;
 
-    const title = titleMatch[1];
+    const title = metaMatch[1];
 
     // Convert title to story ID format
     // Example: 'Actions/Button' -> 'actions-button'
