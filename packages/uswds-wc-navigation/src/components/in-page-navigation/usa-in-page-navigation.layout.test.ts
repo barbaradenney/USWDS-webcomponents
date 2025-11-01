@@ -47,8 +47,7 @@ describe('USAInPageNavigation Layout Tests', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/in-page-navigation/usa-in-page-navigation.ts`;
+        const componentPath = `${process.cwd()}/src/components/in-page-navigation/usa-in-page-navigation.ts`;
         const validation = validateComponentJavaScript(componentPath, 'in-page-navigation');
 
         if (!validation.isValid) {

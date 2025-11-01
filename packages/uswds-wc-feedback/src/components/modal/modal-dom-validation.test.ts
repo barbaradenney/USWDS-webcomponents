@@ -16,23 +16,36 @@ async function waitForModalTransformation(modalId: string, timeout = 2000): Prom
     }
 
     // Wait 50ms before next check
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
   }
 
   throw new Error(`Modal transformation timeout after ${timeout}ms for modal: ${modalId}`);
 }
 
 // Simple validation helpers
-function validateCSSClasses(element: Element, requiredClasses: string[], prohibitedClasses: string[] = []) {
-  requiredClasses.forEach(className => {
-    expect(element.classList.contains(className), `Missing required class: ${className}`).toBe(true);
+function validateCSSClasses(
+  element: Element,
+  requiredClasses: string[],
+  prohibitedClasses: string[] = []
+) {
+  requiredClasses.forEach((className) => {
+    expect(element.classList.contains(className), `Missing required class: ${className}`).toBe(
+      true
+    );
   });
-  prohibitedClasses.forEach(className => {
-    expect(element.classList.contains(className), `Should not have class: ${className}`).toBe(false);
+  prohibitedClasses.forEach((className) => {
+    expect(element.classList.contains(className), `Should not have class: ${className}`).toBe(
+      false
+    );
   });
 }
 
-function validateAttributeBinding(element: Element, attrName: string, expectedValue: any, propName?: string) {
+function validateAttributeBinding(
+  element: Element,
+  attrName: string,
+  expectedValue: any,
+  propName?: string
+) {
   if (typeof expectedValue === 'boolean') {
     if (expectedValue) {
       expect(element.hasAttribute(attrName), `Missing attribute: ${attrName}`).toBe(true);
@@ -40,7 +53,9 @@ function validateAttributeBinding(element: Element, attrName: string, expectedVa
       expect(element.hasAttribute(attrName), `Should not have attribute: ${attrName}`).toBe(false);
     }
   } else {
-    expect(element.getAttribute(attrName), `Attribute ${attrName} has wrong value`).toBe(expectedValue);
+    expect(element.getAttribute(attrName), `Attribute ${attrName} has wrong value`).toBe(
+      expectedValue
+    );
   }
 
   if (propName) {

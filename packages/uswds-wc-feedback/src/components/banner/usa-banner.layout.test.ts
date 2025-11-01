@@ -104,29 +104,40 @@ describe('USABanner Layout Tests', () => {
     const header = element.querySelector('.usa-banner__header');
 
     // Initially banner should be collapsed
-    expect(button.getAttribute('aria-expanded'), 'Button should be collapsed initially').toBe('false');
+    expect(button.getAttribute('aria-expanded'), 'Button should be collapsed initially').toBe(
+      'false'
+    );
     expect(content.hidden, 'Content should be hidden initially').toBe(true);
-    expect(header!.classList.contains('usa-banner__header--expanded'), 'Header should not have expanded class initially').toBe(false);
+    expect(
+      header!.classList.contains('usa-banner__header--expanded'),
+      'Header should not have expanded class initially'
+    ).toBe(false);
 
     // Expand banner
     element.expanded = true;
     await element.updateComplete;
     // Wait for DOM update
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     expect(button.getAttribute('aria-expanded'), 'Button should be expanded').toBe('true');
     expect(content.hidden, 'Content should be visible when expanded').toBe(false);
-    expect(header!.classList.contains('usa-banner__header--expanded'), 'Header should have expanded class').toBe(true);
+    expect(
+      header!.classList.contains('usa-banner__header--expanded'),
+      'Header should have expanded class'
+    ).toBe(true);
 
     // Collapse banner
     element.expanded = false;
     await element.updateComplete;
     // Wait for DOM update
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     expect(button.getAttribute('aria-expanded'), 'Button should be collapsed again').toBe('false');
     expect(content.hidden, 'Content should be hidden when collapsed').toBe(true);
-    expect(header!.classList.contains('usa-banner__header--expanded'), 'Header should not have expanded class when collapsed').toBe(false);
+    expect(
+      header!.classList.contains('usa-banner__header--expanded'),
+      'Header should not have expanded class when collapsed'
+    ).toBe(false);
   });
 
   it('should handle custom image sources correctly', async () => {
@@ -148,29 +159,35 @@ describe('USABanner Layout Tests', () => {
     const actionText = element.querySelector('.usa-banner__header-action');
     const buttonText = element.querySelector('.usa-banner__button-text');
 
-    expect(headerText!.textContent!.trim(), 'Should render header text').toBe('An official website of the United States government');
-    expect(actionText!.textContent!.trim(), 'Should render action text').toBe("Here's how you know");
-    expect(buttonText!.textContent!.trim(), 'Should render button text').toBe("Here's how you know");
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/banner/usa-banner.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'banner');
+    expect(headerText!.textContent!.trim(), 'Should render header text').toBe(
+      'An official website of the United States government'
+    );
+    expect(actionText!.textContent!.trim(), 'Should render action text').toBe(
+      "Here's how you know"
+    );
+    expect(buttonText!.textContent!.trim(), 'Should render button text').toBe(
+      "Here's how you know"
+    );
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/banner/usa-banner.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'banner');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {
@@ -252,7 +269,9 @@ describe('USABanner Layout Tests', () => {
       await element.updateComplete;
 
       const content = element.querySelector('.usa-banner__content') as HTMLElement;
-      const guidanceSections = element.querySelectorAll('.usa-banner__guidance') as NodeListOf<HTMLElement>;
+      const guidanceSections = element.querySelectorAll(
+        '.usa-banner__guidance'
+      ) as NodeListOf<HTMLElement>;
       const icons = element.querySelectorAll('.usa-banner__icon') as NodeListOf<HTMLElement>;
 
       const contentRect = content.getBoundingClientRect();
@@ -288,7 +307,9 @@ describe('USABanner Layout Tests', () => {
       // This test requires Cypress for full interactive behavior testing
       // Here we verify the component is set up correctly for USWDS enhancement
       expect(button, 'Button should exist').toBeTruthy();
-      expect(button.getAttribute('aria-controls'), 'Button should have aria-controls').toBe('gov-banner-default');
+      expect(button.getAttribute('aria-controls'), 'Button should have aria-controls').toBe(
+        'gov-banner-default'
+      );
 
       // Verify programmatic control works (tested in "should handle banner expansion states correctly")
       element.expanded = true;
@@ -313,7 +334,9 @@ describe('USABanner Layout Tests', () => {
 
       // Verify button is in the accessibility tree
       expect(button.getAttribute('aria-expanded'), 'Should have aria-expanded').toBe('false');
-      expect(button.getAttribute('aria-controls'), 'Should have aria-controls').toBe('gov-banner-default');
+      expect(button.getAttribute('aria-controls'), 'Should have aria-controls').toBe(
+        'gov-banner-default'
+      );
     });
 
     it('should handle ARIA attributes correctly', async () => {
@@ -323,16 +346,27 @@ describe('USABanner Layout Tests', () => {
       const content = element.querySelector('.usa-banner__content') as HTMLElement;
 
       // Check initial ARIA attributes
-      expect(button.getAttribute('aria-expanded'), 'Button should have aria-expanded attribute').toBe('false');
-      expect(button.getAttribute('aria-controls'), 'Button should have aria-controls attribute').toBe('gov-banner-default');
-      expect(content.getAttribute('id'), 'Content should have corresponding id').toBe('gov-banner-default');
+      expect(
+        button.getAttribute('aria-expanded'),
+        'Button should have aria-expanded attribute'
+      ).toBe('false');
+      expect(
+        button.getAttribute('aria-controls'),
+        'Button should have aria-controls attribute'
+      ).toBe('gov-banner-default');
+      expect(content.getAttribute('id'), 'Content should have corresponding id').toBe(
+        'gov-banner-default'
+      );
 
       // Check ARIA attributes after expansion
       element.expanded = true;
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(button.getAttribute('aria-expanded'), 'Button aria-expanded should be true when expanded').toBe('true');
+      expect(
+        button.getAttribute('aria-expanded'),
+        'Button aria-expanded should be true when expanded'
+      ).toBe('true');
     });
 
     it('should handle responsive grid layout correctly', async () => {
@@ -340,10 +374,15 @@ describe('USABanner Layout Tests', () => {
       await element.updateComplete;
 
       const gridRow = element.querySelector('.grid-row') as HTMLElement;
-      const guidanceSections = element.querySelectorAll('.usa-banner__guidance') as NodeListOf<HTMLElement>;
+      const guidanceSections = element.querySelectorAll(
+        '.usa-banner__guidance'
+      ) as NodeListOf<HTMLElement>;
 
       expect(gridRow, 'Should have grid row container').toBeTruthy();
-      expect(gridRow.classList.contains('grid-gap-lg'), 'Grid row should have large gap class').toBe(true);
+      expect(
+        gridRow.classList.contains('grid-gap-lg'),
+        'Grid row should have large gap class'
+      ).toBe(true);
 
       // Guidance sections should have responsive grid classes
       guidanceSections.forEach((guidance, index) => {

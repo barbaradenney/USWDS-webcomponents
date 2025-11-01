@@ -622,8 +622,7 @@ describe('USACheckbox', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/checkbox/usa-checkbox.ts`;
+        const componentPath = `${process.cwd()}/src/components/checkbox/usa-checkbox.ts`;
         const validation = validateComponentJavaScript(componentPath, 'checkbox');
 
         if (!validation.isValid) {

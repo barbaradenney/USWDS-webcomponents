@@ -15,22 +15,25 @@ In September 2025, the combo box component was found to not be transforming from
 **Location**: `scripts/validate-uswds-transformation.js`
 
 **New Checks Added**:
+
 - ✅ Detects problematic attributes that interfere with USWDS transformation
 - ✅ Validates label structure is clean (no empty id attributes)
 - ✅ Ensures select element is properly wrapped in `.usa-combo-box`
 
 **Problematic Patterns Detected**:
+
 ```javascript
 const problematicPatterns = [
   'data-enhanced="false"',
   'role="combobox"',
   'aria-expanded="false"',
   'aria-controls=',
-  'aria-labelledby='
+  'aria-labelledby=',
 ];
 ```
 
 **Usage**:
+
 ```bash
 npm run validate:transformations
 ```
@@ -42,6 +45,7 @@ npm run validate:transformations
 **Purpose**: Tests combo box transformation in a real browser environment where USWDS JavaScript actually runs.
 
 **Tests Performed**:
+
 - ✅ Initial DOM structure validation
 - ✅ USWDS transformation completion check
 - ✅ Element creation verification (input, toggle button, list)
@@ -50,6 +54,7 @@ npm run validate:transformations
 - ✅ Comparison with time-picker (known working component)
 
 **Usage**:
+
 ```bash
 # Requires dev server running
 npm run validate:transformations:browser
@@ -65,6 +70,7 @@ npm run validate:transformations:full
 **New Step Added**: Browser transformation testing in GitHub Actions
 
 **Process**:
+
 1. Starts development server
 2. Runs browser-based transformation tests with Puppeteer
 3. Validates actual USWDS JavaScript execution
@@ -81,6 +87,7 @@ npm run validate:transformations:full
 ## Validation Levels
 
 ### Level 1: Static Code Analysis
+
 - DOM structure patterns
 - Import statement validation
 - Module initialization checks
@@ -88,12 +95,14 @@ npm run validate:transformations:full
 - **Catches**: Structural issues, missing imports
 
 ### Level 2: Unit Test Environment
+
 - Component rendering tests
 - Property validation
 - **Runtime**: ~5 seconds
 - **Limitation**: No actual USWDS JavaScript execution
 
 ### Level 3: Browser Integration
+
 - Real USWDS JavaScript execution
 - Actual DOM transformation validation
 - User interaction simulation
@@ -101,6 +110,7 @@ npm run validate:transformations:full
 - **Catches**: JavaScript errors, transformation failures
 
 ### Level 4: CI/CD Continuous Validation
+
 - Every commit and PR
 - Full environment simulation
 - Cross-browser validation capability
@@ -112,23 +122,27 @@ npm run validate:transformations:full
 ### DOM Structure Requirements
 
 **❌ WRONG** (causes transformation failure):
+
 ```html
-<div class="usa-combo-box"
-     data-enhanced="false"
-     role="combobox"
-     aria-expanded="false">
-  <select class="usa-select">...</select>
+<div class="usa-combo-box" data-enhanced="false" role="combobox" aria-expanded="false">
+  <select class="usa-select">
+    ...
+  </select>
 </div>
 ```
 
 **✅ CORRECT** (allows USWDS transformation):
+
 ```html
 <div class="usa-combo-box">
-  <select class="usa-select">...</select>
+  <select class="usa-select">
+    ...
+  </select>
 </div>
 ```
 
 ### Required Elements
+
 1. **Label**: Must have `for` attribute matching select `id`
 2. **Select**: Must have `class="usa-select"`
 3. **Wrapper**: Must be simple `.usa-combo-box` div
@@ -137,12 +151,14 @@ npm run validate:transformations:full
 ## Error Detection
 
 ### JavaScript Errors Caught
+
 - "Cannot read properties of null (reading 'value')"
 - "missing a label or a 'for' attribute"
 - Module import failures
 - USWDS initialization errors
 
 ### DOM Issues Detected
+
 - Missing required elements
 - Incorrect class names
 - Extra attributes that interfere with USWDS
@@ -167,9 +183,11 @@ npm test -- src/components/combo-box/usa-combo-box.test.ts
 ## Maintenance
 
 ### Adding New Components
+
 When adding new transforming components:
 
 1. **Update validation config**:
+
    ```javascript
    // In scripts/validate-uswds-transformation.js
    const TRANSFORMING_COMPONENTS = {
@@ -178,11 +196,12 @@ When adding new transforming components:
        beforeSelector: '.initial-element',
        afterSelector: '.transformed-element',
        // ...
-     }
+     },
    };
    ```
 
 2. **Add browser test case**:
+
    ```javascript
    // In scripts/test-browser-transformation.js
    async testNewComponentTransformation() {
@@ -193,6 +212,7 @@ When adding new transforming components:
 3. **Update CI workflow** if needed
 
 ### Updating USWDS Version
+
 After USWDS updates:
 
 1. Run full validation suite
@@ -211,6 +231,7 @@ After USWDS updates:
 ## Troubleshooting
 
 ### Browser Test Failures
+
 ```bash
 # Check if dev server is running
 curl http://localhost:5173
@@ -223,6 +244,7 @@ node scripts/test-browser-transformation.js --verbose
 ```
 
 ### Static Validation Failures
+
 ```bash
 # See detailed error messages
 npm run validate:transformations
@@ -232,6 +254,7 @@ grep -n "usa-combo-box" src/components/combo-box/usa-combo-box.ts
 ```
 
 ### CI/CD Failures
+
 - Check GitHub Actions logs for specific error messages
 - Browser environment may differ from local
 - Network timeouts possible in CI environment
@@ -239,12 +262,14 @@ grep -n "usa-combo-box" src/components/combo-box/usa-combo-box.ts
 ## Future Enhancements
 
 ### Planned Improvements
+
 1. **Visual regression testing** for transformation appearance
 2. **Cross-browser validation** (Firefox, Safari, Edge)
 3. **Performance monitoring** of transformation timing
 4. **Accessibility validation** of transformed elements
 
 ### Integration Opportunities
+
 1. **Storybook integration** for visual transformation testing
 2. **Playwright/Cypress** for more comprehensive E2E testing
 3. **Automated PR comments** with validation results

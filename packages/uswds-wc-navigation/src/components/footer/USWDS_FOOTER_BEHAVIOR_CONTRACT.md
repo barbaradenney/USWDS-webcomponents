@@ -17,10 +17,12 @@
 The Footer component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/footer/usa-footer-behavior.ts` - USWDS behavior mirror
 - `src/components/footer/usa-footer.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/footer/usa-footer-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Footer component mirrors USWDS JavaScript behavior exactly to maintain 100% 
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should navigation collapse toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should navigation collapse toggle', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should accordion behavior', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should accordion behavior', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should button expanded state', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -96,7 +104,6 @@ it('should button expanded state', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -115,36 +122,43 @@ it('should button expanded state', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`behavior()`** - Line 1
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`SCOPE()`** - Line 5
+
   ```javascript
   const SCOPE = `.${PREFIX}-footer--big`;
   ```
 
 - **`NAV()`** - Line 6
+
   ```javascript
   const NAV = `${SCOPE} nav`;
   ```
 
 - **`BUTTON()`** - Line 7
+
   ```javascript
   const BUTTON = `${NAV} .${PREFIX}-footer__primary-link`;
   ```
 
 - **`HIDE_MAX_WIDTH()`** - Line 8
+
   ```javascript
   const HIDE_MAX_WIDTH = 480;
   ```
 
 - **`showPanel()`** - Line 13
+
   ```javascript
   function showPanel() {
   ```
 
 - **`toggleHtmlTag()`** - Line 33
+
   ```javascript
   function toggleHtmlTag(isMobile) {
   ```
@@ -153,8 +167,6 @@ Key functions from USWDS source (for reference during implementation):
   ```javascript
   const resize = (event) => {
   ```
-
-
 
 ---
 
@@ -170,11 +182,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -182,6 +196,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-footer-behavior.test.ts
 ```
@@ -194,10 +209,12 @@ npm test -- usa-footer-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Component behavior requires USWDS source mirroring
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

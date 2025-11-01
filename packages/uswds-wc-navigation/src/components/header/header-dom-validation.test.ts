@@ -183,12 +183,14 @@ describe('Header DOM Structure Validation', () => {
   describe('Mobile Menu Functionality', () => {
     it('should have menu button with correct attributes', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const menuButton = element.querySelector('.usa-menu-btn');
       // USWDS may add these attributes after initialization
       expect(menuButton).toBeTruthy();
-      expect(menuButton?.hasAttribute('aria-controls') || menuButton?.hasAttribute('aria-label')).toBe(true);
+      expect(
+        menuButton?.hasAttribute('aria-controls') || menuButton?.hasAttribute('aria-label')
+      ).toBe(true);
     });
 
     it('should toggle aria-expanded on mobile menu button', async () => {
@@ -206,7 +208,7 @@ describe('Header DOM Structure Validation', () => {
 
     it('should have close button in mobile menu', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const closeButton = element.querySelector('.usa-nav__close');
       expect(closeButton).toBeTruthy();
@@ -232,11 +234,13 @@ describe('Header DOM Structure Validation', () => {
 
     it('should have proper ARIA labels on buttons', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const menuButton = element.querySelector('.usa-menu-btn');
       // USWDS may add these after initialization
-      expect(menuButton?.hasAttribute('aria-controls') || menuButton?.hasAttribute('aria-label')).toBe(true);
+      expect(
+        menuButton?.hasAttribute('aria-controls') || menuButton?.hasAttribute('aria-label')
+      ).toBe(true);
       expect(menuButton?.hasAttribute('aria-expanded')).toBe(true);
     });
   });

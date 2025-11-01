@@ -20,19 +20,19 @@ import 'path/to/uswds-webcomponents/src/components/icon/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `name` | `any` | `''` | Property description |
-| `size` | `'' | '3' | '4' | '5' | '6' | '7' | '8' | '9'` | `''` | Property description |
-| `decorative` | `'true' | 'false' | ''` | `''` | Property description |
-| `spriteUrl` | `any` | `''` | Property description |
-| `useSprite` | `any` | `false` | Property description |
+| Property     | Type    | Default | Description          |
+| ------------ | ------- | ------- | -------------------- | ---- | -------------------- | --- | --- | ---- | ---- | -------------------- |
+| `name`       | `any`   | `''`    | Property description |
+| `size`       | `''     | '3'     | '4'                  | '5'  | '6'                  | '7' | '8' | '9'` | `''` | Property description |
+| `decorative` | `'true' | 'false' | ''`                  | `''` | Property description |
+| `spriteUrl`  | `any`   | `''`    | Property description |
+| `useSprite`  | `any`   | `false` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

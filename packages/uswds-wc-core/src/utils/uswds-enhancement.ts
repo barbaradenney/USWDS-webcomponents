@@ -94,11 +94,18 @@ export async function enhanceWithUSWDS(
     const USWDS = await loadUSWDS();
     const uswdsBehaviorName = USWDS_BEHAVIORS[behaviorName];
 
-    console.log('🔍 Enhancement debug - USWDS:', !!USWDS, '_isFallback:', (USWDS as any)?._isFallback);
+    console.log(
+      '🔍 Enhancement debug - USWDS:',
+      !!USWDS,
+      '_isFallback:',
+      (USWDS as any)?._isFallback
+    );
 
     // Check if USWDS is a fallback before proceeding
     if (USWDS && (USWDS as any)._isFallback) {
-      component.debug?.logUSWDS?.(`⚠️ Detected fallback USWDS, using component behavior for ${behaviorName}`);
+      component.debug?.logUSWDS?.(
+        `⚠️ Detected fallback USWDS, using component behavior for ${behaviorName}`
+      );
       return {
         success: true,
         behaviorName,

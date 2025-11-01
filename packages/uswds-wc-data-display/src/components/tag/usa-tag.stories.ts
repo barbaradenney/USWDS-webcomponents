@@ -376,7 +376,8 @@ export const UserGenerated: Story = {
         if (tagText) {
           const container = input.parentElement.parentElement.previousElementSibling;
           const value = tagText.toLowerCase().replace(/\\s+/g, '-');
-          const newTagHtml = '<usa-tag text="' + tagText + '" value="' + value + '" removable></usa-tag>';
+          const newTagHtml =
+            '<usa-tag text="' + tagText + '" value="' + value + '" removable></usa-tag>';
           container.insertAdjacentHTML('beforeend', newTagHtml);
           const newTag = container.lastElementChild;
           newTag.addEventListener('tag-remove', handleTagRemove);
@@ -447,16 +448,14 @@ export const AccessibilityDemo: Story = {
           <li>
             <strong>Keyboard Navigation:</strong> Tab to removable tags, Enter/Space to remove
           </li>
-          <li>
-            <strong>Screen Reader Support:</strong> Descriptive ARIA labels on remove buttons
-          </li>
+          <li><strong>Screen Reader Support:</strong> Descriptive ARIA labels on remove buttons</li>
           <li><strong>Focus Management:</strong> Clear visual focus indicators</li>
           <li><strong>Semantic HTML:</strong> Proper button elements for interactive features</li>
           <li><strong>Color Independence:</strong> Information not conveyed by color alone</li>
         </ul>
         <p class="margin-top-2">
-          <strong>Try it:</strong> Use Tab to navigate to removable tags, then press Enter or
-          Space to remove them.
+          <strong>Try it:</strong> Use Tab to navigate to removable tags, then press Enter or Space
+          to remove them.
         </p>
       </usa-alert>
     </div>
@@ -597,4 +596,3 @@ function handleTagRemove(e: CustomEvent) {
     }, 3000);
   }
 }
-

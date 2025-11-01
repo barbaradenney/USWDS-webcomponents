@@ -17,7 +17,7 @@ describe('USAButtonGroup Layout Tests', () => {
       { text: 'Primary', variant: 'primary' },
       { text: 'Secondary', variant: 'secondary' },
       { text: 'Outline', variant: 'outline' },
-      { text: 'Disabled', variant: 'primary', disabled: true }
+      { text: 'Disabled', variant: 'primary', disabled: true },
     ];
     document.body.appendChild(element);
   });
@@ -40,7 +40,10 @@ describe('USAButtonGroup Layout Tests', () => {
     // Check nesting structure
     buttonItems.forEach((item, index) => {
       const button = item.querySelector('.usa-button');
-      expect(buttonGroup!.contains(item), `Button item ${index} should be inside button group`).toBe(true);
+      expect(
+        buttonGroup!.contains(item),
+        `Button item ${index} should be inside button group`
+      ).toBe(true);
       expect(item.contains(button!), `Button ${index} should be inside its item`).toBe(true);
     });
   });
@@ -57,7 +60,9 @@ describe('USAButtonGroup Layout Tests', () => {
     // Each button should be properly contained within its item
     buttons.forEach((button, index) => {
       const item = buttonItems[index];
-      expect(item.contains(button), `Button ${index} should be inside its corresponding item`).toBe(true);
+      expect(item.contains(button), `Button ${index} should be inside its corresponding item`).toBe(
+        true
+      );
       expect(item.tagName, `Button item ${index} should be a list item`).toBe('LI');
     });
   });
@@ -68,10 +73,21 @@ describe('USAButtonGroup Layout Tests', () => {
     const buttons = element.querySelectorAll('.usa-button');
 
     // Check button classes match variants
-    expect(buttons[0].classList.contains('usa-button'), 'Primary button should have base class').toBe(true);
-    expect(buttons[1].classList.contains('usa-button--secondary'), 'Secondary button should have secondary class').toBe(true);
-    expect(buttons[2].classList.contains('usa-button--outline'), 'Outline button should have outline class').toBe(true);
-    expect((buttons[3] as HTMLButtonElement).disabled, 'Disabled button should be disabled').toBe(true);
+    expect(
+      buttons[0].classList.contains('usa-button'),
+      'Primary button should have base class'
+    ).toBe(true);
+    expect(
+      buttons[1].classList.contains('usa-button--secondary'),
+      'Secondary button should have secondary class'
+    ).toBe(true);
+    expect(
+      buttons[2].classList.contains('usa-button--outline'),
+      'Outline button should have outline class'
+    ).toBe(true);
+    expect((buttons[3] as HTMLButtonElement).disabled, 'Disabled button should be disabled').toBe(
+      true
+    );
   });
 
   it('should handle segmented button group variant correctly', async () => {
@@ -118,26 +134,26 @@ describe('USAButtonGroup Layout Tests', () => {
     expect(slottedButtons.length, 'Should have slotted buttons').toBe(2);
 
     slottedElement.remove();
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/button-group/usa-button-group.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'button-group');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/button-group/usa-button-group.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'button-group');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {
@@ -145,7 +161,9 @@ describe('USAButtonGroup Layout Tests', () => {
       await element.updateComplete;
 
       const buttonGroup = element.querySelector('.usa-button-group') as HTMLElement;
-      const buttonItems = element.querySelectorAll('.usa-button-group__item') as NodeListOf<HTMLElement>;
+      const buttonItems = element.querySelectorAll(
+        '.usa-button-group__item'
+      ) as NodeListOf<HTMLElement>;
       const buttons = element.querySelectorAll('.usa-button') as NodeListOf<HTMLElement>;
 
       const groupRect = buttonGroup.getBoundingClientRect();
@@ -252,7 +270,9 @@ describe('USAButtonGroup Layout Tests', () => {
 
       // Try to focus disabled button - it should not receive focus
       disabledButton.focus();
-      expect(document.activeElement, 'Disabled button should not be focusable').not.toBe(disabledButton);
+      expect(document.activeElement, 'Disabled button should not be focusable').not.toBe(
+        disabledButton
+      );
     });
 
     it('should handle button click interactions correctly', async () => {
@@ -274,7 +294,9 @@ describe('USAButtonGroup Layout Tests', () => {
 
       expect(clickEventFired, 'Button click event should be fired').toBe(true);
       expect(clickEventDetail.index, 'Event should contain correct button index').toBe(0);
-      expect(clickEventDetail.button.text, 'Event should contain correct button data').toBe('Primary');
+      expect(clickEventDetail.button.text, 'Event should contain correct button data').toBe(
+        'Primary'
+      );
     });
 
     it('should handle different button types correctly', async () => {
@@ -282,7 +304,7 @@ describe('USAButtonGroup Layout Tests', () => {
       element.buttons = [
         { text: 'Submit', variant: 'primary', type: 'submit' },
         { text: 'Reset', variant: 'secondary', type: 'reset' },
-        { text: 'Button', variant: 'outline', type: 'button' }
+        { text: 'Button', variant: 'outline', type: 'button' },
       ];
       await element.updateComplete;
 
@@ -297,11 +319,16 @@ describe('USAButtonGroup Layout Tests', () => {
       await element.updateComplete;
 
       const buttonGroup = element.querySelector('.usa-button-group') as HTMLElement;
-      const buttonItems = element.querySelectorAll('.usa-button-group__item') as NodeListOf<HTMLElement>;
+      const buttonItems = element.querySelectorAll(
+        '.usa-button-group__item'
+      ) as NodeListOf<HTMLElement>;
 
       // Test that button group maintains list semantics
       expect(buttonGroup.tagName, 'Button group should be an unordered list').toBe('UL');
-      expect(buttonGroup.getAttribute('role'), 'Button group should not override list role').toBeNull();
+      expect(
+        buttonGroup.getAttribute('role'),
+        'Button group should not override list role'
+      ).toBeNull();
 
       // Test that all items are proper list items
       buttonItems.forEach((item, index) => {

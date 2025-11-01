@@ -22,11 +22,11 @@ describe('USA Checkbox Component Tests', () => {
 
     // Initially unchecked
     cy.get('input[type="checkbox"]').should('not.be.checked');
-    
+
     // Click to check
     cy.get('input[type="checkbox"]').check();
     cy.get('input[type="checkbox"]').should('be.checked');
-    
+
     // Click to uncheck
     cy.get('input[type="checkbox"]').uncheck();
     cy.get('input[type="checkbox"]').should('not.be.checked');
@@ -42,7 +42,7 @@ describe('USA Checkbox Component Tests', () => {
     // Click on label should toggle checkbox
     cy.get('.usa-checkbox__label').click();
     cy.get('input[type="checkbox"]').should('be.checked');
-    
+
     cy.get('.usa-checkbox__label').click();
     cy.get('input[type="checkbox"]').should('not.be.checked');
   });
@@ -58,7 +58,7 @@ describe('USA Checkbox Component Tests', () => {
       const checkbox = win.document.getElementById('test-checkbox') as any;
       const changeSpy = cy.stub();
       checkbox.addEventListener('change', changeSpy);
-      
+
       cy.get('input[type="checkbox"]').check();
       cy.then(() => {
         expect(changeSpy).to.have.been.called;
@@ -85,7 +85,7 @@ describe('USA Checkbox Component Tests', () => {
 
     cy.get('input[type="checkbox"]').should('be.disabled');
     cy.get('.usa-checkbox__label').should('have.class', 'usa-checkbox__label--disabled');
-    
+
     // Should not be clickable
     cy.get('.usa-checkbox__label').click({ force: true });
     cy.get('input[type="checkbox"]').should('not.be.checked');
@@ -160,11 +160,11 @@ describe('USA Checkbox Component Tests', () => {
     // Tab to checkbox
     cy.get('input[type="checkbox"]').focus();
     cy.focused().should('have.attr', 'name', 'keyboard-test');
-    
+
     // Space to toggle
     cy.focused().type(' ');
     cy.get('input[type="checkbox"]').should('be.checked');
-    
+
     cy.focused().type(' ');
     cy.get('input[type="checkbox"]').should('not.be.checked');
   });
@@ -195,17 +195,17 @@ describe('USA Checkbox Component Tests', () => {
         const newsletter = formData.get('newsletter');
         submitSpy({ services, newsletter });
       });
-      
+
       // Check web design
       cy.get('#checkbox1 input').check();
-      
+
       // Submit form
       cy.get('button[type="submit"]').click();
-      
+
       cy.then(() => {
         expect(submitSpy).to.have.been.calledWith({
           services: ['web-design'],
-          newsletter: 'subscribe'
+          newsletter: 'subscribe',
         });
       });
     });
@@ -230,7 +230,7 @@ describe('USA Checkbox Component Tests', () => {
     // Select multiple interests
     cy.get('#interest1 input').check();
     cy.get('#interest3 input').check();
-    
+
     cy.get('input[name="interests"]:checked').should('have.length', 2);
     cy.get('#interest1 input').should('be.checked');
     cy.get('#interest2 input').should('not.be.checked');
@@ -262,7 +262,10 @@ describe('USA Checkbox Component Tests', () => {
       </usa-checkbox>
     `);
 
-    cy.get('.usa-checkbox__description').should('contain.text', 'This is additional descriptive text for the checkbox');
+    cy.get('.usa-checkbox__description').should(
+      'contain.text',
+      'This is additional descriptive text for the checkbox'
+    );
   });
 
   it('should handle aria attributes', () => {
@@ -279,8 +282,11 @@ describe('USA Checkbox Component Tests', () => {
       </div>
     `);
 
-    cy.get('input[type="checkbox"]')
-      .should('have.attr', 'aria-describedby', 'checkbox-description');
+    cy.get('input[type="checkbox"]').should(
+      'have.attr',
+      'aria-describedby',
+      'checkbox-description'
+    );
   });
 
   it('should handle focus and blur events', () => {
@@ -296,10 +302,10 @@ describe('USA Checkbox Component Tests', () => {
       const blurSpy = cy.stub();
       checkbox.addEventListener('focus', focusSpy);
       checkbox.addEventListener('blur', blurSpy);
-      
+
       cy.get('input[type="checkbox"]').focus();
       cy.get('input[type="checkbox"]').blur();
-      
+
       cy.then(() => {
         expect(focusSpy).to.have.been.called;
         expect(blurSpy).to.have.been.called;
@@ -322,7 +328,7 @@ describe('USA Checkbox Component Tests', () => {
     // Focus and blur without checking (should trigger validation)
     cy.get('input[type="checkbox"]').focus().blur();
     cy.get('input[type="checkbox"]').should('have.attr', 'aria-invalid', 'true');
-    
+
     // Check and blur (should clear validation)
     cy.get('input[type="checkbox"]').check().blur();
     cy.get('input[type="checkbox"]').should('not.have.attr', 'aria-invalid', 'true');
@@ -385,15 +391,17 @@ describe('USA Checkbox Component Tests', () => {
     // Check some but not all children
     cy.get('#child1 input').check();
     cy.get('#child2 input').check();
-    
+
     // Parent should be in indeterminate state (if functionality exists)
     cy.window().then((win) => {
-      const parentCheckbox = win.document.querySelector('#parent-checkbox input') as HTMLInputElement;
+      const parentCheckbox = win.document.querySelector(
+        '#parent-checkbox input'
+      ) as HTMLInputElement;
       if (parentCheckbox) {
         parentCheckbox.indeterminate = true;
       }
     });
-    
+
     cy.get('#parent-checkbox input').should('have.prop', 'indeterminate', true);
   });
 
@@ -406,11 +414,11 @@ describe('USA Checkbox Component Tests', () => {
 
     cy.window().then((win) => {
       const checkbox = win.document.getElementById('test-checkbox') as any;
-      
+
       // Set checked programmatically
       checkbox.checked = true;
       cy.get('input[type="checkbox"]').should('be.checked');
-      
+
       // Uncheck programmatically
       checkbox.checked = false;
       cy.get('input[type="checkbox"]').should('not.be.checked');

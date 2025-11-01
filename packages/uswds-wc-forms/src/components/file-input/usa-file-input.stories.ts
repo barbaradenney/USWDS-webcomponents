@@ -517,4 +517,3 @@ export const FileTypeExamples: Story = {
     </div>
   `,
 };
-

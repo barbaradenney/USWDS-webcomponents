@@ -20,17 +20,17 @@ import 'path/to/uswds-webcomponents/src/components/icon-list/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `items` | `IconListItem[]` | `[]` | Property description |
-| `color` | `'' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info'` | `''` | Property description |
-| `size` | `'' | 'lg' | 'xl'` | `''` | Property description |
+| Property | Type             | Default   | Description          |
+| -------- | ---------------- | --------- | -------------------- | --------- | -------------------- | ------- | ------- | ---- | -------------------- |
+| `items`  | `IconListItem[]` | `[]`      | Property description |
+| `color`  | `''              | 'primary' | 'secondary'          | 'success' | 'warning'            | 'error' | 'info'` | `''` | Property description |
+| `size`   | `''              | 'lg'      | 'xl'`                | `''`      | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

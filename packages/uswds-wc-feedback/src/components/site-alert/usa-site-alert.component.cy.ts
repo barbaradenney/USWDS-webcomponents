@@ -1,6 +1,10 @@
 // Component tests for usa-site-alert
 import './index.ts';
-import { testRapidClicking, testRapidKeyboardInteraction, COMMON_BUG_PATTERNS } from '../../cypress/support/rapid-interaction-tests.ts';
+import {
+  testRapidClicking,
+  testRapidKeyboardInteraction,
+  COMMON_BUG_PATTERNS,
+} from '../../cypress/support/rapid-interaction-tests.ts';
 
 describe('SiteAlert Component Tests', () => {
   beforeEach(() => {
@@ -16,23 +20,17 @@ describe('SiteAlert Component Tests', () => {
     cy.get('usa-site-alert').should('be.visible');
   });
 
-  
   it('should handle rapid clicking without visual glitches', () => {
     cy.mount('<usa-site-alert></usa-site-alert>');
-    
+
     // Rapid clicking without waiting - simulates real user behavior
     cy.get('usa-site-alert').as('component');
-    
+
     // Multiple rapid clicks
-    cy.get('@component')
-      .click()
-      .click()
-      .click()
-      .click()
-      .click();
-    
+    cy.get('@component').click().click().click().click().click();
+
     cy.wait(500); // Let events settle
-    
+
     // Component should remain functional
     cy.get('@component').should('exist');
     cy.get('@component').should('be.visible');
@@ -40,14 +38,12 @@ describe('SiteAlert Component Tests', () => {
 
   it('should handle interaction during CSS transitions', () => {
     cy.mount('<usa-site-alert></usa-site-alert>');
-    
+
     // Click during potential transitions
-    cy.get('usa-site-alert')
-      .click()
-      .click(); // Immediate second click
-    
+    cy.get('usa-site-alert').click().click(); // Immediate second click
+
     cy.wait(1000); // Wait for animations
-    
+
     // Should be in consistent state
     cy.get('usa-site-alert').should('exist');
   });
@@ -56,31 +52,26 @@ describe('SiteAlert Component Tests', () => {
   describe('Stress Testing', () => {
     it('should handle event listener duplication pattern', () => {
       cy.mount('<usa-site-alert></usa-site-alert>');
-      
+
       // Test for event listener duplication
       testRapidClicking({
         selector: 'usa-site-alert',
         clickCount: 15,
-        description: 'event listener duplication'
+        description: 'event listener duplication',
       });
     });
 
     it('should handle race condition patterns', () => {
       cy.mount('<usa-site-alert></usa-site-alert>');
-      
+
       // Test for race conditions during state changes
       cy.get('usa-site-alert').as('component');
-      
+
       // Rapid interactions that might cause race conditions
-      cy.get('@component')
-        .click()
-        .click()
-        .trigger('focus')
-        .trigger('blur')
-        .click();
-      
+      cy.get('@component').click().click().trigger('focus').trigger('blur').click();
+
       cy.wait(1000); // Wait for all async operations
-      
+
       // Component should still be functional
       cy.get('@component').should('exist');
       cy.get('@component').should('be.visible');
@@ -90,7 +81,7 @@ describe('SiteAlert Component Tests', () => {
   // Accessibility testing - critical for government components
   it('should be accessible', () => {
     cy.mount('<usa-site-alert></usa-site-alert>');
-    
+
     cy.injectAxe();
     cy.checkAccessibility();
   });
@@ -98,17 +89,12 @@ describe('SiteAlert Component Tests', () => {
   // Test that component maintains accessibility after interactions
   it('should maintain accessibility after rapid interactions', () => {
     cy.mount('<usa-site-alert></usa-site-alert>');
-    
+
     // Perform various rapid interactions
-    cy.get('usa-site-alert')
-      .click()
-      .focus()
-      .blur()
-      .click()
-      .click();
-    
+    cy.get('usa-site-alert').click().focus().blur().click().click();
+
     cy.wait(500);
-    
+
     // Accessibility should still be intact
     cy.injectAxe();
     cy.checkAccessibility();
@@ -127,17 +113,12 @@ describe('SiteAlert Component Tests', () => {
   // Console error test - should not generate any JavaScript errors
   it('should not generate console errors during interactions', () => {
     cy.mount('<usa-site-alert></usa-site-alert>');
-    
+
     // Various interactions that might cause errors
-    cy.get('usa-site-alert')
-      .click()
-      .trigger('mouseenter')
-      .trigger('mouseleave')
-      .focus()
-      .blur();
-    
+    cy.get('usa-site-alert').click().trigger('mouseenter').trigger('mouseleave').focus().blur();
+
     cy.wait(500);
-    
+
     // No console errors should have occurred
     cy.get('@consoleError').should('not.have.been.called');
   });

@@ -179,11 +179,13 @@ describe('Date Picker Timing and Initialization Regression Tests', () => {
       cy.wait(100);
 
       // Month should have changed
-      cy.get('.usa-date-picker__calendar__month-label').invoke('text').then((newMonth) => {
-        cy.get('@initialMonth').then((initialMonth) => {
-          expect(newMonth).not.to.equal(initialMonth);
+      cy.get('.usa-date-picker__calendar__month-label')
+        .invoke('text')
+        .then((newMonth) => {
+          cy.get('@initialMonth').then((initialMonth) => {
+            expect(newMonth).not.to.equal(initialMonth);
+          });
         });
-      });
     });
 
     it('should handle direct input entry', () => {

@@ -21,7 +21,7 @@ describe('USATimePicker Layout Tests', () => {
   afterEach(async () => {
     // Wait for any pending async operations to complete before cleanup
     // Time picker initialization includes async combo-box transformation
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     element.remove();
   });
 
@@ -31,7 +31,8 @@ describe('USATimePicker Layout Tests', () => {
     const timePicker = element.querySelector('.usa-time-picker');
     const label = element.querySelector('.usa-label');
     // After USWDS transformation, input has .usa-combo-box__input class
-    const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+    const input =
+      element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
 
     expect(timePicker, 'Time picker container should exist').toBeTruthy();
     expect(label, 'Label should exist').toBeTruthy();
@@ -47,7 +48,8 @@ describe('USATimePicker Layout Tests', () => {
     await element.updateComplete;
 
     // After USWDS transformation, input has .usa-combo-box__input class
-    const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+    const input =
+      element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
     const timePicker = element.querySelector('.usa-time-picker');
 
     expect(input, 'Input should exist').toBeTruthy();
@@ -99,7 +101,8 @@ describe('USATimePicker Layout Tests', () => {
     await element.updateComplete;
 
     // After USWDS transformation, input has .usa-combo-box__input class
-    const internalInput = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+    const internalInput =
+      element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
     const timePicker = element.querySelector('.usa-time-picker');
 
     // Component always renders an input - it uses the inputId prop for the input's ID
@@ -116,7 +119,8 @@ describe('USATimePicker Layout Tests', () => {
     await element.updateComplete;
 
     // After USWDS transformation, input has .usa-combo-box__input class
-    const input = (element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input')) as HTMLInputElement;
+    const input = (element.querySelector('.usa-combo-box__input') ||
+      element.querySelector('.usa-input')) as HTMLInputElement;
     const timePicker = element.querySelector('.usa-time-picker');
 
     expect(input, 'Input should exist').toBeTruthy();
@@ -167,7 +171,8 @@ describe('USATimePicker Layout Tests', () => {
 
     const inputGroup = element.querySelector('.usa-input-group');
     // After USWDS transformation, input has .usa-combo-box__input class
-    const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+    const input =
+      element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
 
     if (inputGroup) {
       expect(
@@ -181,26 +186,26 @@ describe('USATimePicker Layout Tests', () => {
         true
       );
     }
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/time-picker/usa-time-picker.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'time-picker');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/time-picker/usa-time-picker.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'time-picker');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {
@@ -209,7 +214,8 @@ describe('USATimePicker Layout Tests', () => {
 
       const timePicker = element.querySelector('.usa-time-picker');
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+      const input =
+        element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
 
       expect(timePicker, 'Time picker should render').toBeTruthy();
       expect(input, 'Input should render').toBeTruthy();
@@ -217,7 +223,9 @@ describe('USATimePicker Layout Tests', () => {
       // Verify essential USWDS classes are present
       expect(timePicker.classList.contains('usa-time-picker')).toBe(true);
       // After transformation, input will have .usa-combo-box__input class instead of .usa-input
-      expect(input.classList.contains('usa-combo-box__input') || input.classList.contains('usa-input')).toBe(true);
+      expect(
+        input.classList.contains('usa-combo-box__input') || input.classList.contains('usa-input')
+      ).toBe(true);
 
       // Note: .usa-input-group is created by USWDS JavaScript during enhancement
     });
@@ -226,7 +234,8 @@ describe('USATimePicker Layout Tests', () => {
       await element.updateComplete;
 
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+      const input =
+        element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
       const timePicker = element.querySelector('.usa-time-picker');
 
       expect(input, 'Input should be present').toBeTruthy();
@@ -248,7 +257,8 @@ describe('USATimePicker Layout Tests', () => {
       await element.updateComplete;
 
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = (element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input')) as HTMLInputElement;
+      const input = (element.querySelector('.usa-combo-box__input') ||
+        element.querySelector('.usa-input')) as HTMLInputElement;
 
       if (input) {
         expect(input.value, 'Input should display selected time').toBe('2:30pm');
@@ -259,7 +269,8 @@ describe('USATimePicker Layout Tests', () => {
       await element.updateComplete;
 
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+      const input =
+        element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
       const timePicker = element.querySelector('.usa-time-picker');
 
       expect(input, 'Input should exist').toBeTruthy();
@@ -274,7 +285,8 @@ describe('USATimePicker Layout Tests', () => {
       await element.updateComplete;
 
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = (element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input')) as HTMLInputElement;
+      const input = (element.querySelector('.usa-combo-box__input') ||
+        element.querySelector('.usa-input')) as HTMLInputElement;
 
       if (input) {
         // Should handle keyboard events
@@ -315,7 +327,8 @@ describe('USATimePicker Layout Tests', () => {
       await element.updateComplete;
 
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
+      const input =
+        element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input');
       const timePicker = element.querySelector('.usa-time-picker');
 
       expect(input, 'Input should exist').toBeTruthy();
@@ -345,7 +358,8 @@ describe('USATimePicker Layout Tests', () => {
       await element.updateComplete;
 
       // After USWDS transformation, input has .usa-combo-box__input class
-      const input = (element.querySelector('.usa-combo-box__input') || element.querySelector('.usa-input')) as HTMLInputElement;
+      const input = (element.querySelector('.usa-combo-box__input') ||
+        element.querySelector('.usa-input')) as HTMLInputElement;
 
       if (input) {
         // Simulate typing to filter options

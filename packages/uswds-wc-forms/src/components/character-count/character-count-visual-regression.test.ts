@@ -53,7 +53,9 @@ describe('Character Count Visual Regression Prevention', () => {
       const status = element.querySelector('.usa-character-count__status');
 
       // USWDS spec line 84: Status should have usa-hint class
-      expect(status?.classList.contains('usa-hint'), 'Status should have usa-hint class').toBe(true);
+      expect(status?.classList.contains('usa-hint'), 'Status should have usa-hint class').toBe(
+        true
+      );
       expect(status?.getAttribute('aria-hidden')).toBe('true');
     });
   });

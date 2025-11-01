@@ -178,14 +178,15 @@ export class USARadio extends LitElement {
     return this._radioId;
   }
   private async initializeUSWDSRadio() {
-    
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
+      console.log(
+        `⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`
+      );
       return;
     }
 
-console.log(`🔘 Radio: Initializing (presentational component - no USWDS JavaScript needed)`);
+    console.log(`🔘 Radio: Initializing (presentational component - no USWDS JavaScript needed)`);
 
     try {
       // Check if global USWDS is available for potential future enhancements
@@ -277,8 +278,7 @@ console.log(`🔘 Radio: Initializing (presentational component - no USWDS JavaS
           @change="${this.handleChange}"
         />
         <label class="usa-radio__label" for="${radioId}">
-          ${this.label}
-          ${this.renderLabelDescription(radioId)}
+          ${this.label} ${this.renderLabelDescription(radioId)}
         </label>
       </div>
     `;

@@ -20,21 +20,21 @@ import 'path/to/uswds-webcomponents/src/components/memorable-date/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `month` | `any` | `''` | Property description |
-| `day` | `any` | `''` | Property description |
-| `year` | `any` | `''` | Property description |
-| `name` | `any` | `'memorable-date'` | Property description |
-| `label` | `any` | `'Date'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
+| Property   | Type  | Default            | Description          |
+| ---------- | ----- | ------------------ | -------------------- |
+| `month`    | `any` | `''`               | Property description |
+| `day`      | `any` | `''`               | Property description |
+| `year`     | `any` | `''`               | Property description |
+| `name`     | `any` | `'memorable-date'` | Property description |
+| `label`    | `any` | `'Date'`           | Property description |
+| `hint`     | `any` | `''`               | Property description |
+| `disabled` | `any` | `false`            | Property description |
+| `required` | `any` | `false`            | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event         | Type        | Description       |
+| ------------- | ----------- | ----------------- |
 | `date-change` | CustomEvent | Event description |
 
 ## Accessibility

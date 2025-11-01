@@ -27,11 +27,13 @@
 ```
 
 **Required Behavior**:
+
 - ✅ Clicking button toggles its `aria-expanded` state
 - ✅ Clicking button toggles `hidden` attribute on controlled content
 - ✅ If expanded and not in viewport, scroll button into view
 
 **Validation Test**:
+
 ```typescript
 it('should toggle aria-expanded on button click', async () => {
   const button = element.querySelector('.usa-accordion__button');
@@ -52,8 +54,8 @@ it('should toggle aria-expanded on button click', async () => {
 module.exports = (button, expanded) => {
   let safeExpanded = expanded;
 
-  if (typeof safeExpanded !== "boolean") {
-    safeExpanded = button.getAttribute(EXPANDED) === "false";
+  if (typeof safeExpanded !== 'boolean') {
+    safeExpanded = button.getAttribute(EXPANDED) === 'false';
   }
 
   button.setAttribute(EXPANDED, safeExpanded);
@@ -67,7 +69,7 @@ module.exports = (button, expanded) => {
   if (safeExpanded) {
     controls.removeAttribute(HIDDEN);
   } else {
-    controls.setAttribute(HIDDEN, "");
+    controls.setAttribute(HIDDEN, '');
   }
 
   return safeExpanded;
@@ -75,6 +77,7 @@ module.exports = (button, expanded) => {
 ```
 
 **Required Behavior**:
+
 - ✅ If `expanded` is undefined, toggle current state (false → true, true → false)
 - ✅ Set `aria-expanded` attribute on button to boolean string ("true"/"false")
 - ✅ Find controlled element via `aria-controls` → `getElementById()`
@@ -84,6 +87,7 @@ module.exports = (button, expanded) => {
 - ✅ Return resulting boolean state
 
 **Validation Test**:
+
 ```typescript
 it('should control content visibility via hidden attribute', async () => {
   const button = element.querySelector('.usa-accordion__button');
@@ -116,6 +120,7 @@ if (safeExpanded && !multiselectable) {
 ```
 
 **Required Behavior**:
+
 - ✅ Check `data-allow-multiple` attribute on accordion container
 - ✅ If NOT multiselectable AND expanding a button:
   - Close ALL other buttons in the same accordion
@@ -123,6 +128,7 @@ if (safeExpanded && !multiselectable) {
 - ✅ If collapsing, do NOT close other buttons
 
 **Validation Test**:
+
 ```typescript
 it('should close other items when opening in single-select mode', async () => {
   element.multiselectable = false;
@@ -148,6 +154,7 @@ it('should close other items when opening in single-select mode', async () => {
 **USWDS Source**: Lines 46-54 in `index.js` (inverse logic)
 
 **Required Behavior**:
+
 - ✅ Check `data-allow-multiple` attribute on accordion container
 - ✅ If multiselectable:
   - Multiple buttons can be expanded simultaneously
@@ -155,6 +162,7 @@ it('should close other items when opening in single-select mode', async () => {
   - Each button toggles independently
 
 **Validation Test**:
+
 ```typescript
 it('should allow multiple items open in multi-select mode', async () => {
   element.multiselectable = true;
@@ -189,11 +197,13 @@ init(root) {
 ```
 
 **Required Behavior**:
+
 - ✅ Read initial `aria-expanded` attribute from HTML
 - ✅ Set initial `hidden` state on content based on button's `aria-expanded`
 - ✅ Ensure content visibility matches button state
 
 **Validation Test**:
+
 ```typescript
 it('should initialize content visibility from aria-expanded', async () => {
   const item = { id: 'test', title: 'Test', content: '<p>Test</p>', expanded: true };
@@ -221,11 +231,13 @@ const getAccordionButtons = (accordion) => {
 ```
 
 **Required Behavior**:
+
 - ✅ Only buttons directly belonging to the accordion are affected
 - ✅ Nested accordions are NOT affected by parent accordion
 - ✅ Use `.closest(ACCORDION)` to verify button ownership
 
 **Validation Test**:
+
 ```typescript
 it('should only control buttons in own accordion (not nested)', async () => {
   // This test ensures nested accordions work independently
@@ -238,6 +250,7 @@ it('should only control buttons in own accordion (not nested)', async () => {
 ## HTML Structure Requirements (MANDATORY)
 
 ### Button Structure
+
 ```html
 <button
   type="button"
@@ -250,27 +263,25 @@ it('should only control buttons in own accordion (not nested)', async () => {
 ```
 
 **Required Attributes**:
+
 - ✅ `class="usa-accordion__button"`
 - ✅ `aria-expanded="true"` or `"false"` (string boolean)
 - ✅ `aria-controls` matching content `id`
 
 ### Content Structure
+
 ```html
-<div
-  id="item-id-content"
-  class="usa-accordion__content usa-prose"
-  hidden
->
-  Content
-</div>
+<div id="item-id-content" class="usa-accordion__content usa-prose" hidden>Content</div>
 ```
 
 **Required Attributes**:
+
 - ✅ `id` matching button's `aria-controls`
 - ✅ `class="usa-accordion__content usa-prose"`
 - ✅ `hidden` attribute (no value) when collapsed
 
 ### Container Structure
+
 ```html
 <div class="usa-accordion" data-allow-multiple>
   <!-- Items -->
@@ -278,6 +289,7 @@ it('should only control buttons in own accordion (not nested)', async () => {
 ```
 
 **Required Attributes**:
+
 - ✅ `class="usa-accordion"` (or `usa-accordion--bordered`)
 - ✅ `data-allow-multiple` attribute (no value) for multi-select mode
 - ✅ NO attribute for single-select mode
@@ -300,12 +312,14 @@ it('should only control buttons in own accordion (not nested)', async () => {
 ### Automated Tests
 
 All behaviors must have corresponding tests in:
+
 - `src/components/accordion/usa-accordion.test.ts` (unit tests)
 - `src/components/accordion/usa-accordion.component.cy.ts` (integration tests)
 
 ### Pre-commit Hook
 
 The pre-commit hook MUST verify:
+
 1. All behavioral tests pass
 2. HTML structure matches USWDS
 3. Attribute names/values match USWDS exactly
@@ -314,6 +328,7 @@ The pre-commit hook MUST verify:
 ### Visual Regression
 
 Cypress visual regression tests MUST verify:
+
 - Accordion renders identically to USWDS reference
 - Expanded/collapsed states match USWDS CSS
 - Animations match USWDS timing

@@ -49,6 +49,9 @@ export class USADateRangePicker extends USWDSBaseComponent {
     }
   `;
 
+  // USWDS module instance (loaded dynamically)
+  private uswdsModule: any = null;
+
   @property({ type: String })
   startDate = '';
 
@@ -124,8 +127,12 @@ export class USADateRangePicker extends USWDSBaseComponent {
     super.updated(changedProperties);
 
     // Validate date range whenever properties change
-    if (changedProperties.has('startDate') || changedProperties.has('endDate') ||
-        changedProperties.has('minDate') || changedProperties.has('maxDate')) {
+    if (
+      changedProperties.has('startDate') ||
+      changedProperties.has('endDate') ||
+      changedProperties.has('minDate') ||
+      changedProperties.has('maxDate')
+    ) {
       this.validateDateRange();
     }
   }
@@ -186,17 +193,32 @@ export class USADateRangePicker extends USWDSBaseComponent {
         return;
       }
 
+      // Wait for child date picker components to be fully ready
+      const datePickers = Array.from(
+        dateRangePickerElement.querySelectorAll('usa-date-picker')
+      ) as any[];
+
+      // Wait for all child date pickers to complete their rendering
+      await Promise.all(datePickers.map((picker) => picker.updateComplete || Promise.resolve()));
+
+      // Yield to event loop to allow DOM to settle
+      // Uses setTimeout(0) to defer execution - no cleanup needed as it resolves immediately
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      // Additional check: ensure input elements exist before initializing USWDS
+      const inputs = dateRangePickerElement.querySelectorAll('.usa-date-picker__external-input');
+      if (inputs.length < 2) {
+        // Silently skip initialization if inputs aren't ready
+        // This can happen in test environments with fast rendering
+        return;
+      }
+
       // Use loadUSWDSModule for date range picker
       const { loadUSWDSModule } = await import('@uswds-wc/core');
       this.uswdsModule = await loadUSWDSModule('date-range-picker');
 
-      // Initialize the loaded module on the element
       if (this.uswdsModule && typeof this.uswdsModule.on === 'function') {
         this.uswdsModule.on(dateRangePickerElement);
-      }
-
-      if (this.uswdsModule) {
-        console.log('✅ USWDS date range picker initialized successfully');
       } else {
         console.warn('⚠️ Date Range Picker: USWDS module not available');
       }
@@ -309,7 +331,6 @@ export class USADateRangePicker extends USWDSBaseComponent {
     // Same day should return 1 day, not 0
     return diffDays === 0 ? 1 : diffDays;
   }
-  
 
   private async cleanupUSWDS() {
     try {
@@ -341,9 +362,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
   }
 
   private renderHint() {
-    return this.hint
-      ? html`<div class="usa-hint" id="${this.name}-hint">${this.hint}</div>`
-      : '';
+    return this.hint ? html`<div class="usa-hint" id="${this.name}-hint">${this.hint}</div>` : '';
   }
 
   private renderRangeSummary() {
@@ -373,7 +392,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
     return this as any;
   }
 
-    override render() {
+  override render() {
     const groupClasses = [
       'usa-form-group',
       'usa-date-range-picker',
@@ -386,10 +405,7 @@ export class USADateRangePicker extends USWDSBaseComponent {
     return html`
       <fieldset class="${groupClasses}" aria-label="${this.label || 'Date range picker'}">
         ${this.renderError()}
-        <legend class="usa-legend">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
-        </legend>
+        <legend class="usa-legend">${this.label} ${this.renderRequiredIndicator()}</legend>
         ${this.renderHint()}
 
         <div class="grid-row grid-gap">

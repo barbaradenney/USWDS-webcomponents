@@ -1,0 +1,72 @@
+name: Over-Engineering Detection
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  detect-over-engineering:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: '10.15.0'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: 🔍 Detect over-engineering patterns
+      run: pnpm run detect:over-engineering:ci
+
+    - name: 📊 Generate over-engineering report
+      if: always()
+      run: |
+        echo "## Over-Engineering Detection Report" >> $GITHUB_STEP_SUMMARY
+        echo "This automated check scans for violations of the minimal wrapper principle." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Guidelines" >> $GITHUB_STEP_SUMMARY
+        echo "- Components should be HTML structure providers, not behavior implementers" >> $GITHUB_STEP_SUMMARY
+        echo "- USWDS should handle ALL interactions, scrolling, and state management" >> $GITHUB_STEP_SUMMARY
+        echo "- Research USWDS source before implementing custom logic" >> $GITHUB_STEP_SUMMARY
+        echo "- Refer to CLAUDE.md Over-Engineering Prevention Guidelines" >> $GITHUB_STEP_SUMMARY
+
+    - name: 📋 Comment PR with results
+      if: github.event_name == 'pull_request' && failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 🚨 Over-Engineering Patterns Detected
+
+            This PR contains code that violates the minimal wrapper principle. Please review the violations and fix them before merging.
+
+            ### 📖 Resources
+            - **CLAUDE.md Over-Engineering Prevention Guidelines**: Comprehensive prevention framework
+            - **Decision Tree**: Research USWDS source before implementing custom logic
+            - **Examples**: See code examples of violations vs valid patterns
+
+            ### 🛠️ How to Fix
+            1. Research the USWDS source code for your component
+            2. Remove custom event handlers and let USWDS handle behavior
+            3. Ensure components always initialize USWDS (no mode switching)
+            4. Run \`pnpm run detect:over-engineering\` locally to verify fixes
+
+            ### 💡 Remember
+            We are **HTML structure providers**, not **behavior implementers**. Let USWDS do what it does best!`
+          });

@@ -38,9 +38,9 @@ This component wraps the standard HTML radio input element with USWDS classes an
 - Required fields clearly marked
 - Supports keyboard navigation
 - Screen reader announcements for state changes
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   argTypes: {
     label: {
@@ -88,7 +88,7 @@ type Story = StoryObj<USARadio>;
 
 export const Default: Story = {
   render: (args) => html`
-    <usa-radio 
+    <usa-radio
       label="${args.label}"
       value="${args.value}"
       description="${args.description}"
@@ -129,28 +129,10 @@ export const RadioGroup: Story = {
   render: () => html`
     <fieldset class="usa-fieldset">
       <legend class="usa-legend">Select your preferred contact method</legend>
-      <usa-radio 
-        name="contact"
-        value="email"
-        label="Email"
-        checked
-      ></usa-radio>
-      <usa-radio 
-        name="contact"
-        value="phone"
-        label="Phone"
-      ></usa-radio>
-      <usa-radio 
-        name="contact"
-        value="mail"
-        label="Postal mail"
-      ></usa-radio>
-      <usa-radio 
-        name="contact"
-        value="none"
-        label="Do not contact me"
-        disabled
-      ></usa-radio>
+      <usa-radio name="contact" value="email" label="Email" checked></usa-radio>
+      <usa-radio name="contact" value="phone" label="Phone"></usa-radio>
+      <usa-radio name="contact" value="mail" label="Postal mail"></usa-radio>
+      <usa-radio name="contact" value="none" label="Do not contact me" disabled></usa-radio>
     </fieldset>
   `,
 };
@@ -162,7 +144,7 @@ export const TileGroup: Story = {
   render: () => html`
     <fieldset class="usa-fieldset">
       <legend class="usa-legend">Choose your subscription plan</legend>
-      <usa-radio 
+      <usa-radio
         name="plan"
         value="basic"
         label="Basic Plan"
@@ -170,14 +152,14 @@ export const TileGroup: Story = {
         tile
         checked
       ></usa-radio>
-      <usa-radio 
+      <usa-radio
         name="plan"
         value="pro"
         label="Professional Plan"
         description="Advanced features and priority support for growing businesses."
         tile
       ></usa-radio>
-      <usa-radio 
+      <usa-radio
         name="plan"
         value="enterprise"
         label="Enterprise Plan"
@@ -193,7 +175,7 @@ export const FormExample: Story = {
     controls: { disable: true }, // Static demo - no interactive controls needed
   },
   render: () => html`
-    <form 
+    <form
       class="maxw-mobile-lg"
       @submit=${(e: Event) => {
         e.preventDefault();
@@ -206,29 +188,29 @@ export const FormExample: Story = {
     >
       <fieldset class="usa-fieldset">
         <legend class="usa-legend">Delivery method</legend>
-        
-        <usa-radio 
+
+        <usa-radio
           name="delivery"
           value="standard"
           label="Standard shipping (5-7 business days)"
           required
         ></usa-radio>
-        
-        <usa-radio 
+
+        <usa-radio
           name="delivery"
           value="expedited"
           label="Expedited shipping (2-3 business days)"
           required
         ></usa-radio>
-        
-        <usa-radio 
+
+        <usa-radio
           name="delivery"
           value="overnight"
           label="Overnight shipping"
           required
         ></usa-radio>
       </fieldset>
-      
+
       <div class="margin-top-3">
         <usa-button type="submit">Continue</usa-button>
       </div>
@@ -244,44 +226,27 @@ export const ValidationStates: Story = {
     <div class="display-flex flex-column gap-2 maxw-mobile-lg">
       <fieldset class="usa-fieldset">
         <legend class="usa-legend">Default radio group</legend>
-        
-        <usa-radio 
-          name="default-group"
-          value="option1"
-          label="Default state"
-        ></usa-radio>
-        
-        <usa-radio 
-          name="default-group"
-          value="option2"
-          label="Selected state"
-          checked
-        ></usa-radio>
-        
-        <usa-radio 
-          name="default-group"
-          value="option3"
-          label="Another option"
-        ></usa-radio>
+
+        <usa-radio name="default-group" value="option1" label="Default state"></usa-radio>
+
+        <usa-radio name="default-group" value="option2" label="Selected state" checked></usa-radio>
+
+        <usa-radio name="default-group" value="option3" label="Another option"></usa-radio>
       </fieldset>
-      
+
       <fieldset class="usa-fieldset">
         <legend class="usa-legend">Disabled options</legend>
-        
-        <usa-radio 
-          name="disabled-group"
-          value="option1"
-          label="Available option"
-        ></usa-radio>
-        
-        <usa-radio 
+
+        <usa-radio name="disabled-group" value="option1" label="Available option"></usa-radio>
+
+        <usa-radio
           name="disabled-group"
           value="option2"
           label="Disabled option"
           disabled
         ></usa-radio>
-        
-        <usa-radio 
+
+        <usa-radio
           name="disabled-group"
           value="option3"
           label="Disabled and selected"
@@ -289,23 +254,13 @@ export const ValidationStates: Story = {
           disabled
         ></usa-radio>
       </fieldset>
-      
+
       <fieldset class="usa-fieldset">
         <legend class="usa-legend">Required selection *</legend>
-        
-        <usa-radio 
-          name="required-group"
-          value="option1"
-          label="First option"
-          required
-        ></usa-radio>
-        
-        <usa-radio 
-          name="required-group"
-          value="option2"
-          label="Second option"
-          required
-        ></usa-radio>
+
+        <usa-radio name="required-group" value="option1" label="First option" required></usa-radio>
+
+        <usa-radio name="required-group" value="option2" label="Second option" required></usa-radio>
       </fieldset>
     </div>
   `,
@@ -319,19 +274,19 @@ export const AccessibilityFeatures: Story = {
     <div class="maxw-mobile-lg">
       <h3>Accessibility Features Demo</h3>
       <p>This demo shows various accessibility features of the radio button component.</p>
-      
+
       <fieldset class="usa-fieldset">
         <legend class="usa-legend">Accessible radio button group</legend>
-        
-        <usa-radio 
+
+        <usa-radio
           id="accessible-radio1"
           name="accessibleExample"
           value="feature1"
           label="Feature with full accessibility support"
           required
         ></usa-radio>
-        
-        <usa-radio 
+
+        <usa-radio
           name="accessibleExample"
           value="feature2"
           label="Tile variant with description"
@@ -339,15 +294,15 @@ export const AccessibilityFeatures: Story = {
           description="This tile variant includes a detailed description for better user understanding."
           required
         ></usa-radio>
-        
-        <usa-radio 
+
+        <usa-radio
           name="accessibleExample"
           value="feature3"
           label="Another accessible feature"
           required
         ></usa-radio>
       </fieldset>
-      
+
       <div class="margin-top-1 padding-1 bg-base-lightest radius-md">
         <h4>Features demonstrated:</h4>
         <ul>
@@ -363,11 +318,3 @@ export const AccessibilityFeatures: Story = {
     </div>
   `,
 };
-
-
-
-
-
-
-
-

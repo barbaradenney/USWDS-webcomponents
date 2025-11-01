@@ -19,7 +19,7 @@ export async function testKeyboardNavigation(container, options = {}) {
     shortcuts = [],
     testEscapeKey: _testEscapeKey = true, // eslint-disable-line @typescript-eslint/no-unused-vars
     testArrowKeys: _testArrowKeys = true, // eslint-disable-line @typescript-eslint/no-unused-vars
-    allowNonFocusable = false
+    allowNonFocusable = false,
   } = options;
 
   const errors = [];
@@ -31,14 +31,15 @@ export async function testKeyboardNavigation(container, options = {}) {
   }
 
   // Test shortcuts if provided
-  for (const _shortcut of shortcuts) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const _shortcut of shortcuts) {
     // Shortcuts are expected to work (detailed testing in individual tests)
   }
 
   return {
     passed: errors.length === 0,
     errors,
-    focusableCount: focusableElements.length
+    focusableCount: focusableElements.length,
   };
 }
 
@@ -54,7 +55,7 @@ export function getFocusableElements(container) {
     'input:not([disabled])',
     'select:not([disabled])',
     'textarea:not([disabled])',
-    '[tabindex]:not([tabindex="-1"])'
+    '[tabindex]:not([tabindex="-1"])',
   ].join(', ');
 
   const childElements = Array.from(container.querySelectorAll(selector));
@@ -81,9 +82,9 @@ export async function verifyKeyboardOnlyUsable(element) {
 
   return {
     passed,
-    report: passed ?
-      `${focusableElements.length} ${elementWord} keyboard accessible. No keyboard traps detected.` :
-      'Component has no focusable elements'
+    report: passed
+      ? `${focusableElements.length} ${elementWord} keyboard accessible. No keyboard traps detected.`
+      : 'Component has no focusable elements',
   };
 }
 
@@ -98,11 +99,11 @@ export async function simulateTab(element, shiftKey = false) {
     key: 'Tab',
     shiftKey,
     bubbles: true,
-    cancelable: true
+    cancelable: true,
   });
 
   element.dispatchEvent(event);
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -114,11 +115,11 @@ export async function simulateEnter(element) {
   const event = new KeyboardEvent('keydown', {
     key: 'Enter',
     bubbles: true,
-    cancelable: true
+    cancelable: true,
   });
 
   element.dispatchEvent(event);
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -130,11 +131,11 @@ export async function simulateEscape(element) {
   const event = new KeyboardEvent('keydown', {
     key: 'Escape',
     bubbles: true,
-    cancelable: true
+    cancelable: true,
   });
 
   element.dispatchEvent(event);
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -147,11 +148,11 @@ export async function simulateArrow(element, direction) {
   const event = new KeyboardEvent('keydown', {
     key: `Arrow${direction}`,
     bubbles: true,
-    cancelable: true
+    cancelable: true,
   });
 
   element.dispatchEvent(event);
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -175,17 +176,17 @@ export async function testActivationKeys(element) {
       key: ' ',
       code: 'Space',
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
     element.dispatchEvent(spaceEvent);
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   } catch (error) {
     errors.push(`Space key failed: ${error.message}`);
   }
 
   return {
     passed: errors.length === 0,
-    errors
+    errors,
   };
 }
 
@@ -198,9 +199,7 @@ export async function testArrowKeyNavigation(container) {
   const errors = [];
 
   // Get all radio inputs in the container
-  const radioInputs = Array.from(
-    container.querySelectorAll('input[type="radio"]')
-  );
+  const radioInputs = Array.from(container.querySelectorAll('input[type="radio"]'));
 
   if (radioInputs.length === 0) {
     errors.push('No radio inputs found in container');
@@ -216,7 +215,7 @@ export async function testArrowKeyNavigation(container) {
   });
 
   // Verify radios in same group have same name
-  const names = radioInputs.map(r => r.name).filter(n => n);
+  const names = radioInputs.map((r) => r.name).filter((n) => n);
   const uniqueNames = [...new Set(names)];
   if (uniqueNames.length > 1) {
     errors.push(`Multiple radio groups found: ${uniqueNames.join(', ')}`);
@@ -235,6 +234,6 @@ export async function testArrowKeyNavigation(container) {
 
   return {
     passed: errors.length === 0,
-    errors
+    errors,
   };
 }

@@ -735,8 +735,7 @@ describe('USASiteAlert', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/site-alert/usa-site-alert.ts`;
+        const componentPath = `${process.cwd()}/src/components/site-alert/usa-site-alert.ts`;
         const validation = validateComponentJavaScript(componentPath, 'site-alert');
 
         if (!validation.isValid) {

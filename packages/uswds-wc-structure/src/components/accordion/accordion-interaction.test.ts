@@ -27,14 +27,14 @@ describe('Accordion JavaScript Interaction Testing', () => {
         id: 'test-item-1',
         title: 'Test Item 1',
         content: '<p>Test content 1</p>',
-        expanded: false
+        expanded: false,
       },
       {
         id: 'test-item-2',
         title: 'Test Item 2',
         content: '<p>Test content 2</p>',
-        expanded: true
-      }
+        expanded: true,
+      },
     ];
 
     document.body.appendChild(element);
@@ -42,10 +42,10 @@ describe('Accordion JavaScript Interaction Testing', () => {
 
     // Wait for USWDS to initialize
     // In full test suite, needs extra time due to async operations from previous tests
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     // Wait one more frame to ensure all event listeners are attached
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
   });
 
   afterEach(async () => {
@@ -58,16 +58,17 @@ describe('Accordion JavaScript Interaction Testing', () => {
 
     // Wait for any pending async operations to complete before cleanup
     // USWDS behavior needs time to fully detach event listeners
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
   });
 
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS accordion initialized') ||
-        call[0]?.includes('✅ Using pre-loaded USWDS') ||
-        call[0]?.includes('✅ Pre-loaded USWDS accordion module')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS accordion initialized') ||
+          call[0]?.includes('✅ Using pre-loaded USWDS') ||
+          call[0]?.includes('✅ Pre-loaded USWDS accordion module')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -91,7 +92,7 @@ describe('Accordion JavaScript Interaction Testing', () => {
       expect(contents.length).toBe(2);
 
       // Verify ARIA attributes required by USWDS
-      buttons.forEach((button, index) => {
+      buttons.forEach((button) => {
         expect(button.getAttribute('aria-expanded')).toBeTruthy();
         expect(button.getAttribute('aria-controls')).toBeTruthy();
       });
@@ -128,7 +129,7 @@ describe('Accordion JavaScript Interaction Testing', () => {
 
       // Check for USWDS event handling signatures
       let hasEventHandlers = false;
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         // Click the button and check if it has event handling
         const beforeClick = button.getAttribute('aria-expanded');
         button.click();
@@ -142,7 +143,7 @@ describe('Accordion JavaScript Interaction Testing', () => {
         }, 50);
       });
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // This would catch missing USWDS integration
       if (!hasEventHandlers) {

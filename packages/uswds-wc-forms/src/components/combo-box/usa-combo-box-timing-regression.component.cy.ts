@@ -204,9 +204,7 @@ describe('Combo Box Timing and Initialization Regression Tests', () => {
 
       cy.get('#escape-test').then(($combo) => {
         const combo = $combo[0] as any;
-        combo.options = [
-          { value: '1', label: 'Option 1' },
-        ];
+        combo.options = [{ value: '1', label: 'Option 1' }];
       });
 
       cy.wait(500);
@@ -234,9 +232,7 @@ describe('Combo Box Timing and Initialization Regression Tests', () => {
 
       cy.get('#init-test').then(($combo) => {
         const combo = $combo[0] as any;
-        combo.options = [
-          { value: '1', label: 'Option 1' },
-        ];
+        combo.options = [{ value: '1', label: 'Option 1' }];
       });
 
       // Wait for initialization
@@ -263,9 +259,7 @@ describe('Combo Box Timing and Initialization Regression Tests', () => {
 
       combo.then(($combo) => {
         const c = $combo[0] as any;
-        c.options = [
-          { value: '1', label: 'Option 1' },
-        ];
+        c.options = [{ value: '1', label: 'Option 1' }];
       });
 
       cy.wait(500);
@@ -304,9 +298,7 @@ describe('Combo Box Timing and Initialization Regression Tests', () => {
 
       cy.get('#disabled-test').then(($combo) => {
         const combo = $combo[0] as any;
-        combo.options = [
-          { value: '1', label: 'Option 1' },
-        ];
+        combo.options = [{ value: '1', label: 'Option 1' }];
       });
 
       cy.wait(500);
@@ -332,9 +324,7 @@ describe('Combo Box Timing and Initialization Regression Tests', () => {
 
       combo.then(($combo) => {
         const c = $combo[0] as any;
-        c.options = [
-          { value: '1', label: 'Option 1' },
-        ];
+        c.options = [{ value: '1', label: 'Option 1' }];
       });
 
       cy.wait(500);
@@ -374,9 +364,7 @@ describe('Combo Box Timing and Initialization Regression Tests', () => {
 
       combo.then(($combo) => {
         const c = $combo[0] as any;
-        c.options = [
-          { value: '1', label: 'Option 1' },
-        ];
+        c.options = [{ value: '1', label: 'Option 1' }];
       });
 
       cy.wait(500);

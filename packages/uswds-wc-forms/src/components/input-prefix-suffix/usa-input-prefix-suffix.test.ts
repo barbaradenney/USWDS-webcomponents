@@ -1143,8 +1143,7 @@ describe('USAInputPrefixSuffix', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/input-prefix-suffix/usa-input-prefix-suffix.ts`;
+        const componentPath = `${process.cwd()}/src/components/input-prefix-suffix/usa-input-prefix-suffix.ts`;
         const validation = validateComponentJavaScript(componentPath, 'input-prefix-suffix');
 
         if (!validation.isValid) {

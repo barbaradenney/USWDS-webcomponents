@@ -67,3 +67,104 @@ For bundle optimization, see:
 - **Category**: TEMPORARY
 - **Age**: 4 days
 
+
+### CYPRESS_FIXES_PLAN.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### CYPRESS_IMPROVEMENTS_SESSION1.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### CYPRESS_IMPROVEMENTS_SESSION2.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### CYPRESS_IMPROVEMENTS_SESSION3.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### FINAL_TEST_SUITE_SUMMARY.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### POST_MORTEM_TIME_PICKER_DROPDOWN_ISSUE.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### SKIPPED_TESTS_ANALYSIS.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TESTING_AUDIT_CHECKLIST.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TESTING_INFRASTRUCTURE_AUDIT.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TESTING_WORK_COMPLETE_SUMMARY.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_COVERAGE_ANALYSIS.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_FAILURE_ANALYSIS.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_SKIP_COMPREHENSIVE_PLAN.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_SKIP_MIGRATION_PLAN.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_SKIP_WEEK3_FINDINGS.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_SUITE_IMPROVEMENTS_COMPLETE_SUMMARY.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### TEST_TIMEOUT_INVESTIGATION.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### VITEST_100_PERCENT_IMPROVEMENTS.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### VITEST_RESULTS_SUMMARY.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+
+### VITEST_TIMEOUT_INVESTIGATION.md (Archived 2025-10-27)
+- **Reason**: Temporary doc older than 7 days (8 days)
+- **Category**: TEMPORARY
+- **Age**: 8 days
+

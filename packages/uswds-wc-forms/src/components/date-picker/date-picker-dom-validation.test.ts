@@ -32,7 +32,7 @@ describe('Date-picker DOM Structure Validation', () => {
   describe('Critical USWDS Structure', () => {
     it('should have date input field', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const input = element.querySelector('input.usa-input');
       expect(input).toBeTruthy();
@@ -41,7 +41,7 @@ describe('Date-picker DOM Structure Validation', () => {
 
     it('should have calendar toggle button', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const button = element.querySelector('.usa-date-picker__button');
       expect(button).toBeTruthy();
@@ -50,7 +50,7 @@ describe('Date-picker DOM Structure Validation', () => {
 
     it('should have calendar container', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const calendar = element.querySelector('.usa-date-picker__calendar');
       expect(calendar).toBeTruthy();
@@ -58,7 +58,7 @@ describe('Date-picker DOM Structure Validation', () => {
 
     it('should NOT render as plain text input', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Should have calendar button, not just input
       const plainInput = element.querySelector('input[type="text"]:only-child');
@@ -88,7 +88,7 @@ describe('Date-picker DOM Structure Validation', () => {
 
     it('should connect label to input via ID', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const label = element.querySelector('label.usa-label');
       // USWDS transforms the input in browser environment
@@ -105,7 +105,7 @@ describe('Date-picker DOM Structure Validation', () => {
   describe('Accessibility Structure', () => {
     it('should have proper ARIA attributes on input', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // USWDS transforms the input and adds ARIA attributes in browser
       // In test environment, verify the date picker wrapper exists
@@ -119,7 +119,7 @@ describe('Date-picker DOM Structure Validation', () => {
 
     it('should have proper ARIA attributes on calendar button', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const button = element.querySelector('.usa-date-picker__button');
       expect(button?.hasAttribute('aria-label')).toBe(true);
@@ -128,7 +128,7 @@ describe('Date-picker DOM Structure Validation', () => {
 
     it('should have role on calendar container', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const calendar = element.querySelector('.usa-date-picker__calendar');
       expect(calendar?.getAttribute('role')).toBeTruthy();

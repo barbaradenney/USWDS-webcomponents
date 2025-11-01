@@ -7,21 +7,25 @@ Based on the comprehensive tooltip troubleshooting work, this document outlines 
 ## 🎯 **Key Issues Discovered & Solutions**
 
 ### 1. **USWDS DOM Transformation Pattern**
+
 - **Issue**: USWDS JavaScript changes `.usa-tooltip` → `.usa-tooltip__trigger` during initialization
 - **Issue**: Components must apply attributes BEFORE USWDS reads them
 - **Solution**: Multi-phase attribute application with timing controls
 
 ### 2. **Storybook Iframe Environment**
+
 - **Issue**: Tooltips worked outside Storybook but failed inside iframe
 - **Issue**: Missing USWDS module optimization caused positioning failures
 - **Solution**: USWDS module inclusion in Vite `optimizeDeps`
 
 ### 3. **Light DOM Slot Behavior**
+
 - **Issue**: Light DOM slot access patterns differ from Shadow DOM
 - **Issue**: Components using `slot.assignedElements()` fail in light DOM
 - **Solution**: Direct DOM traversal for light DOM components
 
 ### 4. **Multi-Phase Attribute Application**
+
 - **Issue**: Attributes applied after USWDS initialization are ignored
 - **Issue**: Components need to handle both pre and post-transformation states
 - **Solution**: Comprehensive element discovery strategies
@@ -29,6 +33,7 @@ Based on the comprehensive tooltip troubleshooting work, this document outlines 
 ## 🧪 **Validation Test Suites**
 
 ### 1. USWDS DOM Transformation Validation
+
 **File**: `__tests__/uswds-dom-transformation-validation.test.ts`
 
 ```bash
@@ -36,6 +41,7 @@ npm run test:dom-transformation
 ```
 
 **Validates**:
+
 - Multi-strategy element detection (pre/post USWDS initialization)
 - Proper attribute application timing
 - Light DOM slot content access
@@ -45,21 +51,23 @@ npm run test:dom-transformation
 - MutationObserver cleanup patterns
 
 **Key Tests**:
+
 ```typescript
 // Component Discovery Pattern
-it('should detect components in both pre and post-USWDS initialization states')
-it('should validate multi-phase attribute application timing')
+it('should detect components in both pre and post-USWDS initialization states');
+it('should validate multi-phase attribute application timing');
 
 // Light DOM Slot Detection
-it('should properly detect slot content in light DOM components')
-it('should validate slot content access timing in light DOM')
+it('should properly detect slot content in light DOM components');
+it('should validate slot content access timing in light DOM');
 
 // USWDS Module Integration Timing
-it('should validate proper initialization sequence')
-it('should validate USWDS module error handling')
+it('should validate proper initialization sequence');
+it('should validate USWDS module error handling');
 ```
 
 ### 2. Storybook Iframe Environment Validation
+
 **File**: `__tests__/storybook-iframe-environment-validation.test.ts`
 
 ```bash
@@ -67,6 +75,7 @@ npm run test:storybook-iframe
 ```
 
 **Validates**:
+
 - Storybook main.ts includes required USWDS modules
 - Vite configuration patterns for USWDS modules
 - Iframe positioning constraints and spacing
@@ -76,21 +85,23 @@ npm run test:storybook-iframe
 - Hot Module Replacement compatibility
 
 **Key Tests**:
+
 ```typescript
 // USWDS Module Optimization Detection
-it('should validate Storybook main.ts includes required USWDS modules')
-it('should validate critical Vite configuration patterns')
+it('should validate Storybook main.ts includes required USWDS modules');
+it('should validate critical Vite configuration patterns');
 
 // Iframe Positioning Constraints
-it('should validate adequate spacing for absolutely positioned elements')
-it('should validate story parameters for iframe compatibility')
+it('should validate adequate spacing for absolutely positioned elements');
+it('should validate story parameters for iframe compatibility');
 
 // Component Positioning in Iframe Context
-it('should validate tooltip positioning calculations in constrained space')
-it('should validate modal positioning in iframe environment')
+it('should validate tooltip positioning calculations in constrained space');
+it('should validate modal positioning in iframe environment');
 ```
 
 ### 3. Multi-Phase Attribute Validation
+
 **File**: `__tests__/multi-phase-attribute-validation.test.ts`
 
 ```bash
@@ -98,6 +109,7 @@ npm run test:multi-phase-attributes
 ```
 
 **Validates**:
+
 - Immediate attribute application in `connectedCallback`
 - Property updates before USWDS initialization
 - Delayed USWDS initialization timing
@@ -107,21 +119,23 @@ npm run test:multi-phase-attributes
 - Error recovery and resilience patterns
 
 **Key Tests**:
+
 ```typescript
 // Pre-USWDS Initialization Phase
-it('should apply attributes immediately in connectedCallback')
-it('should handle property updates before USWDS initialization')
+it('should apply attributes immediately in connectedCallback');
+it('should handle property updates before USWDS initialization');
 
 // USWDS Initialization Timing
-it('should delay USWDS initialization until after attribute application')
-it('should validate timeout-based USWDS initialization delay')
+it('should delay USWDS initialization until after attribute application');
+it('should validate timeout-based USWDS initialization delay');
 
 // Post-USWDS Initialization Phase
-it('should handle DOM transformation after USWDS initialization')
-it('should apply updates to both pre and post-initialization elements')
+it('should handle DOM transformation after USWDS initialization');
+it('should apply updates to both pre and post-initialization elements');
 ```
 
 ### 4. Light DOM Slot Behavior Validation
+
 **File**: `__tests__/light-dom-slot-behavior-validation.test.ts`
 
 ```bash
@@ -129,6 +143,7 @@ npm run test:light-dom-slots
 ```
 
 **Validates**:
+
 - Light DOM vs Shadow DOM content access patterns
 - Direct content access patterns
 - Slot element access in light DOM
@@ -139,19 +154,21 @@ npm run test:light-dom-slots
 - Performance considerations for queries
 
 **Key Tests**:
+
 ```typescript
 // Light DOM vs Shadow DOM Content Access
-it('should validate light DOM direct content access patterns')
-it('should validate slot element access in light DOM')
-it('should demonstrate Shadow DOM pattern differences')
+it('should validate light DOM direct content access patterns');
+it('should validate slot element access in light DOM');
+it('should demonstrate Shadow DOM pattern differences');
 
 // Content Discovery Strategies for Light DOM
-it('should validate comprehensive content discovery pattern')
-it('should handle empty content gracefully')
-it('should handle mixed content types')
+it('should validate comprehensive content discovery pattern');
+it('should handle empty content gracefully');
+it('should handle mixed content types');
 ```
 
 ### 5. USWDS Module Optimization Validation
+
 **File**: `__tests__/uswds-module-optimization-validation.test.ts`
 
 ```bash
@@ -159,6 +176,7 @@ npm run test:module-optimization
 ```
 
 **Validates**:
+
 - Storybook configuration includes USWDS modules
 - Vite configuration patterns for USWDS modules
 - Dynamic USWDS module imports
@@ -169,18 +187,19 @@ npm run test:module-optimization
 - Performance impact and bundle size analysis
 
 **Key Tests**:
+
 ```typescript
 // Storybook Configuration Validation
-it('should validate Storybook main.ts includes required USWDS modules')
-it('should validate Vite configuration patterns for USWDS modules')
+it('should validate Storybook main.ts includes required USWDS modules');
+it('should validate Vite configuration patterns for USWDS modules');
 
 // USWDS Module Import Validation
-it('should validate dynamic USWDS module imports')
-it('should validate module loading error handling')
+it('should validate dynamic USWDS module imports');
+it('should validate module loading error handling');
 
 // Performance Impact Validation
-it('should validate bundle size impact of USWDS modules')
-it('should validate loading performance in different scenarios')
+it('should validate bundle size impact of USWDS modules');
+it('should validate loading performance in different scenarios');
 ```
 
 ## 🚀 **Combined Test Suite**
@@ -263,12 +282,13 @@ export class USAComponent extends USWDSBaseComponent {
 
     // Strategy 3: Direct children (light DOM)
     const directChildren = Array.from(this.children).filter(
-      child => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
+      (child) => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
     );
 
     // Apply attributes to all discovered elements
-    [...transformedElements, ...preInitElements, ...directChildren]
-      .forEach(el => this.applyElementAttributes(el));
+    [...transformedElements, ...preInitElements, ...directChildren].forEach((el) =>
+      this.applyElementAttributes(el)
+    );
   }
 }
 ```
@@ -280,7 +300,7 @@ export class USAComponent extends USWDSBaseComponent {
 config.optimizeDeps.include.push(
   '@uswds/uswds/js/usa-tooltip',
   '@uswds/uswds/js/usa-modal',
-  '@uswds/uswds/js/usa-accordion',
+  '@uswds/uswds/js/usa-accordion'
   // Add ALL USWDS modules used
 );
 
@@ -288,8 +308,8 @@ config.optimizeDeps.include.push(
 export default {
   parameters: {
     layout: 'padded',
-    viewport: { defaultViewport: 'large' }
-  }
+    viewport: { defaultViewport: 'large' },
+  },
 };
 
 // Story render with adequate spacing
@@ -305,7 +325,7 @@ render: (args) => html`
 ```typescript
 // CORRECT: Light DOM pattern
 const directChildren = Array.from(this.children).filter(
-  child => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
+  (child) => child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'SLOT'
 );
 
 const slotChildren = this.querySelector('slot')?.children

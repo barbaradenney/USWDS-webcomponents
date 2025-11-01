@@ -20,16 +20,16 @@ import 'path/to/uswds-webcomponents/src/components/pagination/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `currentPage` | `any` | `1` | Property description |
-| `totalPages` | `any` | `1` | Property description |
-| `maxVisible` | `any` | `7` | Property description |
+| Property      | Type  | Default | Description          |
+| ------------- | ----- | ------- | -------------------- |
+| `currentPage` | `any` | `1`     | Property description |
+| `totalPages`  | `any` | `1`     | Property description |
+| `maxVisible`  | `any` | `7`     | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event         | Type        | Description       |
+| ------------- | ----------- | ----------------- |
 | `page-change` | CustomEvent | Event description |
 
 ## Accessibility

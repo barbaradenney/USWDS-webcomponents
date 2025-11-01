@@ -55,14 +55,14 @@ export class USASummaryBox extends LitElement {
     // This ensures we capture it before Lit's rendering lifecycle starts
     console.log('[SummaryBox] connectedCallback', {
       childNodesCount: this.childNodes.length,
-      innerHTML: this.innerHTML?.substring(0, 100)
+      innerHTML: this.innerHTML?.substring(0, 100),
     });
 
     if (this.childNodes.length > 0) {
       this.slottedContent = this.innerHTML;
       this.innerHTML = '';
       console.log('[SummaryBox] Captured and cleared slotted content', {
-        capturedLength: this.slottedContent.length
+        capturedLength: this.slottedContent.length,
       });
     }
 
@@ -128,12 +128,15 @@ export class USASummaryBox extends LitElement {
       slottedContentLength: this.slottedContent?.length,
       alreadyApplied: this.slottedContentApplied,
       hasContentProp: !!this.content,
-      slotElement: this.querySelector('slot')
+      slotElement: this.querySelector('slot'),
     });
 
     if (this.slottedContent && !this.slottedContentApplied && !this.content) {
       const slotElement = this.querySelector('slot');
-      console.log('[SummaryBox] Applying slotted content', { slotElement, content: this.slottedContent.substring(0, 100) });
+      console.log('[SummaryBox] Applying slotted content', {
+        slotElement,
+        content: this.slottedContent.substring(0, 100),
+      });
       if (slotElement) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = this.slottedContent;
@@ -145,9 +148,13 @@ export class USASummaryBox extends LitElement {
       }
     } else {
       console.log('[SummaryBox] Skipping slot application', {
-        reason: !this.slottedContent ? 'no slotted content' :
-                this.slottedContentApplied ? 'already applied' :
-                this.content ? 'using content property' : 'unknown'
+        reason: !this.slottedContent
+          ? 'no slotted content'
+          : this.slottedContentApplied
+            ? 'already applied'
+            : this.content
+              ? 'using content property'
+              : 'unknown',
       });
     }
   }

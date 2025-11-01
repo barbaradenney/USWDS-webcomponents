@@ -83,7 +83,7 @@ export class USAAlert extends USWDSBaseComponent {
       const alertText = this.querySelector('.usa-alert__text');
       if (alertText) {
         // Move nodes (not clone) to avoid duplication
-        this.childNodes_.forEach(node => {
+        this.childNodes_.forEach((node) => {
           alertText.appendChild(node);
         });
         // Clear the array since nodes have been moved
@@ -103,7 +103,6 @@ export class USAAlert extends USWDSBaseComponent {
     super.disconnectedCallback();
     console.log('📋 Alert: Cleanup complete (no USWDS JavaScript required)');
   }
-
 
   private updateAriaRole() {
     const role = this.variant === 'error' || this.variant === 'emergency' ? 'alert' : 'status';
@@ -139,10 +138,7 @@ export class USAAlert extends USWDSBaseComponent {
 
     return html`
       <div class="${this.getAlertClasses()}">
-        <div class="usa-alert__body">
-          ${this.renderHeading()}
-          ${textContent}
-        </div>
+        <div class="usa-alert__body">${this.renderHeading()} ${textContent}</div>
       </div>
     `;
   }

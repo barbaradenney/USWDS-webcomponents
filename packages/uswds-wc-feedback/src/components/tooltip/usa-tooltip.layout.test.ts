@@ -64,16 +64,25 @@ describe('USATooltip Layout Tests', () => {
     }
 
     expect(triggerElement, 'Should find actual trigger element').toBeTruthy();
-    expect(triggerElement.getAttribute('data-position'), 'Trigger should have correct position').toBe('top');
-    expect(triggerElement.getAttribute('aria-describedby'), 'Trigger should have aria-describedby').toBeTruthy();
+    expect(
+      triggerElement.getAttribute('data-position'),
+      'Trigger should have correct position'
+    ).toBe('top');
+    expect(
+      triggerElement.getAttribute('aria-describedby'),
+      'Trigger should have aria-describedby'
+    ).toBeTruthy();
 
     // USWDS may create additional wrapper/body elements after initialization
-    const tooltipBody = document.querySelector('.usa-tooltip__body') ||
-                       element.parentElement?.querySelector('.usa-tooltip__body');
+    const tooltipBody =
+      document.querySelector('.usa-tooltip__body') ||
+      element.parentElement?.querySelector('.usa-tooltip__body');
 
     // If tooltip body exists, it should be properly positioned
     if (tooltipBody) {
-      expect(tooltipBody.getAttribute('role'), 'Tooltip body should have tooltip role').toBe('tooltip');
+      expect(tooltipBody.getAttribute('role'), 'Tooltip body should have tooltip role').toBe(
+        'tooltip'
+      );
     }
   });
 
@@ -151,9 +160,10 @@ describe('USATooltip Layout Tests', () => {
     const triggerElement = tooltipWrapper?.querySelector('.usa-tooltip__trigger') as HTMLElement;
 
     // USWDS might set title on wrapper, trigger, or component - check all
-    const titleAttr = triggerElement?.getAttribute('title') ||
-                     tooltipWrapper?.getAttribute('title') ||
-                     element.getAttribute('title');
+    const titleAttr =
+      triggerElement?.getAttribute('title') ||
+      tooltipWrapper?.getAttribute('title') ||
+      element.getAttribute('title');
 
     if (titleAttr) {
       expect(titleAttr, 'Should have initial text in title').toBe('This is a helpful tooltip');
@@ -168,21 +178,26 @@ describe('USATooltip Layout Tests', () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     // Check updated text on any available element
-    const updatedTitleAttr = triggerElement?.getAttribute('title') ||
-                           tooltipWrapper?.getAttribute('title') ||
-                           element.getAttribute('title');
+    const updatedTitleAttr =
+      triggerElement?.getAttribute('title') ||
+      tooltipWrapper?.getAttribute('title') ||
+      element.getAttribute('title');
 
     if (updatedTitleAttr) {
       expect(updatedTitleAttr, 'Should have updated text in title').toBe('Updated tooltip text');
     } else {
       // Test environment fallback - check component property
-      expect(element.text, 'Component should have updated text property').toBe('Updated tooltip text');
+      expect(element.text, 'Component should have updated text property').toBe(
+        'Updated tooltip text'
+      );
     }
 
     // Check USWDS tooltip body if it exists
     const tooltipBody = document.querySelector('.usa-tooltip__body') as HTMLElement;
     if (tooltipBody) {
-      expect(tooltipBody.textContent, 'Should have updated text in body').toBe('Updated tooltip text');
+      expect(tooltipBody.textContent, 'Should have updated text in body').toBe(
+        'Updated tooltip text'
+      );
     }
   });
 
@@ -216,7 +231,10 @@ describe('USATooltip Layout Tests', () => {
 
     // USWDS may add tabindex for non-focusable elements, but this is optional
     // We just verify the element has the correct classes and attributes
-    expect(nonFocusableTrigger.classList.contains('usa-tooltip'), 'Should have usa-tooltip class').toBe(true);
+    expect(
+      nonFocusableTrigger.classList.contains('usa-tooltip'),
+      'Should have usa-tooltip class'
+    ).toBe(true);
 
     nonFocusableElement.remove();
 
@@ -235,11 +253,15 @@ describe('USATooltip Layout Tests', () => {
       return;
     }
 
-    expect(focusableTrigger.classList.contains('usa-tooltip'), 'Should have usa-tooltip class').toBe(true);
+    expect(
+      focusableTrigger.classList.contains('usa-tooltip'),
+      'Should have usa-tooltip class'
+    ).toBe(true);
 
     // USWDS may wrap or restructure the original button, so check for button inside trigger
-    const button = focusableTrigger.querySelector('button') ||
-                   (focusableTrigger.tagName.toLowerCase() === 'button' ? focusableTrigger : null);
+    const button =
+      focusableTrigger.querySelector('button') ||
+      (focusableTrigger.tagName.toLowerCase() === 'button' ? focusableTrigger : null);
     if (button) {
       expect(button.tagName.toLowerCase(), 'Should contain or be button element').toBe('button');
     }
@@ -248,8 +270,7 @@ describe('USATooltip Layout Tests', () => {
   describe('JavaScript Implementation Validation', () => {
     it('should pass JavaScript implementation validation', async () => {
       // Validate USWDS JavaScript implementation patterns
-      const componentPath =
-        `${process.cwd()}/src/components/tooltip/usa-tooltip.ts`;
+      const componentPath = `${process.cwd()}/src/components/tooltip/usa-tooltip.ts`;
       const validation = validateComponentJavaScript(componentPath, 'tooltip');
 
       if (!validation.isValid) {

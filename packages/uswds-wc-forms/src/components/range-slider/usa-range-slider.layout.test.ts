@@ -145,8 +145,7 @@ describe('USARangeSlider Layout Tests', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/range-slider/usa-range-slider.ts`;
+        const componentPath = `${process.cwd()}/src/components/range-slider/usa-range-slider.ts`;
         const validation = validateComponentJavaScript(componentPath, 'range-slider');
 
         if (!validation.isValid) {

@@ -115,11 +115,12 @@ export class USAIdentifier extends LitElement {
   private renderParentAgencyText() {
     return this.parentAgencyHref
       ? html`<a href="${this.parentAgencyHref}" class="usa-link">${this.parentAgency}</a>`
-      : (this.parentAgency || 'United States government');
+      : this.parentAgency || 'United States government';
   }
 
   private renderMasthead() {
-    const logoAltText = this.mastheadLogoAlt ||
+    const logoAltText =
+      this.mastheadLogoAlt ||
       (this.parentAgency ? `${this.parentAgency} logo` : 'Parent agency logo');
 
     return html`
@@ -141,8 +142,7 @@ export class USAIdentifier extends LitElement {
           <section class="usa-identifier__identity" aria-label="Agency description">
             <p class="usa-identifier__identity-domain">${this.domain}</p>
             <p class="usa-identifier__identity-disclaimer">
-              An official website of the
-              ${this.renderParentAgencyText()}
+              An official website of the ${this.renderParentAgencyText()}
             </p>
           </section>
         </div>
@@ -167,7 +167,7 @@ export class USAIdentifier extends LitElement {
   }
 
   private renderRequiredLinks() {
-    return (this.showRequiredLinks && this.requiredLinks.length)
+    return this.showRequiredLinks && this.requiredLinks.length
       ? html`
           <div
             class="usa-identifier__section usa-identifier__section--required-links"
@@ -187,22 +187,12 @@ export class USAIdentifier extends LitElement {
     return logo.href
       ? html`
           <a href="${logo.href}" class="usa-identifier__logo usa-link">
-            <img
-              class="usa-identifier__logo-img"
-              src="${logo.src}"
-              alt="${logo.alt}"
-              role="img"
-            />
+            <img class="usa-identifier__logo-img" src="${logo.src}" alt="${logo.alt}" role="img" />
           </a>
         `
       : html`
           <div class="usa-identifier__logo">
-            <img
-              class="usa-identifier__logo-img"
-              src="${logo.src}"
-              alt="${logo.alt}"
-              role="img"
-            />
+            <img class="usa-identifier__logo-img" src="${logo.src}" alt="${logo.alt}" role="img" />
           </div>
         `;
   }
@@ -212,13 +202,11 @@ export class USAIdentifier extends LitElement {
   }
 
   private renderLogos() {
-    return (this.showLogos && this.logos.length)
+    return this.showLogos && this.logos.length
       ? html`
           <div class="usa-identifier__section" aria-label="Agency logos">
             <div class="usa-identifier__container">
-              <div class="usa-identifier__logos">
-                ${this.renderLogoItems()}
-              </div>
+              <div class="usa-identifier__logos">${this.renderLogoItems()}</div>
             </div>
           </div>
         `

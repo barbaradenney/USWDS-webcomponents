@@ -20,25 +20,25 @@ import 'path/to/uswds-webcomponents/src/components/checkbox/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `name` | `any` | `''` | Property description |
-| `value` | `any` | `''` | Property description |
-| `checked` | `any` | `false` | Property description |
-| `label` | `any` | `''` | Property description |
-| `description` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
+| Property        | Type  | Default | Description          |
+| --------------- | ----- | ------- | -------------------- |
+| `name`          | `any` | `''`    | Property description |
+| `value`         | `any` | `''`    | Property description |
+| `checked`       | `any` | `false` | Property description |
+| `label`         | `any` | `''`    | Property description |
+| `description`   | `any` | `''`    | Property description |
+| `error`         | `any` | `''`    | Property description |
+| `disabled`      | `any` | `false` | Property description |
+| `required`      | `any` | `false` | Property description |
 | `indeterminate` | `any` | `false` | Property description |
-| `tile` | `any` | `false` | Property description |
+| `tile`          | `any` | `false` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event    | Type        | Description       |
+| -------- | ----------- | ----------------- |
 | `change` | CustomEvent | Event description |
-| `input` | CustomEvent | Event description |
+| `input`  | CustomEvent | Event description |
 
 ## Accessibility
 

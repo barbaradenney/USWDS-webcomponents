@@ -248,7 +248,8 @@ export const FooterOnly: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Footer without an identifier component. The identifier is optional and can be omitted.',
+        story:
+          'Footer without an identifier component. The identifier is optional and can be omitted.',
       },
     },
   },
@@ -287,7 +288,8 @@ export const IdentifierOnly: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Identifier component used independently without a footer. This demonstrates that the identifier can be used on any page, not just with footers.',
+        story:
+          'Identifier component used independently without a footer. This demonstrates that the identifier can be used on any page, not just with footers.',
       },
     },
   },
@@ -373,9 +375,7 @@ export const InteractiveDemo: Story = {
         e.preventDefault(); // Prevent navigation in Storybook
       }}
     >
-      <div
-        class="bg-base-lightest padding-1 margin-y-1 text-center radius-md"
-      >
+      <div class="bg-base-lightest padding-1 margin-y-1 text-center radius-md">
         <strong>Custom Footer Content Slot</strong>
         <p>This content is inserted via the default slot and can include any custom HTML.</p>
       </div>
@@ -419,11 +419,14 @@ export const InteractiveDemo: Story = {
       </ul>
 
       <h4>Important Architecture Note:</h4>
-      <p>The <code>&lt;usa-identifier&gt;</code> is a separate component from <code>&lt;usa-footer&gt;</code>. They should be placed one after another on the page, not nested.</p>
+      <p>
+        The <code>&lt;usa-identifier&gt;</code> is a separate component from
+        <code>&lt;usa-footer&gt;</code>. They should be placed one after another on the page, not
+        nested.
+      </p>
     </div>
   `,
 };
-
 
 export const CustomContent: Story = {
   parameters: {

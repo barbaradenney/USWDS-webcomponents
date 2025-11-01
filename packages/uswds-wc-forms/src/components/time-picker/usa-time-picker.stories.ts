@@ -416,4 +416,3 @@ export const FormIntegration: Story = {
     </div>
   `,
 };
-

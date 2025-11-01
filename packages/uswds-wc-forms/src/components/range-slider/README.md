@@ -20,28 +20,28 @@ import 'path/to/uswds-webcomponents/src/components/range-slider/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | `any` | `50` | Property description |
-| `min` | `any` | `0` | Property description |
-| `max` | `any` | `100` | Property description |
-| `step` | `any` | `1` | Property description |
-| `name` | `any` | `'range-slider'` | Property description |
-| `inputId` | `any` | `'range-slider-input'` | Property description |
-| `label` | `any` | `'Range'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `unit` | `any` | `''` | Property description |
-| `showValue` | `any` | `true` | Property description |
-| `showOutput` | `any` | `true` | Property description |
-| `showMinMax` | `any` | `true` | Property description |
+| Property     | Type  | Default                | Description          |
+| ------------ | ----- | ---------------------- | -------------------- |
+| `value`      | `any` | `50`                   | Property description |
+| `min`        | `any` | `0`                    | Property description |
+| `max`        | `any` | `100`                  | Property description |
+| `step`       | `any` | `1`                    | Property description |
+| `name`       | `any` | `'range-slider'`       | Property description |
+| `inputId`    | `any` | `'range-slider-input'` | Property description |
+| `label`      | `any` | `'Range'`              | Property description |
+| `hint`       | `any` | `''`                   | Property description |
+| `error`      | `any` | `''`                   | Property description |
+| `disabled`   | `any` | `false`                | Property description |
+| `required`   | `any` | `false`                | Property description |
+| `unit`       | `any` | `''`                   | Property description |
+| `showValue`  | `any` | `true`                 | Property description |
+| `showOutput` | `any` | `true`                 | Property description |
+| `showMinMax` | `any` | `true`                 | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event          | Type        | Description       |
+| -------------- | ----------- | ----------------- |
 | `range-change` | CustomEvent | Event description |
 
 ## Accessibility

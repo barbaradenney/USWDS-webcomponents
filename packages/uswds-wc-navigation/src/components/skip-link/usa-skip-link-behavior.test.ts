@@ -67,7 +67,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
   describe('Contract 2: Click Handling', () => {
     it('should handle click events on skip link', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
       expect(link).not.toBeNull();
@@ -82,7 +82,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should prevent default link behavior', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
@@ -97,14 +97,14 @@ describe('USWDS Skip Link Behavior Contract', () => {
   describe('Contract 3: Target Element Focus', () => {
     it('should focus target element on click', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
       // Click skip link
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // USWDS: target.focus()
       expect(document.activeElement).toBe(targetElement);
@@ -112,14 +112,14 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should set tabindex=0 on target element', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
       // Click skip link
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // USWDS: target.setAttribute("tabindex", 0)
       expect(targetElement.getAttribute('tabindex')).toBe('0');
@@ -127,14 +127,14 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should set outline to 0 on target element', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
       // Click skip link
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // USWDS: target.style.outline = "0"
       expect(targetElement.style.outline).toBe('0');
@@ -144,20 +144,20 @@ describe('USWDS Skip Link Behavior Contract', () => {
   describe('Contract 4: Blur Handling', () => {
     it('should reset tabindex to -1 on target blur', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
       // Click skip link to focus target
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(targetElement.getAttribute('tabindex')).toBe('0');
 
       // Blur target element
       targetElement.blur();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // USWDS: once(() => { target.setAttribute("tabindex", -1); })
       expect(targetElement.getAttribute('tabindex')).toBe('-1');
@@ -165,22 +165,22 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should only handle blur once', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
       // Click skip link
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Blur twice
       targetElement.blur();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       targetElement.setAttribute('tabindex', '0');
       targetElement.blur();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // USWDS uses receptor/once - blur handler only fires once
       // After first blur, tabindex should be -1 and stay that way
@@ -192,14 +192,14 @@ describe('USWDS Skip Link Behavior Contract', () => {
     it('should handle href="#" by targeting "main-content" id', async () => {
       element.href = '#';
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // USWDS: const id = encodeURI(this.getAttribute("href"));
       // USWDS: id === "#" ? MAINCONTENT : id.slice(1)
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Should target element with id="main-content"
       expect(document.activeElement).toBe(targetElement);
@@ -208,13 +208,13 @@ describe('USWDS Skip Link Behavior Contract', () => {
     it('should slice # from href to get element id', async () => {
       element.href = '#main-content';
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // USWDS: id.slice(1) removes the #
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(document.activeElement?.id).toBe('main-content');
     });
@@ -226,7 +226,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
     it('should handle missing target element gracefully', async () => {
       element.href = '#nonexistent';
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
@@ -256,7 +256,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should be keyboard accessible', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
@@ -274,7 +274,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should allow target element to receive focus', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
@@ -283,7 +283,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // After click, target should be focusable
       const newTabindex = targetElement.getAttribute('tabindex');
@@ -308,7 +308,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should work with event delegation', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // USWDS uses delegated event listeners on document/container
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
@@ -337,18 +337,18 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
       await waitForBehaviorInit(element);
       await element2.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Both should work independently
       const link1 = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
       const link2 = element2.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
       link1.click();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(document.activeElement).toBe(targetElement);
 
       link2.click();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(document.activeElement).toBe(target2);
 
       element2.remove();
@@ -359,7 +359,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
   describe('Prohibited Behaviors (must NOT be present)', () => {
     it('should NOT navigate page when clicked', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
       const initialHash = window.location.hash;
@@ -374,7 +374,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
     it('should NOT fail when target element is missing', async () => {
       element.href = '#does-not-exist';
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
@@ -394,7 +394,7 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
     it('should NOT prevent blur event from firing on target', async () => {
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const link = element.querySelector('.usa-skipnav') as HTMLAnchorElement;
 
@@ -405,10 +405,10 @@ describe('USWDS Skip Link Behavior Contract', () => {
 
       link.click();
       await waitForBehaviorInit(element);
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       targetElement.blur();
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(blurFired).toBe(true);
     });

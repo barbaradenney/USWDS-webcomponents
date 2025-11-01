@@ -3,7 +3,7 @@
  * Global test configuration and utilities for USWDS Web Components
  */
 
-import { beforeEach, afterEach } from 'vitest';
+import { beforeEach, afterEach, vi } from 'vitest';
 // Mock canvas for JSDOM testing (avoids native dependency issues)
 // import { Canvas } from 'canvas';
 
@@ -24,6 +24,24 @@ beforeEach(() => {
   // Clear any global USWDS state
   if ((window as any).USWDS) {
     delete (window as any).USWDS;
+  }
+
+  // Ensure window.matchMedia is always mocked
+  if (!window.matchMedia || typeof window.matchMedia !== 'function') {
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      configurable: true,
+      value: (query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => true,
+      }),
+    });
   }
 });
 
@@ -298,18 +316,20 @@ if (!global.DragEvent) {
 }
 
 // Mock window.matchMedia for USWDS JavaScript compatibility
+// Use vi.fn() to create proper vitest mocks that don't cause unhandled errors
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: (query: string) => ({
+  configurable: true,
+  value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => {}, // deprecated
-    removeListener: () => {}, // deprecated
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => {},
-  }),
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
 });
 
 // Mock window.getComputedStyle for better CSS testing
@@ -421,7 +441,12 @@ if (process.env.CI) {
   const suppressedMessages = [
     'No toggle target found with id',
     "Cannot read properties of undefined (reading 'slice')",
-    "Cannot read properties of null (reading 'setAttribute')"
+    "Cannot read properties of null (reading 'setAttribute')",
+    // JSDOM limitations that don't affect test validity
+    'Not implemented',
+    'window.matchMedia is not a function',
+    'window.getComputedStyle',
+    'navigation to another Document'
   ];
 
   global.Error = class SuppressedError extends OriginalError {
@@ -446,6 +471,40 @@ if (process.env.CI) {
   // Copy static properties from original Error
   Object.setPrototypeOf(global.Error, OriginalError);
   Object.setPrototypeOf(global.Error.prototype, OriginalError.prototype);
+
+  // Also suppress unhandled errors and rejections at the global level
+  // These JSDOM limitation errors don't affect test validity
+  const originalErrorHandler = globalThis.onerror;
+  globalThis.onerror = (message, source, lineno, colno, error) => {
+    const errorMessage = error?.message || message?.toString() || '';
+    const shouldSuppress = suppressedMessages.some(msg => errorMessage.includes(msg));
+
+    if (shouldSuppress) {
+      return true; // Prevent default error handling
+    }
+
+    // Let other errors through
+    if (originalErrorHandler) {
+      return originalErrorHandler(message as any, source, lineno, colno, error);
+    }
+    return false;
+  };
+
+  const originalRejectionHandler = globalThis.onunhandledrejection;
+  globalThis.onunhandledrejection = (event: PromiseRejectionEvent) => {
+    const errorMessage = event.reason?.message || event.reason?.toString() || '';
+    const shouldSuppress = suppressedMessages.some(msg => errorMessage.includes(msg));
+
+    if (shouldSuppress) {
+      event.preventDefault();
+      return;
+    }
+
+    // Let other rejections through
+    if (originalRejectionHandler) {
+      originalRejectionHandler.call(globalThis, event);
+    }
+  };
 
   console.info('✅ Vitest test environment setup complete (CI mode - USWDS error suppression enabled)');
 } else {

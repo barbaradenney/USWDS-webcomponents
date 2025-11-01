@@ -26,7 +26,10 @@
 
 .usa-collection__virtual-container {
   overflow-y: auto; /* Enable scrolling within container */
-  height: var(--usa-collection-container-height, 600px); /* Dynamic height via CSS custom property */
+  height: var(
+    --usa-collection-container-height,
+    600px
+  ); /* Dynamic height via CSS custom property */
 }
 
 /* ==========================================================================

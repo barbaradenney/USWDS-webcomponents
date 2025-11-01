@@ -16,7 +16,7 @@ if (!customElements.get('usa-icon')) {
 import {
   validateCSSClassString,
   validateAllCSSClasses,
-  validateUSWDSClassPattern
+  validateUSWDSClassPattern,
 } from '@uswds-wc/test-utils/css-class-utils.js';
 
 describe('USAButton Layout Tests', () => {
@@ -109,26 +109,26 @@ describe('USAButton Layout Tests', () => {
         expect(button.textContent?.trim()).toContain('Search');
       }
     }
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/button/usa-button.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'button');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/button/usa-button.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'button');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('CSS Class Regression Prevention', () => {
@@ -146,7 +146,14 @@ describe('USAButton Layout Tests', () => {
     });
 
     it('should have clean CSS classes for all button variants', async () => {
-      const variants = ['primary', 'secondary', 'accent-cool', 'accent-warm', 'base', 'outline'] as const;
+      const variants = [
+        'primary',
+        'secondary',
+        'accent-cool',
+        'accent-warm',
+        'base',
+        'outline',
+      ] as const;
 
       for (const variant of variants) {
         element.variant = variant;
@@ -156,16 +163,16 @@ describe('USAButton Layout Tests', () => {
         expect(button, `Button should exist for ${variant} variant`).toBeTruthy();
 
         if (button) {
-          const expectedClass = variant === 'primary'
-            ? 'usa-button'
-            : `usa-button usa-button--${variant}`;
+          const expectedClass =
+            variant === 'primary' ? 'usa-button' : `usa-button usa-button--${variant}`;
 
-          expect(() => validateCSSClassString(
-            button.className,
-            `${variant} button variant`
-          )).not.toThrow();
+          expect(() =>
+            validateCSSClassString(button.className, `${variant} button variant`)
+          ).not.toThrow();
 
-          expect(button.className, `${variant} button should have correct classes`).toBe(expectedClass);
+          expect(button.className, `${variant} button should have correct classes`).toBe(
+            expectedClass
+          );
         }
       }
     });
@@ -181,16 +188,15 @@ describe('USAButton Layout Tests', () => {
         expect(button, `Button should exist for ${size} size`).toBeTruthy();
 
         if (button) {
-          const expectedClass = size === 'medium'
-            ? 'usa-button'
-            : `usa-button usa-button--${size}`;
+          const expectedClass = size === 'medium' ? 'usa-button' : `usa-button usa-button--${size}`;
 
-          expect(() => validateCSSClassString(
-            button.className,
-            `${size} button size`
-          )).not.toThrow();
+          expect(() =>
+            validateCSSClassString(button.className, `${size} button size`)
+          ).not.toThrow();
 
-          expect(button.className, `${size} button should have correct classes`).toBe(expectedClass);
+          expect(button.className, `${size} button should have correct classes`).toBe(
+            expectedClass
+          );
         }
       }
     });
@@ -206,12 +212,13 @@ describe('USAButton Layout Tests', () => {
       if (button) {
         const expectedClass = 'usa-button usa-button--secondary usa-button--big';
 
-        expect(() => validateCSSClassString(
-          button.className,
-          'Combined variant and size button'
-        )).not.toThrow();
+        expect(() =>
+          validateCSSClassString(button.className, 'Combined variant and size button')
+        ).not.toThrow();
 
-        expect(button.className, 'Combined variant/size should have correct classes').toBe(expectedClass);
+        expect(button.className, 'Combined variant/size should have correct classes').toBe(
+          expectedClass
+        );
       }
     });
 
@@ -229,11 +236,12 @@ describe('USAButton Layout Tests', () => {
       // Validate button element USWDS pattern
       const button = element.querySelector('button');
       if (button) {
-        expect(() => validateUSWDSClassPattern(
-          button,
-          'usa-button',
-          ['usa-button--outline', 'usa-button--small']
-        )).not.toThrow();
+        expect(() =>
+          validateUSWDSClassPattern(button, 'usa-button', [
+            'usa-button--outline',
+            'usa-button--small',
+          ])
+        ).not.toThrow();
       }
     });
 
@@ -243,7 +251,11 @@ describe('USAButton Layout Tests', () => {
         { variant: 'primary', size: 'medium', expectedClass: 'usa-button' },
         { variant: 'secondary', size: 'medium', expectedClass: 'usa-button usa-button--secondary' },
         { variant: 'primary', size: 'big', expectedClass: 'usa-button usa-button--big' },
-        { variant: 'outline', size: 'small', expectedClass: 'usa-button usa-button--outline usa-button--small' }
+        {
+          variant: 'outline',
+          size: 'small',
+          expectedClass: 'usa-button usa-button--outline usa-button--small',
+        },
       ];
 
       for (const testCase of testCases) {
@@ -256,12 +268,23 @@ describe('USAButton Layout Tests', () => {
           const className = button.className;
 
           // Check for spacing issues
-          expect(className.includes('  '), `No double spaces for ${testCase.variant}/${testCase.size}`).toBe(false);
-          expect(className.startsWith(' '), `No leading space for ${testCase.variant}/${testCase.size}`).toBe(false);
-          expect(className.endsWith(' '), `No trailing space for ${testCase.variant}/${testCase.size}`).toBe(false);
+          expect(
+            className.includes('  '),
+            `No double spaces for ${testCase.variant}/${testCase.size}`
+          ).toBe(false);
+          expect(
+            className.startsWith(' '),
+            `No leading space for ${testCase.variant}/${testCase.size}`
+          ).toBe(false);
+          expect(
+            className.endsWith(' '),
+            `No trailing space for ${testCase.variant}/${testCase.size}`
+          ).toBe(false);
 
           // Check exact match
-          expect(className, `Exact class match for ${testCase.variant}/${testCase.size}`).toBe(testCase.expectedClass);
+          expect(className, `Exact class match for ${testCase.variant}/${testCase.size}`).toBe(
+            testCase.expectedClass
+          );
         }
       }
     });

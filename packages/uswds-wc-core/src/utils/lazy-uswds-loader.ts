@@ -102,8 +102,7 @@ export interface USWDSLoaderConfig {
  * Check if USWDS is already loaded globally
  */
 function isUSWDSAvailable(): boolean {
-  return typeof window !== 'undefined' &&
-         typeof (window as any).USWDS !== 'undefined';
+  return typeof window !== 'undefined' && typeof (window as any).USWDS !== 'undefined';
 }
 
 /**
@@ -177,9 +176,7 @@ async function loadUSWDSScript(config: USWDSLoaderConfig = {}): Promise<void> {
  * }
  * ```
  */
-export async function ensureUSWDSLoaded(
-  config: USWDSLoaderConfig = {}
-): Promise<void> {
+export async function ensureUSWDSLoaded(config: USWDSLoaderConfig = {}): Promise<void> {
   // Already loaded globally (e.g., via script tag in HTML)
   if (isUSWDSAvailable() && !config.forceLoad) {
     if (config.debug) {
@@ -262,9 +259,7 @@ export function isStaticComponent(tagName: string): boolean {
  * });
  * ```
  */
-export async function autoLoadUSWDS(
-  config: USWDSLoaderConfig = {}
-): Promise<{
+export async function autoLoadUSWDS(config: USWDSLoaderConfig = {}): Promise<{
   loaded: boolean;
   interactiveComponents: string[];
   staticComponents: string[];
@@ -334,9 +329,7 @@ export async function autoLoadUSWDS(
  * await ensureUSWDSLoaded();
  * ```
  */
-export function preloadUSWDS(
-  scriptUrl = '/node_modules/@uswds/uswds/dist/js/uswds.min.js'
-): void {
+export function preloadUSWDS(scriptUrl = '/node_modules/@uswds/uswds/dist/js/uswds.min.js'): void {
   const link = document.createElement('link');
   link.rel = 'preload';
   link.as = 'script';

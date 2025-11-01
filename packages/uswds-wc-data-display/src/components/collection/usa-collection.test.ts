@@ -5,10 +5,7 @@ import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
-import {
-  waitForUpdate,
-  validateComponentJavaScript,
-} from '@uswds-wc/test-utils/test-utils.js';
+import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testKeyboardNavigation,
   verifyKeyboardOnlyUsable,
@@ -299,26 +296,26 @@ describe('USACollection', () => {
       expect(element.querySelector('.usa-link')).toBeTruthy();
       expect(element.querySelector('.usa-tag')).toBeTruthy();
     });
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/collection/usa-collection.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'collection');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/collection/usa-collection.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'collection');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {
@@ -754,7 +751,8 @@ describe('USACollection', () => {
         {
           id: 'item1',
           title: 'Federal Grant Opportunities',
-          description: 'New federal grants available for small businesses and research institutions.',
+          description:
+            'New federal grants available for small businesses and research institutions.',
           date: '2024-01-15',
           author: 'Office of Grants',
           href: '/grants/opportunities',
@@ -903,9 +901,9 @@ describe('USACollection', () => {
 
       it('should render metadata items in proper list structure', async () => {
         const firstItem = element.querySelectorAll('.usa-collection__item')[0];
-        const metadataList = Array.from(firstItem?.querySelectorAll('.usa-collection__meta') || []).find(
-          (list) => list.getAttribute('aria-label') === 'More information'
-        );
+        const metadataList = Array.from(
+          firstItem?.querySelectorAll('.usa-collection__meta') || []
+        ).find((list) => list.getAttribute('aria-label') === 'More information');
 
         const metaItems = metadataList?.querySelectorAll('.usa-collection__meta-item');
         expect(metaItems && metaItems.length > 0).toBe(true);
@@ -919,9 +917,9 @@ describe('USACollection', () => {
 
       it('should render tags with usa-tag class', async () => {
         const firstItem = element.querySelectorAll('.usa-collection__item')[0];
-        const tagsList = Array.from(firstItem?.querySelectorAll('.usa-collection__meta') || []).find(
-          (list) => list.getAttribute('aria-label') === 'Topics'
-        );
+        const tagsList = Array.from(
+          firstItem?.querySelectorAll('.usa-collection__meta') || []
+        ).find((list) => list.getAttribute('aria-label') === 'Topics');
 
         const tags = tagsList?.querySelectorAll('.usa-tag');
         expect(tags).toHaveLength(2);

@@ -1,6 +1,6 @@
 /**
  * USWDS Design Token Helper Utilities
- * 
+ *
  * Provides type-safe access to USWDS design tokens for use in web components.
  * These utilities help maintain consistency with USWDS while providing
  * enhanced developer experience through TypeScript.
@@ -106,15 +106,15 @@ export class USWDSTokenHelper {
     desktop?: USWDSSpacingToken
   ): string {
     let css = `${this.spacing(mobile)}`;
-    
+
     if (tablet) {
       css += `; @media (min-width: 40rem) { ${this.spacing(tablet)} }`;
     }
-    
+
     if (desktop) {
       css += `; @media (min-width: 64rem) { ${this.spacing(desktop)} }`;
     }
-    
+
     return css;
   }
 
@@ -131,15 +131,15 @@ export class USWDSTokenHelper {
     weight?: USWDSFontWeightToken
   ): string {
     let css = `font-size: ${this.fontSize(size)};`;
-    
+
     if (family) {
       css += ` font-family: ${this.fontFamily(family)};`;
     }
-    
+
     if (weight) {
       css += ` font-weight: ${this.fontWeight(weight)};`;
     }
-    
+
     return css;
   }
 }
@@ -322,15 +322,15 @@ export const designTokens = {
     }
   ): string[] {
     const classes = [this.utilityClass(utility, tokens.mobile)];
-    
+
     if (tokens.tablet) {
       classes.push(`tablet:${this.utilityClass(utility, tokens.tablet)}`);
     }
-    
+
     if (tokens.desktop) {
       classes.push(`desktop:${this.utilityClass(utility, tokens.desktop)}`);
     }
-    
+
     return classes;
   },
 

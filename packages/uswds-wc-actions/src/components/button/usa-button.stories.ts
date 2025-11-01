@@ -191,11 +191,7 @@ export const AccessibilityFeatures: Story = {
             <usa-button type="reset" variant="outline">Reset Form</usa-button>
             <usa-button type="button" variant="secondary">Regular Button</usa-button>
           </div>
-          <input
-            type="text"
-            placeholder="Test form input"
-            class="margin-top-1 padding-05"
-          />
+          <input type="text" placeholder="Test form input" class="margin-top-1 padding-05" />
         </form>
       </div>
 
@@ -267,10 +263,7 @@ export const InteractiveDemo: Story = {
       <h3>Actions Panel Testing</h3>
       <p>Click buttons below to test Actions panel functionality</p>
 
-      <div
-        id="demo-output"
-        class="bg-base-lightest padding-1 margin-y-1 radius-md minh-6"
-      >
+      <div id="demo-output" class="bg-base-lightest padding-1 margin-y-1 radius-md minh-6">
         <strong>Output:</strong> Click any button - check both console and Actions panel below.
       </div>
 

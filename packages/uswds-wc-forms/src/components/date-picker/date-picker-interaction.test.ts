@@ -24,7 +24,7 @@ describe('Date Picker JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -35,10 +35,11 @@ describe('Date Picker JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('date-picker') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('date-picker') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -105,9 +106,9 @@ describe('Date Picker JavaScript Interaction Testing', () => {
         if (dateButtons.length > 0) {
           const firstAvailableDate = dateButtons[0] as HTMLButtonElement;
 
-          let eventFired = false;
+          // Event listener for date-change
           element.addEventListener('date-change', () => {
-            eventFired = true;
+            // Event tracking for date selection
           });
 
           firstAvailableDate.click();

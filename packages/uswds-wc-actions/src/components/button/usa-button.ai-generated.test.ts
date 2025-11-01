@@ -1,5 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { testComponentAccessibility, USWDS_A11Y_CONFIG } from '@uswds-wc/test-utils/accessibility-utils.js';
+import {
+  testComponentAccessibility,
+  USWDS_A11Y_CONFIG,
+} from '@uswds-wc/test-utils/accessibility-utils.js';
 import './usa-button.js';
 import { USAButton } from './usa-button.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
@@ -14,7 +17,6 @@ import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js'
  * This test suite was automatically generated using AI pattern analysis.
  * Review and customize as needed for your specific component behavior.
  */
-
 
 describe('UsaButton - AI Generated Tests', () => {
   let element;
@@ -79,9 +81,10 @@ describe('UsaButton - AI Generated Tests', () => {
     element.textContent = 'Test Button'; // Set content for accessibility test
     await element.updateComplete; // Wait for re-render after content change
     const button = element.querySelector('button');
-    const hasAccessibleContent = element.textContent?.trim() ||
-                                 element.getAttribute('aria-label') ||
-                                 button?.getAttribute('aria-label');
+    const hasAccessibleContent =
+      element.textContent?.trim() ||
+      element.getAttribute('aria-label') ||
+      button?.getAttribute('aria-label');
     expect(hasAccessibleContent).toBeTruthy();
 
     // Test keyboard navigation
@@ -153,7 +156,7 @@ describe('UsaButton - AI Generated Tests', () => {
       expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
       // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
+      const criticalIssues = validation.issues.filter((issue) =>
         issue.includes('Missing USWDS JavaScript integration')
       );
       expect(criticalIssues.length).toBe(0);

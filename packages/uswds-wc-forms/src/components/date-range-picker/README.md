@@ -20,28 +20,28 @@ import 'path/to/uswds-webcomponents/src/components/date-range-picker/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `startDate` | `any` | `''` | Property description |
-| `endDate` | `any` | `''` | Property description |
-| `name` | `any` | `'date-range-picker'` | Property description |
-| `startInputId` | `any` | `'start-date-input'` | Property description |
-| `endInputId` | `any` | `'end-date-input'` | Property description |
-| `label` | `any` | `'Date range'` | Property description |
-| `startLabel` | `any` | `'Start date'` | Property description |
-| `endLabel` | `any` | `'End date'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `placeholder` | `any` | `'mm/dd/yyyy'` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `minDate` | `any` | `''` | Property description |
-| `maxDate` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
+| Property       | Type  | Default               | Description          |
+| -------------- | ----- | --------------------- | -------------------- |
+| `startDate`    | `any` | `''`                  | Property description |
+| `endDate`      | `any` | `''`                  | Property description |
+| `name`         | `any` | `'date-range-picker'` | Property description |
+| `startInputId` | `any` | `'start-date-input'`  | Property description |
+| `endInputId`   | `any` | `'end-date-input'`    | Property description |
+| `label`        | `any` | `'Date range'`        | Property description |
+| `startLabel`   | `any` | `'Start date'`        | Property description |
+| `endLabel`     | `any` | `'End date'`          | Property description |
+| `hint`         | `any` | `''`                  | Property description |
+| `placeholder`  | `any` | `'mm/dd/yyyy'`        | Property description |
+| `disabled`     | `any` | `false`               | Property description |
+| `required`     | `any` | `false`               | Property description |
+| `minDate`      | `any` | `''`                  | Property description |
+| `maxDate`      | `any` | `''`                  | Property description |
+| `error`        | `any` | `''`                  | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event               | Type        | Description       |
+| ------------------- | ----------- | ----------------- |
 | `date-range-change` | CustomEvent | Event description |
 
 ## Accessibility

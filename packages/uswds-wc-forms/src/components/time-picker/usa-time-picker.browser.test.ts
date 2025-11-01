@@ -86,10 +86,9 @@ describe('USATimePicker Browser Tests', () => {
       toggle.click();
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      expect(
-        !list.classList.contains('is-visible'),
-        'List should not open when disabled'
-      ).toBe(true);
+      expect(!list.classList.contains('is-visible'), 'List should not open when disabled').toBe(
+        true
+      );
     });
 
     it('should show time options in dropdown', async () => {
@@ -227,14 +226,11 @@ describe('USATimePicker Browser Tests', () => {
       input.dispatchEvent(new Event('input', { bubbles: true }));
       await new Promise((resolve) => setTimeout(resolve, 200));
 
-      const filteredOptions = element.querySelectorAll(
-        '.usa-combo-box__list-option:not([hidden])'
-      );
+      const filteredOptions = element.querySelectorAll('.usa-combo-box__list-option:not([hidden])');
 
-      expect(
-        filteredOptions.length <= initialCount,
-        'Should filter options based on input'
-      ).toBe(true);
+      expect(filteredOptions.length <= initialCount, 'Should filter options based on input').toBe(
+        true
+      );
     });
 
     it('should show no results message when no matches', async () => {
@@ -248,9 +244,7 @@ describe('USATimePicker Browser Tests', () => {
       input.dispatchEvent(new Event('input', { bubbles: true }));
       await new Promise((resolve) => setTimeout(resolve, 200));
 
-      const visibleOptions = element.querySelectorAll(
-        '.usa-combo-box__list-option:not([hidden])'
-      );
+      const visibleOptions = element.querySelectorAll('.usa-combo-box__list-option:not([hidden])');
 
       expect(visibleOptions.length, 'Should have no visible options for invalid filter').toBe(0);
     });
@@ -315,8 +309,14 @@ describe('USATimePicker Browser Tests', () => {
       const optionValues = Array.from(options).map((opt) => opt.textContent?.trim());
 
       // Should only have options from 9:00 AM to 5:00 PM
-      expect(optionValues.some((val) => val?.includes('9:00')), 'Should include 9:00').toBe(true);
-      expect(optionValues.some((val) => val?.includes('5:00')), 'Should include 5:00').toBe(true);
+      expect(
+        optionValues.some((val) => val?.includes('9:00')),
+        'Should include 9:00'
+      ).toBe(true);
+      expect(
+        optionValues.some((val) => val?.includes('5:00')),
+        'Should include 5:00'
+      ).toBe(true);
       expect(
         optionValues.every((val) => !val?.includes('8:00') && !val?.includes('6:00')),
         'Should not include times outside range'

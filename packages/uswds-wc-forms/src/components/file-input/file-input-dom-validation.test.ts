@@ -41,7 +41,7 @@ describe('File Input DOM Structure Validation', () => {
 
     it('should have drag-and-drop target area', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const target = element.querySelector('.usa-file-input__target');
       expect(target).toBeTruthy();
@@ -49,7 +49,7 @@ describe('File Input DOM Structure Validation', () => {
 
     it('should have instructions element', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const instructions = element.querySelector('.usa-file-input__instructions');
       expect(instructions).toBeTruthy();
@@ -57,7 +57,7 @@ describe('File Input DOM Structure Validation', () => {
 
     it('should NOT render as plain file input', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Should have drag-and-drop UI, not just plain input
       const plainInput = element.querySelector('input[type="file"]:only-child');
@@ -135,7 +135,7 @@ describe('File Input DOM Structure Validation', () => {
     it('should show plural instructions when multiple is true', async () => {
       element.multiple = true;
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const instructions = element.querySelector('.usa-file-input__instructions');
       const text = instructions?.textContent?.toLowerCase() || '';
@@ -175,7 +175,7 @@ describe('File Input DOM Structure Validation', () => {
     it('should have disabled class on container when disabled', async () => {
       element.disabled = true;
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // In test environment, USWDS transforms DOM structure
       // Verify disabled property is set on component (critical behavior)
@@ -234,7 +234,7 @@ describe('File Input DOM Structure Validation', () => {
     it('should show drag instructions', async () => {
       element.dragText = 'Drop files here or ';
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // USWDS transforms the instructions text in browser environment
       // In test environment, verify the box element exists and renders content
@@ -249,7 +249,7 @@ describe('File Input DOM Structure Validation', () => {
     it('should show choose button text', async () => {
       element.chooseText = 'select files';
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // USWDS transforms the instructions text in browser environment
       // In test environment, verify the instructions element exists
@@ -274,7 +274,7 @@ describe('File Input DOM Structure Validation', () => {
 
     it('should have screen reader instructions', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // USWDS file input should have accessible instructions
       const instructions = element.querySelector('.usa-file-input__instructions');

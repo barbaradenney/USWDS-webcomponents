@@ -151,7 +151,10 @@ describe('Character Count Timing and Initialization Regression Tests', () => {
 
       // Should show error state
       cy.get('.usa-form-group').should('have.class', 'usa-form-group--error');
-      cy.get('.usa-character-count__status.usa-hint').should('have.class', 'usa-character-count__status--invalid');
+      cy.get('.usa-character-count__status.usa-hint').should(
+        'have.class',
+        'usa-character-count__status--invalid'
+      );
     });
 
     it('should handle deleting characters', () => {

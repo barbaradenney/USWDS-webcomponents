@@ -23,7 +23,7 @@ describe('Banner JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -34,10 +34,11 @@ describe('Banner JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('initialized') ||
-        call[0]?.includes('pre-loaded')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('initialized') ||
+          call[0]?.includes('pre-loaded')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -71,7 +72,6 @@ describe('Banner JavaScript Interaction Testing', () => {
   describe('🔍 Real Click Behavior Testing', () => {
     it('should toggle banner when button is clicked', async () => {
       const toggleButton = element.querySelector('.usa-banner__button') as HTMLButtonElement;
-      const bannerContent = element.querySelector('.usa-banner__content') as HTMLElement;
 
       expect(toggleButton).toBeTruthy();
 
@@ -87,13 +87,16 @@ describe('Banner JavaScript Interaction Testing', () => {
       const afterClickExpanded = element.expanded;
       const afterClickAriaExpanded = toggleButton.getAttribute('aria-expanded');
 
-      const stateChanged = (afterClickExpanded !== initialExpanded) ||
-                          (afterClickAriaExpanded !== initialAriaExpanded);
+      const stateChanged =
+        afterClickExpanded !== initialExpanded || afterClickAriaExpanded !== initialAriaExpanded;
 
       if (!stateChanged) {
         console.warn('⚠️ Banner toggle may not be working - no state change detected');
         console.warn('Initial:', { expanded: initialExpanded, aria: initialAriaExpanded });
-        console.warn('After click:', { expanded: afterClickExpanded, aria: afterClickAriaExpanded });
+        console.warn('After click:', {
+          expanded: afterClickExpanded,
+          aria: afterClickAriaExpanded,
+        });
       }
 
       // This test documents behavior but doesn't fail since USWDS might handle it differently
@@ -103,8 +106,6 @@ describe('Banner JavaScript Interaction Testing', () => {
     it('should handle keyboard events (Enter/Space)', async () => {
       const toggleButton = element.querySelector('.usa-banner__button') as HTMLButtonElement;
       expect(toggleButton).toBeTruthy();
-
-      const initialExpanded = element.expanded;
 
       // Test Enter key
       const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });

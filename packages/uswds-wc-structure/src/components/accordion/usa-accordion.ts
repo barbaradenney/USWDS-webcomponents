@@ -40,7 +40,11 @@ export class USAAccordion extends USWDSBaseComponent {
     return this;
   }
 
-  static override styles = css`:host { display: block; }`;
+  static override styles = css`
+    :host {
+      display: block;
+    }
+  `;
 
   @property({ type: Array }) items: AccordionItem[] = [];
   @property({ type: Boolean, reflect: true }) multiselectable = false;
@@ -82,11 +86,11 @@ export class USAAccordion extends USWDSBaseComponent {
     await this.updateComplete;
 
     // Wait one frame to ensure DOM elements are queryable
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
     // Set HTML content for each item (can't use unsafeHTML directive in .map())
     // Must do this BEFORE initializing USWDS so content is present
-    this.items.forEach(item => {
+    this.items.forEach((item) => {
       const contentEl = this.querySelector(`#${item.id}-content`);
       if (contentEl) {
         contentEl.innerHTML = item.content;
@@ -95,7 +99,7 @@ export class USAAccordion extends USWDSBaseComponent {
 
     // CRITICAL: Manually set hidden attribute on all content panels BEFORE initializing USWDS
     // This ensures they start hidden, then USWDS behavior removes it for expanded items
-    this.querySelectorAll('.usa-accordion__content').forEach(content => {
+    this.querySelectorAll('.usa-accordion__content').forEach((content) => {
       content.setAttribute('hidden', '');
     });
 
@@ -121,7 +125,7 @@ export class USAAccordion extends USWDSBaseComponent {
 
     // If items changed after first render, update content
     if (changedProperties.has('items')) {
-      this.items.forEach(item => {
+      this.items.forEach((item) => {
         const contentEl = this.querySelector(`#${item.id}-content`);
         if (contentEl) {
           contentEl.innerHTML = item.content;
@@ -165,7 +169,7 @@ export class USAAccordion extends USWDSBaseComponent {
         class="${this.getAccordionClasses()}"
         data-allow-multiple="${this.multiselectable ? '' : undefined}"
       >
-        ${this.items.map(item => {
+        ${this.items.map((item) => {
           // Create a unique content element for each item
           const contentId = `${item.id}-content`;
 
@@ -183,10 +187,7 @@ export class USAAccordion extends USWDSBaseComponent {
                 ${item.title}
               </button>
             </h4>
-            <div
-              id="${contentId}"
-              class="usa-accordion__content usa-prose"
-            >
+            <div id="${contentId}" class="usa-accordion__content usa-prose">
               <!-- Content set via innerHTML in updated() -->
               <!-- hidden attribute set imperatively in firstUpdated(), managed by USWDS after -->
             </div>

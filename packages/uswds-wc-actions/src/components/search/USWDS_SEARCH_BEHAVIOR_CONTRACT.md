@@ -17,10 +17,12 @@
 The Search component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/search/usa-search-behavior.ts` - USWDS behavior mirror
 - `src/components/search/usa-search.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/search/usa-search-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Search component mirrors USWDS JavaScript behavior exactly to maintain 100% 
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should search button toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should search button toggle', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should big/small variant handling', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should big/small variant handling', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should input visibility toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -96,7 +104,6 @@ it('should input visibility toggle', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -115,46 +122,55 @@ it('should input visibility toggle', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`ignore()`** - Line 1
+
   ```javascript
-  const ignore = require("receptor/ignore");
+  const ignore = require('receptor/ignore');
   ```
 
 - **`behavior()`** - Line 2
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`select()`** - Line 3
+
   ```javascript
-  const select = require("../../uswds-core/src/js/utils/select");
+  const select = require('../../uswds-core/src/js/utils/select');
   ```
 
 - **`BUTTON()`** - Line 7
+
   ```javascript
-  const BUTTON = ".js-search-button";
+  const BUTTON = '.js-search-button';
   ```
 
 - **`FORM()`** - Line 8
+
   ```javascript
-  const FORM = ".js-search-form";
+  const FORM = '.js-search-form';
   ```
 
 - **`INPUT()`** - Line 9
+
   ```javascript
-  const INPUT = "[type=search]";
+  const INPUT = '[type=search]';
   ```
 
 - **`CONTEXT()`** - Line 10
+
   ```javascript
-  const CONTEXT = "header"; // XXX
+  const CONTEXT = 'header'; // XXX
   ```
 
 - **`getForm()`** - Line 14
+
   ```javascript
   const getForm = (button) => {
   ```
 
 - **`toggleSearch()`** - Line 19
+
   ```javascript
   const toggleSearch = (button, active) => {
   ```
@@ -164,9 +180,7 @@ Key functions from USWDS source (for reference during implementation):
   function showSearch() {
   ```
 
-
-*...and 2 more functions*
-
+_...and 2 more functions_
 
 ---
 
@@ -182,11 +196,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -194,6 +210,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-search-behavior.test.ts
 ```
@@ -206,10 +223,12 @@ npm test -- usa-search-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Component behavior requires USWDS source mirroring
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

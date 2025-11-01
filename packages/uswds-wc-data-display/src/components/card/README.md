@@ -20,26 +20,26 @@ import 'path/to/uswds-webcomponents/src/components/card/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `heading` | `any` | `''` | Property description |
-| `text` | `any` | `''` | Property description |
-| `mediaType` | `'image' | 'video' | 'none'` | `'none'` | Property description |
-| `mediaSrc` | `any` | `''` | Property description |
-| `mediaAlt` | `any` | `''` | Property description |
-| `mediaPosition` | `'inset' | 'exdent' | 'right'` | `'inset'` | Property description |
-| `flagLayout` | `any` | `false` | Property description |
-| `headerFirst` | `any` | `false` | Property description |
-| `actionable` | `any` | `false` | Property description |
-| `href` | `any` | `''` | Property description |
-| `target` | `any` | `''` | Property description |
-| `footerText` | `any` | `''` | Property description |
-| `headingLevel` | `'1' | '2' | '3' | '4' | '5' | '6'` | `'3'` | Property description |
+| Property        | Type     | Default  | Description          |
+| --------------- | -------- | -------- | -------------------- | --------- | -------------------- | ---- | ----- | -------------------- |
+| `heading`       | `any`    | `''`     | Property description |
+| `text`          | `any`    | `''`     | Property description |
+| `mediaType`     | `'image' | 'video'  | 'none'`              | `'none'`  | Property description |
+| `mediaSrc`      | `any`    | `''`     | Property description |
+| `mediaAlt`      | `any`    | `''`     | Property description |
+| `mediaPosition` | `'inset' | 'exdent' | 'right'`             | `'inset'` | Property description |
+| `flagLayout`    | `any`    | `false`  | Property description |
+| `headerFirst`   | `any`    | `false`  | Property description |
+| `actionable`    | `any`    | `false`  | Property description |
+| `href`          | `any`    | `''`     | Property description |
+| `target`        | `any`    | `''`     | Property description |
+| `footerText`    | `any`    | `''`     | Property description |
+| `headingLevel`  | `'1'     | '2'      | '3'                  | '4'       | '5'                  | '6'` | `'3'` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event        | Type        | Description       |
+| ------------ | ----------- | ----------------- |
 | `card-click` | CustomEvent | Event description |
 
 ## Accessibility

@@ -147,8 +147,8 @@ export const CustomContent: Story = {
     >
       <usa-alert variant="info" slim class="margin-top-2">
         <p class="margin-0">
-          This is custom slotted content that appears after the step indicator.
-          You can add any HTML content here including alerts, notes, or instructions.
+          This is custom slotted content that appears after the step indicator. You can add any HTML
+          content here including alerts, notes, or instructions.
         </p>
       </usa-alert>
     </usa-step-indicator>

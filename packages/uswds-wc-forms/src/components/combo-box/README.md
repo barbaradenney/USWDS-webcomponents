@@ -20,27 +20,27 @@ import 'path/to/uswds-webcomponents/src/components/combo-box/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | `any` | `''` | Property description |
-| `name` | `any` | `''` | Property description |
-| `inputId` | `any` | `'uswds-combo-box-select'` | Property description |
-| `selectId` | `any` | `''` | Property description |
-| `label` | `any` | `''` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `placeholder` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `error` | `any` | `''` | Property description |
-| `errorState` | `any` | `false` | Property description |
-| `options` | `ComboBoxOption[]` | `[]` | Property description |
-| `disableFiltering` | `any` | `false` | Property description |
+| Property           | Type               | Default                    | Description          |
+| ------------------ | ------------------ | -------------------------- | -------------------- |
+| `value`            | `any`              | `''`                       | Property description |
+| `name`             | `any`              | `''`                       | Property description |
+| `inputId`          | `any`              | `'uswds-combo-box-select'` | Property description |
+| `selectId`         | `any`              | `''`                       | Property description |
+| `label`            | `any`              | `''`                       | Property description |
+| `hint`             | `any`              | `''`                       | Property description |
+| `placeholder`      | `any`              | `''`                       | Property description |
+| `disabled`         | `any`              | `false`                    | Property description |
+| `required`         | `any`              | `false`                    | Property description |
+| `error`            | `any`              | `''`                       | Property description |
+| `errorState`       | `any`              | `false`                    | Property description |
+| `options`          | `ComboBoxOption[]` | `[]`                       | Property description |
+| `disableFiltering` | `any`              | `false`                    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

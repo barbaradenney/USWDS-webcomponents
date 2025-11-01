@@ -1201,8 +1201,7 @@ describe('USAMemorableDate', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/memorable-date/usa-memorable-date.ts`;
+        const componentPath = `${process.cwd()}/src/components/memorable-date/usa-memorable-date.ts`;
         const validation = validateComponentJavaScript(componentPath, 'memorable-date');
 
         if (!validation.isValid) {

@@ -20,27 +20,27 @@ import 'path/to/uswds-webcomponents/src/components/modal/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `heading` | `any` | `''` | Property description |
-| `description` | `any` | `''` | Property description |
-| `triggerText` | `any` | `''` | Property description |
-| `showTrigger` | `any` | `true` | Property description |
-| `large` | `any` | `false` | Property description |
-| `forceAction` | `any` | `false` | Property description |
-| `primaryButtonText` | `any` | `'Continue'` | Property description |
-| `secondaryButtonText` | `any` | `'Cancel'` | Property description |
-| `showSecondaryButton` | `any` | `true` | Property description |
-| `open` | `any` | `false` | Property description |
+| Property              | Type  | Default      | Description          |
+| --------------------- | ----- | ------------ | -------------------- |
+| `heading`             | `any` | `''`         | Property description |
+| `description`         | `any` | `''`         | Property description |
+| `triggerText`         | `any` | `''`         | Property description |
+| `showTrigger`         | `any` | `true`       | Property description |
+| `large`               | `any` | `false`      | Property description |
+| `forceAction`         | `any` | `false`      | Property description |
+| `primaryButtonText`   | `any` | `'Continue'` | Property description |
+| `secondaryButtonText` | `any` | `'Cancel'`   | Property description |
+| `showSecondaryButton` | `any` | `true`       | Property description |
+| `open`                | `any` | `false`      | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `modal-primary-action` | CustomEvent | Event description |
+| Event                    | Type        | Description       |
+| ------------------------ | ----------- | ----------------- |
+| `modal-primary-action`   | CustomEvent | Event description |
 | `modal-secondary-action` | CustomEvent | Event description |
-| `modal-open` | CustomEvent | Event description |
-| `modal-close` | CustomEvent | Event description |
+| `modal-open`             | CustomEvent | Event description |
+| `modal-close`            | CustomEvent | Event description |
 
 ## Accessibility
 

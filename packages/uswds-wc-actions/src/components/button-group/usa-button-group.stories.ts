@@ -65,7 +65,9 @@ export const Segmented: Story = {
   render: (args) => html`
     <div>
       <usa-alert variant="info" slim class="margin-bottom-2">
-        <h3 class="usa-alert__heading margin-top-0 margin-bottom-1">Interactive Segmented Button Group</h3>
+        <h3 class="usa-alert__heading margin-top-0 margin-bottom-1">
+          Interactive Segmented Button Group
+        </h3>
         <p class="margin-0 font-body-xs">
           Click buttons to switch between modes. The active button shows in filled style (primary),
           while inactive buttons show in outline style.
@@ -296,7 +298,8 @@ export const CustomContent: Story = {
             buttons
           </li>
           <li>
-            <strong>Custom Content:</strong> Use the default slot for complete control over HTML structure
+            <strong>Custom Content:</strong> Use the default slot for complete control over HTML
+            structure
           </li>
         </ul>
         <p><strong>Note:</strong> Programmatic buttons take precedence when both are present.</p>
@@ -412,9 +415,7 @@ export const MobileFriendly: Story = {
   render: (args) => html`
     <div class="maxw-mobile margin-x-auto border-2px border-dashed border-base-light padding-2">
       <h4 class="text-center margin-top-0">Mobile Device Simulation</h4>
-      <p class="font-body-xs text-base-dark text-center">
-        Button groups adapt to mobile layouts
-      </p>
+      <p class="font-body-xs text-base-dark text-center">Button groups adapt to mobile layouts</p>
 
       <usa-button-group .type=${args.type} .buttons=${args.buttons}></usa-button-group>
 

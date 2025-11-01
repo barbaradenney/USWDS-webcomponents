@@ -49,7 +49,9 @@ describe('USACharacterCount - USWDS Structure Compliance', () => {
     it('should have input/textarea with usa-character-count__field class', () => {
       const field = element.querySelector('.usa-character-count__field');
       expect(field).toBeTruthy();
-      expect(field?.classList.contains('usa-textarea') || field?.classList.contains('usa-input')).toBe(true);
+      expect(
+        field?.classList.contains('usa-textarea') || field?.classList.contains('usa-input')
+      ).toBe(true);
     });
 
     it('should have message element (hidden per USWDS spec)', () => {

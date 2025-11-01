@@ -26,7 +26,7 @@ describe('USWDS Banner Behavior Contract', () => {
   afterEach(async () => {
     // Wait for any pending async operations to complete before cleanup
     // USWDS behavior needs time to fully detach event listeners
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     element.remove();
   });
 
@@ -110,7 +110,9 @@ describe('USWDS Banner Behavior Contract', () => {
     it('should prevent default on button click', async () => {
       await waitForBehaviorInit(element);
 
-      const button = element.querySelector('.usa-banner__header [aria-controls]') as HTMLButtonElement;
+      const button = element.querySelector(
+        '.usa-banner__header [aria-controls]'
+      ) as HTMLButtonElement;
       let defaultPrevented = false;
 
       button.addEventListener('click', (event) => {
@@ -131,7 +133,9 @@ describe('USWDS Banner Behavior Contract', () => {
     it('should NOT use display:none for hiding content', async () => {
       await waitForBehaviorInit(element);
 
-      const button = element.querySelector('.usa-banner__header [aria-controls]') as HTMLButtonElement;
+      const button = element.querySelector(
+        '.usa-banner__header [aria-controls]'
+      ) as HTMLButtonElement;
       const contentId = button.getAttribute('aria-controls');
       const content = document.getElementById(contentId!) as HTMLElement;
 

@@ -99,8 +99,8 @@ export const CustomImages: Story = {
     ></usa-banner>
     <div class="margin-top-1 padding-1 bg-base-lightest radius-md">
       <p>
-        <strong>Note:</strong> This story demonstrates using local image paths. The images are served
-        from the public/img directory via Storybook's static files configuration.
+        <strong>Note:</strong> This story demonstrates using local image paths. The images are
+        served from the public/img directory via Storybook's static files configuration.
       </p>
     </div>
   `,
@@ -219,9 +219,7 @@ export const MobileFriendly: Story = {
       ?expanded=${args.expanded}
     ></usa-banner>
 
-    <div
-      class="margin-top-1 padding-1 bg-base-lightest radius-md font-body-xs"
-    >
+    <div class="margin-top-1 padding-1 bg-base-lightest radius-md font-body-xs">
       <p>
         <strong>Mobile View:</strong> The banner adapts to smaller screens while maintaining all
         required information and functionality.

@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { USWDSBaseComponent } from '@uswds-wc/core';
@@ -41,14 +41,8 @@ export class USAModal extends USWDSBaseComponent {
     return this;
   }
 
-  static override styles = css`
-    :host {
-      display: block;
-    }
-    :host([hidden]) {
-      display: none;
-    }
-  `;
+  // NOTE: static styles do NOT apply in Light DOM
+  // The display style is applied directly in connectedCallback()
 
   @property({ type: String })
   heading = '';
@@ -91,7 +85,7 @@ export class USAModal extends USWDSBaseComponent {
 
   // Track initialization to prevent double-init
   private initialized = false;
-  private isInitializing = false;  // Guard against concurrent initialization
+  private isInitializing = false; // Guard against concurrent initialization
   private initializationPromise: Promise<void> | null = null;
   private listenersAttached = false;
 
@@ -140,6 +134,9 @@ export class USAModal extends USWDSBaseComponent {
   override connectedCallback() {
     super.connectedCallback();
 
+    // Apply display style (required for Light DOM - static styles don't apply)
+    this.style.display = 'block';
+
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
@@ -166,7 +163,7 @@ export class USAModal extends USWDSBaseComponent {
     await this.initializationPromise;
 
     // Fallback: If observer didn't trigger, try applying slots after delay
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     if (this.slottedContent) {
       this.applySlottedContent();
     }
@@ -180,10 +177,10 @@ export class USAModal extends USWDSBaseComponent {
     // Only reinitialize if:
     // 1. The component was already initialized (this.cleanup exists)
     // 2. AND the properties actually changed from a previous value (not undefined)
-    const forceActionChanged = changedProperties.has('forceAction') &&
-      changedProperties.get('forceAction') !== undefined;
-    const largeChanged = changedProperties.has('large') &&
-      changedProperties.get('large') !== undefined;
+    const forceActionChanged =
+      changedProperties.has('forceAction') && changedProperties.get('forceAction') !== undefined;
+    const largeChanged =
+      changedProperties.has('large') && changedProperties.get('large') !== undefined;
     const shouldReinitialize = this.cleanup && (forceActionChanged || largeChanged);
 
     if (shouldReinitialize && this.cleanup) {
@@ -463,7 +460,7 @@ export class USAModal extends USWDSBaseComponent {
     await this.updateComplete;
 
     // Wait one frame to ensure DOM elements are queryable
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
     // Clean up any existing initialization first
     if (this.cleanup) {

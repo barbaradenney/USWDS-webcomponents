@@ -58,9 +58,7 @@ export class USAIconList extends USWDSBaseComponent {
         <div class="usa-icon-list__icon ${iconColorClass}">
           <usa-icon name="${item.icon}" decorative="true"></usa-icon>
         </div>
-        <div class="usa-icon-list__content">
-          ${item.content}
-        </div>
+        <div class="usa-icon-list__content">${item.content}</div>
       </li>
     `;
   }

@@ -513,8 +513,7 @@ describe('USASkipLink', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/skip-link/usa-skip-link.ts`;
+        const componentPath = `${process.cwd()}/src/components/skip-link/usa-skip-link.ts`;
         const validation = validateComponentJavaScript(componentPath, 'skip-link');
 
         if (!validation.isValid) {

@@ -497,11 +497,7 @@ const isSameDay = (dateA: Date | undefined, dateB: Date | undefined): boolean =>
  * @param maxDate - Maximum date to allow
  * @returns The date between min and max
  */
-const keepDateBetweenMinAndMax = (
-  date: Date,
-  minDate: Date,
-  maxDate: Date | undefined
-): Date => {
+const keepDateBetweenMinAndMax = (date: Date, minDate: Date, maxDate: Date | undefined): Date => {
   let newDate = date;
 
   if (date < minDate) {
@@ -523,11 +519,8 @@ const keepDateBetweenMinAndMax = (
  * @param maxDate - Maximum date to allow
  * @return Is there a day within the month within min and max dates
  */
-const isDateWithinMinAndMax = (
-  date: Date,
-  minDate: Date,
-  maxDate: Date | undefined
-): boolean => date >= minDate && (!maxDate || date <= maxDate);
+const isDateWithinMinAndMax = (date: Date, minDate: Date, maxDate: Date | undefined): boolean =>
+  date >= minDate && (!maxDate || date <= maxDate);
 
 /**
  * Check if dates month is invalid.
@@ -791,11 +784,7 @@ const getDatePickerContext = (el: HTMLElement): DatePickerContext => {
   const statusEl = datePickerEl.querySelector(DATE_PICKER_STATUS) as HTMLDivElement;
   const firstYearChunkEl = datePickerEl.querySelector(CALENDAR_YEAR) as HTMLElement | null;
 
-  const inputDate = parseDateString(
-    externalInputEl.value,
-    DEFAULT_EXTERNAL_DATE_FORMAT,
-    true
-  );
+  const inputDate = parseDateString(externalInputEl.value, DEFAULT_EXTERNAL_DATE_FORMAT, true);
   const selectedDate = parseDateString(internalInputEl.value);
 
   const calendarDate = parseDateString(calendarEl.dataset.value);
@@ -1135,8 +1124,10 @@ const renderCalendar = (el: HTMLElement, _dateToDisplay: Date | undefined): HTML
   const prevButtonsDisabled = isSameMonth(dateToDisplay, minDate);
   const nextButtonsDisabled = isSameMonth(dateToDisplay, maxDate);
 
-  const { rangeStartDate, rangeEndDate, withinRangeStartDate, withinRangeEndDate } =
-    setRangeDates(selectedDate || dateToDisplay, rangeDate);
+  const { rangeStartDate, rangeEndDate, withinRangeStartDate, withinRangeEndDate } = setRangeDates(
+    selectedDate || dateToDisplay,
+    rangeDate
+  );
 
   const monthLabel = monthLabels[focusedMonth];
 
@@ -1223,11 +1214,7 @@ const renderCalendar = (el: HTMLElement, _dateToDisplay: Date | undefined): HTML
 
   const days: HTMLElement[] = [];
 
-  while (
-    days.length < 28 ||
-    dateToDisplay.getMonth() === focusedMonth ||
-    days.length % 7 !== 0
-  ) {
+  while (days.length < 28 || dateToDisplay.getMonth() === focusedMonth || days.length % 7 !== 0) {
     days.push(generateDateHtml(dateToDisplay));
     dateToDisplay = addDays(dateToDisplay, 1);
   }
@@ -1310,9 +1297,7 @@ const renderCalendar = (el: HTMLElement, _dateToDisplay: Date | undefined): HTML
   table.insertAdjacentElement('beforeend', tableBody);
 
   // Container for Years, Months, and Days
-  const datePickerCalendarContainer = calendarEl.querySelector(
-    CALENDAR_DATE_PICKER
-  ) as HTMLElement;
+  const datePickerCalendarContainer = calendarEl.querySelector(CALENDAR_DATE_PICKER) as HTMLElement;
 
   datePickerCalendarContainer.insertAdjacentElement('beforeend', table);
 
@@ -1467,11 +1452,7 @@ const selectDate = (calendarDateEl: HTMLElement): void => {
  * @param el - An element within the date picker component
  */
 const toggleCalendar = (el: HTMLElement): void => {
-  if (
-    (el as HTMLButtonElement).disabled ||
-    el.hasAttribute('aria-disabled')
-  )
-    return;
+  if ((el as HTMLButtonElement).disabled || el.hasAttribute('aria-disabled')) return;
   const { calendarEl, inputDate, minDate, maxDate, defaultDate } = getDatePickerContext(el);
 
   if (calendarEl.hidden) {
@@ -1519,10 +1500,7 @@ const updateCalendarIfVisible = (el: HTMLElement): void => {
  * @param monthToDisplay - Month to display
  * @returns A reference to the new calendar element
  */
-const displayMonthSelection = (
-  el: HTMLElement,
-  monthToDisplay?: number
-): HTMLElement => {
+const displayMonthSelection = (el: HTMLElement, monthToDisplay?: number): HTMLElement => {
   const { calendarEl, statusEl, calendarDate, minDate, maxDate, monthLabels } =
     getDatePickerContext(el);
 
@@ -1992,9 +1970,7 @@ const handlePageDownFromYear = adjustYearSelectionScreen((year) => year + YEAR_C
 const tabHandler = (focusable: string) => {
   const getFocusableContext = (el: HTMLElement) => {
     const { calendarEl } = getDatePickerContext(el);
-    const focusableElements = Array.from(
-      calendarEl.querySelectorAll(focusable)
-    ) as HTMLElement[];
+    const focusableElements = Array.from(calendarEl.querySelectorAll(focusable)) as HTMLElement[];
 
     const firstTabIndex = 0;
     const lastTabIndex = focusableElements.length - 1;
@@ -2091,20 +2067,35 @@ export function initializeDatePicker(root: HTMLElement | Document = document): (
     } else if (target.closest(CALENDAR_YEAR)) {
       selectYear.call(target.closest(CALENDAR_YEAR)!, target.closest(CALENDAR_YEAR)!);
     } else if (target.closest(CALENDAR_PREVIOUS_MONTH)) {
-      displayPreviousMonth.call(target.closest(CALENDAR_PREVIOUS_MONTH)!, target.closest(CALENDAR_PREVIOUS_MONTH)!);
+      displayPreviousMonth.call(
+        target.closest(CALENDAR_PREVIOUS_MONTH)!,
+        target.closest(CALENDAR_PREVIOUS_MONTH)!
+      );
     } else if (target.closest(CALENDAR_NEXT_MONTH)) {
-      displayNextMonth.call(target.closest(CALENDAR_NEXT_MONTH)!, target.closest(CALENDAR_NEXT_MONTH)!);
+      displayNextMonth.call(
+        target.closest(CALENDAR_NEXT_MONTH)!,
+        target.closest(CALENDAR_NEXT_MONTH)!
+      );
     } else if (target.closest(CALENDAR_PREVIOUS_YEAR)) {
-      displayPreviousYear.call(target.closest(CALENDAR_PREVIOUS_YEAR)!, target.closest(CALENDAR_PREVIOUS_YEAR)!);
+      displayPreviousYear.call(
+        target.closest(CALENDAR_PREVIOUS_YEAR)!,
+        target.closest(CALENDAR_PREVIOUS_YEAR)!
+      );
     } else if (target.closest(CALENDAR_NEXT_YEAR)) {
-      displayNextYear.call(target.closest(CALENDAR_NEXT_YEAR)!, target.closest(CALENDAR_NEXT_YEAR)!);
+      displayNextYear.call(
+        target.closest(CALENDAR_NEXT_YEAR)!,
+        target.closest(CALENDAR_NEXT_YEAR)!
+      );
     } else if (target.closest(CALENDAR_PREVIOUS_YEAR_CHUNK)) {
       displayPreviousYearChunk.call(
         target.closest(CALENDAR_PREVIOUS_YEAR_CHUNK)!,
         target.closest(CALENDAR_PREVIOUS_YEAR_CHUNK)!
       );
     } else if (target.closest(CALENDAR_NEXT_YEAR_CHUNK)) {
-      displayNextYearChunk.call(target.closest(CALENDAR_NEXT_YEAR_CHUNK)!, target.closest(CALENDAR_NEXT_YEAR_CHUNK)!);
+      displayNextYearChunk.call(
+        target.closest(CALENDAR_NEXT_YEAR_CHUNK)!,
+        target.closest(CALENDAR_NEXT_YEAR_CHUNK)!
+      );
     } else if (target.closest(CALENDAR_MONTH_SELECTION)) {
       const newCalendar = displayMonthSelection(target.closest(CALENDAR_MONTH_SELECTION)!);
       (newCalendar.querySelector(CALENDAR_MONTH_FOCUSED) as HTMLElement).focus();
@@ -2293,7 +2284,9 @@ export function initializeDatePicker(root: HTMLElement | Document = document): (
       datePickers.forEach((picker) => {
         const calendar = picker.querySelector(DATE_PICKER_CALENDAR) as HTMLElement;
         if (calendar && !calendar.hidden) {
-          const externalInput = picker.querySelector(DATE_PICKER_EXTERNAL_INPUT) as HTMLInputElement;
+          const externalInput = picker.querySelector(
+            DATE_PICKER_EXTERNAL_INPUT
+          ) as HTMLInputElement;
           hideCalendar(picker as HTMLElement);
           if (externalInput) {
             externalInput.focus();

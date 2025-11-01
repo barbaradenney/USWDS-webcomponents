@@ -117,7 +117,11 @@ export const OnIconButton: Story = {
         @tooltip-show="${() => console.log('Tooltip shown')}"
         @tooltip-hide="${() => console.log('Tooltip hidden')}"
       >
-        <button type="button" class="usa-button usa-button--unstyled padding-105 text-center" aria-label="Help">
+        <button
+          type="button"
+          class="usa-button usa-button--unstyled padding-105 text-center"
+          aria-label="Help"
+        >
           <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
             <use xlink:href="#svg-help"></use>
           </svg>
@@ -311,12 +315,7 @@ export const FormHelp: Story = {
             class="usa-button usa-button--unstyled padding-105 text-center"
             aria-label="More information about tax ID requirement"
           >
-            <svg
-              class="usa-icon usa-icon--size-3"
-              aria-hidden="true"
-              focusable="false"
-              role="img"
-            >
+            <svg class="usa-icon usa-icon--size-3" aria-hidden="true" focusable="false" role="img">
               <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
               <path
                 d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"
@@ -350,9 +349,7 @@ export const AccessLevelInfo: Story = {
           @tooltip-show="${() => console.log('Access info tooltip shown')}"
           @tooltip-hide="${() => console.log('Access info tooltip hidden')}"
         >
-          <span tabindex="0" class="cursor-help text-primary text-underline">
-            ℹ️ More info
-          </span>
+          <span tabindex="0" class="cursor-help text-primary text-underline"> ℹ️ More info </span>
         </usa-tooltip>
       </div>
     </div>
@@ -379,12 +376,7 @@ export const BudgetAllocationHelp: Story = {
             class="usa-button usa-button--unstyled padding-105 text-center"
             aria-label="Budget allocation help"
           >
-            <svg
-              class="usa-icon"
-              aria-hidden="true"
-              focusable="false"
-              role="img"
-            >
+            <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
               <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
               <path
                 d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"
@@ -499,12 +491,7 @@ export const EmergencyContactInfo: Story = {
               class="usa-button usa-button--unstyled padding-105 text-center"
               aria-label="Emergency contact information help"
             >
-              <svg
-                class="usa-icon"
-                aria-hidden="true"
-                focusable="false"
-                role="img"
-              >
+              <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
                 <path
                   d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"
@@ -526,8 +513,6 @@ export const EmergencyContactInfo: Story = {
     </div>
   `,
 };
-
-
 
 export const CustomContent: Story = {
   parameters: {

@@ -20,30 +20,30 @@ import 'path/to/uswds-webcomponents/src/components/table/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `caption` | `any` | `''` | Property description |
-| `headers` | `TableColumn[]` | `[]` | Property description |
-| `data` | `TableRow[]` | `[]` | Property description |
-| `striped` | `any` | `false` | Property description |
-| `borderless` | `any` | `false` | Property description |
-| `compact` | `any` | `false` | Property description |
-| `stacked` | `any` | `false` | Property description |
-| `stackedHeader` | `any` | `false` | Property description |
-| `stickyHeader` | `any` | `false` | Property description |
-| `scrollable` | `any` | `false` | Property description |
-| `sortColumn` | `any` | `''` | Property description |
-| `sortDirection` | `'asc' | 'desc'` | `'asc'` | Property description |
-| `virtual` | `any` | `false` | Property description |
-| `rowHeight` | `any` | `48` | Property description |
-| `containerHeight` | `any` | `400` | Property description |
+| Property          | Type            | Default | Description          |
+| ----------------- | --------------- | ------- | -------------------- | -------------------- |
+| `caption`         | `any`           | `''`    | Property description |
+| `headers`         | `TableColumn[]` | `[]`    | Property description |
+| `data`            | `TableRow[]`    | `[]`    | Property description |
+| `striped`         | `any`           | `false` | Property description |
+| `borderless`      | `any`           | `false` | Property description |
+| `compact`         | `any`           | `false` | Property description |
+| `stacked`         | `any`           | `false` | Property description |
+| `stackedHeader`   | `any`           | `false` | Property description |
+| `stickyHeader`    | `any`           | `false` | Property description |
+| `scrollable`      | `any`           | `false` | Property description |
+| `sortColumn`      | `any`           | `''`    | Property description |
+| `sortDirection`   | `'asc'          | 'desc'` | `'asc'`              | Property description |
+| `virtual`         | `any`           | `false` | Property description |
+| `rowHeight`       | `any`           | `48`    | Property description |
+| `containerHeight` | `any`           | `400`   | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event               | Type        | Description       |
+| ------------------- | ----------- | ----------------- |
 | `table-initialized` | CustomEvent | Event description |
-| `table-sort` | CustomEvent | Event description |
+| `table-sort`        | CustomEvent | Event description |
 
 ## Accessibility
 

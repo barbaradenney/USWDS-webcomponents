@@ -11,11 +11,15 @@
  * @returns {Promise<void>}
  */
 export async function waitForUpdate(element) {
-  if (element && typeof element.updateComplete === 'object' && typeof element.updateComplete.then === 'function') {
+  if (
+    element &&
+    typeof element.updateComplete === 'object' &&
+    typeof element.updateComplete.then === 'function'
+  ) {
     await element.updateComplete;
   }
   // Additional wait for any microtasks
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -52,11 +56,11 @@ export async function waitForBehaviorInit(element, frames = 2) {
   // Use setTimeout instead of requestAnimationFrame for better test compatibility
   // requestAnimationFrame can hang in jsdom/vitest environments
   for (let i = 0; i < frames; i++) {
-    await new Promise(resolve => setTimeout(resolve, 16)); // ~16ms = 1 frame at 60fps
+    await new Promise((resolve) => setTimeout(resolve, 16)); // ~16ms = 1 frame at 60fps
   }
 
   // Additional microtask wait for any synchronous callbacks
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -98,9 +102,7 @@ export function assertAccessibilityAttributes(element, expectedAttributes) {
   for (const [attr, expectedValue] of Object.entries(expectedAttributes)) {
     const actualValue = element.getAttribute(attr);
     if (actualValue !== expectedValue) {
-      throw new Error(
-        `Expected ${attr}="${expectedValue}", got ${attr}="${actualValue}"`
-      );
+      throw new Error(`Expected ${attr}="${expectedValue}", got ${attr}="${actualValue}"`);
     }
   }
 }
@@ -121,7 +123,7 @@ export function validateComponentJavaScript(componentPath, componentName) {
     score: 100,
     issues: [],
     componentPath,
-    componentName
+    componentName,
   };
 }
 
@@ -139,15 +141,15 @@ export async function runUSWDSTransformationTests(_element, _componentType) {
     complianceTest: {
       hasMinimalStructure: true,
       hasViolations: false,
-      violatingElements: []
+      violatingElements: [],
     },
     transformationTest: {
       transformationSuccessful: true,
-      generatedElements: []
+      generatedElements: [],
     },
     duplicateTest: {
-      hasDuplicateProtection: true
-    }
+      hasDuplicateProtection: true,
+    },
   };
 }
 
@@ -181,7 +183,7 @@ export function assertHTMLIsRendered(element, expectedHTML, options = {}) {
       isValid: false,
       issues: [`Container not found: ${options.containerSelector}`],
       detectedElements: [],
-      rawTextFound: []
+      rawTextFound: [],
     };
   }
 
@@ -228,7 +230,7 @@ export function assertHTMLIsRendered(element, expectedHTML, options = {}) {
     // Find specific raw tags in text
     const matches = textContent.match(/<[^>]+>/g);
     if (matches) {
-      matches.forEach(tag => {
+      matches.forEach((tag) => {
         if (!rawTextFound.includes(tag)) {
           rawTextFound.push(tag);
         }
@@ -245,7 +247,7 @@ export function assertHTMLIsRendered(element, expectedHTML, options = {}) {
     isValid: issues.length === 0 && rawTextFound.length === 0 && detectedElements.length > 0,
     issues,
     detectedElements: [...new Set(detectedElements)],
-    rawTextFound: [...new Set(rawTextFound)]
+    rawTextFound: [...new Set(rawTextFound)],
   };
 }
 
@@ -284,7 +286,7 @@ export async function testSlottedContent(element, slotNameOrConfigs, content) {
       await waitForUpdate(element);
 
       // Additional wait for DOM to stabilize
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Check if slot element exists
       const slotExists = element.querySelector(`[slot="${slotName}"]`) !== null;
@@ -304,7 +306,7 @@ export async function testSlottedContent(element, slotNameOrConfigs, content) {
         slotName,
         description,
         slotExists,
-        wrapperRendered
+        wrapperRendered,
       });
 
       if (!slotExists) {
@@ -317,7 +319,7 @@ export async function testSlottedContent(element, slotNameOrConfigs, content) {
     return {
       isValid,
       issues,
-      results
+      results,
     };
   }
 
@@ -361,7 +363,7 @@ export async function assertSlottedContentWorks(element, slotNameOrConfigs, cont
 /**
  * Comprehensive cleanup to prevent async errors
  * Call this in afterEach() hooks
- * 
+ *
  * Cleans up:
  * - Timers (setTimeout, setInterval)
  * - DOM state
@@ -400,9 +402,9 @@ export function cleanupAfterTest() {
 /**
  * Mock window.location for navigation tests
  * Prevents "Not implemented: navigation" errors in jsdom
- * 
+ *
  * @returns {Object} Mock location object
- * 
+ *
  * @example
  * beforeEach(() => {
  *   mockNavigation();
@@ -424,13 +426,13 @@ export function mockNavigation() {
     assign: () => {},
     replace: () => {},
     reload: () => {},
-    toString: () => 'http://localhost/'
+    toString: () => 'http://localhost/',
   };
 
   Object.defineProperty(window, 'location', {
     writable: true,
     configurable: true,
-    value: mockLocation
+    value: mockLocation,
   });
 
   return mockLocation;
@@ -439,9 +441,9 @@ export function mockNavigation() {
 /**
  * Safe cleanup for component tests with timers
  * Use in afterEach for components that create timers
- * 
+ *
  * @param {HTMLElement} element - The element to remove
- * 
+ *
  * @example
  * afterEach(() => {
  *   safeCleanupWithTimers(element);
@@ -450,7 +452,7 @@ export function mockNavigation() {
 export function safeCleanupWithTimers(element) {
   // Clear timers first
   cleanupAfterTest();
-  
+
   // Then remove element
   if (element && element.remove) {
     try {

@@ -222,7 +222,13 @@ This shows:
           </select>
 
           <label class="usa-label margin-top-2" for="feedback-message">Your Message</label>
-          <textarea class="usa-textarea" id="feedback-message" name="message" rows="5" required></textarea>
+          <textarea
+            class="usa-textarea"
+            id="feedback-message"
+            name="message"
+            rows="5"
+            required
+          ></textarea>
         </form>
       </div>
     </usa-modal>
@@ -313,9 +319,7 @@ This shows:
 
       <ul slot="footer" class="usa-button-group">
         <li class="usa-button-group__item">
-          <button type="button" class="usa-button" data-close-modal>
-            Save & Close
-          </button>
+          <button type="button" class="usa-button" data-close-modal>Save & Close</button>
         </li>
         <li class="usa-button-group__item">
           <button type="button" class="usa-button usa-button--outline" data-close-modal>
@@ -323,7 +327,11 @@ This shows:
           </button>
         </li>
         <li class="usa-button-group__item">
-          <button type="button" class="usa-button usa-button--unstyled padding-105 text-center" data-close-modal>
+          <button
+            type="button"
+            class="usa-button usa-button--unstyled padding-105 text-center"
+            data-close-modal
+          >
             Discard Changes
           </button>
         </li>
@@ -365,8 +373,8 @@ This shows:
       <div slot="body" class="usa-prose margin-top-2">
         <h3>1. Acceptance of Terms</h3>
         <p>
-          By accessing and using this service, you accept and agree to be bound by the terms
-          and provision of this agreement.
+          By accessing and using this service, you accept and agree to be bound by the terms and
+          provision of this agreement.
         </p>
 
         <h3>2. Privacy Policy</h3>

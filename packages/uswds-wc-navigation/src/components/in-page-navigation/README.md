@@ -20,21 +20,21 @@ import 'path/to/uswds-webcomponents/src/components/in-page-navigation/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `titleHeadingLevel` | `any` | `'4'` | Property description |
-| `rootSelector` | `any` | `'main'` | Property description |
-| `headingSelector` | `any` | `'h2 h3'` | Property description |
-| `smoothScroll` | `any` | `true` | Property description |
-| `scrollOffset` | `any` | `0` | Property description |
-| `threshold` | `any` | `'0.5'` | Property description |
-| `rootMargin` | `any` | `'0px 0px -50% 0px'` | Property description |
+| Property            | Type  | Default              | Description          |
+| ------------------- | ----- | -------------------- | -------------------- |
+| `titleHeadingLevel` | `any` | `'4'`                | Property description |
+| `rootSelector`      | `any` | `'main'`             | Property description |
+| `headingSelector`   | `any` | `'h2 h3'`            | Property description |
+| `smoothScroll`      | `any` | `true`               | Property description |
+| `scrollOffset`      | `any` | `0`                  | Property description |
+| `threshold`         | `any` | `'0.5'`              | Property description |
+| `rootMargin`        | `any` | `'0px 0px -50% 0px'` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

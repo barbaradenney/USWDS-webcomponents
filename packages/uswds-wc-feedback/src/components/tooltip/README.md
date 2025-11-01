@@ -20,18 +20,18 @@ import 'path/to/uswds-webcomponents/src/components/tooltip/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `text` | `any` | `''` | Property description |
-| `position` | `'top' | 'bottom' | 'left' | 'right'` | `'top'` | Property description |
-| `label` | `any` | `''` | Property description |
-| `visible` | `any` | `false` | Property description |
-| `classes` | `any` | `''` | Property description |
+| Property   | Type   | Default  | Description          |
+| ---------- | ------ | -------- | -------------------- | -------- | ------- | -------------------- |
+| `text`     | `any`  | `''`     | Property description |
+| `position` | `'top' | 'bottom' | 'left'               | 'right'` | `'top'` | Property description |
+| `label`    | `any`  | `''`     | Property description |
+| `visible`  | `any`  | `false`  | Property description |
+| `classes`  | `any`  | `''`     | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event          | Type        | Description       |
+| -------------- | ----------- | ----------------- |
 | `tooltip-show` | CustomEvent | Event description |
 | `tooltip-hide` | CustomEvent | Event description |
 

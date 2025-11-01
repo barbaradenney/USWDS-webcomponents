@@ -20,19 +20,19 @@ import 'path/to/uswds-webcomponents/src/components/alert/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
+| Property  | Type           | Default  | Description          |
+| --------- | -------------- | -------- | -------------------- |
 | `variant` | `AlertVariant` | `'info'` | Property description |
-| `heading` | `any` | `''` | Property description |
-| `slim` | `any` | `false` | Property description |
-| `noIcon` | `any` | `false` | Property description |
-| `text` | `any` | `''` | Property description |
+| `heading` | `any`          | `''`     | Property description |
+| `slim`    | `any`          | `false`  | Property description |
+| `noIcon`  | `any`          | `false`  | Property description |
+| `text`    | `any`          | `''`     | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

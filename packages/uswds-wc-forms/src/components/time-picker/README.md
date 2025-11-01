@@ -20,27 +20,27 @@ import 'path/to/uswds-webcomponents/src/components/time-picker/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | `any` | `''` | Property description |
-| `name` | `any` | `'time-picker'` | Property description |
-| `inputId` | `any` | `'time-picker-input'` | Property description |
-| `listId` | `any` | `'time-picker-list'` | Property description |
-| `label` | `any` | `'Appointment time'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `placeholder` | `any` | `'hh:mm am'` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `minTime` | `any` | `''` | Property description |
-| `maxTime` | `any` | `''` | Property description |
-| `step` | `any` | `'30'` | Property description |
-| `error` | `any` | `''` | Property description |
-| `errorState` | `any` | `false` | Property description |
+| Property      | Type  | Default               | Description          |
+| ------------- | ----- | --------------------- | -------------------- |
+| `value`       | `any` | `''`                  | Property description |
+| `name`        | `any` | `'time-picker'`       | Property description |
+| `inputId`     | `any` | `'time-picker-input'` | Property description |
+| `listId`      | `any` | `'time-picker-list'`  | Property description |
+| `label`       | `any` | `'Appointment time'`  | Property description |
+| `hint`        | `any` | `''`                  | Property description |
+| `placeholder` | `any` | `'hh:mm am'`          | Property description |
+| `disabled`    | `any` | `false`               | Property description |
+| `required`    | `any` | `false`               | Property description |
+| `minTime`     | `any` | `''`                  | Property description |
+| `maxTime`     | `any` | `''`                  | Property description |
+| `step`        | `any` | `'30'`                | Property description |
+| `error`       | `any` | `''`                  | Property description |
+| `errorState`  | `any` | `false`               | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event         | Type        | Description       |
+| ------------- | ----------- | ----------------- |
 | `time-change` | CustomEvent | Event description |
 
 ## Accessibility

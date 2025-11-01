@@ -13,7 +13,7 @@
  */
 function getRelativeLuminance(r, g, b) {
   // Normalize RGB values to 0-1
-  const [rs, gs, bs] = [r, g, b].map(val => {
+  const [rs, gs, bs] = [r, g, b].map((val) => {
     val = val / 255;
     return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
   });
@@ -47,7 +47,7 @@ function parseColor(color) {
   return {
     r: parseInt(match[1]),
     g: parseInt(match[2]),
-    b: parseInt(match[3])
+    b: parseInt(match[3]),
   };
 }
 
@@ -88,12 +88,12 @@ export function testColorContrast(element, level = 'AA', size = 'normal') {
   const requirements = {
     AA: {
       normal: 4.5,
-      large: 3
+      large: 3,
     },
     AAA: {
       normal: 7,
-      large: 4.5
-    }
+      large: 4.5,
+    },
   };
 
   const required = requirements[level][size];
@@ -111,7 +111,7 @@ export function testColorContrast(element, level = 'AA', size = 'normal') {
     background,
     level,
     size,
-    isLargeText: elementIsLargeText
+    isLargeText: elementIsLargeText,
   };
 }
 
@@ -145,11 +145,7 @@ export function testAllTextContrast(container, level = 'AA') {
   const results = [];
 
   // Get all text-containing elements
-  const walker = document.createTreeWalker(
-    container,
-    NodeFilter.SHOW_TEXT,
-    null
-  );
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null);
 
   const textNodes = [];
   let node;
@@ -167,7 +163,7 @@ export function testAllTextContrast(container, level = 'AA') {
     const result = testColorContrast(element, level, size);
     results.push({
       element,
-      ...result
+      ...result,
     });
   }
 
@@ -186,7 +182,7 @@ export function assertMeetsContrastRequirements(element, level = 'AA') {
   if (!result.passes) {
     throw new Error(
       `Contrast ratio ${result.contrastRatio.toFixed(2)}:1 does not meet ` +
-      `WCAG ${level} requirements (${result.required}:1 required for ${size} text)`
+        `WCAG ${level} requirements (${result.required}:1 required for ${size} text)`
     );
   }
 }

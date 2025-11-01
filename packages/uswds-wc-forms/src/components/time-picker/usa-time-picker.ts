@@ -105,7 +105,7 @@ export class USATimePicker extends USWDSBaseComponent {
 
     // Wait for DOM to be fully rendered
     await this.updateComplete;
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
     // Initialize using mirrored USWDS behavior
     this.cleanup = initializeTimePicker(this);
@@ -115,7 +115,6 @@ export class USATimePicker extends USWDSBaseComponent {
     super.disconnectedCallback();
     this.cleanup?.();
   }
-
 
   /**
    * Format time value for display (convert 24-hour to 12-hour with AM/PM if needed)
@@ -222,8 +221,7 @@ export class USATimePicker extends USWDSBaseComponent {
       <div class="${formGroupClasses}">
         ${this.renderError()}
         <label class="usa-label" for="${this.inputId}">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
+          ${this.label} ${this.renderRequiredIndicator()}
         </label>
         ${this.renderHint()}
         <div

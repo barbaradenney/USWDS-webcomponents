@@ -20,26 +20,26 @@ import 'path/to/uswds-webcomponents/src/components/header/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `logoText` | `any` | `''` | Property description |
-| `logoHref` | `any` | `'/'` | Property description |
-| `logoImageSrc` | `any` | `''` | Property description |
-| `logoImageAlt` | `any` | `''` | Property description |
-| `navItems` | `NavItem[]` | `[]` | Property description |
-| `secondaryLinks` | `SecondaryLink[]` | `[]` | Property description |
-| `extended` | `any` | `false` | Property description |
-| `showSearch` | `any` | `false` | Property description |
-| `searchPlaceholder` | `any` | `'Search'` | Property description |
-| `mobileMenuOpen` | `any` | `false` | Property description |
+| Property            | Type              | Default    | Description          |
+| ------------------- | ----------------- | ---------- | -------------------- |
+| `logoText`          | `any`             | `''`       | Property description |
+| `logoHref`          | `any`             | `'/'`      | Property description |
+| `logoImageSrc`      | `any`             | `''`       | Property description |
+| `logoImageAlt`      | `any`             | `''`       | Property description |
+| `navItems`          | `NavItem[]`       | `[]`       | Property description |
+| `secondaryLinks`    | `SecondaryLink[]` | `[]`       | Property description |
+| `extended`          | `any`             | `false`    | Property description |
+| `showSearch`        | `any`             | `false`    | Property description |
+| `searchPlaceholder` | `any`             | `'Search'` | Property description |
+| `mobileMenuOpen`    | `any`             | `false`    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event                | Type        | Description       |
+| -------------------- | ----------- | ----------------- |
 | `mobile-menu-toggle` | CustomEvent | Event description |
-| `nav-click` | CustomEvent | Event description |
-| `header-search` | CustomEvent | Event description |
+| `nav-click`          | CustomEvent | Event description |
+| `header-search`      | CustomEvent | Event description |
 
 ## Accessibility
 

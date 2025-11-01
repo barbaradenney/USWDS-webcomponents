@@ -1,4 +1,4 @@
-import { html, css } from 'lit';
+import { html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { USWDSBaseComponent } from '@uswds-wc/core';
 import { initializeBanner } from './usa-banner-behavior.js';
@@ -27,11 +27,8 @@ import '@uswds-wc/core/styles.css';
  */
 @customElement('usa-banner')
 export class USABanner extends USWDSBaseComponent {
-  static override styles = css`
-    :host {
-      display: block;
-    }
-  `;
+  // NOTE: static styles do NOT apply in Light DOM (createRenderRoot returns this)
+  // The component uses USWDS CSS classes which handle all styling
 
   @property({ type: String })
   flagImageSrc = '/img/us_flag_small.png';
@@ -85,7 +82,7 @@ export class USABanner extends USWDSBaseComponent {
       content.setAttribute('hidden', '');
     }
 
-    // Initialize using mirrored USWDS behavior
+    // Use mirrored behavior for 100% USWDS parity (avoids timing issues with global init)
     this.cleanup = initializeBanner(this);
 
     // Watch for aria-expanded changes from behavior and sync component property
@@ -175,10 +172,7 @@ export class USABanner extends USWDSBaseComponent {
               </button>
             </div>
           </header>
-          <div
-            class="usa-banner__content usa-accordion__content"
-            id="gov-banner-default"
-          >
+          <div class="usa-banner__content usa-accordion__content" id="gov-banner-default">
             <div class="grid-row grid-gap-lg">
               <div class="usa-banner__guidance tablet:grid-col-6">
                 <img

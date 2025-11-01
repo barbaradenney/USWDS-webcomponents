@@ -77,9 +77,7 @@ const onMenuClose = (): void => {
  * SOURCE: index.js (Lines 46-54)
  */
 const setTemporaryBodyPadding = (): void => {
-  INITIAL_BODY_PADDING = window
-    .getComputedStyle(document.body)
-    .getPropertyValue('padding-right');
+  INITIAL_BODY_PADDING = window.getComputedStyle(document.body).getPropertyValue('padding-right');
   TEMPORARY_BODY_PADDING = `${
     parseInt(INITIAL_BODY_PADDING.replace(/px/, ''), 10) +
     parseInt(SCROLLBAR_WIDTH.replace(/px/, ''), 10)
@@ -106,9 +104,7 @@ function toggleModal(this: any, event: Event): boolean {
 
   const targetModal = safeActive
     ? document.getElementById(modalId || '')
-    : (document.querySelector(
-        `.${WRAPPER_CLASSNAME}.${VISIBLE_CLASS}`
-      ) as HTMLElement);
+    : (document.querySelector(`.${WRAPPER_CLASSNAME}.${VISIBLE_CLASS}`) as HTMLElement);
 
   // if there is no modal we return early
   if (!targetModal) {
@@ -116,11 +112,8 @@ function toggleModal(this: any, event: Event): boolean {
   }
 
   const openFocusEl =
-    targetModal.querySelector(INITIAL_FOCUS) ||
-    targetModal.querySelector(`.${MODAL_CLASSNAME}`);
-  const returnFocus = document.getElementById(
-    targetModal.getAttribute('data-opener') || ''
-  );
+    targetModal.querySelector(INITIAL_FOCUS) || targetModal.querySelector(`.${MODAL_CLASSNAME}`);
+  const returnFocus = document.getElementById(targetModal.getAttribute('data-opener') || '');
   const menuButton = body.querySelector(OPENERS);
   const forceUserAction = targetModal.getAttribute(FORCE_ACTION_ATTRIBUTE);
 
@@ -251,10 +244,7 @@ const createPlaceHolder = (baseComponent: HTMLElement): HTMLElement => {
   originalLocationPlaceHolder.setAttribute('aria-hidden', 'true');
 
   modalAttributes.forEach((attribute) => {
-    originalLocationPlaceHolder.setAttribute(
-      `data-original-${attribute.name}`,
-      attribute.value
-    );
+    originalLocationPlaceHolder.setAttribute(`data-original-${attribute.name}`, attribute.value);
   });
 
   return originalLocationPlaceHolder;
@@ -274,11 +264,9 @@ const setModalAttributes = (
   const ariaDescribedBy = baseComponent.getAttribute('aria-describedby');
   const forceUserAction = baseComponent.hasAttribute(FORCE_ACTION_ATTRIBUTE);
 
-  if (!ariaLabelledBy)
-    throw new Error(`${modalID} is missing aria-labelledby attribute`);
+  if (!ariaLabelledBy) throw new Error(`${modalID} is missing aria-labelledby attribute`);
 
-  if (!ariaDescribedBy)
-    throw new Error(`${modalID} is missing aria-describedby attribute`);
+  if (!ariaDescribedBy) throw new Error(`${modalID} is missing aria-describedby attribute`);
 
   // Set attributes
   modalContentWrapper.setAttribute('role', 'dialog');
@@ -288,16 +276,15 @@ const setModalAttributes = (
   modalContentWrapper.setAttribute('aria-describedby', ariaDescribedBy);
 
   if (forceUserAction) {
-    modalContentWrapper.setAttribute(
-      FORCE_ACTION_ATTRIBUTE,
-      forceUserAction.toString()
-    );
+    modalContentWrapper.setAttribute(FORCE_ACTION_ATTRIBUTE, forceUserAction.toString());
   }
 
   // Add aria-controls
   // Query for closers within the wrapper (not using CLOSERS selector which includes wrapper prefix)
   const modalClosers = modalContentWrapper.querySelectorAll(`[${CLOSER_ATTRIBUTE}]`);
-  const overlay = modalContentWrapper.querySelector(`.${OVERLAY_CLASSNAME}:not([${FORCE_ACTION_ATTRIBUTE}])`);
+  const overlay = modalContentWrapper.querySelector(
+    `.${OVERLAY_CLASSNAME}:not([${FORCE_ACTION_ATTRIBUTE}])`
+  );
 
   modalClosers.forEach((el) => {
     el.setAttribute('aria-controls', modalID || '');
@@ -397,9 +384,7 @@ const cleanUpModal = (baseComponent: HTMLElement): void => {
     return;
   }
 
-  const originalLocationPlaceHolder = document.querySelector(
-    `[data-placeholder-for="${modalID}"]`
-  );
+  const originalLocationPlaceHolder = document.querySelector(`[data-placeholder-for="${modalID}"]`);
 
   if (originalLocationPlaceHolder) {
     const modalAttributes = Array.from(originalLocationPlaceHolder.attributes);
@@ -411,9 +396,7 @@ const cleanUpModal = (baseComponent: HTMLElement): void => {
     });
 
     originalLocationPlaceHolder.after(modalContent);
-    originalLocationPlaceHolder.parentElement?.removeChild(
-      originalLocationPlaceHolder
-    );
+    originalLocationPlaceHolder.parentElement?.removeChild(originalLocationPlaceHolder);
   }
 
   modalContentWrapper?.parentElement?.removeChild(modalContentWrapper);
@@ -437,7 +420,7 @@ export function initializeModal(root: HTMLElement | Document = document): () => 
   const modals = selectOrMatches(MODAL, root);
 
   // Store modalIds for cleanup BEFORE setup (setup removes IDs from modal elements!)
-  const modalIds = modals.map(m => (m as HTMLElement).id).filter(Boolean);
+  const modalIds = modals.map((m) => (m as HTMLElement).id).filter(Boolean);
 
   modals.forEach((modalWindow) => {
     const modalElement = modalWindow as HTMLElement;
@@ -456,24 +439,23 @@ export function initializeModal(root: HTMLElement | Document = document): () => 
     const triggers = selectOrMatches(`[aria-controls="${modalId}"]`, document);
 
     triggers.forEach((modalTrigger) => {
-        // If modalTrigger is an anchor...
-        if (modalTrigger.nodeName === 'A') {
-          // Turn anchor links into buttons for screen readers
-          modalTrigger.setAttribute('role', 'button');
+      // If modalTrigger is an anchor...
+      if (modalTrigger.nodeName === 'A') {
+        // Turn anchor links into buttons for screen readers
+        modalTrigger.setAttribute('role', 'button');
 
-          // Prevent modal triggers from acting like links
-          modalTrigger.addEventListener('click', (e) => e.preventDefault());
-        }
-
-        // Can uncomment when aria-haspopup="dialog" is supported
-        // https://a11ysupport.io/tech/aria/aria-haspopup_attribute
-        // Most screen readers support aria-haspopup, but might announce
-        // as opening a menu if "dialog" is not supported.
-        // modalTrigger.setAttribute("aria-haspopup", "dialog");
-
-        modalTrigger.addEventListener('click', toggleModal);
+        // Prevent modal triggers from acting like links
+        modalTrigger.addEventListener('click', (e) => e.preventDefault());
       }
-    );
+
+      // Can uncomment when aria-haspopup="dialog" is supported
+      // https://a11ysupport.io/tech/aria/aria-haspopup_attribute
+      // Most screen readers support aria-haspopup, but might announce
+      // as opening a menu if "dialog" is not supported.
+      // modalTrigger.setAttribute("aria-haspopup", "dialog");
+
+      modalTrigger.addEventListener('click', toggleModal);
+    });
   });
 
   // Return cleanup function

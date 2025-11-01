@@ -23,7 +23,7 @@ export function validateStory(story) {
 
   return {
     isValid: issues.length === 0,
-    issues
+    issues,
   };
 }
 
@@ -45,7 +45,7 @@ export function validateStoryArgs(args, requiredArgs = []) {
   return {
     isValid: issues.length === 0,
     issues,
-    args
+    args,
   };
 }
 
@@ -97,17 +97,19 @@ export function validateNavigationTargets(navItems, contentHTML) {
         if (!targetElement) {
           missingTargets.push(targetId);
           brokenLinks.push(item.href || `#${targetId}`);
-          warnings.push(`Missing target element for navigation item: ${item.text} (id="${targetId}")`);
+          warnings.push(
+            `Missing target element for navigation item: ${item.text} (id="${targetId}")`
+          );
 
           // Provide a helpful suggestion
           const level = item.level || 2;
           const headingTag = `h${level}`;
           suggestions.push(
             `Add this section to your content:\n` +
-            `<section id="${targetId}">\n` +
-            `  <${headingTag}>${item.text}</${headingTag}>\n` +
-            `  <p>Content for ${item.text}</p>\n` +
-            `</section>`
+              `<section id="${targetId}">\n` +
+              `  <${headingTag}>${item.text}</${headingTag}>\n` +
+              `  <p>Content for ${item.text}</p>\n` +
+              `</section>`
           );
         }
       }
@@ -126,7 +128,7 @@ export function validateNavigationTargets(navItems, contentHTML) {
     missingTargets,
     brokenLinks,
     warnings,
-    suggestions
+    suggestions,
   };
 }
 
@@ -142,7 +144,7 @@ export function validateHeadingSelector(selector) {
   if (selector.includes(',')) {
     return {
       isValid: false,
-      error: `Invalid heading selector format: "${selector}". USWDS expects space-separated selectors (e.g., "h2 h3"), not comma-separated.`
+      error: `Invalid heading selector format: "${selector}". USWDS expects space-separated selectors (e.g., "h2 h3"), not comma-separated.`,
     };
   }
 
@@ -154,14 +156,14 @@ export function validateHeadingSelector(selector) {
     if (!validHeadings.includes(part.toLowerCase())) {
       return {
         isValid: false,
-        error: `Invalid heading tag in selector: "${part}". Expected one of: ${validHeadings.join(', ')}`
+        error: `Invalid heading tag in selector: "${part}". Expected one of: ${validHeadings.join(', ')}`,
       };
     }
   }
 
   return {
     isValid: true,
-    selector
+    selector,
   };
 }
 

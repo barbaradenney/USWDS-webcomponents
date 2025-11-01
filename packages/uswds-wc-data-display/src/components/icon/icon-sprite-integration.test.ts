@@ -139,18 +139,47 @@ describe('USAIcon - Sprite File Integration', () => {
     // Sample of commonly used icons across different categories
     const commonIcons = [
       // Navigation
-      'menu', 'close', 'search', 'arrow_back', 'arrow_forward',
-      'chevron_left', 'chevron_right', 'expand_more', 'expand_less',
+      'menu',
+      'close',
+      'search',
+      'arrow_back',
+      'arrow_forward',
+      'chevron_left',
+      'chevron_right',
+      'expand_more',
+      'expand_less',
       // Status & Alerts
-      'check_circle', 'error', 'warning', 'info', 'help',
+      'check_circle',
+      'error',
+      'warning',
+      'info',
+      'help',
       // Actions
-      'add', 'edit', 'delete', 'cancel', 'file_download', 'file_upload',
+      'add',
+      'edit',
+      'delete',
+      'cancel',
+      'file_download',
+      'file_upload',
       // Contact & Social
-      'phone', 'mail', 'location_on', 'facebook', 'twitter', 'github',
+      'phone',
+      'mail',
+      'location_on',
+      'facebook',
+      'twitter',
+      'github',
       // Common UI
-      'settings', 'home', 'person', 'lock', 'visibility', 'notifications',
+      'settings',
+      'home',
+      'person',
+      'lock',
+      'visibility',
+      'notifications',
       // Government-specific
-      'accessibility_new', 'account_balance', 'campaign', 'public',
+      'accessibility_new',
+      'account_balance',
+      'campaign',
+      'public',
     ];
 
     it('should render all commonly used icons from sprite', async () => {
@@ -232,10 +261,9 @@ describe('USAIcon - Sprite File Integration', () => {
 
       // FAIL CONDITIONS (regressions to catch):
       expect(freshElement.useSprite, 'useSprite should default to true').toBe(true);
-      expect(
-        freshElement.spriteUrl,
-        'spriteUrl should default to /img/sprite.svg'
-      ).toBe('/img/sprite.svg');
+      expect(freshElement.spriteUrl, 'spriteUrl should default to /img/sprite.svg').toBe(
+        '/img/sprite.svg'
+      );
 
       // PASS CONDITIONS (correct sprite-first architecture):
       expect(freshElement.spriteUrl).not.toBe('');
@@ -279,11 +307,7 @@ describe('USAIcon - Sprite File Integration', () => {
       document.body.appendChild(icon2);
       document.body.appendChild(icon3);
 
-      await Promise.all([
-        icon1.updateComplete,
-        icon2.updateComplete,
-        icon3.updateComplete,
-      ]);
+      await Promise.all([icon1.updateComplete, icon2.updateComplete, icon3.updateComplete]);
 
       const use1 = icon1.querySelector('use');
       const use2 = icon2.querySelector('use');

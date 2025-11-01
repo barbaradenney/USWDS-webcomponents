@@ -20,26 +20,26 @@ import 'path/to/uswds-webcomponents/src/components/date-picker/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | `any` | `''` | Property description |
-| `name` | `any` | `'date-picker'` | Property description |
-| `inputId` | `any` | `'date-picker-input'` | Property description |
-| `label` | `any` | `'Date'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `placeholder` | `any` | `'mm/dd/yyyy'` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `readonly` | `any` | `false` | Property description |
-| `minDate` | `any` | `''` | Property description |
-| `maxDate` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
-| `errorState` | `any` | `false` | Property description |
+| Property      | Type  | Default               | Description          |
+| ------------- | ----- | --------------------- | -------------------- |
+| `value`       | `any` | `''`                  | Property description |
+| `name`        | `any` | `'date-picker'`       | Property description |
+| `inputId`     | `any` | `'date-picker-input'` | Property description |
+| `label`       | `any` | `'Date'`              | Property description |
+| `hint`        | `any` | `''`                  | Property description |
+| `placeholder` | `any` | `'mm/dd/yyyy'`        | Property description |
+| `disabled`    | `any` | `false`               | Property description |
+| `required`    | `any` | `false`               | Property description |
+| `readonly`    | `any` | `false`               | Property description |
+| `minDate`     | `any` | `''`                  | Property description |
+| `maxDate`     | `any` | `''`                  | Property description |
+| `error`       | `any` | `''`                  | Property description |
+| `errorState`  | `any` | `false`               | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event         | Type        | Description       |
+| ------------- | ----------- | ----------------- |
 | `date-change` | CustomEvent | Event description |
 
 ## Accessibility

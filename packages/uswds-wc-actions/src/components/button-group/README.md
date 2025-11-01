@@ -20,16 +20,16 @@ import 'path/to/uswds-webcomponents/src/components/button-group/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `type` | `'default' | 'segmented'` | `'default'` | Property description |
-| `buttons` | `ButtonGroupItem[]` | `[]` | Property description |
-| `activeIndex` | `any` | `0` | Property description |
+| Property      | Type                | Default      | Description          |
+| ------------- | ------------------- | ------------ | -------------------- | -------------------- |
+| `type`        | `'default'          | 'segmented'` | `'default'`          | Property description |
+| `buttons`     | `ButtonGroupItem[]` | `[]`         | Property description |
+| `activeIndex` | `any`               | `0`          | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event          | Type        | Description       |
+| -------------- | ----------- | ----------------- |
 | `button-click` | CustomEvent | Event description |
 
 ## Accessibility

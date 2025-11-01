@@ -7,10 +7,6 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../card/index.ts';
 import type { USACard } from './usa-card.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
-import {
-  validateCSSClassString,
-  validateMediaElementClasses
-} from '@uswds-wc/test-utils/css-class-utils.js';
 
 describe('USACard Layout Tests', () => {
   let element: USACard;
@@ -161,8 +157,12 @@ describe('USACard Layout Tests', () => {
     // CRITICAL REGRESSION TEST: Verify CSS classes don't have spacing issues
     if (cardMedia) {
       const mediaClassName = cardMedia.className;
-      expect(mediaClassName, 'Media element should have clean CSS class without extra spaces').toBe('usa-card__media');
-      expect(mediaClassName.includes('  '), 'CSS class should not contain double spaces').toBe(false);
+      expect(mediaClassName, 'Media element should have clean CSS class without extra spaces').toBe(
+        'usa-card__media'
+      );
+      expect(mediaClassName.includes('  '), 'CSS class should not contain double spaces').toBe(
+        false
+      );
       expect(mediaClassName.startsWith(' '), 'CSS class should not start with space').toBe(false);
       expect(mediaClassName.endsWith(' '), 'CSS class should not end with space').toBe(false);
     }
@@ -217,26 +217,26 @@ describe('USACard Layout Tests', () => {
         'This is test card content.'
       );
     }
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/card/usa-card.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'card');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/card/usa-card.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'card');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('CSS Class Regression Prevention', () => {
@@ -255,7 +255,9 @@ describe('USACard Layout Tests', () => {
 
       if (cardMedia) {
         const className = cardMedia.className;
-        expect(className, 'Should have correct exdent classes').toBe('usa-card__media usa-card__media--exdent');
+        expect(className, 'Should have correct exdent classes').toBe(
+          'usa-card__media usa-card__media--exdent'
+        );
         expect(className.includes('  '), 'Should not contain double spaces').toBe(false);
         expect(className.startsWith(' '), 'Should not start with space').toBe(false);
         expect(className.endsWith(' '), 'Should not end with space').toBe(false);
@@ -278,13 +280,18 @@ describe('USACard Layout Tests', () => {
           const className = cardMedia.className;
 
           // Verify expected class name based on position
-          const expectedClass = position === 'right'
-            ? 'usa-card__media'
-            : `usa-card__media usa-card__media--${position}`;
+          const expectedClass =
+            position === 'right'
+              ? 'usa-card__media'
+              : `usa-card__media usa-card__media--${position}`;
 
           expect(className, `Should have correct ${position} classes`).toBe(expectedClass);
-          expect(className.includes('  '), `Should not contain double spaces for ${position}`).toBe(false);
-          expect(className.startsWith(' '), `Should not start with space for ${position}`).toBe(false);
+          expect(className.includes('  '), `Should not contain double spaces for ${position}`).toBe(
+            false
+          );
+          expect(className.startsWith(' '), `Should not start with space for ${position}`).toBe(
+            false
+          );
           expect(className.endsWith(' '), `Should not end with space for ${position}`).toBe(false);
         }
       }
@@ -304,19 +311,28 @@ describe('USACard Layout Tests', () => {
       // Host element classes
       const hostClasses = element.className.split(' ');
       const expectedHostClasses = ['usa-card', 'usa-card--flag', 'usa-card--media-right'];
-      expectedHostClasses.forEach(expectedClass => {
-        expect(hostClasses.includes(expectedClass), `Host should include ${expectedClass}`).toBe(true);
+      expectedHostClasses.forEach((expectedClass) => {
+        expect(hostClasses.includes(expectedClass), `Host should include ${expectedClass}`).toBe(
+          true
+        );
       });
 
       // No double spaces in host classes
-      expect(element.className.includes('  '), 'Host classes should not have double spaces').toBe(false);
+      expect(element.className.includes('  '), 'Host classes should not have double spaces').toBe(
+        false
+      );
 
       // Check all child elements for clean CSS classes
       const allElements = element.querySelectorAll('[class]');
       allElements.forEach((el, index) => {
         const className = el.className;
-        expect(className.includes('  '), `Element ${index} should not have double spaces in classes`).toBe(false);
-        expect(className.startsWith(' '), `Element ${index} should not start with space`).toBe(false);
+        expect(
+          className.includes('  '),
+          `Element ${index} should not have double spaces in classes`
+        ).toBe(false);
+        expect(className.startsWith(' '), `Element ${index} should not start with space`).toBe(
+          false
+        );
         expect(className.endsWith(' '), `Element ${index} should not end with space`).toBe(false);
       });
     });

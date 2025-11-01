@@ -51,11 +51,11 @@ export const Default: Story = {
     headingLevel: 'h3',
   },
   render: (args) => html`
-    <usa-summary-box 
-      heading="${args.heading}" 
-      heading-level="${args.headingLevel}"
-    >
-      <p>This is the default summary box with slot content. Use summary boxes to highlight key information that users need to know.</p>
+    <usa-summary-box heading="${args.heading}" heading-level="${args.headingLevel}">
+      <p>
+        This is the default summary box with slot content. Use summary boxes to highlight key
+        information that users need to know.
+      </p>
     </usa-summary-box>
   `,
 };
@@ -69,23 +69,23 @@ export const AllHeadingLevels: Story = {
       <usa-summary-box heading="H1 Summary Box" heading-level="h1">
         <p>This summary box uses an H1 heading, typically for page-level summaries.</p>
       </usa-summary-box>
-      
+
       <usa-summary-box heading="H2 Summary Box" heading-level="h2">
         <p>This summary box uses an H2 heading, typically for major section summaries.</p>
       </usa-summary-box>
-      
+
       <usa-summary-box heading="H3 Summary Box" heading-level="h3">
         <p>This summary box uses an H3 heading (default), typically for subsection summaries.</p>
       </usa-summary-box>
-      
+
       <usa-summary-box heading="H4 Summary Box" heading-level="h4">
         <p>This summary box uses an H4 heading, typically for minor section summaries.</p>
       </usa-summary-box>
-      
+
       <usa-summary-box heading="H5 Summary Box" heading-level="h5">
         <p>This summary box uses an H5 heading, typically for detailed subsection summaries.</p>
       </usa-summary-box>
-      
+
       <usa-summary-box heading="H6 Summary Box" heading-level="h6">
         <p>This summary box uses an H6 heading, typically for the most detailed summary level.</p>
       </usa-summary-box>
@@ -109,40 +109,48 @@ export const WithHTMLContent: Story = {
   },
 };
 
-
-
-
-
-
-
-
 export const WithSlotContent: Story = {
   args: {
     heading: 'Small Business Resources',
     headingLevel: 'h3',
   },
   render: (args) => html`
-    <usa-summary-box 
-      heading="${args.heading}" 
-      heading-level="${args.headingLevel}"
-    >
-      <p>The Business Support Center provides resources for entrepreneurs and small business owners.</p>
-      
+    <usa-summary-box heading="${args.heading}" heading-level="${args.headingLevel}">
+      <p>
+        The Business Support Center provides resources for entrepreneurs and small business owners.
+      </p>
+
       <h4>Available Programs:</h4>
       <ul>
-        <li><strong>Business Loans:</strong> Low-interest financing for business expansion and working capital</li>
+        <li>
+          <strong>Business Loans:</strong> Low-interest financing for business expansion and working
+          capital
+        </li>
         <li><strong>Mentorship Programs:</strong> Free business mentoring and workshops</li>
-        <li><strong>Innovation Funding:</strong> Research and development funding for innovative businesses</li>
+        <li>
+          <strong>Innovation Funding:</strong> Research and development funding for innovative
+          businesses
+        </li>
         <li><strong>Contracting Opportunities:</strong> Networking and contract opportunities</li>
       </ul>
-      
+
       <div class="bg-info-lighter padding-1 margin-y-1 radius-md">
-        <p><strong>Support Available:</strong> Financial assistance programs available for eligible businesses.</p>
+        <p>
+          <strong>Support Available:</strong> Financial assistance programs available for eligible
+          businesses.
+        </p>
       </div>
-      
-      <p><strong>Find Local Help:</strong> Contact your nearest <a href="#local-office">District Office</a> or <a href="#resource-partners">Resource Partner</a></p>
-      
-      <p><a href="#loan-programs">Explore Loan Programs</a> | <a href="#find-mentor">Find a Mentor</a> | <a href="#contracting">Business Contracting</a></p>
+
+      <p>
+        <strong>Find Local Help:</strong> Contact your nearest
+        <a href="#local-office">District Office</a> or
+        <a href="#resource-partners">Resource Partner</a>
+      </p>
+
+      <p>
+        <a href="#loan-programs">Explore Loan Programs</a> |
+        <a href="#find-mentor">Find a Mentor</a> | <a href="#contracting">Business Contracting</a>
+      </p>
     </usa-summary-box>
   `,
 };
@@ -151,11 +159,12 @@ export const MixedContent: Story = {
   args: {
     heading: 'Content Flexibility Demo',
     headingLevel: 'h3',
-    content: '<p><strong>This content comes from the content property.</strong> It will override any slot content.</p>',
+    content:
+      '<p><strong>This content comes from the content property.</strong> It will override any slot content.</p>',
   },
   render: (args) => html`
-    <usa-summary-box 
-      heading="${args.heading}" 
+    <usa-summary-box
+      heading="${args.heading}"
       heading-level="${args.headingLevel}"
       content="${args.content}"
     >
@@ -171,7 +180,10 @@ export const WithoutHeading: Story = {
   },
   render: () => html`
     <usa-summary-box>
-      <p>This summary box has no heading - just content. This might be useful for simpler announcements or when the heading is part of the content itself.</p>
+      <p>
+        This summary box has no heading - just content. This might be useful for simpler
+        announcements or when the heading is part of the content itself.
+      </p>
       <h4>Self-Contained Content</h4>
       <p>The content includes its own heading structure and formatting.</p>
     </usa-summary-box>
@@ -187,16 +199,16 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h2>Proper Heading Hierarchy</h2>
         <p>Summary boxes maintain semantic heading structure for screen readers:</p>
-        
+
         <usa-summary-box heading="Main Section Summary" heading-level="h3">
           <p>This summary uses H3, following the page's H2 above.</p>
         </usa-summary-box>
-        
+
         <usa-summary-box heading="Subsection Summary" heading-level="h4">
           <p>This summary uses H4, creating proper hierarchy.</p>
         </usa-summary-box>
       </div>
-      
+
       <div>
         <h2>Accessibility Features</h2>
         <usa-summary-box heading="WCAG Compliance" heading-level="h3">
@@ -205,9 +217,11 @@ export const AccessibilityShowcase: Story = {
             <li><strong>Screen Reader Support:</strong> Content is announced in logical order</li>
             <li><strong>Keyboard Navigation:</strong> All interactive elements are focusable</li>
             <li><strong>Color Independence:</strong> Information is not conveyed by color alone</li>
-            <li><strong>Focus Management:</strong> Clear focus indicators for all interactive elements</li>
+            <li>
+              <strong>Focus Management:</strong> Clear focus indicators for all interactive elements
+            </li>
           </ul>
-          
+
           <p>Test with keyboard navigation: <a href="#test">Test Link</a></p>
           <button type="button" class="margin-top-1">Test Button</button>
         </usa-summary-box>
@@ -231,16 +245,16 @@ export const InteractiveDemo: Story = {
           <li><strong>content:</strong> Add HTML content (overrides slot content)</li>
         </ul>
       </div>
-      
-      <usa-summary-box 
-        heading="Interactive Summary Box" 
-        heading-level="h2"
-      >
-        <p>This is the default slot content. It will be replaced if you add content via the property control.</p>
-        <p><strong>Try it:</strong> Use the controls panel to modify this summary box's properties!</p>
+
+      <usa-summary-box heading="Interactive Summary Box" heading-level="h2">
+        <p>
+          This is the default slot content. It will be replaced if you add content via the property
+          control.
+        </p>
+        <p>
+          <strong>Try it:</strong> Use the controls panel to modify this summary box's properties!
+        </p>
       </usa-summary-box>
     </div>
   `,
 };
-
-

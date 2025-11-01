@@ -41,8 +41,8 @@ describe('USAFooter Layout Tests', () => {
     element.sections = [
       {
         title: 'Test Section',
-        links: [{ label: 'Test Link', href: '/test' }]
-      }
+        links: [{ label: 'Test Link', href: '/test' }],
+      },
     ];
     await element.updateComplete;
 
@@ -65,27 +65,36 @@ describe('USAFooter Layout Tests', () => {
     await element.updateComplete;
 
     const footerSlim = element.querySelector('.usa-footer');
-    expect(footerSlim?.classList.contains('usa-footer--slim'), 'Slim footer should have correct CSS class').toBe(true);
+    expect(
+      footerSlim?.classList.contains('usa-footer--slim'),
+      'Slim footer should have correct CSS class'
+    ).toBe(true);
 
     // Test medium variant
     element.variant = 'medium';
     await element.updateComplete;
 
     const footerMedium = element.querySelector('.usa-footer');
-    expect(footerMedium?.classList.contains('usa-footer--medium'), 'Medium footer should have correct CSS class').toBe(true);
+    expect(
+      footerMedium?.classList.contains('usa-footer--medium'),
+      'Medium footer should have correct CSS class'
+    ).toBe(true);
 
     // Test big variant
     element.variant = 'big';
     await element.updateComplete;
 
     const footerBig = element.querySelector('.usa-footer');
-    expect(footerBig?.classList.contains('usa-footer--big'), 'Big footer should have correct CSS class').toBe(true);
+    expect(
+      footerBig?.classList.contains('usa-footer--big'),
+      'Big footer should have correct CSS class'
+    ).toBe(true);
   });
 
   it('should position footer sections in correct grid layout', async () => {
     element.sections = [
       { title: 'Section 1', links: [{ label: 'Link 1', href: '/link1' }] },
-      { title: 'Section 2', links: [{ label: 'Link 2', href: '/link2' }] }
+      { title: 'Section 2', links: [{ label: 'Link 2', href: '/link2' }] },
     ];
     await element.updateComplete;
 
@@ -100,7 +109,9 @@ describe('USAFooter Layout Tests', () => {
     // Verify grid structure hierarchy
     expect(gridContainer?.contains(gridRow), 'Grid row should be inside container').toBe(true);
     gridCols.forEach((col, index) => {
-      expect(gridRow?.contains(col), `Grid column ${index + 1} should be inside grid row`).toBe(true);
+      expect(gridRow?.contains(col), `Grid column ${index + 1} should be inside grid row`).toBe(
+        true
+      );
     });
   });
 
@@ -109,9 +120,7 @@ describe('USAFooter Layout Tests', () => {
   // Cypress coverage: Footer identifier positioning tests in browser context
 
   it('should handle footer with sections but no identifier', async () => {
-    element.sections = [
-      { title: 'Section Only', links: [{ label: 'Link Only', href: '/only' }] }
-    ];
+    element.sections = [{ title: 'Section Only', links: [{ label: 'Link Only', href: '/only' }] }];
     element.agencyName = '';
     element.identifierLinks = [];
     await element.updateComplete;
@@ -127,9 +136,7 @@ describe('USAFooter Layout Tests', () => {
 
   it('should maintain proper USWDS footer content hierarchy', async () => {
     element.variant = 'big';
-    element.sections = [
-      { title: 'Full Section', links: [{ label: 'Full Link', href: '/full' }] }
-    ];
+    element.sections = [{ title: 'Full Section', links: [{ label: 'Full Link', href: '/full' }] }];
     element.agencyName = 'Full Agency';
     element.identifierLinks = [{ label: 'Full Privacy', href: '/full-privacy' }];
     await element.updateComplete;
@@ -166,7 +173,7 @@ describe('USAFooter Layout Tests', () => {
       expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
       // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
+      const criticalIssues = validation.issues.filter((issue) =>
         issue.includes('Missing USWDS JavaScript integration')
       );
       expect(criticalIssues.length).toBe(0);

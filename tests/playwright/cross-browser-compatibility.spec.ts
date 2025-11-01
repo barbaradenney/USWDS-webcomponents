@@ -7,11 +7,11 @@ import { test, expect } from '@playwright/test';
 
 // Test data for common components
 const testComponents = [
-  { name: 'Button', story: 'components-button--default' },
-  { name: 'Accordion', story: 'components-accordion--default' },
-  { name: 'Alert', story: 'components-alert--default' },
-  { name: 'Table', story: 'components-table--default' },
-  { name: 'Modal', story: 'components-modal--default' },
+  { name: 'Button', story: 'actions-button--default' },
+  { name: 'Accordion', story: 'structure-accordion--default' },
+  { name: 'Alert', story: 'feedback-alert--default' },
+  { name: 'Table', story: 'data-display-table--default' },
+  { name: 'Modal', story: 'feedback-modal--default' },
 ];
 
 test.describe('Cross-Browser Compatibility', () => {
@@ -32,7 +32,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.waitForTimeout(1000); // Allow for animations
 
         // Find the component element
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
         await expect(component).toBeVisible();
 
         // Verify component has expected USWDS classes
@@ -51,7 +51,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.goto(`/iframe.html?id=${story}`);
         await page.waitForLoadState('networkidle');
 
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
 
         // Test Tab navigation
         await page.keyboard.press('Tab');
@@ -77,7 +77,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.waitForLoadState('networkidle');
 
         // Check for essential accessibility attributes
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
 
         // Verify ARIA attributes exist where expected
         if (['Button'].includes(name)) {
@@ -111,7 +111,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.goto(`/iframe.html?id=${story}`);
         await page.waitForLoadState('networkidle');
 
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
         await expect(component).toBeVisible();
 
         // Get component dimensions
@@ -141,7 +141,7 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should load components within performance budget', async ({ page }) => {
       const startTime = Date.now();
 
-      await page.goto('/iframe.html?id=components-table--with-large-dataset');
+      await page.goto('/iframe.html?id=data-display-table--large-dataset');
       await page.waitForLoadState('networkidle');
 
       const loadTime = Date.now() - startTime;
@@ -160,7 +160,7 @@ test.describe('Cross-Browser Compatibility', () => {
     });
 
     test('should handle rapid interactions without performance degradation', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--multiple-items');
+      await page.goto('/iframe.html?id=structure-accordion--multiselectable');
       await page.waitForLoadState('networkidle');
 
       const accordionButtons = page.locator('usa-accordion button');
@@ -185,7 +185,7 @@ test.describe('Cross-Browser Compatibility', () => {
 
   test.describe('Form Integration Tests', () => {
     test('should integrate properly with native forms', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--in-form');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       const textInput = page.locator('usa-text-input input').first();
@@ -215,12 +215,13 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should handle slow network conditions', async ({ page, context }) => {
       // Simulate slow 3G network
       await context.route('**/*', async (route) => {
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+        // Use Promise delay for network simulation (auto-resolves, no clearTimeout needed)
+        await page.waitForTimeout(100);
         await route.continue();
       });
 
       const startTime = Date.now();
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const loadTime = Date.now() - startTime;
@@ -234,7 +235,7 @@ test.describe('Cross-Browser Compatibility', () => {
     });
 
     test('should handle offline mode gracefully', async ({ page, context }) => {
-      await page.goto('/iframe.html?id=components-alert--default');
+      await page.goto('/iframe.html?id=feedback-alert--default');
       await page.waitForLoadState('networkidle');
 
       // Go offline
@@ -258,7 +259,7 @@ test.describe('Cross-Browser Compatibility', () => {
       // Set dark color scheme
       await context.emulateMedia({ colorScheme: 'dark' });
 
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const button = page.locator('usa-button').first();
@@ -279,7 +280,7 @@ test.describe('Cross-Browser Compatibility', () => {
         reducedMotion: 'reduce',
       });
 
-      await page.goto('/iframe.html?id=components-alert--error');
+      await page.goto('/iframe.html?id=feedback-alert--error');
       await page.waitForLoadState('networkidle');
 
       const alert = page.locator('usa-alert').first();
@@ -305,7 +306,7 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should render correctly in print media', async ({ page, context }) => {
       await context.emulateMedia({ media: 'print' });
 
-      await page.goto('/iframe.html?id=components-table--default');
+      await page.goto('/iframe.html?id=data-display-table--default');
       await page.waitForLoadState('networkidle');
 
       const table = page.locator('usa-table').first();

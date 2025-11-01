@@ -250,8 +250,7 @@ describe('USAIconList', () => {
 
   describe('JavaScript Implementation Validation', () => {
     it('should pass JavaScript implementation validation', async () => {
-      const componentPath =
-        `${process.cwd()}/src/components/icon-list/usa-icon-list.ts`;
+      const componentPath = `${process.cwd()}/src/components/icon-list/usa-icon-list.ts`;
       const validation = validateComponentJavaScript(componentPath, 'icon-list');
 
       if (!validation.isValid) {

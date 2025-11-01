@@ -17,10 +17,12 @@
 The Modal component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/modal/usa-modal-behavior.ts` - USWDS behavior mirror
 - `src/components/modal/usa-modal.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/modal/usa-modal-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Modal component mirrors USWDS JavaScript behavior exactly to maintain 100% b
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should modal open/close toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should modal open/close toggle', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should focus trap management', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should focus trap management', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should escape key handling', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -104,11 +112,13 @@ it('should escape key handling', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should overlay click handling', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -128,11 +138,13 @@ it('should overlay click handling', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should force action variant (no close)', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -144,7 +156,6 @@ it('should force action variant (no close)', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -163,58 +174,65 @@ it('should force action variant (no close)', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`selectOrMatches()`** - Line 1
+
   ```javascript
-  const selectOrMatches = require("../../uswds-core/src/js/utils/select-or-matches");
+  const selectOrMatches = require('../../uswds-core/src/js/utils/select-or-matches');
   ```
 
 - **`FocusTrap()`** - Line 2
+
   ```javascript
-  const FocusTrap = require("../../uswds-core/src/js/utils/focus-trap");
+  const FocusTrap = require('../../uswds-core/src/js/utils/focus-trap');
   ```
 
 - **`ScrollBarWidth()`** - Line 3
+
   ```javascript
-  const ScrollBarWidth = require("../../uswds-core/src/js/utils/scrollbar-width");
+  const ScrollBarWidth = require('../../uswds-core/src/js/utils/scrollbar-width');
   ```
 
 - **`behavior()`** - Line 4
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`MODAL_CLASSNAME()`** - Line 8
+
   ```javascript
   const MODAL_CLASSNAME = `${PREFIX}-modal`;
   ```
 
 - **`OVERLAY_CLASSNAME()`** - Line 9
+
   ```javascript
   const OVERLAY_CLASSNAME = `${MODAL_CLASSNAME}-overlay`;
   ```
 
 - **`WRAPPER_CLASSNAME()`** - Line 10
+
   ```javascript
   const WRAPPER_CLASSNAME = `${MODAL_CLASSNAME}-wrapper`;
   ```
 
 - **`OPENER_ATTRIBUTE()`** - Line 11
+
   ```javascript
-  const OPENER_ATTRIBUTE = "data-open-modal";
+  const OPENER_ATTRIBUTE = 'data-open-modal';
   ```
 
 - **`CLOSER_ATTRIBUTE()`** - Line 12
+
   ```javascript
-  const CLOSER_ATTRIBUTE = "data-close-modal";
+  const CLOSER_ATTRIBUTE = 'data-close-modal';
   ```
 
 - **`FORCE_ACTION_ATTRIBUTE()`** - Line 13
   ```javascript
-  const FORCE_ACTION_ATTRIBUTE = "data-force-action";
+  const FORCE_ACTION_ATTRIBUTE = 'data-force-action';
   ```
 
-
-*...and 22 more functions*
-
+_...and 22 more functions_
 
 ---
 
@@ -230,11 +248,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -242,6 +262,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-modal-behavior.test.ts
 ```
@@ -254,10 +275,12 @@ npm test -- usa-modal-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Complex behavior requiring direct USWDS source replication
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

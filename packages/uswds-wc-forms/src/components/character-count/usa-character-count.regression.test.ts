@@ -1,10 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-character-count.ts';
 import type { USACharacterCount } from './usa-character-count.js';
-import {
-  waitForUpdate,
-  validateComponentJavaScript,
-} from '@uswds-wc/test-utils/test-utils.js';
+import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * Regression Tests for Character Count Component Interactive Functionality
@@ -446,11 +443,11 @@ describe('USACharacterCount Interactive Regression Tests', () => {
     });
 
     it('should have aria-live="polite" on status message', async () => {
-      element.maxlength = 100;  // Set maxlength to ensure status element is visible
+      element.maxlength = 100; // Set maxlength to ensure status element is visible
       await waitForUpdate(element);
 
       // Give USWDS time to initialize and modify DOM
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // USWDS creates screen reader specific status elements with aria-live
       const ariaLiveElements = element.querySelectorAll('[aria-live="polite"]');
@@ -458,8 +455,8 @@ describe('USACharacterCount Interactive Regression Tests', () => {
       expect(ariaLiveElements.length).toBeGreaterThan(0);
 
       // Check that at least one element has the correct aria-live attribute
-      const hasAriaLivePolite = Array.from(ariaLiveElements).some(el =>
-        el.getAttribute('aria-live') === 'polite'
+      const hasAriaLivePolite = Array.from(ariaLiveElements).some(
+        (el) => el.getAttribute('aria-live') === 'polite'
       );
       expect(hasAriaLivePolite).toBe(true);
     });
@@ -507,26 +504,26 @@ describe('USACharacterCount Interactive Regression Tests', () => {
       const container = element.querySelector('.usa-character-count');
       expect(container?.getAttribute('data-maxlength')).toBe('250');
     });
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/character-count/usa-character-count.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'character-count');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/character-count/usa-character-count.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'character-count');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Edge Cases and Regression Prevention', () => {

@@ -273,7 +273,8 @@ export const CustomContent: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Demonstrates using the default slot for custom content after accordion items, including expand/collapse controls.',
+        story:
+          'Demonstrates using the default slot for custom content after accordion items, including expand/collapse controls.',
       },
     },
   },
@@ -281,15 +282,15 @@ export const CustomContent: Story = {
   // These handlers are necessary for Storybook docs mode compatibility
   /* eslint-disable */
   render: () => html`
-      <div id="custom-content-demo">
-        <usa-accordion
-          id="custom-accordion"
-          multiselectable
-          .items=${[
-            {
-              id: 'custom-1',
-              title: 'Section 1: Overview',
-              content: `
+    <div id="custom-content-demo">
+      <usa-accordion
+        id="custom-accordion"
+        multiselectable
+        .items=${[
+          {
+            id: 'custom-1',
+            title: 'Section 1: Overview',
+            content: `
                 <p>This section contains custom HTML content with rich formatting.</p>
                 <ul>
                   <li><strong>Feature 1:</strong> Detailed description of the first feature</li>
@@ -298,12 +299,12 @@ export const CustomContent: Story = {
                 </ul>
                 <p><a href="#learn-more" class="usa-link">Learn more about this topic</a></p>
               `,
-              expanded: false,
-            },
-            {
-              id: 'custom-2',
-              title: 'Section 2: Technical Details',
-              content: `
+            expanded: false,
+          },
+          {
+            id: 'custom-2',
+            title: 'Section 2: Technical Details',
+            content: `
                 <p>Technical specifications and implementation details:</p>
                 <table class="usa-table usa-table--borderless width-full">
                   <thead>
@@ -328,12 +329,12 @@ export const CustomContent: Story = {
                   </tbody>
                 </table>
               `,
-              expanded: false,
-            },
-            {
-              id: 'custom-3',
-              title: 'Section 3: Examples',
-              content: `
+            expanded: false,
+          },
+          {
+            id: 'custom-3',
+            title: 'Section 3: Examples',
+            content: `
                 <p>Here are some practical examples:</p>
                 <div class="bg-base-lightest padding-2 border-left-05 border-primary margin-y-2">
                   <h4 class="margin-top-0">Example 1: Basic Usage</h4>
@@ -344,38 +345,38 @@ export const CustomContent: Story = {
                   <code>element.multiselectable = true;</code>
                 </div>
               `,
-              expanded: false,
-            },
-          ]}
-        >
-          <usa-alert variant="info" slim class="margin-top-3">
-            <h4 class="usa-alert__heading margin-top-0">Accordion Controls</h4>
-            <p class="margin-bottom-2">
-              Use these buttons to expand or collapse all accordion sections at once:
-            </p>
-            <div class="display-flex gap-1 flex-wrap">
-              <button
-                type="button"
-                class="usa-button usa-button--outline"
-                onclick="document.querySelector('#custom-accordion')?.querySelectorAll('.usa-accordion__button').forEach(b => b.getAttribute('aria-expanded') === 'false' && b.click())"
-              >
-                Expand All Sections
-              </button>
-              <button
-                type="button"
-                class="usa-button usa-button--outline"
-                onclick="document.querySelector('#custom-accordion')?.querySelectorAll('.usa-accordion__button').forEach(b => b.getAttribute('aria-expanded') === 'true' && b.click())"
-              >
-                Collapse All Sections
-              </button>
-            </div>
-            <p class="margin-top-2 margin-bottom-0 font-body-xs text-base-dark">
-              <strong>Note:</strong> This demonstrates using the default slot for custom content.
-              You can add any HTML elements including buttons, forms, or additional information.
-            </p>
-          </usa-alert>
-        </usa-accordion>
-      </div>
-    `,
+            expanded: false,
+          },
+        ]}
+      >
+        <usa-alert variant="info" slim class="margin-top-3">
+          <h4 class="usa-alert__heading margin-top-0">Accordion Controls</h4>
+          <p class="margin-bottom-2">
+            Use these buttons to expand or collapse all accordion sections at once:
+          </p>
+          <div class="display-flex gap-1 flex-wrap">
+            <button
+              type="button"
+              class="usa-button usa-button--outline"
+              onclick="document.querySelector('#custom-accordion')?.querySelectorAll('.usa-accordion__button').forEach(b => b.getAttribute('aria-expanded') === 'false' && b.click())"
+            >
+              Expand All Sections
+            </button>
+            <button
+              type="button"
+              class="usa-button usa-button--outline"
+              onclick="document.querySelector('#custom-accordion')?.querySelectorAll('.usa-accordion__button').forEach(b => b.getAttribute('aria-expanded') === 'true' && b.click())"
+            >
+              Collapse All Sections
+            </button>
+          </div>
+          <p class="margin-top-2 margin-bottom-0 font-body-xs text-base-dark">
+            <strong>Note:</strong> This demonstrates using the default slot for custom content. You
+            can add any HTML elements including buttons, forms, or additional information.
+          </p>
+        </usa-alert>
+      </usa-accordion>
+    </div>
+  `,
   /* eslint-enable */
 };

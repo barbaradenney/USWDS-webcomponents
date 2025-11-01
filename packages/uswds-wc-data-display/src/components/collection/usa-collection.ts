@@ -206,7 +206,7 @@ export class USACollection extends LitElement {
 
     return html`
       <ul class="usa-collection__meta" aria-label="Topics">
-        ${tags.map(tag => this.renderTag(tag))}
+        ${tags.map((tag) => this.renderTag(tag))}
       </ul>
     `;
   }
@@ -246,7 +246,7 @@ export class USACollection extends LitElement {
 
     return html`
       <ul class="usa-collection__meta" aria-label="More information">
-        ${metadata.map(meta => this.renderMetadataItem(meta))}
+        ${metadata.map((meta) => this.renderMetadataItem(meta))}
       </ul>
     `;
   }
@@ -267,26 +267,24 @@ export class USACollection extends LitElement {
       <li class="usa-collection__item">
         ${item.media ? this.renderMedia(item.media) : ''}
         <div class="usa-collection__body">
-          <h3 class="usa-collection__heading">
-            ${this.renderTitle(item)}
-          </h3>
+          <h3 class="usa-collection__heading">${this.renderTitle(item)}</h3>
           ${item.description ? this.renderDescription(item.description) : ''}
-          ${this.renderAuthorAndDate(item)}
-          ${this.renderMetadata(item.metadata || [])}
+          ${this.renderAuthorAndDate(item)} ${this.renderMetadata(item.metadata || [])}
           ${this.renderTags(item.tags || [])}
         </div>
       </li>
     `;
   }
   private async initializeUSWDSCollection() {
-    
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
+      console.log(
+        `⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`
+      );
       return;
     }
 
-console.log(
+    console.log(
       `🗑️ Collection: Initializing (presentational component - no USWDS JavaScript needed)`
     );
 
@@ -315,7 +313,7 @@ console.log(
     return html`
       <div class="usa-collection__virtual-container">
         <ul class="${collectionClasses.join(' ')}">
-          ${this.visibleItems.map(item => this.renderItem(item))}
+          ${this.visibleItems.map((item) => this.renderItem(item))}
         </ul>
       </div>
     `;
@@ -326,7 +324,7 @@ console.log(
 
     return html`
       <ul class="${collectionClasses.join(' ')}">
-        ${this.items.map(item => this.renderItem(item))}
+        ${this.items.map((item) => this.renderItem(item))}
       </ul>
     `;
   }

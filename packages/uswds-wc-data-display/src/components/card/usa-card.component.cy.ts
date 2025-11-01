@@ -4,7 +4,7 @@ import './index.ts';
 describe('USA Card Component Tests', () => {
   it('should render card with default properties', () => {
     cy.mount(`<usa-card id="test-card"></usa-card>`);
-    
+
     cy.get('usa-card').should('exist');
     cy.get('.usa-card__container').should('exist');
     cy.get('usa-card').should('have.class', 'usa-card');
@@ -18,7 +18,7 @@ describe('USA Card Component Tests', () => {
         heading-level="2">
       </usa-card>
     `);
-    
+
     cy.get('.usa-card__header').should('exist');
     cy.get('.usa-card__heading').should('contain.text', 'Test Card Title');
     cy.get('h2.usa-card__heading').should('exist');
@@ -31,7 +31,7 @@ describe('USA Card Component Tests', () => {
         text="This is the card body text content.">
       </usa-card>
     `);
-    
+
     cy.get('.usa-card__body').should('exist');
     cy.get('.usa-card__body p').should('contain.text', 'This is the card body text content.');
   });
@@ -43,7 +43,7 @@ describe('USA Card Component Tests', () => {
         footer-text="Card footer information">
       </usa-card>
     `);
-    
+
     cy.get('.usa-card__footer').should('exist');
     cy.get('.usa-card__footer p').should('contain.text', 'Card footer information');
   });
@@ -58,7 +58,7 @@ describe('USA Card Component Tests', () => {
         heading-level="1">
       </usa-card>
     `);
-    
+
     cy.get('h1.usa-card__heading').should('contain.text', 'Complete Card');
     cy.get('.usa-card__body p').should('contain.text', 'This card has all content types.');
     cy.get('.usa-card__footer p').should('contain.text', 'Footer information');
@@ -73,7 +73,7 @@ describe('USA Card Component Tests', () => {
         media-alt="Test image description">
       </usa-card>
     `);
-    
+
     cy.get('.usa-card__media').should('exist');
     cy.get('.usa-card__img').should('exist');
     cy.get('.usa-card__img img')
@@ -91,7 +91,7 @@ describe('USA Card Component Tests', () => {
         media-alt="Test video description">
       </usa-card>
     `);
-    
+
     cy.get('.usa-card__media').should('exist');
     cy.get('.usa-card__video').should('exist');
     cy.get('.usa-card__video video')
@@ -102,8 +102,8 @@ describe('USA Card Component Tests', () => {
 
   it('should handle different media positions', () => {
     const positions = ['inset', 'exdent', 'right'];
-    
-    positions.forEach(position => {
+
+    positions.forEach((position) => {
       cy.mount(`
         <usa-card 
           id="test-card" 
@@ -113,7 +113,7 @@ describe('USA Card Component Tests', () => {
           heading="Media Position Test">
         </usa-card>
       `);
-      
+
       if (position === 'right') {
         cy.get('usa-card').should('have.class', 'usa-card--media-right');
       } else {
@@ -131,7 +131,7 @@ describe('USA Card Component Tests', () => {
         flag-layout>
       </usa-card>
     `);
-    
+
     cy.get('usa-card').should('have.class', 'usa-card--flag');
   });
 
@@ -146,9 +146,9 @@ describe('USA Card Component Tests', () => {
         header-first>
       </usa-card>
     `);
-    
+
     cy.get('usa-card').should('have.class', 'usa-card--header-first');
-    
+
     // Verify order: header should come before media
     cy.get('.usa-card__container').children().first().should('have.class', 'usa-card__header');
   });
@@ -163,10 +163,8 @@ describe('USA Card Component Tests', () => {
         href="/test-page">
       </usa-card>
     `);
-    
-    cy.get('usa-card')
-      .should('have.attr', 'role', 'button')
-      .should('have.attr', 'tabindex', '0');
+
+    cy.get('usa-card').should('have.attr', 'role', 'button').should('have.attr', 'tabindex', '0');
     cy.get('.usa-card__container').should('have.class', 'usa-card__container--actionable');
   });
 
@@ -179,24 +177,24 @@ describe('USA Card Component Tests', () => {
         href="/clicked-page">
       </usa-card>
     `);
-    
+
     cy.window().then((win) => {
       const card = win.document.getElementById('test-card') as any;
       const clickSpy = cy.stub();
       card.addEventListener('card-click', clickSpy);
-      
+
       // Stub window navigation for testing
       cy.stub(win, 'location').value({ href: '' });
-      
+
       cy.get('usa-card').click();
-      
+
       cy.then(() => {
         expect(clickSpy).to.have.been.calledWith(
           Cypress.sinon.match({
             detail: Cypress.sinon.match({
               heading: 'Clickable Card',
-              href: '/clicked-page'
-            })
+              href: '/clicked-page',
+            }),
           })
         );
       });
@@ -211,22 +209,22 @@ describe('USA Card Component Tests', () => {
         actionable>
       </usa-card>
     `);
-    
+
     cy.window().then((win) => {
       const card = win.document.getElementById('test-card') as any;
       const clickSpy = cy.stub();
       card.addEventListener('card-click', clickSpy);
-      
+
       // Test Enter key
       cy.get('usa-card').focus().type('{enter}');
-      
+
       cy.then(() => {
         expect(clickSpy).to.have.been.called;
       });
-      
+
       // Test Space key
       cy.get('usa-card').focus().type(' ');
-      
+
       cy.then(() => {
         expect(clickSpy).to.have.been.calledTwice;
       });
@@ -243,13 +241,13 @@ describe('USA Card Component Tests', () => {
         target="_blank">
       </usa-card>
     `);
-    
+
     cy.window().then((win) => {
       // Stub window.open for testing
       cy.stub(win, 'open').as('windowOpen');
-      
+
       cy.get('usa-card').click();
-      
+
       cy.get('@windowOpen').should('have.been.calledWith', 'https://example.com', '_blank');
     });
   });
@@ -266,7 +264,7 @@ describe('USA Card Component Tests', () => {
         </div>
       </usa-card>
     `);
-    
+
     cy.get('.usa-card__body').should('contain.text', 'Custom body content with HTML');
     cy.get('.usa-card__body button').should('contain.text', 'Custom Button');
     cy.get('.usa-card__footer').should('contain.text', 'Custom footer with links');
@@ -282,7 +280,7 @@ describe('USA Card Component Tests', () => {
         </div>
       </usa-card>
     `);
-    
+
     cy.get('.custom-card-content').should('exist');
     cy.get('.custom-card-content h2').should('contain.text', 'Completely Custom Card');
   });
@@ -298,7 +296,7 @@ describe('USA Card Component Tests', () => {
         media-position="right">
       </usa-card>
     `);
-    
+
     cy.get('usa-card').should('have.class', 'usa-card--media-right');
     cy.get('usa-card').should('not.have.class', 'usa-card--flag');
   });
@@ -315,7 +313,7 @@ describe('USA Card Component Tests', () => {
         flag-layout>
       </usa-card>
     `);
-    
+
     cy.get('usa-card')
       .should('have.class', 'usa-card--flag')
       .should('have.class', 'usa-card--media-right');
@@ -323,8 +321,8 @@ describe('USA Card Component Tests', () => {
 
   it('should handle different heading levels', () => {
     const levels = ['1', '2', '3', '4', '5', '6'];
-    
-    levels.forEach(level => {
+
+    levels.forEach((level) => {
       cy.mount(`
         <usa-card 
           id="test-card" 
@@ -332,14 +330,14 @@ describe('USA Card Component Tests', () => {
           heading-level="${level}">
         </usa-card>
       `);
-      
+
       cy.get(`h${level}.usa-card__heading`).should('contain.text', `Heading Level ${level}`);
     });
   });
 
   it('should not render sections without content', () => {
     cy.mount(`<usa-card id="test-card"></usa-card>`);
-    
+
     // Should not render header, body, or footer when empty
     cy.get('.usa-card__header').should('not.exist');
     cy.get('.usa-card__body').should('not.exist');
@@ -349,22 +347,22 @@ describe('USA Card Component Tests', () => {
 
   it('should update classes when properties change', () => {
     cy.mount(`<usa-card id="test-card" heading="Dynamic Card"></usa-card>`);
-    
+
     cy.window().then((win) => {
       const card = win.document.getElementById('test-card') as any;
-      
+
       // Initially not flag layout
       cy.get('usa-card').should('not.have.class', 'usa-card--flag');
-      
+
       // Change to flag layout
       card.flagLayout = true;
       cy.get('usa-card').should('have.class', 'usa-card--flag');
-      
+
       // Change to actionable
       card.actionable = true;
       cy.get('usa-card').should('have.attr', 'role', 'button');
       cy.get('.usa-card__container').should('have.class', 'usa-card__container--actionable');
-      
+
       // Change to header first
       card.headerFirst = true;
       cy.get('usa-card').should('have.class', 'usa-card--header-first');
@@ -396,13 +394,16 @@ describe('USA Card Component Tests', () => {
         </div>
       </usa-card>
     `);
-    
+
     // Verify all elements are rendered correctly
     cy.get('usa-card').should('have.class', 'usa-card--flag');
     cy.get('usa-card').should('have.attr', 'role', 'button');
     cy.get('h2.usa-card__heading').should('contain.text', 'Complex Government Service Card');
     cy.get('.usa-card__media--inset').should('exist');
-    cy.get('.usa-card__body').should('contain.text', 'This card demonstrates all available features');
+    cy.get('.usa-card__body').should(
+      'contain.text',
+      'This card demonstrates all available features'
+    );
     cy.get('.usa-card__body ul').should('exist');
     cy.get('.usa-card__footer').should('contain.text', 'Updated: March 2024');
   });
@@ -420,16 +421,17 @@ describe('USA Card Component Tests', () => {
         href="/accessible-page">
       </usa-card>
     `);
-    
+
     // Check actionable accessibility
-    cy.get('usa-card')
-      .should('have.attr', 'role', 'button')
-      .should('have.attr', 'tabindex', '0');
-    
+    cy.get('usa-card').should('have.attr', 'role', 'button').should('have.attr', 'tabindex', '0');
+
     // Check image accessibility
-    cy.get('.usa-card__img img')
-      .should('have.attr', 'alt', 'Descriptive alternative text for screen readers');
-    
+    cy.get('.usa-card__img img').should(
+      'have.attr',
+      'alt',
+      'Descriptive alternative text for screen readers'
+    );
+
     // Check keyboard navigation
     cy.get('usa-card').focus();
     cy.focused().should('be.visible');
@@ -444,11 +446,11 @@ describe('USA Card Component Tests', () => {
         actionable>
       </usa-card>
     `);
-    
+
     // Test focus
     cy.get('usa-card').focus();
     cy.focused().should('have.class', 'usa-card');
-    
+
     // Test hover (trigger hover event)
     cy.get('usa-card').trigger('mouseover');
     cy.get('usa-card').should('be.visible');
@@ -464,15 +466,14 @@ describe('USA Card Component Tests', () => {
         </usa-card>
       </div>
     `);
-    
-    cy.window().then((win) => {
 
+    cy.window().then((win) => {
       // Verify card is interactive
       cy.get('usa-card').should('have.attr', 'role', 'button');
-      
+
       // Remove card from DOM
       container!.removeChild(card);
-      
+
       // Should not cause errors when removed
       cy.get('body').click();
     });
@@ -486,20 +487,18 @@ describe('USA Card Component Tests', () => {
         text="This card is not actionable.">
       </usa-card>
     `);
-    
-    cy.get('usa-card')
-      .should('not.have.attr', 'role')
-      .should('not.have.attr', 'tabindex');
+
+    cy.get('usa-card').should('not.have.attr', 'role').should('not.have.attr', 'tabindex');
     cy.get('.usa-card__container').should('not.have.class', 'usa-card__container--actionable');
-    
+
     // Click should not emit events
     cy.window().then((win) => {
       const card = win.document.getElementById('static-card') as any;
       const clickSpy = cy.stub();
       card.addEventListener('card-click', clickSpy);
-      
+
       cy.get('usa-card').click();
-      
+
       cy.then(() => {
         expect(clickSpy).not.to.have.been.called;
       });
@@ -518,18 +517,18 @@ describe('USA Card Component Tests', () => {
         flag-layout>
       </usa-card>
     `);
-    
+
     // Set mobile viewport
     cy.viewport(375, 667);
-    
+
     cy.get('.usa-card').should('be.visible');
     cy.get('.usa-card__heading').should('be.visible');
     cy.get('.usa-card__body').should('be.visible');
     cy.get('.usa-card__media').should('be.visible');
-    
+
     // Set desktop viewport
     cy.viewport(1200, 800);
-    
+
     cy.get('.usa-card').should('be.visible');
     cy.get('usa-card').should('have.class', 'usa-card--flag');
     cy.get('usa-card').should('have.class', 'usa-card--media-right');
@@ -562,7 +561,7 @@ describe('USA Card Component Tests', () => {
         </div>
       </div>
     `);
-    
+
     cy.injectAxe();
     cy.checkAccessibility();
   });
@@ -575,7 +574,7 @@ describe('USA Card Component Tests', () => {
         class="custom-card-class special-styling">
       </usa-card>
     `);
-    
+
     cy.get('usa-card')
       .should('have.class', 'custom-card-class')
       .should('have.class', 'special-styling')

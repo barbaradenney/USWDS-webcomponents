@@ -1,0 +1,77 @@
+name: Regenerate Storybook Documentation
+
+on:
+  push:
+    paths:
+      - 'packages/*/src/components/**/*.stories.ts'
+      - 'packages/*/src/components/**/*.mdx'
+      - 'scripts/regenerate-storybook-docs.js'
+  pull_request:
+    paths:
+      - 'packages/*/src/components/**/*.stories.ts'
+      - 'packages/*/src/components/**/*.mdx'
+      - 'scripts/regenerate-storybook-docs.js'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  regenerate-docs:
+    runs-on: ubuntu-latest
+    continue-on-error: true  # TODO: Fix for monorepo structure - docs script needs workspace updates
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Regenerate Storybook documentation
+        run: pnpm run docs:storybook
+        
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes == 'true' && github.event_name == 'push'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add packages/*/src/components/**/*.docs.mdx
+          git add docs/STORYBOOK_DOCS.md
+          git commit -m "📚 Auto-regenerate Storybook documentation [skip ci]"
+          git push
+          
+      - name: Create PR comment
+        if: steps.check-changes.outputs.changes == 'true' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '📚 **Storybook Documentation Updated**\n\nThe Storybook documentation has been automatically regenerated based on your changes to story files.\n\n✅ Documentation is up to date!'
+            })

@@ -164,7 +164,7 @@ export class USAList extends USWDSBaseComponent {
     return this as any;
   }
 
-    override render() {
+  override render() {
     const classes = ['usa-list', this.unstyled ? 'usa-list--unstyled' : '']
       .filter(Boolean)
       .join(' ');

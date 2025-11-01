@@ -253,6 +253,5 @@ describe('USWDS File Input Behavior Contract', () => {
       expect(target).not.toBeNull();
       expect(instructions).not.toBeNull();
     });
-
   });
 });

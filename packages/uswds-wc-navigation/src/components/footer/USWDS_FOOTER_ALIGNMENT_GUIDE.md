@@ -5,7 +5,9 @@ This guide documents common misalignment patterns we encountered while implement
 ## Common Misalignment Patterns Identified
 
 ### 1. **Mixing Component Patterns**
+
 **❌ Problem:** Combining footer with identifier component
+
 ```typescript
 // WRONG: Identifier rendered within footer
 render() {
@@ -20,6 +22,7 @@ render() {
 ```
 
 **✅ Solution:** Keep components separate
+
 ```typescript
 // CORRECT: Footer only contains footer sections
 render() {
@@ -33,7 +36,9 @@ render() {
 ```
 
 ### 2. **Incorrect Variant Structure**
+
 **❌ Problem:** Using same structure for all variants
+
 ```typescript
 // WRONG: Same structure for medium and big footers
 renderFooterSection() {
@@ -42,6 +47,7 @@ renderFooterSection() {
 ```
 
 **✅ Solution:** Variant-specific structure
+
 ```typescript
 // CORRECT: Different structure per variant
 renderFooterSection() {
@@ -54,7 +60,9 @@ renderFooterSection() {
 ```
 
 ### 3. **Wrong DOM Hierarchy**
+
 **❌ Problem:** Incorrect nesting of USWDS elements
+
 ```typescript
 // WRONG: nav > primary-section (backwards)
 html`
@@ -67,6 +75,7 @@ html`
 ```
 
 **✅ Solution:** Correct USWDS hierarchy
+
 ```typescript
 // CORRECT: primary-section > nav
 html`
@@ -79,20 +88,29 @@ html`
 ```
 
 ### 4. **Missing CSS Classes**
+
 **❌ Problem:** Missing required USWDS classes
+
 ```typescript
 // WRONG: Missing usa-list--unstyled causes bullet points
-html`<ul class="grid-row grid-gap">${items}</ul>`
+html`<ul class="grid-row grid-gap">
+  ${items}
+</ul>`;
 ```
 
 **✅ Solution:** Include all required classes
+
 ```typescript
 // CORRECT: usa-list--unstyled prevents bullet points
-html`<ul class="grid-row grid-gap usa-list--unstyled">${items}</ul>`
+html`<ul class="grid-row grid-gap usa-list--unstyled">
+  ${items}
+</ul>`;
 ```
 
 ### 5. **Incorrect Element Types**
+
 **❌ Problem:** Using wrong HTML elements for footer variants
+
 ```typescript
 // WRONG: Always using headings
 renderPrimaryLink() {
@@ -101,6 +119,7 @@ renderPrimaryLink() {
 ```
 
 **✅ Solution:** Element type based on variant
+
 ```typescript
 // CORRECT: Links for medium, headings for big
 renderPrimaryLink() {
@@ -115,6 +134,7 @@ renderPrimaryLink() {
 ## USWDS Footer Structure Reference
 
 ### Medium Footer Structure
+
 ```
 usa-footer usa-footer--medium
 ├── usa-footer__primary-section
@@ -134,6 +154,7 @@ usa-footer usa-footer--medium
 ```
 
 ### Big Footer Structure
+
 ```
 usa-footer usa-footer--big
 ├── usa-footer__primary-section
@@ -155,24 +176,30 @@ usa-footer usa-footer--big
 ## Validation Strategy
 
 ### 1. **Automated Structure Tests**
+
 Create tests that validate the exact DOM structure matches USWDS patterns:
+
 - Element hierarchy and nesting
 - CSS class presence and combinations
 - Element types (a vs h4) per variant
 - Grid structure and responsive classes
 
 ### 2. **USWDS Reference Verification**
+
 - Always check official USWDS templates before implementation
 - Compare generated HTML with USWDS source templates
 - Validate against multiple screen sizes
 
 ### 3. **Visual Regression Testing**
+
 - Screenshot comparison with official USWDS examples
 - Test responsive behavior at different breakpoints
 - Verify styling matches exactly (padding, spacing, colors)
 
 ### 4. **Pre-commit Validation**
+
 Run USWDS alignment tests before every commit:
+
 ```bash
 npm run test:footer-alignment
 ```
@@ -193,15 +220,17 @@ Before implementing or modifying footer:
 ## Common Debugging Steps
 
 1. **Compare HTML Output:**
+
    ```bash
    # Check generated structure
    curl -s http://localhost:5173/debug-footer-test.html | grep -A 50 "usa-footer"
    ```
 
 2. **Validate CSS Classes:**
+
    ```javascript
    // Check for missing USWDS classes
-   document.querySelectorAll('.usa-footer *').forEach(el => {
+   document.querySelectorAll('.usa-footer *').forEach((el) => {
      console.log(el.tagName, Array.from(el.classList));
    });
    ```

@@ -1,10 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-combo-box.ts';
 import type { USAComboBox } from './usa-combo-box.js';
-import {
-  waitForUpdate,
-  validateComponentJavaScript,
-} from '@uswds-wc/test-utils/test-utils.js';
+import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * Regression Tests for Combo Box Functionality
@@ -71,7 +68,6 @@ describe('USAComboBox Regression Tests', () => {
       expect(document.activeElement).toBe(selectElement);
     });
 
-
     it('should handle keyboard events on select element', async () => {
       selectElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
       await waitForUpdate(element);
@@ -79,7 +75,6 @@ describe('USAComboBox Regression Tests', () => {
       // USWDS handles keyboard navigation
       expect(selectElement).toBeTruthy();
     });
-
   });
 
   describe('Select Element Behavior', () => {
@@ -93,7 +88,6 @@ describe('USAComboBox Regression Tests', () => {
       // USWDS will enhance keyboard navigation
       expect(selectElement).toBeTruthy();
     });
-
 
     it('should maintain select element state', async () => {
       // Initially no value is set (component default is empty string)
@@ -200,33 +194,32 @@ describe('USAComboBox Regression Tests', () => {
 
       const options = selectElement.querySelectorAll('option');
       expect(options[0].selected).toBe(false); // apple
-      expect(options[1].selected).toBe(true);  // banana
+      expect(options[1].selected).toBe(true); // banana
       expect(options[2].selected).toBe(false); // cherry
     });
   });
 
   describe('Event Dispatching', () => {
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/combo-box/usa-combo-box.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'combo-box');
 
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/combo-box/usa-combo-box.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'combo-box');
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
-
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Edge Cases and Regression Prevention', () => {
@@ -256,7 +249,6 @@ describe('USAComboBox Regression Tests', () => {
       expect(selectElement.tagName).toBe('SELECT');
       expect(selectElement.classList.contains('usa-sr-only')).toBe(true);
     });
-
 
     it('should update select options when options prop changes', async () => {
       expect(selectElement.options.length).toBe(5);
@@ -317,7 +309,7 @@ describe('USAComboBox Regression Tests', () => {
       await waitForUpdate(testElement);
 
       // Wait additional time for USWDS transformation and value sync
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // CRITICAL: Value must persist after USWDS initialization
       expect(testElement.value).toBe('banana');
@@ -341,7 +333,7 @@ describe('USAComboBox Regression Tests', () => {
 
       document.body.appendChild(testElement);
       await waitForUpdate(testElement);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Value set via attribute must persist
       expect(testElement.value).toBe('cherry');
@@ -363,16 +355,17 @@ describe('USAComboBox Regression Tests', () => {
       await waitForUpdate(testElement);
 
       // Wait for USWDS transformation and value sync to complete
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // CRITICAL: Dropdown list must be closed after initial value sync
       const list = testElement.querySelector('.usa-combo-box__list');
 
       if (list) {
         // Dropdown should have 'hidden' attribute or not be visible
-        const isHidden = list.hasAttribute('hidden') ||
-                        !list.classList.contains('is-visible') ||
-                        list.getAttribute('aria-hidden') === 'true';
+        const isHidden =
+          list.hasAttribute('hidden') ||
+          !list.classList.contains('is-visible') ||
+          list.getAttribute('aria-hidden') === 'true';
 
         expect(isHidden).toBe(true);
       }
@@ -391,7 +384,7 @@ describe('USAComboBox Regression Tests', () => {
 
       document.body.appendChild(testElement);
       await waitForUpdate(testElement);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Find the toggle button - its existence proves the component is interactive
       const toggle = testElement.querySelector('.usa-combo-box__toggle-list') as HTMLButtonElement;
@@ -420,7 +413,7 @@ describe('USAComboBox Regression Tests', () => {
 
       document.body.appendChild(testElement);
       await waitForUpdate(testElement);
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // USWDS creates a visible input with the label as display value
       const input = testElement.querySelector('.usa-combo-box__input') as HTMLInputElement;

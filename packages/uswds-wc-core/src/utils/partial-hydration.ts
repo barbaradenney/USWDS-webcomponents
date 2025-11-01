@@ -252,10 +252,10 @@ export function autoDetectHydration(element: Element): HydrationMode {
 
   // Heuristics for auto-detection
   const hasFormElements = element.querySelector('input, select, textarea, button[type="submit"]');
-  const hasClickHandlers = element.hasAttribute('onclick') ||
-                          element.getAttribute('class')?.includes('clickable');
-  const hasAriaControls = element.hasAttribute('aria-controls') ||
-                         element.hasAttribute('aria-expanded');
+  const hasClickHandlers =
+    element.hasAttribute('onclick') || element.getAttribute('class')?.includes('clickable');
+  const hasAriaControls =
+    element.hasAttribute('aria-controls') || element.hasAttribute('aria-expanded');
 
   if (hasFormElements || hasClickHandlers || hasAriaControls) {
     return 'interactive';
@@ -411,9 +411,7 @@ export function getHydrationStats(): {
   ratio: string;
 } {
   const total = staticComponentCount + interactiveComponentCount;
-  const ratio = total > 0
-    ? `${staticComponentCount}:${interactiveComponentCount}`
-    : '0:0';
+  const ratio = total > 0 ? `${staticComponentCount}:${interactiveComponentCount}` : '0:0';
 
   return {
     staticComponents: staticComponentCount,

@@ -12,13 +12,13 @@ describe('Table Live Region Announcements', () => {
   const sampleHeaders = [
     { key: 'name', label: 'Name', sortable: true, sortType: 'text' as const },
     { key: 'age', label: 'Age', sortable: true, sortType: 'number' as const },
-    { key: 'email', label: 'Email', sortable: false }
+    { key: 'email', label: 'Email', sortable: false },
   ];
 
   const sampleData = [
     { name: 'Alice', age: 30, email: 'alice@example.com' },
     { name: 'Bob', age: 25, email: 'bob@example.com' },
-    { name: 'Charlie', age: 35, email: 'charlie@example.com' }
+    { name: 'Charlie', age: 35, email: 'charlie@example.com' },
   ];
 
   beforeEach(() => {
@@ -73,10 +73,12 @@ describe('Table Live Region Announcements', () => {
     cy.get('th[data-sortable]').should('have.length', 2);
 
     // Debug: Log what's in the headers
-    cy.get('th[data-sortable]').first().then(($th) => {
-      cy.log('Header HTML:', $th[0].innerHTML);
-      cy.log('Header children:', $th[0].children.length);
-    });
+    cy.get('th[data-sortable]')
+      .first()
+      .then(($th) => {
+        cy.log('Header HTML:', $th[0].innerHTML);
+        cy.log('Header children:', $th[0].children.length);
+      });
 
     // Check that sort buttons were created
     cy.get('.usa-table__header__button').should('have.length', 2);

@@ -1,14 +1,14 @@
 /**
  * Storybook Documentation Integration Utility
- * 
+ *
  * This utility provides functions to dynamically load and integrate component
  * documentation (README, CHANGELOG, TESTING.md) into Storybook stories.
- * 
+ *
  * Usage in story files:
  * import { getComponentDocs } from '../../utils/storybook-docs.js';
- * 
+ *
  * const docs = getComponentDocs('button');
- * 
+ *
  * const meta: Meta = {
  *   parameters: {
  *     docs: {
@@ -84,7 +84,6 @@ export async function loadComponentDocs(componentName: string): Promise<Componen
     // } catch (error) {
     //   console.log(`No README found for ${componentName}`);
     // }
-
     // // Try to load CHANGELOG.md
     // try {
     //   const changelogModule = await import(`../components/${componentName}/CHANGELOG.md?raw`);
@@ -92,7 +91,6 @@ export async function loadComponentDocs(componentName: string): Promise<Componen
     // } catch (error) {
     //   console.log(`No CHANGELOG found for ${componentName}`);
     // }
-
     // // Try to load TESTING.md
     // try {
     //   const testingModule = await import(`../components/${componentName}/TESTING.md?raw`);
@@ -124,7 +122,7 @@ ${formattedChangelog}
     readme: formattedReadme,
     changelog: formattedChangelog,
     testing: formattedTesting,
-    full
+    full,
   };
 
   // Cache the result
@@ -171,9 +169,9 @@ the documentation files may not be available in this build.*
 
   return {
     readme: placeholder,
-    changelog: placeholder,  
+    changelog: placeholder,
     testing: placeholder,
-    full: placeholder
+    full: placeholder,
   };
 }
 
@@ -181,7 +179,7 @@ the documentation files may not be available in this build.*
  * Create enhanced Storybook meta configuration with documentation
  */
 export function createStorybookMeta(
-  componentName: string, 
+  componentName: string,
   title: string,
   additionalConfig: Record<string, any> = {}
 ): Record<string, any> {
@@ -194,10 +192,10 @@ export function createStorybookMeta(
       layout: 'padded',
       docs: {
         description: {
-          component: docs.full
-        }
-      }
+          component: docs.full,
+        },
+      },
     },
-    ...additionalConfig
+    ...additionalConfig,
   };
 }

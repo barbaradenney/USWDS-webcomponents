@@ -93,8 +93,14 @@ export const WithWrap: Story = {
     <div class="margin-top-1 padding-1 bg-info-lighter radius-md font-body-xs">
       <p><strong>📱 Responsive Wrapping Behavior:</strong></p>
       <ul>
-        <li><strong>Viewport ≥480px:</strong> Breadcrumb items wrap to multiple lines inside the constrained container</li>
-        <li><strong>Viewport &lt;480px:</strong> Shows mobile condensed view with back arrow (USWDS standard)</li>
+        <li>
+          <strong>Viewport ≥480px:</strong> Breadcrumb items wrap to multiple lines inside the
+          constrained container
+        </li>
+        <li>
+          <strong>Viewport &lt;480px:</strong> Shows mobile condensed view with back arrow (USWDS
+          standard)
+        </li>
       </ul>
       <p class="margin-bottom-0"><em>Resize browser window to test both modes!</em></p>
     </div>
@@ -135,20 +141,19 @@ export const ResponsiveDemo: Story = {
       <usa-breadcrumb .items=${args.items} ?wrap=${args.wrap}></usa-breadcrumb>
     </div>
 
-    <div
-      class="margin-top-1 padding-1 bg-base-lightest radius-md font-body-xs"
-    >
+    <div class="margin-top-1 padding-1 bg-base-lightest radius-md font-body-xs">
       <p>
         <strong>⚠️ Important - Viewport Requirements:</strong>
       </p>
       <ul>
         <li><strong>Desktop (480px+):</strong> Wrapping works - items flow to multiple lines</li>
-        <li><strong>Mobile (&lt;480px):</strong> USWDS shows condensed view with back arrow regardless of wrap setting</li>
+        <li>
+          <strong>Mobile (&lt;480px):</strong> USWDS shows condensed view with back arrow regardless
+          of wrap setting
+        </li>
         <li><strong>Current viewport:</strong> <span id="viewport-info"></span></li>
       </ul>
-      <p>
-        Resize your browser window above 480px to see the wrapping behavior in action.
-      </p>
+      <p>Resize your browser window above 480px to see the wrapping behavior in action.</p>
     </div>
 
     <script>
@@ -223,9 +228,7 @@ export const AccessibilityDemo: Story = {
 
     <usa-breadcrumb .items=${args.items} ?wrap=${args.wrap}></usa-breadcrumb>
 
-    <div
-      class="margin-top-1 padding-1 bg-success-lighter border border-success radius-md"
-    >
+    <div class="margin-top-1 padding-1 bg-success-lighter border border-success radius-md">
       <h4 class="margin-top-0 text-success-dark">✅ WCAG AA Compliance</h4>
       <ul class="margin-bottom-0">
         <li>Color contrast meets requirements</li>
@@ -284,15 +287,21 @@ export const ComparisonDemo: Story = {
     <div class="margin-top-2 padding-1 bg-warning-lighter border border-warning radius-md">
       <h4>🔍 Responsive Behavior (USWDS Standard):</h4>
       <ul>
-        <li><strong>Mobile (&lt;480px):</strong> Shows condensed view with back arrow - wrap setting ignored</li>
-        <li><strong>Desktop (≥480px):</strong>
+        <li>
+          <strong>Mobile (&lt;480px):</strong> Shows condensed view with back arrow - wrap setting
+          ignored
+        </li>
+        <li>
+          <strong>Desktop (≥480px):</strong>
           <ul>
             <li><strong>No Wrap:</strong> Single line with ellipsis truncation</li>
             <li><strong>With Wrap:</strong> Multiple lines, items flow naturally</li>
           </ul>
         </li>
       </ul>
-      <p class="margin-0 font-body-xs"><strong>💡 Tip:</strong> Resize your browser to see the responsive behavior in action!</p>
+      <p class="margin-0 font-body-xs">
+        <strong>💡 Tip:</strong> Resize your browser to see the responsive behavior in action!
+      </p>
     </div>
 
     <div class="margin-top-1 padding-1 bg-base-lightest radius-md">
@@ -300,7 +309,10 @@ export const ComparisonDemo: Story = {
       <ul>
         <li><strong>Standard:</strong> Most common pattern for 2-4 level hierarchies</li>
         <li><strong>Long (No Wrap):</strong> Desktop layouts with ample horizontal space</li>
-        <li><strong>Long (With Wrap):</strong> Narrow containers or when you want full breadcrumb visibility</li>
+        <li>
+          <strong>Long (With Wrap):</strong> Narrow containers or when you want full breadcrumb
+          visibility
+        </li>
         <li><strong>Single Item:</strong> Top-level pages or simple site structures</li>
       </ul>
     </div>
@@ -366,9 +378,7 @@ export const EmptyState: Story = {
   render: (args) => html`
     <usa-breadcrumb .items=${args.items} ?wrap=${args.wrap}></usa-breadcrumb>
 
-    <div
-      class="margin-top-1 padding-1 bg-warning-lighter border border-warning radius-md"
-    >
+    <div class="margin-top-1 padding-1 bg-warning-lighter border border-warning radius-md">
       <h4 class="margin-top-0 text-warning-dark">Empty Breadcrumb</h4>
       <p class="margin-bottom-0">
         This shows how the component handles an empty items array. The navigation structure is still

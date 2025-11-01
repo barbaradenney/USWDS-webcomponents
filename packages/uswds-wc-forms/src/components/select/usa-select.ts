@@ -227,7 +227,9 @@ export class USASelect extends LitElement {
   private async initializeUSWDSSelect() {
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
+      console.log(
+        `⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`
+      );
       return;
     }
 
@@ -324,7 +326,7 @@ export class USASelect extends LitElement {
     super.disconnectedCallback();
     // Clean up tree-shaken USWDS module
     this.cleanupUSWDS();
-  
+
     // Reset enhancement flag to allow reinitialization
     this.usingUSWDSEnhancement = false;
   }
@@ -333,8 +335,7 @@ export class USASelect extends LitElement {
 
     return html`
       <label class="usa-label ${this.error ? 'usa-label--error' : ''}" for="${selectId}">
-        ${this.label}
-        ${this.renderRequiredIndicator()}
+        ${this.label} ${this.renderRequiredIndicator()}
       </label>
     `;
   }
@@ -409,9 +410,7 @@ export class USASelect extends LitElement {
 
     return html`
       <div class="${formGroupClasses}">
-        ${this.renderLabel(selectId)}
-        ${this.renderHint(selectId)}
-        ${this.renderError(selectId)}
+        ${this.renderLabel(selectId)} ${this.renderHint(selectId)} ${this.renderError(selectId)}
         ${this.renderSuccess(selectId)}
 
         <select
@@ -426,8 +425,7 @@ export class USASelect extends LitElement {
           .value="${this.value}"
           @change=${this.handleChange}
         >
-          ${this.renderDefaultOption()}
-          ${this.options.map(option => this.renderOption(option))}
+          ${this.renderDefaultOption()} ${this.options.map((option) => this.renderOption(option))}
           <slot></slot>
         </select>
       </div>

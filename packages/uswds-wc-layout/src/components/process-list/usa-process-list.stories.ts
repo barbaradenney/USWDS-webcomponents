@@ -79,8 +79,8 @@ export const WithCustomContent: Story = {
             <h4 class="usa-process-list__heading">Evacuate immediately</h4>
             <p>Leave the building using the nearest emergency exit. Do not use elevators.</p>
             <usa-alert type="warning">
-              <strong>Important:</strong> Help those who need assistance but do not put yourself
-              in danger.
+              <strong>Important:</strong> Help those who need assistance but do not put yourself in
+              danger.
             </usa-alert>
           </li>
           <li class="usa-process-list__item">
@@ -182,11 +182,7 @@ export const InteractiveDemo: Story = {
       </button>
 
       <h3>Preview:</h3>
-      <usa-process-list
-        id="dynamic-process-list"
-        headingLevel="h4"
-        .items=${[]}
-      ></usa-process-list>
+      <usa-process-list id="dynamic-process-list" headingLevel="h4" .items=${[]}></usa-process-list>
 
       <usa-alert type="info" class="margin-top-3">
         <h3 slot="heading">Interactive Process Builder</h3>
@@ -230,10 +226,7 @@ export const AccessibilityDemo: Story = {
         The Process List component is designed with accessibility in mind, meeting WCAG 2.1 AA
         standards.
       </p>
-      <usa-process-list
-        .items=${args.items}
-        headingLevel="${args.headingLevel}"
-      ></usa-process-list>
+      <usa-process-list .items=${args.items} headingLevel="${args.headingLevel}"></usa-process-list>
       <usa-alert type="success" class="margin-top-3">
         <h3 slot="heading">Testing Tips</h3>
         <ul class="usa-list">
@@ -246,8 +239,6 @@ export const AccessibilityDemo: Story = {
     </div>
   `,
 };
-
-
 
 export const CustomContent: Story = {
   parameters: {

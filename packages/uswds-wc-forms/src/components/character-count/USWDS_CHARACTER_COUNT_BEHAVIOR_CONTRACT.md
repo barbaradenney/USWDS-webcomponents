@@ -13,27 +13,29 @@ This document maps USWDS character count JavaScript behavior to our vanilla JS i
 
 ## USWDS Source Code Mapping
 
-| Function | Source Lines | Purpose | Implementation Status |
-|----------|--------------|---------|----------------------|
-| `getCharacterCountElements()` | 28-46 | Get root, form group, label, and message elements | ✅ Implemented |
-| `setDataLength()` | 53-63 | Move maxlength attribute to data-maxlength | ✅ Implemented |
-| `createStatusMessages()` | 70-90 | Create visual and screen reader status messages | ✅ Implemented |
-| `getCountMessage()` | 97-113 | Generate character count message text | ✅ Implemented |
-| `srUpdateStatus()` | 120-125 | Debounced screen reader update (1000ms) | ✅ Implemented |
-| `updateCountMessage()` | 132-173 | Update character count display and validation | ✅ Implemented |
-| `enhanceCharacterCount()` | 180-190 | Initialize component with status messages | ✅ Implemented |
-| `initializeCharacterCount()` | 192-213 | Event delegation initialization | ✅ Implemented |
+| Function                      | Source Lines | Purpose                                           | Implementation Status |
+| ----------------------------- | ------------ | ------------------------------------------------- | --------------------- |
+| `getCharacterCountElements()` | 28-46        | Get root, form group, label, and message elements | ✅ Implemented        |
+| `setDataLength()`             | 53-63        | Move maxlength attribute to data-maxlength        | ✅ Implemented        |
+| `createStatusMessages()`      | 70-90        | Create visual and screen reader status messages   | ✅ Implemented        |
+| `getCountMessage()`           | 97-113       | Generate character count message text             | ✅ Implemented        |
+| `srUpdateStatus()`            | 120-125      | Debounced screen reader update (1000ms)           | ✅ Implemented        |
+| `updateCountMessage()`        | 132-173      | Update character count display and validation     | ✅ Implemented        |
+| `enhanceCharacterCount()`     | 180-190      | Initialize component with status messages         | ✅ Implemented        |
+| `initializeCharacterCount()`  | 192-213      | Event delegation initialization                   | ✅ Implemented        |
 
 ## Key Behavioral Requirements
 
 ### 1. Maxlength Attribute Transformation
 
 **USWDS Behavior**:
+
 - Removes `maxlength` from input element
 - Moves value to `data-maxlength` on container element
 - This allows character count to exceed limit (no browser enforcement)
 
 **Implementation**:
+
 ```typescript
 const maxlength = inputEl.getAttribute('maxlength');
 if (!maxlength) return;
@@ -47,11 +49,13 @@ characterCountEl.setAttribute('data-maxlength', maxlength);
 ### 2. Dual Status Messages
 
 **USWDS Behavior**:
+
 - Creates `.usa-character-count__status` (visual, `aria-hidden="true"`)
 - Creates `.usa-character-count__sr-status` (screen reader, `aria-live="polite"`)
 - Hides original `.usa-character-count__message` with `usa-sr-only`
 
 **Implementation**:
+
 ```typescript
 const statusMessage = document.createElement('div');
 const srStatusMessage = document.createElement('div');
@@ -68,11 +72,13 @@ srStatusMessage.setAttribute('aria-live', 'polite');
 ### 3. Character Count Messages
 
 **USWDS Behavior**:
+
 - Initial: `"{maxlength} characters allowed"`
 - Typing: `"{remaining} character(s) left"`
 - Over limit: `"{over} character(s) over limit"`
 
 **Implementation**:
+
 ```typescript
 const getCountMessage = (currentLength: number, maxLength: number): string => {
   if (currentLength === 0) {
@@ -92,11 +98,13 @@ const getCountMessage = (currentLength: number, maxLength: number): string => {
 ### 4. Screen Reader Updates
 
 **USWDS Behavior**:
+
 - Debounces screen reader updates by 1000ms
 - Prevents excessive ARIA live region announcements
 - Visual updates happen immediately
 
 **Implementation**:
+
 ```typescript
 const srUpdateStatus = debounce((msgEl: HTMLElement, statusMessage: string) => {
   const srStatusMessage = msgEl;
@@ -109,6 +117,7 @@ const srUpdateStatus = debounce((msgEl: HTMLElement, statusMessage: string) => {
 ### 5. Validation State Management
 
 **USWDS Behavior**:
+
 - Sets custom validity message: `"The content is too long."`
 - Adds `.usa-form-group--error` to form group
 - Adds `.usa-label--error` to label
@@ -116,6 +125,7 @@ const srUpdateStatus = debounce((msgEl: HTMLElement, statusMessage: string) => {
 - Adds `.usa-character-count__status--invalid` to status message
 
 **Implementation**:
+
 ```typescript
 const isOverLimit = currentLength && currentLength > maxLength;
 
@@ -138,11 +148,13 @@ statusMessage.classList.toggle(MESSAGE_INVALID_CLASS, isOverLimit);
 ### 6. Event Delegation
 
 **USWDS Behavior**:
+
 - Single `input` event listener on root element
 - Uses event delegation to catch all character count inputs
 - Selector: `.usa-character-count__field`
 
 **Implementation**:
+
 ```typescript
 const handleInput = (event: Event) => {
   const target = event.target as HTMLElement;
@@ -224,6 +236,7 @@ const DEFAULT_STATUS_LABEL = `characters allowed`;
 **Current Status**: 101/146 tests passing (69%)
 
 **Known Failures**:
+
 - JavaScript validation checks (expected - vanilla JS pattern)
 - Some DOM structure timing issues (minor)
 - Duplicate element detection (USWDS creates new elements)
@@ -251,12 +264,14 @@ All behavioral logic, constants, selectors, and DOM manipulations match USWDS ex
 ### Component File Updates
 
 **Before** (509 lines):
+
 - Complex USWDS module loading
 - Property syncing logic
 - DOM manipulation prevention
 - Lifecycle complexity
 
 **After** (327 lines):
+
 - Simple vanilla JS behavior import
 - Clean initialization in `firstUpdated()`
 - Standard cleanup pattern
@@ -293,6 +308,7 @@ export class USACharacterCount extends USWDSBaseComponent {
 ### When to Update
 
 Update this implementation when:
+
 - USWDS releases new version with character count changes
 - Official USWDS source code is modified
 - New functionality is added to USWDS character count

@@ -9,6 +9,7 @@ This document captures the extensive troubleshooting journey for the modal compo
 **Symptom**: Clicking trigger button does nothing
 
 **Solution Checklist**:
+
 1. Ensure modal has a unique `id` attribute
 2. Trigger button must have `data-open-modal` and `aria-controls="[modal-id]"`
 3. For external triggers with web component, set `show-trigger="false"`
@@ -33,14 +34,17 @@ This document captures the extensive troubleshooting journey for the modal compo
 **Root Cause**: Incorrect HTML structure in render method
 
 **Solution**: Ensure footer is inside `usa-modal__main`:
+
 ```html
 <div class="usa-modal__content">
   <div class="usa-modal__main">
     <h2 class="usa-modal__heading">...</h2>
     <div class="usa-prose">...</div>
-    <div class="usa-modal__footer">...</div> <!-- Inside main -->
+    <div class="usa-modal__footer">...</div>
+    <!-- Inside main -->
   </div>
-  <button class="usa-modal__close">...</button> <!-- Outside main -->
+  <button class="usa-modal__close">...</button>
+  <!-- Outside main -->
 </div>
 ```
 
@@ -51,12 +55,13 @@ This document captures the extensive troubleshooting journey for the modal compo
 **Root Cause**: USWDS only auto-connects co-located triggers
 
 **Solution**: Component manually sets up external triggers:
+
 ```javascript
 // This happens automatically in the component
-const externalButtons = Array.from(triggerButtons).filter(btn =>
-  !this.contains(btn) // Exclude built-in trigger
+const externalButtons = Array.from(triggerButtons).filter(
+  (btn) => !this.contains(btn) // Exclude built-in trigger
 );
-externalButtons.forEach(button => {
+externalButtons.forEach((button) => {
   button.addEventListener('click', this.handleTriggerButtonClick);
 });
 ```
@@ -64,16 +69,19 @@ externalButtons.forEach(button => {
 ## 🔍 Troubleshooting Journey Timeline
 
 ### Phase 1: Initial Implementation (Complex)
+
 - **Problem**: Modal not opening, complex initialization
 - **Attempted**: Manual trigger setup, complex event handling
 - **Result**: 429 lines of complicated code
 
 ### Phase 2: Discovery - USWDS Modal is Different
+
 - **Found**: Modal uses `init()`/`teardown()` not `on()`/`off()`
 - **Found**: USWDS creates wrapper/overlay structure
 - **Found**: Modal moves to document.body
 
 ### Phase 3: Failed Approaches
+
 1. **Tried**: Using `module.on(this)` like other components
    - **Failed**: Modal doesn't have `on()` method
 
@@ -87,6 +95,7 @@ externalButtons.forEach(button => {
    - **Failed**: Conflicts with component lifecycle
 
 ### Phase 4: Working Solution
+
 - **Solution**: Hybrid approach with progressive enhancement
 - **Key**: Render trigger + modal as siblings (USWDS expectation)
 - **Key**: Use `module.init()` for transformation
@@ -96,6 +105,7 @@ externalButtons.forEach(button => {
 ## 🛠️ Debug Commands
 
 ### Check Modal State
+
 ```javascript
 // In browser console
 const modal = document.getElementById('modal-id');
@@ -103,11 +113,12 @@ console.log({
   open: modal.open,
   wrapper: document.querySelector('.usa-modal-wrapper'),
   placeholder: document.querySelector('[data-placeholder-for]'),
-  triggers: document.querySelectorAll('[data-open-modal]')
+  triggers: document.querySelectorAll('[data-open-modal]'),
 });
 ```
 
 ### Force Modal Open (Testing)
+
 ```javascript
 // Programmatic control
 modal.open = true;
@@ -121,12 +132,14 @@ wrapper.classList.add('is-visible');
 ## ⚠️ Critical Implementation Rules
 
 ### DO ✅
+
 - Use built-in trigger when possible (`trigger-text` property)
 - Let USWDS handle DOM transformation
 - Use component's programmatic API (`modal.open = true`)
 - Test with both built-in and external triggers
 
 ### DON'T ❌
+
 - Don't manually create wrapper structure
 - Don't bypass component API to control wrapper
 - Don't use `module.on()` - use `module.init()`
@@ -134,15 +147,16 @@ wrapper.classList.add('is-visible');
 
 ## 📊 Performance Metrics
 
-| Version | Lines | Complexity | Issues |
-|---------|-------|------------|--------|
-| Initial | 429 | Very High | Many |
-| Simplified | 324 | Medium | Some |
-| Final | 386 | Low | None |
+| Version    | Lines | Complexity | Issues |
+| ---------- | ----- | ---------- | ------ |
+| Initial    | 429   | Very High  | Many   |
+| Simplified | 324   | Medium     | Some   |
+| Final      | 386   | Low        | None   |
 
 ## 🔮 Future Improvements
 
 If modal needs updates:
+
 1. Keep trigger + modal as siblings
 2. Maintain built-in trigger option
 3. Don't remove external trigger support

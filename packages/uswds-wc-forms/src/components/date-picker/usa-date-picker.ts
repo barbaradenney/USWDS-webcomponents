@@ -107,7 +107,7 @@ export class USADatePicker extends USWDSBaseComponent {
 
     // Wait for DOM to be fully rendered
     await this.updateComplete;
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
     // Initialize using mirrored USWDS behavior
     this.cleanup = initializeDatePicker(this);
@@ -147,7 +147,6 @@ export class USADatePicker extends USWDSBaseComponent {
     this.cleanup?.();
   }
 
-
   private handleInputChange(e: Event) {
     const input = e.target as HTMLInputElement;
 
@@ -155,14 +154,16 @@ export class USADatePicker extends USWDSBaseComponent {
     this.value = input.value;
 
     // Dispatch web component events
-    this.dispatchEvent(new CustomEvent('date-change', {
-      detail: {
-        value: this.value,
-        date: this.value ? new Date(this.value) : null
-      },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('date-change', {
+        detail: {
+          value: this.value,
+          date: this.value ? new Date(this.value) : null,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private handleKeydown(_e: KeyboardEvent) {
@@ -170,18 +171,15 @@ export class USADatePicker extends USWDSBaseComponent {
     // This handler is kept minimal for basic input functionality
   }
 
-
   private renderLabel() {
     if (!this.label) return '';
 
     return html`
-      <label
-        class="usa-label"
-        id="${this.inputId}-label"
-        for="${this.inputId}"
-      >
+      <label class="usa-label" id="${this.inputId}-label" for="${this.inputId}">
         ${this.label}
-        ${this.required ? html`<abbr title="required" class="usa-hint usa-hint--required">*</abbr>` : ''}
+        ${this.required
+          ? html`<abbr title="required" class="usa-hint usa-hint--required">*</abbr>`
+          : ''}
       </label>
     `;
   }
@@ -223,17 +221,17 @@ export class USADatePicker extends USWDSBaseComponent {
     // Why both? USWDS clears input.value at line 908, but needs it initially to read format
     return html`
       <div class="${formGroupClasses}">
-        ${this.renderError()}
-        ${this.renderLabel()}
-        ${this.renderHint()}
-        <div class="usa-date-picker"
-           data-min-date="${this.minDate || ''}"
-           data-max-date="${this.maxDate || ''}"
-           data-default-value="${this.value || ''}"
-           data-enhanced="false"
-           data-web-component-managed="true"
-           aria-haspopup="dialog"
-           aria-controls="${this.inputId}-calendar">
+        ${this.renderError()} ${this.renderLabel()} ${this.renderHint()}
+        <div
+          class="usa-date-picker"
+          data-min-date="${this.minDate || ''}"
+          data-max-date="${this.maxDate || ''}"
+          data-default-value="${this.value || ''}"
+          data-enhanced="false"
+          data-web-component-managed="true"
+          aria-haspopup="dialog"
+          aria-controls="${this.inputId}-calendar"
+        >
           <input
             class="usa-input"
             id="${this.inputId}"

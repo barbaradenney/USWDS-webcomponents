@@ -92,5 +92,12 @@ test-*-debug.js
 assets/
 
 # Build artifacts
-tsconfig.tsbuildinfocomponent-issues-report.json
+tsconfig.tsbuildinfo
+component-issues-report.json
 .turbo/
+
+# Temporary/Debug files
+debug/
+debug-*.html
+debug-*.js
+test-*-debug.js

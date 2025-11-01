@@ -36,7 +36,9 @@ describe('Icon Visual Regression Prevention', () => {
 
       // FAIL CONDITIONS (regression to catch):
       expect(use, 'Icons should use sprite, not inline SVG').toBeTruthy();
-      expect(use?.getAttribute('href'), 'Should reference sprite file').toBe('/img/sprite.svg#search');
+      expect(use?.getAttribute('href'), 'Should reference sprite file').toBe(
+        '/img/sprite.svg#search'
+      );
       expect(path, 'Should NOT have inline path element').toBeFalsy();
 
       // PASS CONDITIONS (correct sprite-first):
@@ -48,13 +50,24 @@ describe('Icon Visual Regression Prevention', () => {
 
       // Monorepo migration (Oct 22) reverted these defaults
       expect(freshIcon.useSprite, 'useSprite should default to true').toBe(true);
-      expect(freshIcon.spriteUrl, 'spriteUrl should default to /img/sprite.svg').toBe('/img/sprite.svg');
+      expect(freshIcon.spriteUrl, 'spriteUrl should default to /img/sprite.svg').toBe(
+        '/img/sprite.svg'
+      );
     });
 
     it('should render all common icons from sprite file', async () => {
       const commonIcons = [
-        'search', 'close', 'menu', 'check_circle', 'error', 'warning', 'info',
-        'arrow_forward', 'arrow_back', 'expand_more', 'expand_less'
+        'search',
+        'close',
+        'menu',
+        'check_circle',
+        'error',
+        'warning',
+        'info',
+        'arrow_forward',
+        'arrow_back',
+        'expand_more',
+        'expand_less',
       ];
 
       for (const iconName of commonIcons) {
@@ -250,10 +263,26 @@ describe('Icon Visual Regression Prevention', () => {
       // After fix: All 241 USWDS icons accessible via sprite
 
       const allIcons = [
-        'accessibility_new', 'account_balance', 'add', 'alarm', 'announcement',
-        'api', 'assessment', 'attach_file', 'autorenew', 'backpack',
-        'bathtub', 'bedding', 'bookmark', 'bug_report', 'build',
-        'calendar_today', 'campaign', 'camping', 'cancel', 'chat'
+        'accessibility_new',
+        'account_balance',
+        'add',
+        'alarm',
+        'announcement',
+        'api',
+        'assessment',
+        'attach_file',
+        'autorenew',
+        'backpack',
+        'bathtub',
+        'bedding',
+        'bookmark',
+        'bug_report',
+        'build',
+        'calendar_today',
+        'campaign',
+        'camping',
+        'cancel',
+        'chat',
       ];
 
       for (const iconName of allIcons) {
@@ -271,10 +300,15 @@ describe('Icon Visual Regression Prevention', () => {
       // This test validates that icon gallery would show all icons
 
       const sampleIcons = [
-        'search', 'close', 'menu',            // Navigation (always worked)
-        'accessibility_new', 'campaign',      // Government-specific (new)
-        'local_fire_department', 'masks',     // COVID/Emergency (new)
-        'sentiment_satisfied', 'zoom_in'      // Additional categories (new)
+        'search',
+        'close',
+        'menu', // Navigation (always worked)
+        'accessibility_new',
+        'campaign', // Government-specific (new)
+        'local_fire_department',
+        'masks', // COVID/Emergency (new)
+        'sentiment_satisfied',
+        'zoom_in', // Additional categories (new)
       ];
 
       for (const iconName of sampleIcons) {

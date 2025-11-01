@@ -17,10 +17,12 @@
 The Header component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/header/usa-header-behavior.ts` - USWDS behavior mirror
 - `src/components/header/usa-header.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/header/usa-header-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Header component mirrors USWDS JavaScript behavior exactly to maintain 100% 
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should navigation menu toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should navigation menu toggle', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should focus trap management', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should focus trap management', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should resize event handling', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -104,11 +112,13 @@ it('should resize event handling', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should menu collapse/expand', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -120,7 +130,6 @@ it('should menu collapse/expand', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -139,46 +148,55 @@ it('should menu collapse/expand', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`keymap()`** - Line 1
+
   ```javascript
-  const keymap = require("receptor/keymap");
+  const keymap = require('receptor/keymap');
   ```
 
 - **`behavior()`** - Line 2
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`select()`** - Line 3
+
   ```javascript
-  const select = require("../../uswds-core/src/js/utils/select");
+  const select = require('../../uswds-core/src/js/utils/select');
   ```
 
 - **`toggle()`** - Line 4
+
   ```javascript
-  const toggle = require("../../uswds-core/src/js/utils/toggle");
+  const toggle = require('../../uswds-core/src/js/utils/toggle');
   ```
 
 - **`FocusTrap()`** - Line 5
+
   ```javascript
-  const FocusTrap = require("../../uswds-core/src/js/utils/focus-trap");
+  const FocusTrap = require('../../uswds-core/src/js/utils/focus-trap');
   ```
 
 - **`accordion()`** - Line 6
+
   ```javascript
-  const accordion = require("../../usa-accordion/src/index");
+  const accordion = require('../../usa-accordion/src/index');
   ```
 
 - **`ScrollBarWidth()`** - Line 7
+
   ```javascript
-  const ScrollBarWidth = require("../../uswds-core/src/js/utils/scrollbar-width");
+  const ScrollBarWidth = require('../../uswds-core/src/js/utils/scrollbar-width');
   ```
 
 - **`BODY()`** - Line 12
+
   ```javascript
-  const BODY = "body";
+  const BODY = 'body';
   ```
 
 - **`HEADER()`** - Line 13
+
   ```javascript
   const HEADER = `.${PREFIX}-header`;
   ```
@@ -188,9 +206,7 @@ Key functions from USWDS source (for reference during implementation):
   const NAV = `.${PREFIX}-nav`;
   ```
 
-
-*...and 31 more functions*
-
+_...and 31 more functions_
 
 ---
 
@@ -206,11 +222,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -218,6 +236,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-header-behavior.test.ts
 ```
@@ -230,10 +249,12 @@ npm test -- usa-header-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Complex behavior requiring direct USWDS source replication
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

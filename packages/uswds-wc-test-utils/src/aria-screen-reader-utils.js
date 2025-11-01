@@ -125,11 +125,12 @@ export function testARIARoles(element, options = {}) {
   const violations = [];
 
   const explicitRole = element.getAttribute('role');
-  const implicitRole = element.tagName.toLowerCase() === 'input' && element.getAttribute('type') === 'search'
-    ? 'searchbox'
-    : element.tagName.toLowerCase() === 'button'
-    ? 'button'
-    : null;
+  const implicitRole =
+    element.tagName.toLowerCase() === 'input' && element.getAttribute('type') === 'search'
+      ? 'searchbox'
+      : element.tagName.toLowerCase() === 'button'
+        ? 'button'
+        : null;
 
   const actualRole = explicitRole || (allowImplicitRole ? implicitRole : null);
 
@@ -138,7 +139,7 @@ export function testARIARoles(element, options = {}) {
       element,
       expected: expectedRole,
       actual: actualRole,
-      message: `Expected role "${expectedRole}" but got "${actualRole}"`
+      message: `Expected role "${expectedRole}" but got "${actualRole}"`,
     });
   }
 
@@ -151,14 +152,14 @@ export function testARIARoles(element, options = {}) {
         attribute: attrName,
         expected: expectedValue,
         actual: actualValue,
-        message: `Expected ${attrName}="${expectedValue}" but got ${attrName}="${actualValue}"`
+        message: `Expected ${attrName}="${expectedValue}" but got ${attrName}="${actualValue}"`,
       });
     }
   }
 
   return {
     correct: violations.length === 0,
-    violations
+    violations,
   };
 }
 
@@ -172,7 +173,7 @@ export function testAccessibleName(element) {
 
   return {
     hasName: accessibleName.length > 0,
-    accessibleName
+    accessibleName,
   };
 }
 
@@ -187,31 +188,31 @@ export function testARIARelationships(element) {
     labelledby: [],
     describedby: [],
     controls: [],
-    owns: []
+    owns: [],
   };
 
   const relationshipAttrs = ['aria-labelledby', 'aria-describedby', 'aria-controls', 'aria-owns'];
 
-  relationshipAttrs.forEach(attr => {
+  relationshipAttrs.forEach((attr) => {
     const value = element.getAttribute(attr);
     if (value) {
       const ids = value.split(' ');
       const relationshipKey = attr.replace('aria-', '');
 
-      ids.forEach(id => {
+      ids.forEach((id) => {
         const referencedElement = document.getElementById(id);
         if (!referencedElement) {
           violations.push({
             element,
             attribute: attr,
             missingId: id,
-            message: `${attr} references non-existent ID "${id}"`
+            message: `${attr} references non-existent ID "${id}"`,
           });
         } else {
           // Add valid relationship to results
           relationships[relationshipKey].push({
             id,
-            element: referencedElement
+            element: referencedElement,
           });
         }
       });
@@ -221,7 +222,7 @@ export function testARIARelationships(element) {
   return {
     valid: violations.length === 0,
     violations,
-    relationships
+    relationships,
   };
 }
 
@@ -242,7 +243,7 @@ export async function testLiveRegionAnnouncements(element, expectedMessages) {
   const textContent = element.textContent || '';
 
   // Check which expected messages are found in the content
-  const matchedAnnouncements = expectedMessages.filter(msg =>
+  const matchedAnnouncements = expectedMessages.filter((msg) =>
     textContent.toLowerCase().includes(msg.toLowerCase())
   );
 
@@ -253,7 +254,7 @@ export async function testLiveRegionAnnouncements(element, expectedMessages) {
     ariaLive,
     message: isLiveRegion
       ? `Live region with role="${role}" would announce content`
-      : 'Element is not a live region'
+      : 'Element is not a live region',
   };
 }
 
@@ -268,14 +269,16 @@ export async function testARIAAccessibility(container, options = {}) {
     testLiveRegions: _testLiveRegions = true, // eslint-disable-line @typescript-eslint/no-unused-vars
     testRoleState = true,
     testNameRole = true,
-    testRelationships = true
+    testRelationships = true,
   } = options;
 
   const errors = [];
-  const interactiveElements = container.querySelectorAll('button, a, input, [role="button"], [role="link"], [role="textbox"], [role="searchbox"]');
+  const interactiveElements = container.querySelectorAll(
+    'button, a, input, [role="button"], [role="link"], [role="textbox"], [role="searchbox"]'
+  );
 
   if (testNameRole) {
-    interactiveElements.forEach(element => {
+    interactiveElements.forEach((element) => {
       const nameResult = testAccessibleName(element);
       if (!nameResult.hasName) {
         errors.push(`Element lacks accessible name: ${element.tagName}`);
@@ -284,10 +287,10 @@ export async function testARIAAccessibility(container, options = {}) {
   }
 
   if (testRelationships) {
-    interactiveElements.forEach(element => {
+    interactiveElements.forEach((element) => {
       const relationshipResult = testARIARelationships(element);
       if (!relationshipResult.valid) {
-        errors.push(...relationshipResult.violations.map(v => v.message));
+        errors.push(...relationshipResult.violations.map((v) => v.message));
       }
     });
   }
@@ -298,7 +301,7 @@ export async function testARIAAccessibility(container, options = {}) {
     details: {
       rolesCorrect: testRoleState,
       namesAccessible: testNameRole,
-      relationshipsValid: testRelationships
-    }
+      relationshipsValid: testRelationships,
+    },
   };
 }

@@ -20,17 +20,17 @@ import 'path/to/uswds-webcomponents/src/components/summary-box/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `heading` | `any` | `''` | Property description |
-| `content` | `any` | `''` | Property description |
-| `headingLevel` | `any` | `'h3'` | Property description |
+| Property       | Type  | Default | Description          |
+| -------------- | ----- | ------- | -------------------- |
+| `heading`      | `any` | `''`    | Property description |
+| `content`      | `any` | `''`    | Property description |
+| `headingLevel` | `any` | `'h3'`  | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

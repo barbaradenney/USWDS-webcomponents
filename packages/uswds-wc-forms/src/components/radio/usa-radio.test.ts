@@ -685,8 +685,7 @@ describe('USARadio', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/radio/usa-radio.ts`;
+        const componentPath = `${process.cwd()}/src/components/radio/usa-radio.ts`;
         const validation = validateComponentJavaScript(componentPath, 'radio');
 
         if (!validation.isValid) {
@@ -1062,7 +1061,10 @@ describe('USARadio', () => {
       // (or first if none checked)
       const focusableElements = getFocusableElements(document.body);
       const radioInputs = focusableElements.filter(
-        (el) => el instanceof HTMLInputElement && el.type === 'radio' && (el as HTMLInputElement).name === 'group'
+        (el) =>
+          el instanceof HTMLInputElement &&
+          el.type === 'radio' &&
+          (el as HTMLInputElement).name === 'group'
       );
 
       expect(radioInputs.length).toBeGreaterThan(0);

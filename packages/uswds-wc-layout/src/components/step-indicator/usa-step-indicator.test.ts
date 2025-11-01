@@ -821,8 +821,7 @@ describe('USAStepIndicator', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/step-indicator/usa-step-indicator.ts`;
+        const componentPath = `${process.cwd()}/src/components/step-indicator/usa-step-indicator.ts`;
         const validation = validateComponentJavaScript(componentPath, 'step-indicator');
 
         if (!validation.isValid) {
@@ -972,8 +971,12 @@ describe('USAStepIndicator', () => {
         expect(segments[2]?.classList.contains('usa-step-indicator__segment--current')).toBe(true);
 
         // Last two should be incomplete
-        expect(segments[3]?.classList.contains('usa-step-indicator__segment--incomplete')).toBe(true);
-        expect(segments[4]?.classList.contains('usa-step-indicator__segment--incomplete')).toBe(true);
+        expect(segments[3]?.classList.contains('usa-step-indicator__segment--incomplete')).toBe(
+          true
+        );
+        expect(segments[4]?.classList.contains('usa-step-indicator__segment--incomplete')).toBe(
+          true
+        );
       });
 
       it('should sync aria-current attribute with current step', async () => {
@@ -1137,7 +1140,9 @@ describe('USAStepIndicator', () => {
       });
 
       it('should render all step segments as visible', async () => {
-        const segments = element.querySelectorAll('.usa-step-indicator__segment') as NodeListOf<HTMLElement>;
+        const segments = element.querySelectorAll(
+          '.usa-step-indicator__segment'
+        ) as NodeListOf<HTMLElement>;
 
         segments.forEach((segment) => {
           // Segment should exist and be in DOM
@@ -1189,7 +1194,7 @@ describe('USAStepIndicator', () => {
         await element.updateComplete;
 
         // Need to wait for the component to sync step statuses
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         const segments = element.querySelectorAll('.usa-step-indicator__segment');
 

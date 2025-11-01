@@ -54,8 +54,7 @@ describe('USASummaryBox Layout Tests', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/summary-box/usa-summary-box.ts`;
+        const componentPath = `${process.cwd()}/src/components/summary-box/usa-summary-box.ts`;
         const validation = validateComponentJavaScript(componentPath, 'summary-box');
 
         if (!validation.isValid) {

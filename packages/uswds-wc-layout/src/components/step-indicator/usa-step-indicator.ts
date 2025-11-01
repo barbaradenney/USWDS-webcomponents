@@ -254,9 +254,7 @@ export class USAStepIndicator extends LitElement {
             <span class="usa-step-indicator__current-step">${this.currentStep}</span>
             <span class="usa-step-indicator__total-steps">of ${this.steps.length}</span>
           </span>
-          <span class="usa-step-indicator__heading-text"
-            >${this.heading || currentStepLabel}</span
-          >
+          <span class="usa-step-indicator__heading-text">${this.heading || currentStepLabel}</span>
         </h4>
       </div>
     `;

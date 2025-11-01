@@ -58,7 +58,9 @@ describe('USAPagination Layout Tests', () => {
     buttons.forEach((button, index) => {
       const parentItem = button.closest('.usa-pagination__item');
       expect(parentItem, `Button ${index} should be inside a pagination item`).toBeTruthy();
-      expect(list!.contains(parentItem!), `Item ${index} should be inside pagination list`).toBe(true);
+      expect(list!.contains(parentItem!), `Item ${index} should be inside pagination list`).toBe(
+        true
+      );
     });
   });
 
@@ -72,7 +74,9 @@ describe('USAPagination Layout Tests', () => {
     const nextButton = element.querySelector('.usa-pagination__next-page');
 
     // Previous button should be in first item
-    expect(previousItem!.contains(previousButton!), 'Previous button should be in first item').toBe(true);
+    expect(previousItem!.contains(previousButton!), 'Previous button should be in first item').toBe(
+      true
+    );
 
     // Next button should be in last item
     expect(nextItem!.contains(nextButton!), 'Next button should be in last item').toBe(true);
@@ -86,7 +90,10 @@ describe('USAPagination Layout Tests', () => {
 
     expect(currentButton, 'Should have current page button').toBeTruthy();
     expect(currentButton, 'Current button should be the current page').toBe(currentPageButton);
-    expect(currentButton!.getAttribute('aria-current'), 'Current button should have aria-current').toBe('page');
+    expect(
+      currentButton!.getAttribute('aria-current'),
+      'Current button should have aria-current'
+    ).toBe('page');
   });
 
   it('should position ellipsis correctly between page numbers', async () => {
@@ -100,8 +107,13 @@ describe('USAPagination Layout Tests', () => {
 
     // Ellipsis items should be positioned between page numbers
     overflowItems.forEach((overflow, index) => {
-      expect(list.contains(overflow), `Overflow item ${index} should be in pagination list`).toBe(true);
-      expect(overflow.textContent!.includes('…'), `Overflow item ${index} should contain ellipsis`).toBe(true);
+      expect(list.contains(overflow), `Overflow item ${index} should be in pagination list`).toBe(
+        true
+      );
+      expect(
+        overflow.textContent!.includes('…'),
+        `Overflow item ${index} should contain ellipsis`
+      ).toBe(true);
     });
   });
 
@@ -149,27 +161,30 @@ describe('USAPagination Layout Tests', () => {
     await element.updateComplete;
 
     const pageButtons = element.querySelectorAll('.usa-pagination__button');
-    expect(pageButtons.length, 'Should have limited page buttons with small maxVisible').toBeLessThanOrEqual(3);
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/pagination/usa-pagination.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'pagination');
+    expect(
+      pageButtons.length,
+      'Should have limited page buttons with small maxVisible'
+    ).toBeLessThanOrEqual(3);
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/pagination/usa-pagination.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'pagination');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {
@@ -229,7 +244,9 @@ describe('USAPagination Layout Tests', () => {
       await element.updateComplete;
 
       element.querySelectorAll('.usa-pagination__item') as NodeListOf<HTMLElement>;
-      const buttons = element.querySelectorAll('.usa-pagination__link, .usa-pagination__button') as NodeListOf<HTMLElement>;
+      const buttons = element.querySelectorAll(
+        '.usa-pagination__link, .usa-pagination__button'
+      ) as NodeListOf<HTMLElement>;
 
       // Each button should be properly contained within its item
       buttons.forEach((button, index) => {
@@ -255,7 +272,7 @@ describe('USAPagination Layout Tests', () => {
         { currentPage: 1, totalPages: 5, description: 'small pagination' },
         { currentPage: 1, totalPages: 20, description: 'first page of large pagination' },
         { currentPage: 10, totalPages: 20, description: 'middle page with ellipsis' },
-        { currentPage: 20, totalPages: 20, description: 'last page of large pagination' }
+        { currentPage: 20, totalPages: 20, description: 'last page of large pagination' },
       ];
 
       for (const scenario of scenarios) {
@@ -264,8 +281,11 @@ describe('USAPagination Layout Tests', () => {
         await element.updateComplete;
 
         const nav = element.querySelector('nav.usa-pagination') as HTMLElement;
-        if (nav) { // Only test if pagination renders
-          const items = element.querySelectorAll('.usa-pagination__item') as NodeListOf<HTMLElement>;
+        if (nav) {
+          // Only test if pagination renders
+          const items = element.querySelectorAll(
+            '.usa-pagination__item'
+          ) as NodeListOf<HTMLElement>;
 
           // Items should maintain horizontal alignment in all scenarios
           if (items.length > 1) {
@@ -286,7 +306,9 @@ describe('USAPagination Layout Tests', () => {
     it('should maintain proper pagination interaction states', async () => {
       await element.updateComplete;
 
-      const buttons = element.querySelectorAll('.usa-pagination__link, .usa-pagination__button') as NodeListOf<HTMLElement>;
+      const buttons = element.querySelectorAll(
+        '.usa-pagination__link, .usa-pagination__button'
+      ) as NodeListOf<HTMLElement>;
 
       // Test focus states
       buttons.forEach((button, index) => {
@@ -325,7 +347,9 @@ describe('USAPagination Layout Tests', () => {
         pageButton.click();
         await element.updateComplete;
 
-        expect(pageChangeEventFired, 'Page change event should be fired for specific page').toBe(true);
+        expect(pageChangeEventFired, 'Page change event should be fired for specific page').toBe(
+          true
+        );
         expect(pageChangeDetail.page, 'Should navigate to clicked page').toBe(3);
         expect(element.currentPage, 'Current page should be updated to clicked page').toBe(3);
       }
@@ -340,9 +364,17 @@ describe('USAPagination Layout Tests', () => {
       const nextButton = element.querySelector('.usa-pagination__next-page') as HTMLElement;
 
       expect(nav!.getAttribute('aria-label'), 'Nav should have aria-label').toBe('Test Pagination');
-      expect(currentButton.getAttribute('aria-current'), 'Current button should have aria-current').toBe('page');
-      expect(previousButton.getAttribute('aria-label'), 'Previous button should have aria-label').toBe('Previous page');
-      expect(nextButton.getAttribute('aria-label'), 'Next button should have aria-label').toBe('Next page');
+      expect(
+        currentButton.getAttribute('aria-current'),
+        'Current button should have aria-current'
+      ).toBe('page');
+      expect(
+        previousButton.getAttribute('aria-label'),
+        'Previous button should have aria-label'
+      ).toBe('Previous page');
+      expect(nextButton.getAttribute('aria-label'), 'Next button should have aria-label').toBe(
+        'Next page'
+      );
 
       // Page buttons should have descriptive labels
       const pageButtons = element.querySelectorAll('.usa-pagination__button');

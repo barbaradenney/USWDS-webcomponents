@@ -107,7 +107,9 @@ describe('Pagination DOM Structure Validation', () => {
       await element.updateComplete;
 
       const currentPage = element.querySelector('.usa-current');
-      expect(currentPage?.hasAttribute('aria-label') || currentPage?.hasAttribute('aria-current')).toBe(true);
+      expect(
+        currentPage?.hasAttribute('aria-label') || currentPage?.hasAttribute('aria-current')
+      ).toBe(true);
     });
   });
 });

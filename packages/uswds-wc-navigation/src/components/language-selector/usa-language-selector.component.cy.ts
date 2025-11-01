@@ -1,6 +1,10 @@
 // Component tests for usa-language-selector
 import './index.ts';
-import { testRapidClicking, testRapidKeyboardInteraction, COMMON_BUG_PATTERNS } from '../../cypress/support/rapid-interaction-tests.ts';
+import {
+  testRapidClicking,
+  testRapidKeyboardInteraction,
+  COMMON_BUG_PATTERNS,
+} from '../../cypress/support/rapid-interaction-tests.ts';
 
 describe('LanguageSelector Component Tests', () => {
   beforeEach(() => {
@@ -16,19 +20,18 @@ describe('LanguageSelector Component Tests', () => {
     cy.get('usa-language-selector').should('be.visible');
   });
 
-  
   it('should handle rapid input changes without errors', () => {
     cy.mount('<usa-language-selector></usa-language-selector>');
-    
+
     const testValues = ['test1', 'test2', 'test3', ''];
-    
+
     // Rapidly change input values
-    testValues.forEach(value => {
+    testValues.forEach((value) => {
       cy.get('usa-language-selector input, usa-language-selector').clear().type(value);
     });
-    
+
     cy.wait(500);
-    
+
     // Input should still be functional
     cy.get('usa-language-selector input, usa-language-selector').should('exist');
     cy.get('usa-language-selector input, usa-language-selector').should('not.be.disabled');
@@ -38,31 +41,26 @@ describe('LanguageSelector Component Tests', () => {
   describe('Stress Testing', () => {
     it('should handle event listener duplication pattern', () => {
       cy.mount('<usa-language-selector></usa-language-selector>');
-      
+
       // Test for event listener duplication
       testRapidClicking({
         selector: 'usa-language-selector',
         clickCount: 15,
-        description: 'event listener duplication'
+        description: 'event listener duplication',
       });
     });
 
     it('should handle race condition patterns', () => {
       cy.mount('<usa-language-selector></usa-language-selector>');
-      
+
       // Test for race conditions during state changes
       cy.get('usa-language-selector').as('component');
-      
+
       // Rapid interactions that might cause race conditions
-      cy.get('@component')
-        .click()
-        .click()
-        .trigger('focus')
-        .trigger('blur')
-        .click();
-      
+      cy.get('@component').click().click().trigger('focus').trigger('blur').click();
+
       cy.wait(1000); // Wait for all async operations
-      
+
       // Component should still be functional
       cy.get('@component').should('exist');
       cy.get('@component').should('be.visible');
@@ -84,7 +82,7 @@ describe('LanguageSelector Component Tests', () => {
     const languages = [
       { code: 'en', name: 'English', nativeName: 'English' },
       { code: 'es', name: 'Spanish', nativeName: 'Español' },
-      { code: 'fr', name: 'French', nativeName: 'Français' }
+      { code: 'fr', name: 'French', nativeName: 'Français' },
     ];
 
     cy.mount(`
@@ -122,17 +120,12 @@ describe('LanguageSelector Component Tests', () => {
   // Test that component maintains accessibility after interactions
   it('should maintain accessibility after rapid interactions', () => {
     cy.mount('<usa-language-selector></usa-language-selector>');
-    
+
     // Perform various rapid interactions
-    cy.get('usa-language-selector')
-      .click()
-      .focus()
-      .blur()
-      .click()
-      .click();
-    
+    cy.get('usa-language-selector').click().focus().blur().click().click();
+
     cy.wait(500);
-    
+
     // Accessibility should still be intact
     cy.injectAxe();
     cy.checkAccessibility();
@@ -151,7 +144,7 @@ describe('LanguageSelector Component Tests', () => {
   // Console error test - should not generate any JavaScript errors
   it('should not generate console errors during interactions', () => {
     cy.mount('<usa-language-selector></usa-language-selector>');
-    
+
     // Various interactions that might cause errors
     cy.get('usa-language-selector')
       .click()
@@ -159,9 +152,9 @@ describe('LanguageSelector Component Tests', () => {
       .trigger('mouseleave')
       .focus()
       .blur();
-    
+
     cy.wait(500);
-    
+
     // No console errors should have occurred
     cy.get('@consoleError').should('not.have.been.called');
   });

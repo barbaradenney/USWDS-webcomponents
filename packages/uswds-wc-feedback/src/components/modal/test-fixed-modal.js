@@ -6,7 +6,7 @@ async function testFixedModal() {
   const browser = await puppeteer.launch({
     headless: false,
     devtools: true,
-    defaultViewport: { width: 1200, height: 800 }
+    defaultViewport: { width: 1200, height: 800 },
   });
   const page = await browser.newPage();
 
@@ -15,9 +15,9 @@ async function testFixedModal() {
     console.log('=== TEST 1: Large Modal Content ===');
     const url = 'http://localhost:6006/?path=/story/components-modal--large-modal';
     await page.goto(url, { waitUntil: 'networkidle0' });
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const frame = page.frames().find(f => f.name() === 'storybook-preview-iframe');
+    const frame = page.frames().find((f) => f.name() === 'storybook-preview-iframe');
     if (!frame) {
       console.log('❌ Could not find storybook iframe');
       return;
@@ -25,7 +25,7 @@ async function testFixedModal() {
 
     // Open large modal
     await frame.click('button[data-open-modal]');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const largeModalContent = await frame.evaluate(() => {
       const modal = document.querySelector('.usa-modal--lg');
@@ -37,7 +37,7 @@ async function testFixedModal() {
         tableRows: modal.querySelectorAll('table tr').length,
         modalWidth: modal.getBoundingClientRect().width,
         hasAlertBox: !!modal.querySelector('.usa-alert'),
-        hasGridRows: !!modal.querySelector('.usa-grid-row')
+        hasGridRows: !!modal.querySelector('.usa-grid-row'),
       };
     });
 
@@ -54,18 +54,18 @@ async function testFixedModal() {
 
     // Close modal with escape
     await frame.keyboard.press('Escape');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Try to open again
     await frame.click('button[data-open-modal]');
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const reopenTest = await frame.evaluate(() => {
       const wrapper = document.querySelector('.usa-modal-wrapper');
       return {
         wrapperExists: !!wrapper,
         wrapperVisible: wrapper?.classList.contains('is-visible'),
-        bodyHasModalClass: document.body.classList.contains('usa-js-modal--active')
+        bodyHasModalClass: document.body.classList.contains('usa-js-modal--active'),
       };
     });
 
@@ -85,11 +85,11 @@ async function testFixedModal() {
 
       // Close
       await frame.keyboard.press('Escape');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Open
       await frame.click('button[data-open-modal]');
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const cycleTest = await frame.evaluate(() => {
         const wrapper = document.querySelector('.usa-modal-wrapper');
@@ -98,7 +98,6 @@ async function testFixedModal() {
 
       console.log(`  Cycle ${i}: ${cycleTest ? '✅ Opened' : '❌ Failed'}`);
     }
-
   } catch (error) {
     console.error('Error:', error);
   }

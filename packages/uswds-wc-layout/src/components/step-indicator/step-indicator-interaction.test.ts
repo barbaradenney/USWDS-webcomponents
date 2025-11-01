@@ -24,14 +24,14 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
       { label: 'Household Status', status: 'complete' },
       { label: 'Supporting Documents', status: 'current' },
       { label: 'Signature', status: 'incomplete' },
-      { label: 'Review and Submit', status: 'incomplete' }
+      { label: 'Review and Submit', status: 'incomplete' },
     ];
     element.currentStep = 2;
     document.body.appendChild(element);
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -42,10 +42,11 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('step-indicator') ||
-        call[0]?.includes('initialized')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('step-indicator') ||
+          call[0]?.includes('initialized')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -91,9 +92,8 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
         }
 
         if (clickableStep) {
-          let eventFired = false;
           element.addEventListener('step-click', () => {
-            eventFired = true;
+            // Event listener for step-click
           });
 
           // Click the step segment
@@ -112,9 +112,8 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
       if (stepButtons.length > 0) {
         const firstButton = stepButtons[0] as HTMLButtonElement;
 
-        let eventFired = false;
         element.addEventListener('step-navigate', () => {
-          eventFired = true;
+          // Event listener for step-navigate
         });
 
         // Click the step button
@@ -127,11 +126,8 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
     });
 
     it('should handle current step updates', async () => {
-      const initialCurrentStep = element.currentStep;
-
-      let eventFired = false;
       element.addEventListener('current-step-change', () => {
-        eventFired = true;
+        // Event listener for current-step-change
       });
 
       // Programmatically change current step
@@ -227,7 +223,7 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
       element.steps = [
         { label: 'Step 1', status: 'complete' },
         { label: 'Step 2', status: 'current' },
-        { label: 'Step 3', status: 'incomplete' }
+        { label: 'Step 3', status: 'incomplete' },
       ];
       await waitForUpdate(element);
 
@@ -280,7 +276,7 @@ describe('Step Indicator JavaScript Interaction Testing', () => {
         expect(segments.getAttribute('role')).toBe('list');
 
         const stepElements = element.querySelectorAll('.usa-step-indicator__segment');
-        stepElements.forEach(step => {
+        stepElements.forEach((step) => {
           expect(step.getAttribute('role')).toBe('listitem');
         });
 

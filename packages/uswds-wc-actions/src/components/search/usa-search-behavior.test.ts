@@ -26,8 +26,7 @@ describe('USWDS Search Behavior Contract', () => {
     document.body.appendChild(element);
 
     // Wait for component to render
-    setTimeout(() => {
-    }, 0);
+    setTimeout(() => {}, 0);
   });
 
   afterEach(async () => {

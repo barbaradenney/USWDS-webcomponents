@@ -16,11 +16,11 @@ describe('USA Memorable Date Component Tests', () => {
     // Month dropdown
     cy.get('select[name="memorable-date-month"]').should('exist');
     cy.get('label[for="memorable-date-month"]').should('contain.text', 'Month');
-    
+
     // Day input
     cy.get('input[name="memorable-date-day"]').should('exist');
     cy.get('label[for="memorable-date-day"]').should('contain.text', 'Day');
-    
+
     // Year input
     cy.get('input[name="memorable-date-year"]').should('exist');
     cy.get('label[for="memorable-date-year"]').should('contain.text', 'Year');
@@ -30,9 +30,17 @@ describe('USA Memorable Date Component Tests', () => {
     cy.mount(`<usa-memorable-date id="test-date"></usa-memorable-date>`);
 
     cy.get('select[name="memorable-date-month"] option').should('have.length', 13);
-    cy.get('select[name="memorable-date-month"] option').first().should('contain.text', '- Select -');
-    cy.get('select[name="memorable-date-month"] option[value="01"]').should('contain.text', 'January');
-    cy.get('select[name="memorable-date-month"] option[value="12"]').should('contain.text', 'December');
+    cy.get('select[name="memorable-date-month"] option')
+      .first()
+      .should('contain.text', '- Select -');
+    cy.get('select[name="memorable-date-month"] option[value="01"]').should(
+      'contain.text',
+      'January'
+    );
+    cy.get('select[name="memorable-date-month"] option[value="12"]').should(
+      'contain.text',
+      'December'
+    );
   });
 
   it('should handle month selection', () => {
@@ -42,10 +50,10 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Select March
       cy.get('select[name="memorable-date-month"]').select('03');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.month', '03')
@@ -61,11 +69,11 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Type valid day
       cy.get('input[name="memorable-date-day"]').type('15');
       cy.get('input[name="memorable-date-day"]').should('have.value', '15');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.day', '15')
@@ -80,7 +88,7 @@ describe('USA Memorable Date Component Tests', () => {
     // Try to enter day > 31
     cy.get('input[name="memorable-date-day"]').type('35');
     cy.get('input[name="memorable-date-day"]').should('have.value', '31');
-    
+
     // Try to enter more than 2 digits
     cy.get('input[name="memorable-date-day"]').clear().type('123');
     cy.get('input[name="memorable-date-day"]').should('have.value', '12');
@@ -93,11 +101,11 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Type valid year
       cy.get('input[name="memorable-date-year"]').type('1985');
       cy.get('input[name="memorable-date-year"]').should('have.value', '1985');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.year', '1985')
@@ -120,7 +128,7 @@ describe('USA Memorable Date Component Tests', () => {
     // Try to type letters in day field
     cy.get('input[name="memorable-date-day"]').type('abc123def');
     cy.get('input[name="memorable-date-day"]').should('have.value', '12');
-    
+
     // Try to type letters in year field
     cy.get('input[name="memorable-date-year"]').type('abc2023def');
     cy.get('input[name="memorable-date-year"]').should('have.value', '2023');
@@ -133,12 +141,12 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Enter complete date
       cy.get('select[name="memorable-date-month"]').select('07');
       cy.get('input[name="memorable-date-day"]').type('04');
       cy.get('input[name="memorable-date-year"]').type('1976');
-      
+
       cy.then(() => {
         // Should fire event with ISO date and validation
         expect(changeSpy).to.have.been.calledWith(
@@ -149,8 +157,8 @@ describe('USA Memorable Date Component Tests', () => {
               year: '1976',
               isoDate: '1976-07-04',
               isValid: true,
-              isComplete: true
-            })
+              isComplete: true,
+            }),
           })
         );
       });
@@ -164,12 +172,12 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Enter invalid date (February 30th)
       cy.get('select[name="memorable-date-month"]').select('02');
       cy.get('input[name="memorable-date-day"]').type('30');
       cy.get('input[name="memorable-date-year"]').type('2023');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.isValid', false)
@@ -206,7 +214,7 @@ describe('USA Memorable Date Component Tests', () => {
 
     cy.get('fieldset').should('have.class', 'usa-form-group--required');
     cy.get('.usa-hint--required').should('exist').should('contain.text', '*');
-    
+
     // All inputs should have required attribute
     cy.get('select[name="memorable-date-month"]').should('have.attr', 'required');
     cy.get('input[name="memorable-date-day"]').should('have.attr', 'required');
@@ -239,10 +247,10 @@ describe('USA Memorable Date Component Tests', () => {
     // Tab through fields
     cy.get('select[name="memorable-date-month"]').focus();
     cy.focused().should('have.attr', 'name', 'memorable-date-month');
-    
+
     cy.focused().tab();
     cy.focused().should('have.attr', 'name', 'memorable-date-day');
-    
+
     cy.focused().tab();
     cy.focused().should('have.attr', 'name', 'memorable-date-year');
   });
@@ -256,7 +264,7 @@ describe('USA Memorable Date Component Tests', () => {
       .type('{backspace}{delete}{home}{end}{leftarrow}{rightarrow}')
       .type('15')
       .should('have.value', '15');
-    
+
     // Test Ctrl+A, Ctrl+C, Ctrl+V
     cy.get('input[name="memorable-date-year"]')
       .focus()
@@ -271,10 +279,10 @@ describe('USA Memorable Date Component Tests', () => {
 
     cy.window().then((win) => {
       const dateComponent = win.document.getElementById('test-date') as any;
-      
+
       // Set values programmatically
       dateComponent.setValue('08', '15', '1990');
-      
+
       cy.get('select[name="memorable-date-month"]').should('have.value', '08');
       cy.get('input[name="memorable-date-day"]').should('have.value', '15');
       cy.get('input[name="memorable-date-year"]').should('have.value', '1990');
@@ -286,10 +294,10 @@ describe('USA Memorable Date Component Tests', () => {
 
     cy.window().then((win) => {
       const dateComponent = win.document.getElementById('test-date') as any;
-      
+
       // Set from ISO date
       dateComponent.setFromISODate('1965-12-25');
-      
+
       cy.get('select[name="memorable-date-month"]').should('have.value', '12');
       cy.get('input[name="memorable-date-day"]').should('have.value', '25');
       cy.get('input[name="memorable-date-year"]').should('have.value', '1965');
@@ -301,13 +309,13 @@ describe('USA Memorable Date Component Tests', () => {
 
     cy.window().then((win) => {
       const dateComponent = win.document.getElementById('test-date') as any;
-      
+
       // Set values first
       dateComponent.setValue('03', '10', '2000');
-      
+
       // Then clear
       dateComponent.clear();
-      
+
       cy.get('select[name="memorable-date-month"]').should('have.value', '');
       cy.get('input[name="memorable-date-day"]').should('have.value', '');
       cy.get('input[name="memorable-date-year"]').should('have.value', '');
@@ -319,14 +327,14 @@ describe('USA Memorable Date Component Tests', () => {
 
     cy.window().then((win) => {
       const dateComponent = win.document.getElementById('test-date') as any;
-      
+
       dateComponent.setValue('06', '18', '1983');
-      
+
       const dateValue = dateComponent.getDateValue();
       expect(dateValue).to.deep.equal({
         month: '06',
         day: '18',
-        year: '1983'
+        year: '1983',
       });
     });
   });
@@ -338,21 +346,21 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Test leap year (Feb 29, 2020)
       cy.get('select[name="memorable-date-month"]').select('02');
       cy.get('input[name="memorable-date-day"]').type('29');
       cy.get('input[name="memorable-date-year"]').type('2020');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.isValid', true)
         );
       });
-      
+
       // Test non-leap year (Feb 29, 2021)
       cy.get('input[name="memorable-date-year"]').clear().type('2021');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.isValid', false)
@@ -381,7 +389,7 @@ describe('USA Memorable Date Component Tests', () => {
     cy.window().then((win) => {
       const form = win.document.getElementById('test-form') as HTMLFormElement;
       const formData = new FormData(form);
-      
+
       expect(formData.get('event-date-month')).to.equal('09');
       expect(formData.get('event-date-day')).to.equal('11');
       expect(formData.get('event-date-year')).to.equal('2001');
@@ -400,15 +408,24 @@ describe('USA Memorable Date Component Tests', () => {
     // Check fieldset structure
     cy.get('fieldset').should('exist');
     cy.get('.usa-legend').should('exist');
-    
+
     // Check aria-describedby references
-    cy.get('select[name="memorable-date-month"]')
-      .should('have.attr', 'aria-describedby', 'memorable-date-hint');
-    cy.get('input[name="memorable-date-day"]')
-      .should('have.attr', 'aria-describedby', 'memorable-date-hint');
-    cy.get('input[name="memorable-date-year"]')
-      .should('have.attr', 'aria-describedby', 'memorable-date-hint');
-    
+    cy.get('select[name="memorable-date-month"]').should(
+      'have.attr',
+      'aria-describedby',
+      'memorable-date-hint'
+    );
+    cy.get('input[name="memorable-date-day"]').should(
+      'have.attr',
+      'aria-describedby',
+      'memorable-date-hint'
+    );
+    cy.get('input[name="memorable-date-year"]').should(
+      'have.attr',
+      'aria-describedby',
+      'memorable-date-hint'
+    );
+
     // Check input attributes
     cy.get('input[name="memorable-date-day"]')
       .should('have.attr', 'inputmode', 'numeric')
@@ -423,10 +440,10 @@ describe('USA Memorable Date Component Tests', () => {
 
     cy.window().then((win) => {
       const dateComponent = win.document.getElementById('test-date') as any;
-      
+
       // Set single digit month
       dateComponent.month = '5';
-      
+
       // Should pad to 2 digits in display
       cy.get('select[name="memorable-date-month"]').should('have.value', '05');
     });
@@ -439,19 +456,19 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Set partial date (missing year)
       cy.get('select[name="memorable-date-month"]').select('04');
       cy.get('input[name="memorable-date-day"]').type('15');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match({
             detail: Cypress.sinon.match({
               isComplete: false,
               isValid: false,
-              isoDate: ''
-            })
+              isoDate: '',
+            }),
           })
         );
       });
@@ -465,12 +482,12 @@ describe('USA Memorable Date Component Tests', () => {
       const dateComponent = win.document.getElementById('test-date') as any;
       const changeSpy = cy.stub();
       dateComponent.addEventListener('date-change', changeSpy);
-      
+
       // Test April 31st (invalid)
       cy.get('select[name="memorable-date-month"]').select('04');
       cy.get('input[name="memorable-date-day"]').type('31');
       cy.get('input[name="memorable-date-year"]').type('2023');
-      
+
       cy.then(() => {
         expect(changeSpy).to.have.been.calledWith(
           Cypress.sinon.match.hasNested('detail.isValid', false)
@@ -516,7 +533,7 @@ describe('USA Memorable Date Component Tests', () => {
     cy.get('select[name="memorable-date-month"]').focus().blur();
     cy.get('input[name="memorable-date-day"]').focus().blur();
     cy.get('input[name="memorable-date-year"]').focus().blur();
-    
+
     // Should not cause any errors
     cy.get('usa-memorable-date').should('exist');
   });
@@ -526,12 +543,12 @@ describe('USA Memorable Date Component Tests', () => {
 
     // Set mobile viewport
     cy.viewport(375, 667);
-    
+
     // Numeric inputs should show numeric keyboard
     cy.get('input[name="memorable-date-day"]')
       .should('have.attr', 'inputmode', 'numeric')
       .should('have.attr', 'pattern', '[0-9]*');
-    
+
     cy.get('input[name="memorable-date-year"]')
       .should('have.attr', 'inputmode', 'numeric')
       .should('have.attr', 'pattern', '[0-9]*');
