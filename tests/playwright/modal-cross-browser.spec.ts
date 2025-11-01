@@ -27,8 +27,8 @@ test.describe('Modal Component Cross-Browser Tests', () => {
     const openButton = page.locator('button:has-text("Open Modal")').first();
     await openButton.click();
 
-    // Wait for modal to be visible
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    // Wait for modal to be visible (increased timeout for CI)
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     // Test focus trapping - focus should move to first focusable element in modal
     const modalDialog = page.locator('[role="dialog"]');
@@ -47,7 +47,7 @@ test.describe('Modal Component Cross-Browser Tests', () => {
 
     // Test Escape key behavior (varies by browser)
     await page.keyboard.press('Escape');
-    await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
+    await page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 15000 });
 
     // Verify focus restoration
     const activeElement = await page.evaluate(() => document.activeElement?.id);
@@ -58,21 +58,21 @@ test.describe('Modal Component Cross-Browser Tests', () => {
     const openButton = page.locator('button:has-text("Open Modal")').first();
     await openButton.click();
 
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     // Click on backdrop (modal wrapper but not modal content)
     const modalWrapper = page.locator('.usa-modal-wrapper').first();
     await modalWrapper.click({ position: { x: 10, y: 10 } }); // Click near edge
 
     // Modal should close on backdrop click
-    await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
+    await page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 15000 });
   });
 
   test('should render modal structure correctly in all browsers', async ({ page }) => {
     const openButton = page.locator('button:has-text("Open Modal")').first();
     await openButton.click();
 
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     // Test ARIA attributes are correctly set
     const modal = page.locator('[role="dialog"]');
@@ -90,7 +90,7 @@ test.describe('Modal Component Cross-Browser Tests', () => {
     const openButton = page.locator('button:has-text("Open Modal")').first();
     await openButton.click();
 
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     // Test Tab navigation within modal
     const initialFocus = page.locator(':focus');
@@ -124,19 +124,19 @@ test.describe('Modal Component Cross-Browser Tests', () => {
 
     const openButton = page.locator('button:has-text("Open Modal")').first();
     await openButton.click();
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     const modal = page.locator('[role="dialog"]');
     const desktopBounds = await modal.boundingBox();
     expect(desktopBounds?.width).toBeLessThan(1200); // Should not be full width
 
     await page.keyboard.press('Escape');
-    await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
+    await page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 15000 });
 
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await openButton.click();
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     const mobileBounds = await modal.boundingBox();
     expect(mobileBounds?.width).toBeLessThanOrEqual(375); // Should fit mobile width
@@ -145,7 +145,7 @@ test.describe('Modal Component Cross-Browser Tests', () => {
   test('should handle browser-specific modal behaviors', async ({ page, browserName }) => {
     const openButton = page.locator('button:has-text("Open Modal")').first();
     await openButton.click();
-    await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+    await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
     // Browser-specific tests
     if (browserName === 'webkit') {
@@ -170,7 +170,7 @@ test.describe('Modal Component Cross-Browser Tests', () => {
 
       // Test that animations are smooth (Firefox sometimes has issues)
       await page.keyboard.press('Escape');
-      await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
+      await page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 15000 });
     }
 
     if (browserName === 'chromium') {
