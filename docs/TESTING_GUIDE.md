@@ -318,6 +318,73 @@ test('CRITICAL: message element structure per USWDS spec', async ({ page }) => {
 - **Test Improvements**: `TEST_IMPROVEMENT_SUMMARY.md` - Bug analysis
 - **Infrastructure Integration**: `TESTING_INFRASTRUCTURE_INTEGRATION_SUMMARY.md`
 
+### 7. Cross-Browser Testing (Playwright) ⭐ OPTIMIZED
+
+Automated cross-browser testing with parallel job execution for optimal CI performance:
+
+```bash
+# Local Development (Full Browser Matrix)
+pnpm run test:cross-browser              # All 12 browsers
+pnpm run test:cross-browser:chromium     # Chromium only
+pnpm run test:cross-browser:firefox      # Firefox only
+pnpm run test:cross-browser:webkit       # Safari/Webkit only
+pnpm run test:cross-browser:mobile       # Mobile browsers
+pnpm run test:cross-browser:accessibility # A11y-specific testing
+```
+
+**CI/CD Optimization - Split Parallel Jobs:**
+
+To prevent timeout issues with large test suites (252+ test executions), cross-browser tests are split into 2 parallel CI jobs:
+
+1. **Cross-Browser Testing (Desktop)**
+   - Browsers: Chromium + Firefox
+   - ~126 test executions (63 tests × 2 browsers)
+   - Timeout: 25 minutes
+   - Typical completion: 15-18 minutes
+
+2. **Cross-Browser Testing (Webkit + A11y)**
+   - Browsers: Webkit + Accessibility-Chrome
+   - ~126 test executions (63 tests × 2 browsers)
+   - Timeout: 25 minutes
+   - Typical completion: 15-18 minutes
+
+**Performance Benefits:**
+- ⚡ **Parallel execution** - Both jobs run simultaneously (half total time)
+- ✅ **No timeouts** - Each job completes well under 25-minute limit
+- 🎯 **Optimized browser installation** - Only installs needed browsers per job
+- 🐛 **Better debugging** - Separate artifacts for desktop vs webkit/a11y
+
+**Configuration:**
+- Local: Full 12-browser matrix (`playwright.config.ts`)
+- CI: Optimized 4-browser split (`.github/workflows/ci.yml`)
+
+**Why This Approach:**
+- Original single job: 252 executions × ~7.5s/test = 31+ minutes → timeout
+- Split jobs: 126 executions × ~7.5s/test = 15-16 minutes → success
+
+**Example Playwright Test:**
+```typescript
+// tests/playwright/accordion-cross-browser.spec.ts
+test('should expand and collapse consistently across browsers', async ({ page, browserName }) => {
+  // Webkit needs longer timeouts for element visibility
+  const timeout = browserName === 'webkit' ? 10000 : 5000;
+
+  const firstButton = page.locator('.usa-accordion__button').first();
+  await expect(firstButton).toBeVisible({ timeout });
+
+  // Initially collapsed
+  await expect(firstButton).toHaveAttribute('aria-expanded', 'false', { timeout });
+
+  // Click to expand
+  await firstButton.click();
+  await expect(firstButton).toHaveAttribute('aria-expanded', 'true');
+
+  // Content visible
+  const firstContent = page.locator('.usa-accordion__content').first();
+  await expect(firstContent).toBeVisible();
+});
+```
+
 ## Comprehensive Testing Infrastructure
 
 Complete test suite with consolidated reporting:
