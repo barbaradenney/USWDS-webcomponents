@@ -29,7 +29,6 @@ test.describe('Cross-Browser Compatibility', () => {
 
         // Wait for component to load
         await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(1000); // Allow for animations
 
         // Find the component element
         const component = page.locator(`usa-${name.toLowerCase()}`).first();
@@ -64,11 +63,9 @@ test.describe('Cross-Browser Compatibility', () => {
 
         // Test Enter/Space activation for interactive components
         if (['Button', 'Accordion'].includes(name)) {
+          // Keyboard actions are synchronous, no wait needed
           await focusedElement.press('Enter');
-          await page.waitForTimeout(500); // Allow for any state changes
-
           await focusedElement.press('Space');
-          await page.waitForTimeout(500);
         }
       });
 
@@ -170,9 +167,9 @@ test.describe('Cross-Browser Compatibility', () => {
         const startTime = Date.now();
 
         // Rapidly click accordion buttons
+        // Clicks are synchronous, no delay needed between them
         for (let i = 0; i < Math.min(buttonCount, 10); i++) {
           await accordionButtons.nth(i).click();
-          await page.waitForTimeout(50); // Small delay between clicks
         }
 
         const interactionTime = Date.now() - startTime;

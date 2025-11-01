@@ -89,7 +89,9 @@ test.describe('Smoke Tests @smoke @critical', () => {
     });
 
     await page.goto('/');
-    await page.waitForTimeout(2000); // Wait for any delayed errors
+    // Wait for page to fully load and stabilize
+    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
 
     // Filter out known acceptable warnings
     const criticalErrors = errors.filter(
