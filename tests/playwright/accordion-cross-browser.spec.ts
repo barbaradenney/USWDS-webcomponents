@@ -16,10 +16,10 @@ test.describe('Accordion Component Cross-Browser Tests', () => {
     // Webkit needs extra time for custom element registration and USWDS initialization
     await page.waitForSelector('usa-accordion', { state: 'attached' });
 
-    // Additional wait for USWDS JavaScript to initialize the accordion
+    // Wait for USWDS JavaScript to initialize by checking for ARIA attributes
     // This ensures USWDS has finished adding event listeners and ARIA attributes
-    const timeout = browserName === 'webkit' ? 1000 : 500;
-    await page.waitForTimeout(timeout);
+    const firstButton = page.locator('.usa-accordion__button').first();
+    await expect(firstButton).toHaveAttribute('aria-expanded');
   });
 
   test('should expand and collapse consistently across browsers @smoke', async ({ page, browserName }) => {
@@ -275,7 +275,7 @@ test.describe('Accordion Component Cross-Browser Tests', () => {
 
     // Test hover state
     await firstButton.hover();
-    await page.waitForTimeout(100);
+    // CSS hover styles apply immediately, no wait needed
 
     const hoverStyles = await firstButton.evaluate((el) => {
       const styles = window.getComputedStyle(el);

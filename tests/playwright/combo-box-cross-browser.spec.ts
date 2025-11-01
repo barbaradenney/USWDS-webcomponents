@@ -66,10 +66,9 @@ test.describe('Combo Box Component Cross-Browser Tests', () => {
     // Type to filter options
     await input.fill('ap'); // Should filter to "apple" if it exists
 
-    // Wait for filtering to occur
-    await page.waitForTimeout(300);
-
+    // Wait for filtering to occur by checking for visible options
     const visibleOptions = page.locator('.usa-combo-box__list-option:visible');
+    await expect(visibleOptions.first()).toBeVisible();
     const optionCount = await visibleOptions.count();
 
     // Should have filtered results
@@ -149,11 +148,9 @@ test.describe('Combo Box Component Cross-Browser Tests', () => {
     // Focus input
     await input.focus();
 
-    // Should open dropdown on focus (if configured)
-    await page.waitForTimeout(100);
-
     const dropdownList = page.locator('.usa-combo-box__list');
     // Check if dropdown opened on focus (behavior may vary)
+    // isVisible() waits internally, no explicit wait needed
     const isVisible = await dropdownList.isVisible();
 
     if (!isVisible) {
@@ -167,7 +164,7 @@ test.describe('Combo Box Component Cross-Browser Tests', () => {
     await page.keyboard.press('Tab');
 
     // Dropdown should close when focus leaves component
-    await page.waitForTimeout(200);
+    // expect() waits for the attribute change
     await expect(dropdownList).toHaveAttribute('hidden');
   });
 
@@ -209,9 +206,9 @@ test.describe('Combo Box Component Cross-Browser Tests', () => {
 
       // Test that browser's built-in autocomplete doesn't interfere
       await input.fill('te');
-      await page.waitForTimeout(100);
 
       // Custom dropdown should still be controlling the experience
+      // expect() waits for visibility
       await expect(dropdownList).toBeVisible();
     }
   });
