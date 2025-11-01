@@ -103,6 +103,11 @@ test.describe('Cross-Browser Accessibility Tests', () => {
 
       // Open dropdown and test expanded state
       await toggleButton.click();
+
+      // Wait for listbox to become visible (USWDS JS removes hidden attribute)
+      await expect(listbox).not.toHaveAttribute('hidden', '');
+      await expect(listbox).toBeVisible();
+
       await expect(input).toHaveAttribute('aria-expanded', 'true');
       await expect(listbox).toHaveAttribute('role', 'listbox');
 
