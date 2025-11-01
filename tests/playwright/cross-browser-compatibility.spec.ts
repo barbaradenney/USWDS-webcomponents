@@ -32,7 +32,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.waitForTimeout(1000); // Allow for animations
 
         // Find the component element
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
         await expect(component).toBeVisible();
 
         // Verify component has expected USWDS classes
@@ -51,7 +51,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.goto(`/iframe.html?id=${story}`);
         await page.waitForLoadState('networkidle');
 
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
 
         // Test Tab navigation
         await page.keyboard.press('Tab');
@@ -77,7 +77,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.waitForLoadState('networkidle');
 
         // Check for essential accessibility attributes
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
 
         // Verify ARIA attributes exist where expected
         if (['Button'].includes(name)) {
@@ -111,7 +111,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.goto(`/iframe.html?id=${story}`);
         await page.waitForLoadState('networkidle');
 
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
         await expect(component).toBeVisible();
 
         // Get component dimensions

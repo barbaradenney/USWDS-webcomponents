@@ -40,7 +40,8 @@ test.describe('Cross-Browser Accessibility Tests', () => {
       await openButton.click();
       await page.waitForSelector('[role="dialog"]', { state: 'visible' });
 
-      const modal = page.locator('[role="dialog"]');
+      // Use .first() to handle potential multiple modals from previous tests
+      const modal = page.locator('[role="dialog"]').first();
 
       // Test required ARIA attributes
       await expect(modal).toHaveAttribute('aria-modal', 'true');
