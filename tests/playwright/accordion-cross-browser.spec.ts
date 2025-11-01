@@ -55,6 +55,9 @@ test.describe('Accordion Component Cross-Browser Tests', () => {
   test('should handle keyboard navigation correctly', async ({ page }) => {
     const firstButton = page.locator('.usa-accordion__button').first();
 
+    // Wait for button to be ready before focusing
+    await expect(firstButton).toBeVisible();
+
     // Focus first button
     await firstButton.focus();
     await expect(firstButton).toBeFocused();
