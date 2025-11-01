@@ -264,12 +264,14 @@ jobs:
           path: cypress/videos
           retention-days: 7
 
-  # Job 6: Cross-browser Testing with Playwright
-  browser-test:
-    name: Cross-Browser Testing
+  # Job 6a: Cross-browser Testing - Desktop Browsers (Chromium + Firefox)
+  # Split into 2 jobs to stay under 30-minute timeout
+  # 63 tests × 2 browsers × 4 workers = ~126 executions ≈ 15-18 minutes
+  browser-test-desktop:
+    name: Cross-Browser Testing (Desktop)
     runs-on: ubuntu-latest
     needs: [build]
-    timeout-minutes: 30
+    timeout-minutes: 25
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -288,8 +290,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      - name: Install Playwright browsers (chromium + firefox only)
+        run: npx playwright install chromium firefox --with-deps
 
       - name: Start Storybook for testing
         run: pnpm run storybook &
@@ -299,78 +301,81 @@ jobs:
       - name: Wait for Storybook
         run: npx wait-on http://localhost:6006 --timeout 120000
 
-      # Run all Playwright tests in parallel with optimized configuration
-      # - 4 workers for parallel execution
-      # - Only 4 browsers (chromium, firefox, webkit, accessibility-chrome)
-      # - Reduced from 12 browsers to improve speed
-      # - 2 retries to handle occasional timing issues (especially webkit)
-      - name: Run Playwright tests (optimized)
-        run: npx playwright test --workers=4 --reporter=line
+      - name: Run Playwright tests (chromium + firefox)
+        run: npx playwright test --project=chromium --project=firefox --workers=4 --reporter=line
         env:
           CI: true
 
-      # =========================================================================
-      # PUPPETEER TESTS - DISABLED (Port Conflict)
-      # =========================================================================
-      # Status: Temporarily disabled due to port conflicts with Storybook
-      # Issue: Both Storybook (Playwright tests) and dev server use port 6006
-      # Solution needed: Configure dev server on different port (e.g., 5173)
-      #
-      # These tests would provide:
-      # - Cross-browser validation (Chrome, Firefox, Safari simulation)
-      # - Performance monitoring (page load times, bundle analysis)
-      # - Visual regression testing (screenshot comparisons)
-      #
-      # To re-enable:
-      # 1. Update dev server config to use port 5173 (or other available port)
-      # 2. Uncomment the sections below
-      # 3. Verify no port conflicts in CI environment
-      # =========================================================================
-      # - name: Install Puppeteer for Phase 2 validation
-      #   run: |
-      #     echo "🌐 Setting up Puppeteer browser automation..."
-      #     npx puppeteer browsers install chrome
-      #
-      # - name: Start dev server for Puppeteer tests
-      #   run: pnpm run dev &
-      #   env:
-      #     CI: true
-      #
-      # - name: Wait for dev server
-      #   run: npx wait-on http://localhost:5173 --timeout 120000
-      #
-      # - name: Run Puppeteer cross-browser validation
-      #   run: |
-      #     echo "🌐 Running Puppeteer cross-browser validation..."
-      #     pnpm run test:cross-browser || true
-      #   continue-on-error: true
-      #
-      # - name: Run Puppeteer performance monitoring
-      #   run: |
-      #     echo "⚡ Running Puppeteer performance monitoring..."
-      #     pnpm run test:performance:monitor || true
-      #   continue-on-error: true
-      #
-      # - name: Run Puppeteer visual regression tests
-      #   run: |
-      #     echo "📸 Running Puppeteer visual regression tests..."
-      #     pnpm run test:visual:baseline || true
-      #     pnpm run test:visual:regression || true
-      #   continue-on-error: true
-
-      - name: Upload Playwright report
+      - name: Upload Playwright report (desktop)
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-desktop
           path: playwright-report/
           retention-days: 7
 
-      - name: Upload test results
+      - name: Upload test results (desktop)
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-test-results
+          name: playwright-test-results-desktop
+          path: test-results/
+          retention-days: 7
+
+  # Job 6b: Cross-browser Testing - Webkit + Accessibility
+  # 63 tests × 2 browsers × 4 workers = ~126 executions ≈ 15-18 minutes
+  browser-test-webkit-a11y:
+    name: Cross-Browser Testing (Webkit + A11y)
+    runs-on: ubuntu-latest
+    needs: [build]
+    timeout-minutes: 25
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.15.0'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers (webkit only - a11y uses chromium)
+        run: npx playwright install webkit chromium --with-deps
+
+      - name: Start Storybook for testing
+        run: pnpm run storybook &
+        env:
+          CI: true
+
+      - name: Wait for Storybook
+        run: npx wait-on http://localhost:6006 --timeout 120000
+
+      - name: Run Playwright tests (webkit + accessibility-chrome)
+        run: npx playwright test --project=webkit --project=accessibility-chrome --workers=4 --reporter=line
+        env:
+          CI: true
+
+      - name: Upload Playwright report (webkit + a11y)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-webkit-a11y
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload test results (webkit + a11y)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-test-results-webkit-a11y
           path: test-results/
           retention-days: 7
 
