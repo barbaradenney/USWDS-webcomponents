@@ -26,7 +26,8 @@ test.describe('Cross-Browser Accessibility Tests', () => {
       // Open modal and test again
       const openButton = page.locator('button:has-text("Open Modal")').first();
       await openButton.click();
-      await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+      // Increase timeout for modal to appear (USWDS initialization + animation)
+      await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
       const modalAccessibilityResults = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
@@ -38,7 +39,8 @@ test.describe('Cross-Browser Accessibility Tests', () => {
     test('should have correct ARIA modal structure', async ({ page }) => {
       const openButton = page.locator('button:has-text("Open Modal")').first();
       await openButton.click();
-      await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+      // Increase timeout for modal to appear (USWDS initialization + animation)
+      await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
       // Use .first() to handle potential multiple modals from previous tests
       const modal = page.locator('[role="dialog"]').first();
@@ -176,6 +178,9 @@ test.describe('Cross-Browser Accessibility Tests', () => {
       await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
+      // Wait for first focusable element to exist before Tab navigation
+      await page.waitForSelector('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])', { timeout: 5000 });
+
       // Start from first focusable element
       await page.keyboard.press('Tab');
 
@@ -205,7 +210,8 @@ test.describe('Cross-Browser Accessibility Tests', () => {
       // Open modal to test focus trapping
       const openButton = page.locator('button:has-text("Open Modal")').first();
       await openButton.click();
-      await page.waitForSelector('[role="dialog"]', { state: 'visible' });
+      // Increase timeout for modal to appear (USWDS initialization + animation)
+      await page.waitForSelector('[role="dialog"]', { state: 'visible', timeout: 15000 });
 
       // Tab forward through modal elements
       await page.keyboard.press('Tab');
