@@ -124,7 +124,9 @@ export default defineConfig({
   webServer: {
     command: 'npm run storybook -- --port 6006 --quiet',
     port: 6006,
-    reuseExistingServer: !process.env.CI,
+    // Always reuse existing server to avoid port conflicts in CI
+    // (CI workflow starts Storybook manually before Playwright tests)
+    reuseExistingServer: true,
     timeout: 120000,
   },
 });
