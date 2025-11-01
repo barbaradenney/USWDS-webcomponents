@@ -45,6 +45,9 @@ jobs:
       - name: Check code formatting
         run: pnpm run format:check
 
+      - name: Validate Playwright Story Paths
+        run: pnpm run validate:playwright-story-paths
+
   # Job 2: Security Audit
   security:
     name: Security Audit
