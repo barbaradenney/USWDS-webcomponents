@@ -41,6 +41,7 @@
     "validate:story-binding": "vitest run __tests__/story-property-binding.test.ts",
     "validate:story-args": "node scripts/validate-storybook-args.cjs",
     "validate:story-args:problems": "node scripts/validate-storybook-args.cjs --problems",
+    "validate:playwright-story-paths": "node scripts/validate/validate-playwright-story-paths.cjs",
     "validate:attribute-mapping": "node scripts/validate/validate-attribute-mapping.js",
     "validate:story-rendering": "vitest run __tests__/storybook-story-rendering.test.ts",
     "validate:critical:fast": "npm run validate:story-patterns && npm run validate:double-init && npm run validate:uswds-loader && npm run validate:attribute-mapping",
