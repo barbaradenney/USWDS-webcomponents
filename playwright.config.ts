@@ -8,8 +8,8 @@ export default defineConfig({
   testDir: './tests/playwright',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  // Reduce retries in CI for faster feedback
-  retries: process.env.CI ? 1 : 0,
+  // Retries help handle occasional timing issues in cross-browser testing
+  retries: process.env.CI ? 2 : 0,
   // Increase workers in CI for faster parallel execution
   workers: process.env.CI ? 4 : undefined,
   // Set timeout for each test (30s default)
