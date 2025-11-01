@@ -20,6 +20,11 @@ export default defineConfig({
     ['json', { outputFile: 'test-results/playwright-results.json' }],
     ['line'], // Add line reporter for better CI output
   ],
+  // Expect timeout for assertions (separate from action timeout)
+  expect: {
+    // USWDS components need time for initialization + CSS animations
+    timeout: process.env.CI ? 15000 : 5000,
+  },
   use: {
     baseURL: 'http://localhost:6006',
     // Reduce timeouts for faster failures
