@@ -385,6 +385,155 @@ test('should expand and collapse consistently across browsers', async ({ page, b
 });
 ```
 
+### 8. Playwright Story Path Validation
+
+**Ensures test story paths match actual Storybook stories** to prevent 100% test failure rates from invalid story references.
+
+#### Problem It Solves
+
+When Playwright tests reference incorrect story paths (e.g., after component refactoring or monorepo restructure), all tests fail because they can't find the target stories:
+
+```typescript
+// ❌ Test references old story path
+await page.goto('/iframe.html?id=data-display-table--with-large-dataset');
+// Story was renamed to: data-display-table--large-dataset
+
+// Result: 100% test failure rate
+```
+
+#### Validation Script
+
+**Location:** `scripts/validate/validate-playwright-story-paths.cjs`
+
+**What it does:**
+1. Extracts all story paths referenced in Playwright tests
+2. Extracts all story IDs from Storybook `.stories.ts` files
+3. Compares and reports mismatches
+4. Suggests closest matching paths using Levenshtein distance
+
+**How Storybook generates story IDs:**
+```typescript
+// Storybook meta title
+const meta = {
+  title: 'Data Display/Table',
+  // ...
+};
+
+export const LargeDataset: Story = { /* ... */ };
+
+// Generated story ID: data-display-table--large-dataset
+// Format: lowercase + replace spaces/slashes with dashes + --story-name
+```
+
+#### Running Validation
+
+```bash
+# Validate all story paths
+pnpm run validate:playwright-story-paths
+
+# Output example:
+# 🔍 Validating Playwright Story Paths...
+#
+# 📊 Found:
+#    10 unique story paths in Playwright tests
+#    477 story IDs in Storybook
+#
+# ✅ All Playwright story paths are valid!
+```
+
+#### Example Validation Output (with errors)
+
+```bash
+❌ Found 3 invalid story path(s):
+
+1. Story path not found: data-display-table--with-large-dataset
+   Referenced in:
+   - tests/playwright/cross-browser-compatibility.spec.ts
+
+   💡 Did you mean: data-display-table--large-dataset?
+
+2. Story path not found: structure-accordion--multiple-items
+   Referenced in:
+   - tests/playwright/cross-browser-compatibility.spec.ts
+
+   💡 Did you mean: structure-accordion--multiselectable?
+```
+
+#### CI Integration
+
+**Validation runs automatically in CI pipeline:**
+
+`.github/workflows/ci.yml` - Quality job:
+```yaml
+- name: Validate Playwright Story Paths
+  run: pnpm run validate:playwright-story-paths
+```
+
+**When it runs:**
+- Every commit (via CI)
+- Before pull request merge
+- On push to main/develop branches
+
+**Result:** Prevents invalid story paths from being merged, ensuring cross-browser tests always work.
+
+#### Common Issues and Fixes
+
+**Issue 1: Story renamed but test not updated**
+```typescript
+// Fix: Update test to match new story name
+- await page.goto('/iframe.html?id=forms-text-input--in-form');
++ await page.goto('/iframe.html?id=forms-text-input--default');
+```
+
+**Issue 2: Component moved to different category**
+```typescript
+// Fix: Update category in path
+- await page.goto('/iframe.html?id=components-modal--default');
++ await page.goto('/iframe.html?id=feedback-modal--default');
+```
+
+**Issue 3: Story export name changed**
+```typescript
+// In stories file:
+- export const WithLargeDataset: Story = { /* ... */ };
++ export const LargeDataset: Story = { /* ... */ };
+
+// In test file:
+- await page.goto('/iframe.html?id=data-display-table--with-large-dataset');
++ await page.goto('/iframe.html?id=data-display-table--large-dataset');
+```
+
+#### Validation Script Maintenance
+
+**Critical bug fix (Dec 2024):** Script was matching wrong `title:` property in stories files.
+
+**Problem:** Regex matched first `title:` occurrence, which could be inside story content instead of meta object:
+```typescript
+// ❌ Old regex matched this first
+export const Default: Story = {
+  args: {
+    title: 'Getting Started'  // Wrong title!
+  }
+};
+
+const meta = {
+  title: 'Structure/Accordion'  // Should match this
+};
+```
+
+**Solution:** Updated regex to specifically match meta object title:
+```javascript
+// scripts/validate/validate-playwright-story-paths.cjs:84
+const metaMatch = content.match(/const meta[^{]*\{[^}]*title:\s*['"]([^'"]+)['"]/s);
+```
+
+#### Best Practices
+
+1. **Always validate after refactoring** - Run validation script after renaming stories or moving components
+2. **Check validation output** - Pay attention to fuzzy match suggestions
+3. **Update tests immediately** - Fix story paths in same commit as story changes
+4. **Use consistent naming** - Keep story export names aligned with their purpose
+
 ## Comprehensive Testing Infrastructure
 
 Complete test suite with consolidated reporting:
