@@ -20,10 +20,7 @@ const COMPONENT_SELECTOR = 'usa-character-count';
 const WRAPPER_SELECTOR = '.usa-character-count';
 
 test.describe('Character Count Deep Testing', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-  });
+  // Note: No beforeEach navigation needed - each test navigates to its specific story URL
 
   // ============================================================================
   // BASELINE TESTS (4 tests)

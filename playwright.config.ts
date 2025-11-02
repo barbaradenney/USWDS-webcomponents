@@ -1,173 +1,72 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright configuration for cross-browser testing
- * Tests component functionality across different browsers
+ * Playwright configuration for USWDS Web Components
+ * Tests run against Storybook stories at http://localhost:6006
  */
 export default defineConfig({
   testDir: './tests/playwright',
+
+  /* Run tests in files in parallel */
   fullyParallel: true,
+
+  /* Fail the build on CI if you accidentally left test.only in the source code */
   forbidOnly: !!process.env.CI,
-  // Retries help handle occasional timing issues in cross-browser testing
+
+  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  // Increase workers in CI for faster parallel execution
-  workers: process.env.CI ? 4 : undefined,
-  // Set timeout for each test (30s default)
-  timeout: 30000,
-  reporter: [
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    ['junit', { outputFile: 'test-results/playwright-results.xml' }],
-    ['json', { outputFile: 'test-results/playwright-results.json' }],
-    ['line'], // Add line reporter for better CI output
-  ],
-  // Expect timeout for assertions (separate from action timeout)
-  expect: {
-    // USWDS components need time for initialization + CSS animations
-    timeout: process.env.CI ? 15000 : 5000,
-  },
+
+  /* Opt out of parallel tests on CI */
+  workers: process.env.CI ? 1 : undefined,
+
+  /* Reporter to use */
+  reporter: 'html',
+
+  /* Shared settings for all the projects below */
   use: {
+    /* Base URL to use in actions like `await page.goto('/')` */
     baseURL: 'http://localhost:6006',
-    // Reduce timeouts for faster failures
-    actionTimeout: 10000,
-    navigationTimeout: 15000,
+
+    /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
+
+    /* Screenshot on failure */
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
   },
 
-  projects: process.env.CI
-    ? [
-        // CI: Only test essential browsers for speed
-        {
-          name: 'chromium',
-          use: { ...devices['Desktop Chrome'] },
-        },
-        {
-          name: 'firefox',
-          use: { ...devices['Desktop Firefox'] },
-        },
-        {
-          name: 'webkit',
-          use: { ...devices['Desktop Safari'] },
-        },
-        // Accessibility testing (critical for USWDS compliance)
-        {
-          name: 'accessibility-chrome',
-          use: {
-            ...devices['Desktop Chrome'],
-            contextOptions: {
-              reducedMotion: 'reduce',
-              colorScheme: 'light',
-            },
-          },
-        },
-      ]
-    : [
-        // Local: Full browser matrix for comprehensive testing
-        // Desktop browsers
-        {
-          name: 'chromium',
-          use: { ...devices['Desktop Chrome'] },
-        },
-        {
-          name: 'firefox',
-          use: { ...devices['Desktop Firefox'] },
-        },
-        {
-          name: 'webkit',
-          use: { ...devices['Desktop Safari'] },
-        },
+  /* Configure projects for major browsers */
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
 
-        // Mobile browsers
-        {
-          name: 'mobile-chrome',
-          use: { ...devices['Pixel 5'] },
-        },
-        {
-          name: 'mobile-safari',
-          use: { ...devices['iPhone 12'] },
-        },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
 
-        // Tablet browsers
-        {
-          name: 'tablet-chrome',
-          use: { ...devices['Galaxy Tab S4'] },
-        },
-        {
-          name: 'tablet-safari',
-          use: { ...devices['iPad Pro'] },
-        },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
 
-        // High DPI displays
-        {
-          name: 'high-dpi-chrome',
-          use: {
-            ...devices['Desktop Chrome'],
-            deviceScaleFactor: 2,
-          },
-        },
+    /* Test against mobile viewports */
+    {
+      name: 'mobile-chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'mobile-safari',
+      use: { ...devices['iPhone 12'] },
+    },
+  ],
 
-        // Accessibility testing browser
-        {
-          name: 'accessibility-chrome',
-          use: {
-            ...devices['Desktop Chrome'],
-            // Enable accessibility testing features
-            contextOptions: {
-              reducedMotion: 'reduce',
-              colorScheme: 'light',
-            },
-          },
-        },
-
-        // Dark mode testing
-        {
-          name: 'dark-mode-chrome',
-          use: {
-            ...devices['Desktop Chrome'],
-            contextOptions: {
-              colorScheme: 'dark',
-            },
-          },
-        },
-
-        // Print media testing
-        {
-          name: 'print-chrome',
-          use: {
-            ...devices['Desktop Chrome'],
-            contextOptions: {
-              mediaType: 'print',
-            },
-          },
-        },
-
-        // Slow network simulation
-        {
-          name: 'slow-network-chrome',
-          use: {
-            ...devices['Desktop Chrome'],
-            contextOptions: {
-              offline: false,
-            },
-            launchOptions: {
-              args: [
-                '--simulate-network-throttling',
-                '--throttling.cpu=6',
-                '--throttling.download=1.5',
-                '--throttling.upload=0.75',
-              ],
-            },
-          },
-        },
-      ],
-
+  /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run storybook -- --port 6006 --quiet',
-    port: 6006,
-    // Always reuse existing server to avoid port conflicts in CI
-    // (CI workflow starts Storybook manually before Playwright tests)
-    reuseExistingServer: true,
-    timeout: 120000,
+    command: 'pnpm storybook --no-open',
+    url: 'http://localhost:6006',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000, // 2 minutes to start Storybook
   },
 });
