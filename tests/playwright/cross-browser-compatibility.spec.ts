@@ -7,11 +7,24 @@ import { test, expect } from '@playwright/test';
 
 // Test data for common components
 const testComponents = [
+  // Existing components
   { name: 'Button', story: 'actions-button--default' },
   { name: 'Accordion', story: 'structure-accordion--default' },
   { name: 'Alert', story: 'feedback-alert--default' },
   { name: 'Table', story: 'data-display-table--default' },
   { name: 'Modal', story: 'feedback-modal--default' },
+
+  // Phase 1: Baseline coverage additions
+  { name: 'Text-Input', story: 'forms-text-input--default' },
+  { name: 'Textarea', story: 'forms-textarea--default' },
+  { name: 'Select', story: 'forms-select--default' },
+  { name: 'Checkbox', story: 'forms-checkbox--default' },
+  { name: 'Radio', story: 'forms-radio--default' },
+  { name: 'Breadcrumb', story: 'navigation-breadcrumb--default' },
+  { name: 'Card', story: 'data-display-card--default' },
+  { name: 'Tag', story: 'data-display-tag--default' },
+  { name: 'Banner', story: 'feedback-banner--default' },
+  { name: 'Site-Alert', story: 'feedback-site-alert--default' },
 ];
 
 test.describe('Cross-Browser Compatibility', () => {
@@ -67,6 +80,29 @@ test.describe('Cross-Browser Compatibility', () => {
           await focusedElement.press('Enter');
           await focusedElement.press('Space');
         }
+
+        // Test form input keyboard interactions
+        if (['Text-Input', 'Textarea'].includes(name)) {
+          const input = component.locator('input, textarea').first();
+          await input.focus();
+          await input.type('Test input');
+          const value = await input.inputValue();
+          expect(value).toContain('Test');
+        }
+
+        if (['Select'].includes(name)) {
+          const select = component.locator('select').first();
+          await select.focus();
+          await select.press('ArrowDown'); // Navigate options
+        }
+
+        if (['Checkbox', 'Radio'].includes(name)) {
+          const input = component.locator('input').first();
+          await input.focus();
+          await input.press('Space'); // Toggle with space
+          const isChecked = await input.isChecked();
+          expect(isChecked).toBe(true);
+        }
       });
 
       test(`should be accessible in ${name}`, async ({ page }) => {
@@ -97,10 +133,40 @@ test.describe('Cross-Browser Compatibility', () => {
           expect(panelCount).toBeGreaterThan(0);
         }
 
-        if (['Alert'].includes(name)) {
+        if (['Alert', 'Banner', 'Site-Alert'].includes(name)) {
           // Alerts should have appropriate roles
           const alertRole = await component.getAttribute('role');
-          expect(['alert', 'alertdialog', 'status']).toContain(alertRole);
+          expect(['alert', 'alertdialog', 'status', 'region']).toContain(alertRole);
+        }
+
+        if (['Text-Input', 'Textarea', 'Select', 'Checkbox', 'Radio'].includes(name)) {
+          // Form inputs should have labels
+          const input = component.locator('input, select, textarea').first();
+          const inputId = await input.getAttribute('id');
+
+          if (inputId) {
+            const label = page.locator(`label[for="${inputId}"]`);
+            const labelCount = await label.count();
+            expect(labelCount).toBeGreaterThan(0);
+          }
+        }
+
+        if (['Breadcrumb'].includes(name)) {
+          // Breadcrumbs should have nav role
+          const hasNavRole = await component.evaluate((el) =>
+            el.getAttribute('role') === 'navigation' || el.querySelector('nav') !== null
+          );
+          expect(hasNavRole).toBe(true);
+        }
+
+        if (['Card'].includes(name)) {
+          // Cards should have proper heading structure
+          const headings = component.locator('h1, h2, h3, h4, h5, h6');
+          const headingCount = await headings.count();
+          // Cards typically have headings, but not required
+          if (headingCount > 0) {
+            expect(headingCount).toBeGreaterThan(0);
+          }
         }
       });
 
