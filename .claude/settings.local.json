@@ -126,7 +126,10 @@
       "Bash(pnpm validate:ai-quality:*)",
       "Bash(pnpm turbo typecheck:*)",
       "Bash(pnpm --filter @uswds-wc/navigation test:*)",
-      "Bash(CI=1 pnpm --filter @uswds-wc/navigation test:*)"
+      "Bash(CI=1 pnpm --filter @uswds-wc/navigation test:*)",
+      "Bash(pnpm run lint:*)",
+      "Bash(CI=true npx playwright test:*)",
+      "Bash(npx playwright test:*)"
     ],
     "deny": [],
     "ask": []

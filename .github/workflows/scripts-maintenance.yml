@@ -1,0 +1,70 @@
+name: Scripts Maintenance Check
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'scripts/**'
+      - 'package.json'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'scripts/**'
+      - 'package.json'
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch: # Allow manual runs
+
+jobs:
+  check-scripts:
+    runs-on: ubuntu-latest
+    name: Check Scripts Organization
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run scripts maintenance check
+      run: npm run scripts:check
+      
+    - name: Comment on PR if issues found
+      if: failure() && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { execSync } = require('child_process');
+          let output;
+          try {
+            execSync('npm run scripts:check', { encoding: 'utf8' });
+            output = 'Scripts maintenance check passed ✅';
+          } catch (error) {
+            output = error.stdout || error.message;
+          }
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## 🔧 Scripts Maintenance Check
+            
+\`\`\`
+${output}
+\`\`\`
+
+**Fix suggestions:**
+- Run \`npm run scripts:clean\` to auto-fix some issues
+- Review unused scripts and remove if no longer needed
+- Check for orphaned package.json commands
+
+_This check runs automatically on changes to scripts/ or package.json_`
+          });

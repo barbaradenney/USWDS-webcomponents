@@ -1,0 +1,94 @@
+name: Release (Monorepo)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pre-release validation
+        timeout-minutes: 15
+        run: |
+          echo "🔍 Running pre-release validation..."
+          pnpm turbo lint
+          pnpm turbo typecheck
+          pnpm turbo test --filter='!@uswds-wc/test-utils'
+          pnpm run validate:uswds-compliance
+          echo "✅ All validations passed"
+
+      - name: Build all packages
+        run: |
+          echo "🏗️ Building all packages..."
+          pnpm turbo build
+          echo "✅ All packages built"
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run release:publish
+          version: pnpm run release:version
+          commit: "chore: update versions"
+          title: "chore: update package versions"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Success summary
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "🎉 RELEASE SUCCESSFUL"
+          echo "===================="
+          echo "Published packages:"
+          echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | "  • \(.name)@\(.version)"'
+          echo ""
+          echo "✅ Packages published to NPM"
+          echo "✅ GitHub releases created"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ RELEASE FAILED"
+          echo "================"
+          echo ""
+          echo "Please check the logs above for details."
+          echo "The release can be retried after fixing issues."
+          exit 1
