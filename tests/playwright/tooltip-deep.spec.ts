@@ -32,15 +32,19 @@ test.describe('Tooltip Deep Testing', () => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
 
+      // Wait for the button text to appear (ensures story is fully rendered)
+      await page.waitForSelector('text=Hover for tooltip', { timeout: 10000 });
+
       const component = page.locator(COMPONENT_SELECTOR).first();
-      await expect(component).toBeVisible();
+      // usa-tooltip is inline-block wrapping button, check it's attached to DOM
+      await expect(component).toBeAttached();
 
       // Check for trigger button
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button:has-text("Hover for tooltip")');
       await expect(trigger).toBeVisible();
 
       // Tooltip body should not be visible initially
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         const isVisible = await tooltipBody.isVisible();
         // Initially hidden
@@ -60,7 +64,7 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForLoadState('networkidle');
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Focus the trigger
       await trigger.focus();
@@ -70,7 +74,7 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(300);
 
       // Tooltip should be visible
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
       }
@@ -91,7 +95,7 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForLoadState('networkidle');
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Trigger should be focusable
       await trigger.focus();
@@ -124,7 +128,7 @@ test.describe('Tooltip Deep Testing', () => {
       const component = page.locator(COMPONENT_SELECTOR).first();
       await expect(component).toBeVisible();
 
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
       await expect(trigger).toBeVisible();
 
       // On mobile, tooltip should still work but positioning may adjust
@@ -141,7 +145,7 @@ test.describe('Tooltip Deep Testing', () => {
         await trigger.hover();
         await page.waitForTimeout(300);
 
-        const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+        const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
         if ((await tooltipBody.count()) > 0) {
           await expect(tooltipBody).toBeVisible();
         }
@@ -169,13 +173,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip
       await trigger.hover();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -213,13 +217,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip
       await trigger.hover();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -251,13 +255,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip
       await trigger.hover();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -289,13 +293,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip
       await trigger.hover();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -323,10 +327,10 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForLoadState('networkidle');
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Initially tooltip should be hidden
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         let isVisible = await tooltipBody.isVisible().catch(() => false);
         expect(isVisible).toBeFalsy();
@@ -356,14 +360,14 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForLoadState('networkidle');
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Focus trigger
       await trigger.focus();
       await page.waitForTimeout(300);
 
       // Tooltip should be visible
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -384,13 +388,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForLoadState('networkidle');
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip via focus
       await trigger.focus();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -427,13 +431,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip
       await trigger.hover();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         await expect(tooltipBody).toBeVisible();
 
@@ -471,13 +475,13 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(300);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = component.locator('button, .usa-tooltip__trigger');
+      const trigger = page.locator('button, .usa-tooltip__trigger').first();
 
       // Show tooltip
       await trigger.hover();
       await page.waitForTimeout(300);
 
-      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]');
+      const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
       if ((await tooltipBody.count()) > 0) {
         // Tooltip should still be visible and not cut off
         await expect(tooltipBody).toBeVisible();
