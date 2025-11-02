@@ -43,7 +43,7 @@ test.describe('Character Count Deep Testing', () => {
       await expect(input).toBeVisible();
 
       // Check for character count message
-      const message = component.locator('.usa-character-count__status, .usa-hint');
+      const message = component.locator('.usa-character-count__status');
       await expect(message).toBeVisible();
 
       // Visual regression screenshot
@@ -97,7 +97,7 @@ test.describe('Character Count Deep Testing', () => {
       }
 
       // Check character count message has proper role
-      const message = component.locator('.usa-character-count__status, .usa-hint');
+      const message = component.locator('.usa-character-count__status');
       await expect(message).toBeVisible();
     });
 
@@ -135,7 +135,7 @@ test.describe('Character Count Deep Testing', () => {
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       const input = component.locator('input, textarea');
-      const message = component.locator('.usa-character-count__status, .usa-hint');
+      const message = component.locator('.usa-character-count__status');
 
       // Type some text
       await input.fill('Hello');
@@ -161,7 +161,7 @@ test.describe('Character Count Deep Testing', () => {
       await page.waitForTimeout(100);
 
       // Get character count display
-      const message = component.locator('.usa-character-count__status, .usa-hint');
+      const message = component.locator('.usa-character-count__status');
       const messageText = await message.textContent();
 
       // Should show the correct count (8 characters)
@@ -184,7 +184,7 @@ test.describe('Character Count Deep Testing', () => {
       const value = await input.inputValue();
       expect(value.length).toBe(14);
 
-      const message = component.locator('.usa-character-count__status, .usa-hint');
+      const message = component.locator('.usa-character-count__status');
       const messageText = await message.textContent();
       expect(messageText).toContain('14');
     });
@@ -200,14 +200,14 @@ test.describe('Character Count Deep Testing', () => {
       await input.fill('Hello World');
       await page.waitForTimeout(100);
 
-      let messageText = await component.locator('.usa-character-count__status, .usa-hint').textContent();
+      let messageText = await component.locator('.usa-character-count__status').textContent();
       expect(messageText).toContain('11');
 
       // Delete some characters
       await input.fill('Hello');
       await page.waitForTimeout(100);
 
-      messageText = await component.locator('.usa-character-count__status, .usa-hint').textContent();
+      messageText = await component.locator('.usa-character-count__status').textContent();
       expect(messageText).toContain('5');
     });
   });
