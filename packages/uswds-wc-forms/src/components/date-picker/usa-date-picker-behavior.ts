@@ -1344,7 +1344,11 @@ const displayPreviousYear = (_buttonEl: HTMLElement): void => {
   if ((nextToFocus as HTMLButtonElement).disabled) {
     nextToFocus = newCalendar.querySelector(CALENDAR_DATE_PICKER) as HTMLElement;
   }
-  nextToFocus.focus();
+
+  // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+  requestAnimationFrame(() => {
+    nextToFocus.focus();
+  });
 };
 
 /**
@@ -1365,7 +1369,13 @@ const displayPreviousMonth = (_buttonEl: HTMLElement): void => {
   if ((nextToFocus as HTMLButtonElement).disabled) {
     nextToFocus = newCalendar.querySelector(CALENDAR_DATE_PICKER) as HTMLElement;
   }
-  nextToFocus.focus();
+
+  // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+  // When renderCalendar() clears and re-creates DOM, immediate focus() triggers focusout
+  // on old element before relatedTarget is properly set, causing hideCalendar() to fire
+  requestAnimationFrame(() => {
+    nextToFocus.focus();
+  });
 };
 
 /**
@@ -1386,7 +1396,13 @@ const displayNextMonth = (_buttonEl: HTMLElement): void => {
   if ((nextToFocus as HTMLButtonElement).disabled) {
     nextToFocus = newCalendar.querySelector(CALENDAR_DATE_PICKER) as HTMLElement;
   }
-  nextToFocus.focus();
+
+  // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+  // When renderCalendar() clears and re-creates DOM, immediate focus() triggers focusout
+  // on old element before relatedTarget is properly set, causing hideCalendar() to fire
+  requestAnimationFrame(() => {
+    nextToFocus.focus();
+  });
 };
 
 /**
@@ -1407,7 +1423,11 @@ const displayNextYear = (_buttonEl: HTMLElement): void => {
   if ((nextToFocus as HTMLButtonElement).disabled) {
     nextToFocus = newCalendar.querySelector(CALENDAR_DATE_PICKER) as HTMLElement;
   }
-  nextToFocus.focus();
+
+  // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+  requestAnimationFrame(() => {
+    nextToFocus.focus();
+  });
 };
 
 /**
@@ -1462,7 +1482,11 @@ const toggleCalendar = (el: HTMLElement): void => {
       maxDate
     );
     const newCalendar = renderCalendar(calendarEl, dateToDisplay);
-    (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+
+    // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+    requestAnimationFrame(() => {
+      (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+    });
   } else {
     hideCalendar(el);
   }
@@ -1577,7 +1601,11 @@ const selectMonth = (monthEl: HTMLElement): void => {
   let date = setMonth(calendarDate!, selectedMonth);
   date = keepDateBetweenMinAndMax(date, minDate!, maxDate);
   const newCalendar = renderCalendar(calendarEl, date);
-  (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+
+  // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+  requestAnimationFrame(() => {
+    (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+  });
 };
 
 /**
@@ -1808,7 +1836,11 @@ const selectYear = (yearEl: HTMLElement): void => {
   let date = setYear(calendarDate!, selectedYear);
   date = keepDateBetweenMinAndMax(date, minDate!, maxDate);
   const newCalendar = renderCalendar(calendarEl, date);
-  (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+
+  // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+  requestAnimationFrame(() => {
+    (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+  });
 };
 
 /**
@@ -1848,7 +1880,11 @@ const adjustCalendar =
     const cappedDate = keepDateBetweenMinAndMax(date, minDate!, maxDate);
     if (!isSameDay(calendarDate, cappedDate)) {
       const newCalendar = renderCalendar(calendarEl, cappedDate);
-      (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+
+      // CRITICAL: Defer focus to next frame to prevent focusout handler from closing calendar
+      requestAnimationFrame(() => {
+        (newCalendar.querySelector(CALENDAR_DATE_FOCUSED) as HTMLElement).focus();
+      });
     }
     event.preventDefault();
   };
