@@ -83,7 +83,8 @@ test.describe('Tooltip Deep Testing', () => {
       await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Focus the trigger
       await trigger.focus();
@@ -115,7 +116,8 @@ test.describe('Tooltip Deep Testing', () => {
       await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Trigger should be focusable
       await trigger.focus();
@@ -149,7 +151,8 @@ test.describe('Tooltip Deep Testing', () => {
       const component = page.locator(COMPONENT_SELECTOR).first();
       await expect(component).toBeVisible();
 
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
       await expect(trigger).toBeVisible();
 
       // On mobile, tooltip should still work but positioning may adjust
@@ -195,7 +198,8 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip
       await trigger.hover();
@@ -240,7 +244,8 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip
       await trigger.hover();
@@ -279,7 +284,8 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip
       await trigger.hover();
@@ -318,7 +324,8 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip
       await trigger.hover();
@@ -353,7 +360,8 @@ test.describe('Tooltip Deep Testing', () => {
       await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Initially tooltip should be hidden
       const tooltipBody = page.locator('.usa-tooltip__body, [role="tooltip"]').first();
@@ -387,7 +395,8 @@ test.describe('Tooltip Deep Testing', () => {
       await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Focus trigger
       await trigger.focus();
@@ -416,7 +425,8 @@ test.describe('Tooltip Deep Testing', () => {
       await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip via focus
       await trigger.focus();
@@ -460,7 +470,8 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(200);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip
       await trigger.hover();
@@ -505,7 +516,8 @@ test.describe('Tooltip Deep Testing', () => {
       await page.waitForTimeout(300);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
-      const trigger = page.locator('button, .usa-tooltip__trigger').first();
+      // After USWDS transformation, the button element is the interactive trigger
+      const trigger = component.locator('button').first();
 
       // Show tooltip
       await trigger.hover();
