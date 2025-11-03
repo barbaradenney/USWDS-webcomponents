@@ -192,25 +192,46 @@ To disable: SKIP_DOC_CLEANUP=1 git commit
 fi
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Discovered Issues Policy Enforcement
+# Discovered Issues Policy Enforcement (STRICT MODE)
 # See: CLAUDE.md - Discovered Issues Policy
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#
+# POLICY: ANY use of --no-verify MUST be tracked, even if legitimate.
+# This ensures nothing slips through the cracks.
+#
+# Detection methods:
+# 1. Commit message mentions --no-verify (explicit)
+# 2. Validation metrics missing/stale (forensic)
+# 3. Hook markers absent (forensic)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Check if the last commit message mentions --no-verify
-if echo "$COMMIT_MESSAGE" | grep -q -i "no-verify"; then
+# Use strict detection script
+if node scripts/validate/detect-no-verify-usage.cjs "$COMMIT_HASH"; then
   echo ""
-  echo "🚨 Detected --no-verify commit"
-  echo "📋 Generating discovered issues tracker..."
+  echo "🚨 STRICT MODE: Detected --no-verify usage"
+  echo "📋 Creating discovered issues tracker..."
   echo ""
+
+  # Show detection details
+  node scripts/validate/detect-no-verify-usage.cjs "$COMMIT_HASH" --json
+
+  echo ""
+  echo "📝 Generating discovered issues tracker..."
 
   # Run the discovered issues generator
   node scripts/validate/generate-discovered-issues.cjs
 
+  echo ""
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
-  echo "⚠️  IMPORTANT: Fix discovered issues before starting new work"
+  echo "⚠️  STRICT POLICY ENFORCED:"
+  echo "   • --no-verify was used (detected automatically)"
+  echo "   • Discovered issues tracker created"
+  echo "   • You MUST fix these issues before starting new work"
+  echo "   • Next commit will be BLOCKED until issues are resolved"
   echo ""
   echo "📖 See: CLAUDE.md - Discovered Issues Policy"
+  echo "🔍 Run: pnpm run fix:discovered (to see what needs fixing)"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
 fi
