@@ -13,6 +13,7 @@
 #          - Custom USWDS class validation (4a/9)
 #          - Custom CSS validation (4b/9)
 #          - Icon name validation (4c/9)
+#          - Component composition validation (4d/9)
 #
 # Required environment variables:
 #   MODIFIED_COMPONENT_COUNT - Number of modified components
@@ -122,6 +123,19 @@ if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
   echo ""
   # Run again without redirection to show detailed output
   node scripts/validate/validate-icon-names.cjs
+  exit 1
+fi
+echo "   ✅ Pass"
+
+# Stage 4d/9: Component composition validation
+echo "🔧 4d/9 Component composition validation..."
+node scripts/validate/validate-component-composition.js > /dev/null 2>&1
+VALIDATION_EXIT_CODE=$?
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+  echo "❌ Component composition issues detected!"
+  echo ""
+  # Run again without redirection to show detailed output
+  node scripts/validate/validate-component-composition.js
   exit 1
 fi
 echo "   ✅ Pass"

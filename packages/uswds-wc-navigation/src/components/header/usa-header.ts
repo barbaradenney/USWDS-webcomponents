@@ -14,6 +14,9 @@ import '@uswds-wc/actions';
 // Import usa-language-selector component
 import '../language-selector/index.js';
 
+// Import usa-icon component for close icon
+import '@uswds-wc/data-display/components/icon';
+
 export interface NavItem {
   label: string;
   href?: string;
@@ -433,7 +436,7 @@ export class USAHeader extends USWDSBaseComponent {
               aria-label="Close"
               @click="${this.handleMobileMenuClose}"
             >
-              <img src="/img/usa-icons/close.svg" role="img" alt="Close" />
+              <usa-icon name="close" role="img" aria-label="Close"></usa-icon>
             </button>
             <ul class="usa-nav__primary usa-accordion">
               ${this.navItems.map((item) => this.renderNavItem(item))}
@@ -450,7 +453,6 @@ export class USAHeader extends USWDSBaseComponent {
                             size="small"
                             placeholder="${this.searchPlaceholder}"
                             input-id="header-search-field"
-                            submit-icon-src="/img/usa-icons-bg/search--white.svg"
                             @search-submit="${this.handleSearch}"
                           ></usa-search>
                         `
@@ -486,7 +488,7 @@ export class USAHeader extends USWDSBaseComponent {
       >
         <div class="usa-nav__inner">
           <button class="usa-nav__close" aria-label="Close" @click="${this.handleMobileMenuClose}">
-            <img src="/img/usa-icons/close.svg" role="img" alt="Close" />
+            <usa-icon name="close" role="img" aria-label="Close"></usa-icon>
           </button>
           <ul class="usa-nav__primary usa-accordion">
             ${this.navItems.map((item) => this.renderNavItem(item))}
@@ -503,7 +505,6 @@ export class USAHeader extends USWDSBaseComponent {
                           size="small"
                           placeholder="${this.searchPlaceholder}"
                           input-id="header-search-field-extended"
-                          submit-icon-src="/img/usa-icons-bg/search--white.svg"
                           @search-submit="${this.handleSearch}"
                         ></usa-search>
                       `

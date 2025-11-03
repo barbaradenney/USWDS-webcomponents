@@ -11,6 +11,7 @@
 #          - Documentation synchronization (11/11)
 #          - Documentation hygiene (11a/11)
 #          - Documentation placeholders (11b/11)
+#          - Storybook MDX validation (11c/11)
 #
 # Exit codes:
 #   0 - All final validations passed
@@ -60,6 +61,17 @@ node scripts/validate/validate-documentation-placeholders.cjs > /dev/null 2>&1 |
   echo ""
   node scripts/validate/validate-documentation-placeholders.cjs
   echo ""
+  exit 1
+}
+echo "   ✅ Pass"
+
+# Stage 11c/11: Storybook MDX validation
+echo "📖 11c/11 Storybook MDX files..."
+node scripts/validate/validate-storybook-mdx.js > /dev/null 2>&1 || {
+  echo ""
+  echo "❌ Storybook MDX validation failed!"
+  node scripts/validate/validate-storybook-mdx.js
+  echo "   Run: npm run docs:validate:mdx for details"
   exit 1
 }
 echo "   ✅ Pass"
