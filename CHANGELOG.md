@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-11-02
+
+### 📝 **Documentation**
+
+- Added npm publication badges (version, downloads, license) to README
+- Added direct links to all published npm packages in documentation
+- Updated installation instructions with npm organization (@uswds-wc)
+- Enhanced Quick Links section with npm package information
+
 ## [2.1.0] - 2025-11-02
 
 ### 🚀 **Quality & Testing Infrastructure Release**
