@@ -20,16 +20,16 @@ import 'path/to/uswds-webcomponents/src/components/skip-link/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `href` | `any` | `'#main-content'` | Property description |
-| `text` | `any` | `'Skip to main content'` | Property description |
-| `multiple` | `any` | `false` | Property description |
+| Property   | Type  | Default                  | Description          |
+| ---------- | ----- | ------------------------ | -------------------- |
+| `href`     | `any` | `'#main-content'`        | Property description |
+| `text`     | `any` | `'Skip to main content'` | Property description |
+| `multiple` | `any` | `false`                  | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event             | Type        | Description       |
+| ----------------- | ----------- | ----------------- |
 | `skip-link-click` | CustomEvent | Event description |
 
 ## Accessibility

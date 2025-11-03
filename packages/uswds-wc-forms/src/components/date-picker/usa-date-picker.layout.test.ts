@@ -143,7 +143,7 @@ describe('USADatePicker Layout Tests', () => {
       expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
       // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
+      const criticalIssues = validation.issues.filter((issue) =>
         issue.includes('Missing USWDS JavaScript integration')
       );
       expect(criticalIssues.length).toBe(0);

@@ -184,8 +184,7 @@ export class USATextInput extends USWDSBaseComponent {
 
     return html`
       <label class="${this.getLabelClasses()}" for="${inputId}">
-        ${this.label}
-        ${this.renderRequiredIndicator()}
+        ${this.label} ${this.renderRequiredIndicator()}
       </label>
     `;
   }
@@ -205,13 +204,12 @@ export class USATextInput extends USWDSBaseComponent {
     `;
   }
 
-
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
     return this as any;
   }
 
-    override render() {
+  override render() {
     const inputId = this.inputId;
 
     const ariaDescribedBy = [
@@ -223,9 +221,7 @@ export class USATextInput extends USWDSBaseComponent {
 
     return html`
       <div class="${this.getFormGroupClasses()}">
-        ${this.renderLabel(inputId)}
-        ${this.renderHint(inputId)}
-        ${this.renderError(inputId)}
+        ${this.renderLabel(inputId)} ${this.renderHint(inputId)} ${this.renderError(inputId)}
         <input
           class="${this.getInputClasses()}"
           id="${inputId}"

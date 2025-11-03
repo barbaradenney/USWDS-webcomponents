@@ -105,7 +105,6 @@ export class USATag extends LitElement {
   override disconnectedCallback() {
     super.disconnectedCallback();
     // Note: USWDS tags are purely presentational with no JavaScript behavior
-    console.log('Tag: Cleanup complete (no USWDS JavaScript required)');
   }
 
   private renderTagContent() {
@@ -115,6 +114,7 @@ export class USATag extends LitElement {
   private renderRemoveButton() {
     if (!this.removable) return '';
 
+    // prettier-ignore
     return html`<button
       type="button"
       class="usa-button usa-button--unstyled"

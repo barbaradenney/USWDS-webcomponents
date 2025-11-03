@@ -68,28 +68,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.15.0'
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Install Puppeteer browsers
         run: npx puppeteer browsers install chrome
 
       - name: Build components
-        run: pnpm run build
+        run: npm run build
 
       - name: Start dev server for Puppeteer tests
-        run: pnpm run dev &
+        run: npm run dev &
         env:
           CI: true
 
@@ -99,25 +94,25 @@ jobs:
       - name: Run USWDS transformation validation
         run: |
           echo "🏛️ Running USWDS transformation validation..."
-          pnpm run validate:uswds-transformation
+          npm run validate:uswds-transformation
 
       - name: Run cross-browser validation
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "🌐 Running comprehensive cross-browser validation..."
-          pnpm run test:cross-browser
+          npm run test:cross-browser
 
       - name: Run performance monitoring
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "⚡ Running performance monitoring..."
-          pnpm run test:performance:monitor
+          npm run test:performance:monitor
 
       - name: Run visual regression testing
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "📸 Running visual regression testing..."
-          pnpm run test:visual:regression || echo "Visual regression baseline may need updating"
+          npm run test:visual:regression || echo "Visual regression baseline may need updating"
 
       - name: Generate validation report
         run: |
@@ -149,19 +144,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.15.0'
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Download validation artifacts
         uses: actions/download-artifact@v4

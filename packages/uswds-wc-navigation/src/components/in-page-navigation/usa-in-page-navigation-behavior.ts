@@ -125,10 +125,7 @@ const getVisibleSectionHeadings = (
   selectedContentRegion: string,
   selectedHeadingTypes: string
 ): HTMLElement[] => {
-  const sectionHeadings = createSectionHeadingsArray(
-    selectedContentRegion,
-    selectedHeadingTypes
-  );
+  const sectionHeadings = createSectionHeadingsArray(selectedContentRegion, selectedHeadingTypes);
 
   // Find all headings with hidden styling and remove them from the array
   const visibleSectionHeadings = sectionHeadings.filter((heading) => {
@@ -341,9 +338,7 @@ const createInPageNav = (inPageNavEl: HTMLElement): void => {
     }`
   );
 
-  const acceptedHeadingLevels = inPageNavHeadingSelector
-    .split(' ')
-    .map((h) => h.toLowerCase());
+  const acceptedHeadingLevels = inPageNavHeadingSelector.split(' ').map((h) => h.toLowerCase());
 
   const sectionHeadings = getVisibleSectionHeadings(
     inPageNavContentSelector,
@@ -351,11 +346,7 @@ const createInPageNav = (inPageNavEl: HTMLElement): void => {
   );
 
   if (
-    !shouldRenderInPageNav(
-      sectionHeadings,
-      inPageNavMinimumHeadingCount,
-      acceptedHeadingLevels
-    )
+    !shouldRenderInPageNav(sectionHeadings, inPageNavMinimumHeadingCount, acceptedHeadingLevels)
   ) {
     return;
   }
@@ -486,9 +477,7 @@ function keymap(mappings: Record<string, (this: HTMLElement, event: Event) => vo
  * @param root - Root element or document
  * @returns Cleanup function
  */
-export function initializeInPageNavigation(
-  root: HTMLElement | Document = document
-): () => void {
+export function initializeInPageNavigation(root: HTMLElement | Document = document): () => void {
   const inPageNavElements = selectOrMatches(`.${IN_PAGE_NAV_CLASS}`, root);
 
   inPageNavElements.forEach((inPageNavEl) => {

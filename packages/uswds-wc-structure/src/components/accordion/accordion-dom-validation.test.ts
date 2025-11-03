@@ -101,7 +101,7 @@ describe('Accordion DOM Structure Validation', () => {
       await element.updateComplete;
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         expect(button.hasAttribute('aria-expanded')).toBe(true);
         expect(button.hasAttribute('aria-controls')).toBe(true);
       });
@@ -118,7 +118,7 @@ describe('Accordion DOM Structure Validation', () => {
       await element.updateComplete;
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
-      buttons.forEach(button => {
+      buttons.forEach((button) => {
         const controlsId = button.getAttribute('aria-controls');
         expect(controlsId).toBeTruthy();
 
@@ -132,7 +132,7 @@ describe('Accordion DOM Structure Validation', () => {
     it('should show expanded content when aria-expanded is true', async () => {
       await element.updateComplete;
       // Wait for firstUpdated() to complete its async operations
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       const button = element.querySelector('.usa-accordion__button[aria-expanded="true"]');
       if (button) {
@@ -145,7 +145,7 @@ describe('Accordion DOM Structure Validation', () => {
     it('should hide collapsed content when aria-expanded is false', async () => {
       await element.updateComplete;
       // Wait for firstUpdated() to complete its async operations
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       const button = element.querySelector('.usa-accordion__button[aria-expanded="false"]');
       if (button) {

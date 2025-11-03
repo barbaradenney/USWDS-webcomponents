@@ -83,21 +83,15 @@ const transformTimePicker = (el: HTMLElement) => {
 
   const selectEl = document.createElement('select');
 
-  [
-    'id',
-    'name',
-    'required',
-    'aria-label',
-    'aria-labelledby',
-    'disabled',
-    'aria-disabled',
-  ].forEach((name) => {
-    if (initialInputEl.hasAttribute(name)) {
-      const value = initialInputEl.getAttribute(name);
-      selectEl.setAttribute(name, value!);
-      initialInputEl.removeAttribute(name);
+  ['id', 'name', 'required', 'aria-label', 'aria-labelledby', 'disabled', 'aria-disabled'].forEach(
+    (name) => {
+      if (initialInputEl.hasAttribute(name)) {
+        const value = initialInputEl.getAttribute(name);
+        selectEl.setAttribute(name, value!);
+        initialInputEl.removeAttribute(name);
+      }
     }
-  });
+  );
 
   const padZeros = (value: number, length: number) => `0000${value}`.slice(-length);
 
@@ -115,8 +109,14 @@ const transformTimePicker = (el: HTMLElement) => {
     };
   };
 
-  const minTime = Math.max(MIN_TIME, parseTimeString(timePickerEl.dataset.minTime || '') || MIN_TIME);
-  const maxTime = Math.min(MAX_TIME, parseTimeString(timePickerEl.dataset.maxTime || '') || MAX_TIME);
+  const minTime = Math.max(
+    MIN_TIME,
+    parseTimeString(timePickerEl.dataset.minTime || '') || MIN_TIME
+  );
+  const maxTime = Math.min(
+    MAX_TIME,
+    parseTimeString(timePickerEl.dataset.maxTime || '') || MAX_TIME
+  );
   const step = Math.floor(
     Math.max(MIN_STEP, parseInt(timePickerEl.dataset.step || String(DEFAULT_STEP), 10))
   );

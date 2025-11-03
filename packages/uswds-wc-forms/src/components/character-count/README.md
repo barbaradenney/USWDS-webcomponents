@@ -20,25 +20,25 @@ import 'path/to/uswds-webcomponents/src/components/character-count/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `value` | `any` | `''` | Property description |
-| `maxlength` | `any` | `0` | Property description |
-| `label` | `any` | `'Text input with character count'` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `name` | `any` | `'character-count'` | Property description |
-| `inputType` | `'input' | 'textarea'` | `'textarea'` | Property description |
-| `rows` | `any` | `5` | Property description |
-| `placeholder` | `any` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `readonly` | `any` | `false` | Property description |
-| `error` | `any` | `''` | Property description |
+| Property      | Type     | Default                             | Description          |
+| ------------- | -------- | ----------------------------------- | -------------------- | -------------------- |
+| `value`       | `any`    | `''`                                | Property description |
+| `maxlength`   | `any`    | `0`                                 | Property description |
+| `label`       | `any`    | `'Text input with character count'` | Property description |
+| `hint`        | `any`    | `''`                                | Property description |
+| `name`        | `any`    | `'character-count'`                 | Property description |
+| `inputType`   | `'input' | 'textarea'`                         | `'textarea'`         | Property description |
+| `rows`        | `any`    | `5`                                 | Property description |
+| `placeholder` | `any`    | `''`                                | Property description |
+| `disabled`    | `any`    | `false`                             | Property description |
+| `required`    | `any`    | `false`                             | Property description |
+| `readonly`    | `any`    | `false`                             | Property description |
+| `error`       | `any`    | `''`                                | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event                    | Type        | Description       |
+| ------------------------ | ----------- | ----------------- |
 | `character-count-change` | CustomEvent | Event description |
 
 ## Accessibility

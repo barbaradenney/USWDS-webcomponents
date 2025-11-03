@@ -69,10 +69,10 @@ export class USASkipLink extends USWDSBaseComponent {
     if (this.timeoutId !== null) {
       clearTimeout(this.timeoutId);
       this.timeoutId = null;
-    
-    // Reset enhancement flag to allow reinitialization
-    this.usingUSWDSEnhancement = false;
-  }
+
+      // Reset enhancement flag to allow reinitialization
+      this.usingUSWDSEnhancement = false;
+    }
   }
 
   // USWDS-style skip link methods
@@ -92,13 +92,13 @@ export class USASkipLink extends USWDSBaseComponent {
   private async initializeUSWDSSkipLink() {
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
+      console.log(
+        `⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`
+      );
       return;
     }
 
-    console.log(
-      '🎯 Skip Link: Initializing USWDS skipnav for focus management and accessibility'
-    );
+    console.log('🎯 Skip Link: Initializing USWDS skipnav for focus management and accessibility');
     try {
       // Use standardized USWDS loader utility for consistency with other components
       const { loadUSWDSModule } = await import('@uswds-wc/core');
@@ -122,7 +122,9 @@ export class USASkipLink extends USWDSBaseComponent {
         );
         return; // USWDS owns all skip link behavior now
       } else {
-        console.warn('⚠️ Skip Link: No .usa-skipnav element found, using fallback focus management');
+        console.warn(
+          '⚠️ Skip Link: No .usa-skipnav element found, using fallback focus management'
+        );
         this.setupFallbackBehavior();
       }
     } catch (error) {

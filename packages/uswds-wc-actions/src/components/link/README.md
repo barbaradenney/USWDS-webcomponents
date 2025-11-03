@@ -20,20 +20,20 @@ import 'path/to/uswds-webcomponents/src/components/link/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `href` | `any` | `''` | Property description |
-| `target` | `any` | `''` | Property description |
-| `rel` | `any` | `''` | Property description |
-| `variant` | `'default' | 'external' | 'alt' | 'unstyled'` | `'default'` | Property description |
-| `external` | `any` | `false` | Property description |
-| `unstyled` | `any` | `false` | Property description |
-| `download` | `any` | `''` | Property description |
+| Property   | Type       | Default    | Description          |
+| ---------- | ---------- | ---------- | -------------------- | ----------- | ----------- | -------------------- |
+| `href`     | `any`      | `''`       | Property description |
+| `target`   | `any`      | `''`       | Property description |
+| `rel`      | `any`      | `''`       | Property description |
+| `variant`  | `'default' | 'external' | 'alt'                | 'unstyled'` | `'default'` | Property description |
+| `external` | `any`      | `false`    | Property description |
+| `unstyled` | `any`      | `false`    | Property description |
+| `download` | `any`      | `''`       | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event        | Type        | Description       |
+| ------------ | ----------- | ----------------- |
 | `link-click` | CustomEvent | Event description |
 
 ## Accessibility

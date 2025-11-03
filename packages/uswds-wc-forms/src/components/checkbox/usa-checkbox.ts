@@ -181,14 +181,15 @@ export class USACheckbox extends LitElement {
     return this._checkboxId;
   }
   private async initializeUSWDSCheckbox() {
-    
     // Prevent multiple initializations
     if (this.usingUSWDSEnhancement) {
-      console.log(`⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`);
+      console.log(
+        `⚠️ ${this.constructor.name}: Already initialized, skipping duplicate initialization`
+      );
       return;
     }
 
-console.log(
+    console.log(
       `☑️ Checkbox: Initializing (presentational component - no USWDS JavaScript needed)`
     );
 
@@ -282,8 +283,7 @@ console.log(
           @change=${this.handleChange}
         />
         <label class="usa-checkbox__label" for="${checkboxId}">
-          ${this.label}
-          ${this.renderDescription(checkboxId)}
+          ${this.label} ${this.renderDescription(checkboxId)}
         </label>
       </div>
     `;

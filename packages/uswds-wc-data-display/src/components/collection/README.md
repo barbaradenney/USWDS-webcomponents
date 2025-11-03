@@ -20,18 +20,18 @@ import 'path/to/uswds-webcomponents/src/components/collection/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `items` | `CollectionItem[]` | `[]` | Property description |
-| `virtual` | `any` | `false` | Property description |
-| `itemHeight` | `any` | `120` | Property description |
-| `containerHeight` | `any` | `600` | Property description |
+| Property          | Type               | Default | Description          |
+| ----------------- | ------------------ | ------- | -------------------- |
+| `items`           | `CollectionItem[]` | `[]`    | Property description |
+| `virtual`         | `any`              | `false` | Property description |
+| `itemHeight`      | `any`              | `120`   | Property description |
+| `containerHeight` | `any`              | `600`   | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

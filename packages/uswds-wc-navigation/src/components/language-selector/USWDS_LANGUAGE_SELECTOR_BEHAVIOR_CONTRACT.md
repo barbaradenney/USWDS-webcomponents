@@ -17,10 +17,12 @@
 The Language Selector component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/language-selector/usa-language-selector-behavior.ts` - USWDS behavior mirror
 - `src/components/language-selector/usa-language-selector.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/language-selector/usa-language-selector-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Language Selector component mirrors USWDS JavaScript behavior exactly to mai
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should dropdown toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should dropdown toggle', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should language selection', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should language selection', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should button state management', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -96,7 +104,6 @@ it('should button state management', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -115,46 +122,55 @@ it('should button state management', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`keymap()`** - Line 1
+
   ```javascript
-  const keymap = require("receptor/keymap");
+  const keymap = require('receptor/keymap');
   ```
 
 - **`behavior()`** - Line 2
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`toggle()`** - Line 3
+
   ```javascript
-  const toggle = require("../../uswds-core/src/js/utils/toggle");
+  const toggle = require('../../uswds-core/src/js/utils/toggle');
   ```
 
 - **`FocusTrap()`** - Line 4
+
   ```javascript
-  const FocusTrap = require("../../uswds-core/src/js/utils/focus-trap");
+  const FocusTrap = require('../../uswds-core/src/js/utils/focus-trap');
   ```
 
 - **`accordion()`** - Line 5
+
   ```javascript
-  const accordion = require("../../usa-accordion/src/index");
+  const accordion = require('../../usa-accordion/src/index');
   ```
 
 - **`BODY()`** - Line 10
+
   ```javascript
-  const BODY = "body";
+  const BODY = 'body';
   ```
 
 - **`LANGUAGE()`** - Line 11
+
   ```javascript
   const LANGUAGE = `.${PREFIX}-language`;
   ```
 
 - **`LANGUAGE_SUB()`** - Line 12
+
   ```javascript
   const LANGUAGE_SUB = `.${PREFIX}-language__submenu`;
   ```
 
 - **`LANGUAGE_PRIMARY()`** - Line 13
+
   ```javascript
   const LANGUAGE_PRIMARY = `.${PREFIX}-language__primary`;
   ```
@@ -164,9 +180,7 @@ Key functions from USWDS source (for reference during implementation):
   const LANGUAGE_PRIMARY_ITEM = `.${PREFIX}-language__primary-item`;
   ```
 
-
-*...and 6 more functions*
-
+_...and 6 more functions_
 
 ---
 
@@ -182,11 +196,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -194,6 +210,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-language-selector-behavior.test.ts
 ```
@@ -206,10 +223,12 @@ npm test -- usa-language-selector-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Component behavior requires USWDS source mirroring
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

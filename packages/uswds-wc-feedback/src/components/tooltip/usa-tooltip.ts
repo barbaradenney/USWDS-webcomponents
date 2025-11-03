@@ -61,6 +61,9 @@ export class USATooltip extends USWDSBaseComponent {
   // Store cleanup function from behavior
   private cleanup?: () => void;
 
+  // Track initialization state to prevent double-initialization
+  private initialized = false;
+
   // CRITICAL: Light DOM implementation for USWDS compatibility
   protected override createRenderRoot() {
     return this;
@@ -92,8 +95,9 @@ export class USATooltip extends USWDSBaseComponent {
     await this.updateComplete;
     await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
-    // Initialize using mirrored USWDS behavior
+    // Initialize using mirrored USWDS behavior (only once)
     this.cleanup = initializeTooltip(this);
+    this.initialized = true;
   }
 
   override disconnectedCallback() {
@@ -139,7 +143,8 @@ export class USATooltip extends USWDSBaseComponent {
    */
   hide() {
     this.visible = false;
-    const wrapper = this.closest('.usa-tooltip') || this.parentElement?.querySelector('.usa-tooltip');
+    const wrapper =
+      this.closest('.usa-tooltip') || this.parentElement?.querySelector('.usa-tooltip');
     if (wrapper) {
       wrapper.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
     }
@@ -210,7 +215,13 @@ export class USATooltip extends USWDSBaseComponent {
     const hasSlottedContent = this.children.length > 0;
 
     // If we have slotted content AND text, add .usa-tooltip class and title to slotted element
-    if (hasSlottedContent && tooltipText && (changedProperties.has('text') || changedProperties.has('title'))) {
+    // This only happens on first update before initialization
+    if (
+      hasSlottedContent &&
+      tooltipText &&
+      !this.initialized &&
+      (changedProperties.has('text') || changedProperties.has('title'))
+    ) {
       // Find the first child element (the trigger)
       const triggerElement = this.children[0] as HTMLElement;
       if (triggerElement && !triggerElement.classList.contains('usa-tooltip')) {
@@ -221,8 +232,7 @@ export class USATooltip extends USWDSBaseComponent {
         if (this.classes) {
           triggerElement.setAttribute('data-classes', this.classes);
         }
-        // Re-initialize USWDS to transform this element
-        initializeTooltip(this);
+        // Initialization will happen in firstUpdated() - don't call it here to avoid double-init
       }
     }
 
@@ -270,20 +280,20 @@ export class USATooltip extends USWDSBaseComponent {
       //     <element class="usa-tooltip__trigger"> (original slotted element)
 
       // Find the wrapper - must be a direct child with .usa-tooltip class
-      const wrapper = Array.from(this.children).find(
-        child => child.classList.contains('usa-tooltip')
+      const wrapper = Array.from(this.children).find((child) =>
+        child.classList.contains('usa-tooltip')
       ) as HTMLElement;
 
       if (wrapper) {
         // Remove old custom classes (not usa-tooltip)
         const classesToRemove = Array.from(wrapper.classList).filter(
-          cls => cls !== 'usa-tooltip' && cls !== 'usa-tooltip--active'
+          (cls) => cls !== 'usa-tooltip' && cls !== 'usa-tooltip--active'
         );
-        classesToRemove.forEach(cls => wrapper.classList.remove(cls));
+        classesToRemove.forEach((cls) => wrapper.classList.remove(cls));
 
         // Add new classes
-        const newClasses = this.classes.split(' ').filter(cls => cls.trim());
-        newClasses.forEach(cls => wrapper.classList.add(cls));
+        const newClasses = this.classes.split(' ').filter((cls) => cls.trim());
+        newClasses.forEach((cls) => wrapper.classList.add(cls));
       } else if (hasSlottedContent) {
         // Not yet transformed - add data-classes to trigger element for USWDS to pick up
         const triggerElement = this.children[0] as HTMLElement;

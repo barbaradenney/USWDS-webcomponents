@@ -307,7 +307,9 @@ describe('USWDS Combo Box Behavior Contract', () => {
       await waitForBehaviorInit(element);
 
       // Press Enter
-      const focusedOption = listEl.querySelector('.usa-combo-box__list-option--focused') as HTMLElement;
+      const focusedOption = listEl.querySelector(
+        '.usa-combo-box__list-option--focused'
+      ) as HTMLElement;
       const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
       focusedOption.dispatchEvent(enterEvent);
       await waitForBehaviorInit(element);

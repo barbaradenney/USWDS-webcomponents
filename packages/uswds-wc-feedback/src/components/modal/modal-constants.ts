@@ -25,9 +25,8 @@ export const SELECTORS = {
  */
 export const TIMING = {
   /** Wait for next animation frame to ensure DOM is ready */
-  ANIMATION_FRAME_DELAY: () => new Promise<void>(resolve =>
-    requestAnimationFrame(() => resolve())
-  ),
+  ANIMATION_FRAME_DELAY: () =>
+    new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
 } as const;
 
 /**

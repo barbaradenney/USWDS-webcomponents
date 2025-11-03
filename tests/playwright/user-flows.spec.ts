@@ -47,8 +47,7 @@ test.describe('USWDS Component User Flows', () => {
       await textInput.fill('Valid Input');
       await textInput.press('Enter');
 
-      // Verify form events are working
-      await page.waitForTimeout(100); // Allow events to propagate
+      // Form events propagate immediately, no wait needed
     });
 
     test('multi-component form interaction', async ({ page }) => {
@@ -109,8 +108,7 @@ test.describe('USWDS Component User Flows', () => {
           }
         }
 
-        // Small delay between components
-        await page.waitForTimeout(500);
+        // Component navigation is synchronous, no delay needed
       }
     });
   });
@@ -133,9 +131,8 @@ test.describe('USWDS Component User Flows', () => {
 
       // Test Enter/Space activation
       await page.keyboard.press('Enter');
-      await page.waitForTimeout(300);
 
-      // Verify accordion opened/closed
+      // Verify accordion opened/closed (state change is synchronous)
       const isExpanded = await accordion.evaluate(
         (el) => el.querySelector('[aria-expanded]')?.getAttribute('aria-expanded') === 'true'
       );
@@ -188,7 +185,7 @@ test.describe('USWDS Component User Flows', () => {
 
       for (const viewport of viewports) {
         await page.setViewportSize(viewport);
-        await page.waitForTimeout(500); // Allow reflow
+        // Browser reflow happens synchronously with viewport changes
 
         // Check if component is still visible and functional
         const component = page.locator('#storybook-root usa-header');
@@ -228,7 +225,7 @@ test.describe('USWDS Component User Flows', () => {
       if ((await table.count()) > 0) {
         await table.hover();
         await page.wheel(0, 500);
-        await page.waitForTimeout(100);
+        // Scroll actions are synchronous, no wait needed
         console.log('✅ Table scroll performance acceptable');
       }
     });

@@ -18,25 +18,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.15.0'
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: npm run build-storybook
 
       - name: Run Chromatic Visual Tests
-        uses: chromaui/action@v1
+        uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: 'build-storybook'
@@ -44,6 +39,8 @@ jobs:
           exitZeroOnChanges: true
           storybookBuildDir: 'storybook-static'
           autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
+          diagnostics: true
+          junitReport: true
           skip: 'dependabot/**'
 
       - name: Upload test results
@@ -63,25 +60,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.15.0'
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: npm run build-storybook
 
       - name: Start Storybook server
         run: |
@@ -89,12 +81,12 @@ jobs:
           npx wait-on http://localhost:6006
 
       - name: Run Playwright cross-browser tests
-        run: pnpm run test:cross-browser
+        run: npm run test:cross-browser
         env:
           CI: true
 
       - name: Run Playwright visual tests (backup)
-        run: pnpm run visual:local
+        run: npm run visual:local
         env:
           CI: true
         continue-on-error: true
@@ -124,28 +116,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.15.0'
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Run bundle analysis
-        run: pnpm run test:bundle-size
+        run: npm run test:bundle-size
 
       - name: Build for performance testing
-        run: pnpm run build
+        run: npm run build
 
       - name: Run performance tests
-        run: pnpm run test:performance
+        run: npm run test:performance
 
       - name: Upload performance results
         uses: actions/upload-artifact@v4

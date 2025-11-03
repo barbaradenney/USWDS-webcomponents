@@ -390,7 +390,7 @@ describe('USAInPageNavigation', () => {
       element.threshold = '0';
       await waitForUpdate(element);
 
-      let nav = element.querySelector('.usa-in-page-nav');
+      const nav = element.querySelector('.usa-in-page-nav');
       expect(nav?.getAttribute('data-threshold')).toBe('0');
 
       // Test maximum threshold (1 = 100% visibility required)
@@ -414,7 +414,7 @@ describe('USAInPageNavigation', () => {
       element.rootMargin = '10px 0px -50% 0px';
       await waitForUpdate(element);
 
-      let nav = element.querySelector('.usa-in-page-nav');
+      const nav = element.querySelector('.usa-in-page-nav');
       expect(nav?.getAttribute('data-root-margin')).toBe('10px 0px -50% 0px');
 
       // Test with different units
@@ -620,7 +620,7 @@ describe('USAInPageNavigation', () => {
           '0px 0px 0px 0px',
           '10px 0px -50% 0px',
           '0% 0px -40% 0px',
-          '-10% 0px -35% 0px'
+          '-10% 0px -35% 0px',
         ];
 
         for (const rootMargin of rootMargins) {

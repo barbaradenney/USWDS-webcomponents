@@ -83,16 +83,18 @@ export class USALink extends USWDSBaseComponent {
   private handleLinkClick(event: Event) {
     const isExternal = this.external || this.isExternalLink(this.href);
 
-    this.dispatchEvent(new CustomEvent('link-click', {
-      detail: {
-        href: this.href,
-        external: isExternal,
-        target: isExternal ? '_blank' : this.target,
-        event: event
-      },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('link-click', {
+        detail: {
+          href: this.href,
+          external: isExternal,
+          target: isExternal ? '_blank' : this.target,
+          event: event,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private isExternalLink(href: string): boolean {
@@ -165,7 +167,6 @@ export class USALink extends USWDSBaseComponent {
     return '';
   }
 
-
   override disconnectedCallback() {
     super.disconnectedCallback();
     // Clean up USWDS behavior
@@ -184,7 +185,7 @@ export class USALink extends USWDSBaseComponent {
     return this as any;
   }
 
-    override render() {
+  override render() {
     // Debug logging available with ?debug=true
 
     const linkClasses = this.getLinkClasses();

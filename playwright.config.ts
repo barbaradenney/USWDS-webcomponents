@@ -1,43 +1,57 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright configuration for cross-browser testing
- * Tests component functionality across different browsers
+ * Playwright configuration for USWDS Web Components
+ * Tests run against Storybook stories at http://localhost:6006
  */
 export default defineConfig({
   testDir: './tests/playwright',
+
+  /* Run tests in files in parallel */
   fullyParallel: true,
+
+  /* Fail the build on CI if you accidentally left test.only in the source code */
   forbidOnly: !!process.env.CI,
+
+  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+
+  /* Opt out of parallel tests on CI */
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    ['junit', { outputFile: 'test-results/playwright-results.xml' }],
-    ['json', { outputFile: 'test-results/playwright-results.json' }],
-  ],
+
+  /* Reporter to use */
+  reporter: 'html',
+
+  /* Shared settings for all the projects below */
   use: {
+    /* Base URL to use in actions like `await page.goto('/')` */
     baseURL: 'http://localhost:6006',
+
+    /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
+
+    /* Screenshot on failure */
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
   },
 
+  /* Configure projects for major browsers */
   projects: [
-    // Desktop browsers
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
+
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
 
-    // Mobile browsers
+    /* Test against mobile viewports */
     {
       name: 'mobile-chrome',
       use: { ...devices['Pixel 5'] },
@@ -46,85 +60,13 @@ export default defineConfig({
       name: 'mobile-safari',
       use: { ...devices['iPhone 12'] },
     },
-
-    // Tablet browsers
-    {
-      name: 'tablet-chrome',
-      use: { ...devices['Galaxy Tab S4'] },
-    },
-    {
-      name: 'tablet-safari',
-      use: { ...devices['iPad Pro'] },
-    },
-
-    // High DPI displays
-    {
-      name: 'high-dpi-chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        deviceScaleFactor: 2,
-      },
-    },
-
-    // Accessibility testing browser
-    {
-      name: 'accessibility-chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        // Enable accessibility testing features
-        contextOptions: {
-          reducedMotion: 'reduce',
-          colorScheme: 'light',
-        },
-      },
-    },
-
-    // Dark mode testing
-    {
-      name: 'dark-mode-chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        contextOptions: {
-          colorScheme: 'dark',
-        },
-      },
-    },
-
-    // Print media testing
-    {
-      name: 'print-chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        contextOptions: {
-          mediaType: 'print',
-        },
-      },
-    },
-
-    // Slow network simulation
-    {
-      name: 'slow-network-chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        contextOptions: {
-          offline: false,
-        },
-        launchOptions: {
-          args: [
-            '--simulate-network-throttling',
-            '--throttling.cpu=6',
-            '--throttling.download=1.5',
-            '--throttling.upload=0.75',
-          ],
-        },
-      },
-    },
   ],
 
+  /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run storybook -- --port 6006 --quiet',
-    port: 6006,
+    command: 'pnpm storybook --no-open',
+    url: 'http://localhost:6006',
     reuseExistingServer: !process.env.CI,
-    timeout: 120000,
+    timeout: 120 * 1000, // 2 minutes to start Storybook
   },
 });

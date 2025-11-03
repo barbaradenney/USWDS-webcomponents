@@ -440,4 +440,3 @@ export const AccessibilityFeatures: Story = {
     </div>
   `,
 };
-

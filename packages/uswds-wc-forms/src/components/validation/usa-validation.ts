@@ -490,14 +490,11 @@ export class USAValidation extends LitElement {
     return html`
       <div class="${this.getFormGroupClasses()}">
         <label class="usa-label" for="${this.name}">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
+          ${this.label} ${this.renderRequiredIndicator()}
         </label>
 
-        ${this.renderHint()}
-        ${errorsToShow.map((error) => this.renderErrorMessage(error))}
-        ${this.renderSuccessState()}
-        ${this.renderInput()}
+        ${this.renderHint()} ${errorsToShow.map((error) => this.renderErrorMessage(error))}
+        ${this.renderSuccessState()} ${this.renderInput()}
       </div>
     `;
   }

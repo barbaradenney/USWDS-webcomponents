@@ -904,8 +904,7 @@ describe('USAPagination', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/pagination/usa-pagination.ts`;
+        const componentPath = `${process.cwd()}/src/components/pagination/usa-pagination.ts`;
         const validation = validateComponentJavaScript(componentPath, 'pagination');
 
         if (!validation.isValid) {

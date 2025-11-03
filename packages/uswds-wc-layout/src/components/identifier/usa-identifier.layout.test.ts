@@ -53,20 +53,27 @@ describe('USAIdentifier Layout Tests', () => {
     expect(logosElement, 'Logos element should exist').toBeTruthy();
 
     // Verify masthead is inside identifier
-    expect(identifier?.contains(mastheadSection), 'Masthead should be inside identifier').toBe(true);
+    expect(identifier?.contains(mastheadSection), 'Masthead should be inside identifier').toBe(
+      true
+    );
 
     // Verify proper structure hierarchy within masthead
     const mastheadContainer = mastheadSection?.querySelector('.usa-identifier__container');
     expect(mastheadContainer, 'Masthead should have container').toBeTruthy();
-    expect(mastheadContainer?.contains(logosElement), 'Logos should be in masthead container').toBe(true);
-    expect(mastheadContainer?.contains(identityElement), 'Identity should be in masthead container').toBe(true);
+    expect(mastheadContainer?.contains(logosElement), 'Logos should be in masthead container').toBe(
+      true
+    );
+    expect(
+      mastheadContainer?.contains(identityElement),
+      'Identity should be in masthead container'
+    ).toBe(true);
   });
 
   it('should position required links section correctly when present', async () => {
     element.showRequiredLinks = true;
     element.requiredLinks = [
       { href: '/test1', text: 'Test Link 1' },
-      { href: '/test2', text: 'Test Link 2' }
+      { href: '/test2', text: 'Test Link 2' },
     ];
     await element.updateComplete;
 
@@ -81,8 +88,14 @@ describe('USAIdentifier Layout Tests', () => {
     expect(requiredLinksItems.length, 'Should have correct number of link items').toBe(2);
 
     // Verify structure hierarchy
-    expect(identifier?.contains(requiredLinksSection), 'Required links should be inside identifier').toBe(true);
-    expect(requiredLinksSection?.contains(requiredLinksList), 'List should be inside links section').toBe(true);
+    expect(
+      identifier?.contains(requiredLinksSection),
+      'Required links should be inside identifier'
+    ).toBe(true);
+    expect(
+      requiredLinksSection?.contains(requiredLinksList),
+      'List should be inside links section'
+    ).toBe(true);
 
     // Verify required links section appears after masthead
     const identifierChildren = Array.from(identifier?.children || []);
@@ -91,14 +104,16 @@ describe('USAIdentifier Layout Tests', () => {
 
     expect(mastheadIndex, 'Should find masthead section').toBeGreaterThan(-1);
     expect(linksIndex, 'Should find required links section').toBeGreaterThan(-1);
-    expect(linksIndex, 'Required links should appear after masthead').toBeGreaterThan(mastheadIndex);
+    expect(linksIndex, 'Required links should appear after masthead').toBeGreaterThan(
+      mastheadIndex
+    );
   });
 
   it('should position logos section correctly when present', async () => {
     element.showLogos = true;
     element.logos = [
       { src: '/logo1.png', alt: 'Logo 1' },
-      { src: '/logo2.png', alt: 'Logo 2', href: '/logo2-link' }
+      { src: '/logo2.png', alt: 'Logo 2', href: '/logo2-link' },
     ];
     await element.updateComplete;
 
@@ -115,8 +130,13 @@ describe('USAIdentifier Layout Tests', () => {
     expect(additionalLogos?.length, 'Should have correct number of additional logos').toBe(2);
 
     // Verify structure hierarchy
-    expect(identifier?.contains(logosSection), 'Logos section should be inside identifier').toBe(true);
-    expect(logosSection?.contains(logosContainer), 'Logos container should be inside logos section').toBe(true);
+    expect(identifier?.contains(logosSection), 'Logos section should be inside identifier').toBe(
+      true
+    );
+    expect(
+      logosSection?.contains(logosContainer),
+      'Logos container should be inside logos section'
+    ).toBe(true);
   });
 
   it('should handle identifier without required links', async () => {
@@ -232,7 +252,7 @@ describe('USAIdentifier Layout Tests', () => {
       expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
       // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
+      const criticalIssues = validation.issues.filter((issue) =>
         issue.includes('Missing USWDS JavaScript integration')
       );
       expect(criticalIssues.length).toBe(0);

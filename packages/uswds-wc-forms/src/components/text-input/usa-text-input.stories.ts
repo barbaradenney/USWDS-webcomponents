@@ -389,9 +389,7 @@ export const AccessibilityDemo: Story = {
           </li>
         </ul>
 
-        <div
-          class="padding-1 bg-info-lighter border border-info-light radius-md"
-        >
+        <div class="padding-1 bg-info-lighter border border-info-light radius-md">
           <h5 class="margin-bottom-1">Testing Checklist:</h5>
           <ul class="margin-0 font-body-xs">
             <li>✓ Tab navigation through all inputs</li>
@@ -406,4 +404,3 @@ export const AccessibilityDemo: Story = {
     </div>
   `,
 };
-

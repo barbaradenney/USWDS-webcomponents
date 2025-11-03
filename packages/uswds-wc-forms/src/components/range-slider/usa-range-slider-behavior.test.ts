@@ -39,10 +39,6 @@ describe('USWDS Range Slider Behavior Contract', () => {
       const rangeInput = element.querySelector('.usa-range');
       expect(rangeInput).not.toBeNull();
     });
-
-
-
-
   });
 
   describe('Contract 2: Callout Updates (Accessibility)', () => {
@@ -59,9 +55,6 @@ describe('USWDS Range Slider Behavior Contract', () => {
       // Should have aria-valuetext for screen readers
       expect(ariaValueText || rangeInput).toBeTruthy();
     });
-
-
-
 
     it('should use max attribute or default to 100', async () => {
       element.value = 50;
@@ -92,7 +85,6 @@ describe('USWDS Range Slider Behavior Contract', () => {
       // Callout should be updated
       expect(rangeInput.value).toBe('75');
     });
-
 
     it('should handle change events through behavior delegation', async () => {
       element.value = 30;
@@ -143,7 +135,6 @@ describe('USWDS Range Slider Behavior Contract', () => {
       expect(rangeInputs.length >= 1).toBe(true);
     });
   });
-
 
   describe('Contract 6: Data Attributes', () => {
     it('should support data-text-unit attribute', async () => {
@@ -217,10 +208,11 @@ describe('USWDS Range Slider Behavior Contract', () => {
       const rangeInput = element.querySelector('input[type="range"]') as HTMLInputElement;
 
       // Should have aria-valuetext for screen reader callout
-      const hasAria = rangeInput?.hasAttribute('aria-valuetext') ||
-                     rangeInput?.hasAttribute('aria-valuenow') ||
-                     rangeInput?.hasAttribute('aria-valuemin') ||
-                     rangeInput?.hasAttribute('aria-valuemax');
+      const hasAria =
+        rangeInput?.hasAttribute('aria-valuetext') ||
+        rangeInput?.hasAttribute('aria-valuenow') ||
+        rangeInput?.hasAttribute('aria-valuemin') ||
+        rangeInput?.hasAttribute('aria-valuemax');
 
       expect(hasAria || rangeInput).toBeTruthy();
     });

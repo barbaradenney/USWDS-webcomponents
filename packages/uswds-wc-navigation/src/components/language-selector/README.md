@@ -20,23 +20,25 @@ import 'path/to/uswds-webcomponents/src/components/language-selector/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `currentLanguage` | `any` | `'en'` | Property description |
-| `languages` | `LanguageOption[]` | `[
+| Property          | Type               | Default | Description          |
+| ----------------- | ------------------ | ------- | -------------------- |
+| `currentLanguage` | `any`              | `'en'`  | Property description |
+| `languages`       | `LanguageOption[]` | `[      |
+
     { code: 'en', name: 'English', nativeName: 'English' },
     { code: 'es', name: 'Spanish', nativeName: 'Español' },
-  ]` | Property description |
-| `variant` | `'two-languages' | 'dropdown' | 'unstyled'` | `'two-languages'` | Property description |
-| `buttonText` | `any` | `'Languages'` | Property description |
-| `small` | `any` | `false` | Property description |
+
+]`| Property description |
+|`variant`|`'two-languages' | 'dropdown' | 'unstyled'`|`'two-languages'`| Property description |
+|`buttonText`|`any`|`'Languages'`| Property description |
+|`small`|`any`|`false` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event             | Type        | Description       |
+| ----------------- | ----------- | ----------------- |
 | `language-select` | CustomEvent | Event description |
-| `menu-toggle` | CustomEvent | Event description |
+| `menu-toggle`     | CustomEvent | Event description |
 
 ## Accessibility
 

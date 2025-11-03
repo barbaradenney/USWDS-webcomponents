@@ -9,9 +9,9 @@
  */
 
 // Official USWDS approach using @forward
-@forward "uswds-theme";
-@forward "uswds";
+@forward 'uswds-theme';
+@forward 'uswds';
 
 // Web component essential styles
-@import "components/host-styles";
-@import "components/functional-extensions";
+@import 'components/host-styles';
+@import 'components/functional-extensions';

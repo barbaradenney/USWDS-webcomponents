@@ -238,13 +238,16 @@ export class USAMemorableDate extends LitElement {
       await this.updateComplete;
 
       // Wait for DOM to be fully rendered
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // Memorable Date is a CSS-only component (no USWDS JavaScript required)
       // This component provides HTML structure and lets USWDS CSS handle the styling
       console.log('📋 Memorable Date: CSS-only component (no USWDS JavaScript needed)');
     } catch (error) {
-      console.warn('🔧 Memorable Date: USWDS integration failed, using standalone implementation:', error);
+      console.warn(
+        '🔧 Memorable Date: USWDS integration failed, using standalone implementation:',
+        error
+      );
     }
   }
 
@@ -298,17 +301,12 @@ export class USAMemorableDate extends LitElement {
   }
 
   private renderHint() {
-    return this.hint
-      ? html`<div class="usa-hint" id="${this.name}-hint">${this.hint}</div>`
-      : '';
+    return this.hint ? html`<div class="usa-hint" id="${this.name}-hint">${this.hint}</div>` : '';
   }
 
   private renderMonthOption(option: { value: string; label: string }) {
     return html`
-      <option
-        value="${option.value}"
-        ?selected=${this.getFormattedMonth() === option.value}
-      >
+      <option value="${option.value}" ?selected=${this.getFormattedMonth() === option.value}>
         ${option.label}
       </option>
     `;
@@ -331,10 +329,7 @@ export class USAMemorableDate extends LitElement {
 
     return html`
       <fieldset class="${fieldsetClasses}">
-        <legend class="usa-legend">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
-        </legend>
+        <legend class="usa-legend">${this.label} ${this.renderRequiredIndicator()}</legend>
         ${this.renderHint()}
 
         <div class="usa-memorable-date">

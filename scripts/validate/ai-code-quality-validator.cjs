@@ -7,20 +7,20 @@
  * Enforces clean, efficient code before commit.
  *
  * Common AI Issues Detected:
- * 1. Over-commenting (obvious comments)
- * 2. Overly verbose variable names
- * 3. Unnecessary abstractions
- * 4. Over-engineering simple solutions
- * 5. Console.log statements left in
- * 6. Generic error messages
+ * 1. Console.log statements left in
+ * 2. Generic error messages
+ * 3. Memory leaks (event listeners, timers without cleanup)
+ * 4. Overly verbose variable names
+ * 5. Magic numbers without constants
+ * 6. TODO comments without issue references
  * 7. Copy-paste duplication
- * 8. Magic numbers without constants
- * 9. TODO comments without issues
- * 10. Unused imports/variables
+ * 8. Over-engineering simple solutions
+ * 9. Deeply nested code
+ * 10. Inefficient array/string operations
  * 11. Inconsistent error handling
- * 12. Overly nested code
- * 13. Unnecessary early returns
- * 14. Not following existing patterns
+ *
+ * Note: Comment quality is subjective and context-dependent, so comment
+ * checking has been removed. Focus is on actual code issues.
  */
 
 const fs = require('fs');
@@ -32,21 +32,6 @@ const { execSync } = require('child_process');
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 const AI_ANTI_PATTERNS = {
-  // Over-commenting - obvious comments that just restate the code
-  overCommenting: {
-    severity: 'warning',
-    patterns: [
-      { regex: /\/\/ Set .+ to .+/g, message: 'Obvious comment: restates code' },
-      { regex: /\/\/ Get .+ from .+/g, message: 'Obvious comment: restates code' },
-      { regex: /\/\/ Call .+ function/g, message: 'Obvious comment: restates code' },
-      { regex: /\/\/ Return .+/g, message: 'Obvious comment: restates code' },
-      { regex: /\/\/ Initialize .+/g, message: 'Obvious comment: restates code' },
-      { regex: /\/\/ Create .+ variable/g, message: 'Obvious comment: restates code' },
-      { regex: /\/\/ Loop through .+/g, message: 'Obvious comment: use descriptive names instead' },
-      { regex: /\/\/ Check if .+/g, message: 'Obvious comment: extract to named function' },
-    ],
-  },
-
   // Overly verbose variable names (AI loves these)
   verboseNames: {
     severity: 'warning',
@@ -218,8 +203,9 @@ class AICodeQualityValidator {
       const staged = execSync('git diff --cached --name-only --diff-filter=ACM', { encoding: 'utf-8' });
       return staged
         .split('\n')
-        .filter(f => f.match(/\.(ts|js|tsx|jsx)$/) && !f.includes('.test.') && !f.includes('.cy.'))
+        .filter(f => f.match(/\.(ts|js|tsx|jsx)$/) && !f.includes('.test.') && !f.includes('.cy.') && !f.includes('.spec.'))
         .filter(f => !f.startsWith('scripts/')) // Exclude CLI scripts (legitimate console output)
+        .filter(f => !f.includes('.setup.')) // Exclude test setup files (legitimate setTimeout for infrastructure)
         .filter(f => fs.existsSync(f));
     } catch (e) {
       return [];

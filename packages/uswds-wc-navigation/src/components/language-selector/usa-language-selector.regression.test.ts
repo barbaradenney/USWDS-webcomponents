@@ -1,10 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-language-selector.ts';
 import type { USALanguageSelector, LanguageOption } from './usa-language-selector.js';
-import {
-  waitForUpdate,
-  validateComponentJavaScript,
-} from '@uswds-wc/test-utils/test-utils.js';
+import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 /**
  * Regression Tests for Language Selector Component Interactive Functionality
@@ -438,30 +435,8 @@ describe('USALanguageSelector Interactive Regression Tests', () => {
       expect(submenu.getAttribute('id')).toBe('language-options');
     });
 
-    // SKIPPED: USWDS JavaScript interaction doesn't work reliably in jsdom environment
-    // This test requires real browser for USWDS to toggle aria-expanded on click
-    // Coverage: usa-language-selector.component.cy.ts - "should update ARIA attributes when dropdown toggles"
-    it.skip('should update ARIA attributes when dropdown state changes', async () => {
-      element.variant = 'dropdown';
-      await waitForUpdate(element);
-
-      const button = element.querySelector('.usa-language__link') as HTMLButtonElement;
-
-      // Initially closed
-      expect(button.getAttribute('aria-expanded')).toBe('false');
-
-      // Open
-      button.click();
-      await waitForUpdate(element);
-
-      expect(button.getAttribute('aria-expanded')).toBe('true');
-
-      // Close
-      button.click();
-      await waitForUpdate(element);
-
-      expect(button.getAttribute('aria-expanded')).toBe('false');
-    });
+    // NOTE: ARIA attribute toggling test moved to Cypress (usa-language-selector.component.cy.ts:83-120)
+    // Tests require USWDS JavaScript interaction which doesn't work reliably in jsdom
 
     it('should have correct language attributes', async () => {
       element.variant = 'dropdown';
@@ -489,26 +464,26 @@ describe('USALanguageSelector Interactive Regression Tests', () => {
       const button = element.querySelector('.usa-language__link') as HTMLButtonElement;
       expect(button.textContent?.trim()).toBe('Select Language');
     });
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/language-selector/usa-language-selector.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'language-selector');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/language-selector/usa-language-selector.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'language-selector');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Edge Cases and Regression Prevention', () => {

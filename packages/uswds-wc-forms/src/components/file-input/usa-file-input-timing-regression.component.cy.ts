@@ -62,11 +62,14 @@ describe('File Input Timing and Initialization Regression Tests', () => {
       const fileContent = 'test content';
 
       // Trigger file selection - should work on FIRST try
-      cy.get('.usa-file-input__input').selectFile({
-        contents: Cypress.Buffer.from(fileContent),
-        fileName: fileName,
-        mimeType: 'text/plain',
-      }, { force: true });
+      cy.get('.usa-file-input__input').selectFile(
+        {
+          contents: Cypress.Buffer.from(fileContent),
+          fileName: fileName,
+          mimeType: 'text/plain',
+        },
+        { force: true }
+      );
 
       cy.wait(200);
 
@@ -104,16 +107,19 @@ describe('File Input Timing and Initialization Regression Tests', () => {
       cy.wait(500);
 
       // Select multiple files - should work on first try
-      cy.get('.usa-file-input__input').selectFile([
-        {
-          contents: Cypress.Buffer.from('file 1'),
-          fileName: 'file1.txt',
-        },
-        {
-          contents: Cypress.Buffer.from('file 2'),
-          fileName: 'file2.txt',
-        },
-      ], { force: true });
+      cy.get('.usa-file-input__input').selectFile(
+        [
+          {
+            contents: Cypress.Buffer.from('file 1'),
+            fileName: 'file1.txt',
+          },
+          {
+            contents: Cypress.Buffer.from('file 2'),
+            fileName: 'file2.txt',
+          },
+        ],
+        { force: true }
+      );
 
       cy.wait(200);
 
@@ -132,10 +138,13 @@ describe('File Input Timing and Initialization Regression Tests', () => {
       cy.wait(500);
 
       // Select a file
-      cy.get('.usa-file-input__input').selectFile({
-        contents: Cypress.Buffer.from('test'),
-        fileName: 'remove-me.txt',
-      }, { force: true });
+      cy.get('.usa-file-input__input').selectFile(
+        {
+          contents: Cypress.Buffer.from('test'),
+          fileName: 'remove-me.txt',
+        },
+        { force: true }
+      );
 
       cy.wait(200);
 
@@ -147,10 +156,13 @@ describe('File Input Timing and Initialization Regression Tests', () => {
       // Files are cleared only by selecting new files via the file input
       // The "Change file" text is just a visual indicator - clicking the input itself triggers file selection
       // Select a different file (this clears the previous one automatically per USWDS behavior)
-      cy.get('.usa-file-input__input').selectFile({
-        contents: Cypress.Buffer.from('new content'),
-        fileName: 'new-file.txt',
-      }, { force: true });
+      cy.get('.usa-file-input__input').selectFile(
+        {
+          contents: Cypress.Buffer.from('new content'),
+          fileName: 'new-file.txt',
+        },
+        { force: true }
+      );
 
       cy.wait(200);
 
@@ -219,10 +231,13 @@ describe('File Input Timing and Initialization Regression Tests', () => {
       cy.wait(200);
 
       // Component should still work correctly (no duplicate handlers)
-      cy.get('.usa-file-input__input').selectFile({
-        contents: Cypress.Buffer.from('test'),
-        fileName: 'test.txt',
-      }, { force: true });
+      cy.get('.usa-file-input__input').selectFile(
+        {
+          contents: Cypress.Buffer.from('test'),
+          fileName: 'test.txt',
+        },
+        { force: true }
+      );
 
       cy.wait(100);
       cy.get('.usa-file-input__preview').should('exist');

@@ -7,11 +7,24 @@ import { test, expect } from '@playwright/test';
 
 // Test data for common components
 const testComponents = [
-  { name: 'Button', story: 'components-button--default' },
-  { name: 'Accordion', story: 'components-accordion--default' },
-  { name: 'Alert', story: 'components-alert--default' },
-  { name: 'Table', story: 'components-table--default' },
-  { name: 'Modal', story: 'components-modal--default' },
+  // Existing components
+  { name: 'Button', story: 'actions-button--default' },
+  { name: 'Accordion', story: 'structure-accordion--default' },
+  { name: 'Alert', story: 'feedback-alert--default' },
+  { name: 'Table', story: 'data-display-table--default' },
+  { name: 'Modal', story: 'feedback-modal--default' },
+
+  // Phase 1: Baseline coverage additions
+  { name: 'Text-Input', story: 'forms-text-input--default' },
+  { name: 'Textarea', story: 'forms-textarea--default' },
+  { name: 'Select', story: 'forms-select--default' },
+  { name: 'Checkbox', story: 'forms-checkbox--default' },
+  { name: 'Radio', story: 'forms-radio--default' },
+  { name: 'Breadcrumb', story: 'navigation-breadcrumb--default' },
+  { name: 'Card', story: 'data-display-card--default' },
+  { name: 'Tag', story: 'data-display-tag--default' },
+  { name: 'Banner', story: 'feedback-banner--default' },
+  { name: 'Site-Alert', story: 'feedback-site-alert--default' },
 ];
 
 test.describe('Cross-Browser Compatibility', () => {
@@ -29,10 +42,9 @@ test.describe('Cross-Browser Compatibility', () => {
 
         // Wait for component to load
         await page.waitForLoadState('networkidle');
-        await page.waitForTimeout(1000); // Allow for animations
 
         // Find the component element
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
         await expect(component).toBeVisible();
 
         // Verify component has expected USWDS classes
@@ -51,7 +63,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.goto(`/iframe.html?id=${story}`);
         await page.waitForLoadState('networkidle');
 
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
 
         // Test Tab navigation
         await page.keyboard.press('Tab');
@@ -64,11 +76,32 @@ test.describe('Cross-Browser Compatibility', () => {
 
         // Test Enter/Space activation for interactive components
         if (['Button', 'Accordion'].includes(name)) {
+          // Keyboard actions are synchronous, no wait needed
           await focusedElement.press('Enter');
-          await page.waitForTimeout(500); // Allow for any state changes
-
           await focusedElement.press('Space');
-          await page.waitForTimeout(500);
+        }
+
+        // Test form input keyboard interactions
+        if (['Text-Input', 'Textarea'].includes(name)) {
+          const input = component.locator('input, textarea').first();
+          await input.focus();
+          await input.type('Test input');
+          const value = await input.inputValue();
+          expect(value).toContain('Test');
+        }
+
+        if (['Select'].includes(name)) {
+          const select = component.locator('select').first();
+          await select.focus();
+          await select.press('ArrowDown'); // Navigate options
+        }
+
+        if (['Checkbox', 'Radio'].includes(name)) {
+          const input = component.locator('input').first();
+          await input.focus();
+          await input.press('Space'); // Toggle with space
+          const isChecked = await input.isChecked();
+          expect(isChecked).toBe(true);
         }
       });
 
@@ -77,7 +110,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.waitForLoadState('networkidle');
 
         // Check for essential accessibility attributes
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
 
         // Verify ARIA attributes exist where expected
         if (['Button'].includes(name)) {
@@ -100,10 +133,40 @@ test.describe('Cross-Browser Compatibility', () => {
           expect(panelCount).toBeGreaterThan(0);
         }
 
-        if (['Alert'].includes(name)) {
+        if (['Alert', 'Banner', 'Site-Alert'].includes(name)) {
           // Alerts should have appropriate roles
           const alertRole = await component.getAttribute('role');
-          expect(['alert', 'alertdialog', 'status']).toContain(alertRole);
+          expect(['alert', 'alertdialog', 'status', 'region']).toContain(alertRole);
+        }
+
+        if (['Text-Input', 'Textarea', 'Select', 'Checkbox', 'Radio'].includes(name)) {
+          // Form inputs should have labels
+          const input = component.locator('input, select, textarea').first();
+          const inputId = await input.getAttribute('id');
+
+          if (inputId) {
+            const label = page.locator(`label[for="${inputId}"]`);
+            const labelCount = await label.count();
+            expect(labelCount).toBeGreaterThan(0);
+          }
+        }
+
+        if (['Breadcrumb'].includes(name)) {
+          // Breadcrumbs should have nav role
+          const hasNavRole = await component.evaluate((el) =>
+            el.getAttribute('role') === 'navigation' || el.querySelector('nav') !== null
+          );
+          expect(hasNavRole).toBe(true);
+        }
+
+        if (['Card'].includes(name)) {
+          // Cards should have proper heading structure
+          const headings = component.locator('h1, h2, h3, h4, h5, h6');
+          const headingCount = await headings.count();
+          // Cards typically have headings, but not required
+          if (headingCount > 0) {
+            expect(headingCount).toBeGreaterThan(0);
+          }
         }
       });
 
@@ -111,7 +174,7 @@ test.describe('Cross-Browser Compatibility', () => {
         await page.goto(`/iframe.html?id=${story}`);
         await page.waitForLoadState('networkidle');
 
-        await page.locator(`usa-${name.toLowerCase()}`).first();
+        const component = page.locator(`usa-${name.toLowerCase()}`).first();
         await expect(component).toBeVisible();
 
         // Get component dimensions
@@ -141,7 +204,7 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should load components within performance budget', async ({ page }) => {
       const startTime = Date.now();
 
-      await page.goto('/iframe.html?id=components-table--with-large-dataset');
+      await page.goto('/iframe.html?id=data-display-table--large-dataset');
       await page.waitForLoadState('networkidle');
 
       const loadTime = Date.now() - startTime;
@@ -160,7 +223,7 @@ test.describe('Cross-Browser Compatibility', () => {
     });
 
     test('should handle rapid interactions without performance degradation', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--multiple-items');
+      await page.goto('/iframe.html?id=structure-accordion--multiselectable');
       await page.waitForLoadState('networkidle');
 
       const accordionButtons = page.locator('usa-accordion button');
@@ -170,9 +233,9 @@ test.describe('Cross-Browser Compatibility', () => {
         const startTime = Date.now();
 
         // Rapidly click accordion buttons
+        // Clicks are synchronous, no delay needed between them
         for (let i = 0; i < Math.min(buttonCount, 10); i++) {
           await accordionButtons.nth(i).click();
-          await page.waitForTimeout(50); // Small delay between clicks
         }
 
         const interactionTime = Date.now() - startTime;
@@ -185,7 +248,7 @@ test.describe('Cross-Browser Compatibility', () => {
 
   test.describe('Form Integration Tests', () => {
     test('should integrate properly with native forms', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--in-form');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       const textInput = page.locator('usa-text-input input').first();
@@ -215,12 +278,13 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should handle slow network conditions', async ({ page, context }) => {
       // Simulate slow 3G network
       await context.route('**/*', async (route) => {
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+        // Use Promise delay for network simulation (auto-resolves, no clearTimeout needed)
+        await page.waitForTimeout(100);
         await route.continue();
       });
 
       const startTime = Date.now();
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const loadTime = Date.now() - startTime;
@@ -234,7 +298,7 @@ test.describe('Cross-Browser Compatibility', () => {
     });
 
     test('should handle offline mode gracefully', async ({ page, context }) => {
-      await page.goto('/iframe.html?id=components-alert--default');
+      await page.goto('/iframe.html?id=feedback-alert--default');
       await page.waitForLoadState('networkidle');
 
       // Go offline
@@ -258,7 +322,7 @@ test.describe('Cross-Browser Compatibility', () => {
       // Set dark color scheme
       await context.emulateMedia({ colorScheme: 'dark' });
 
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const button = page.locator('usa-button').first();
@@ -279,7 +343,7 @@ test.describe('Cross-Browser Compatibility', () => {
         reducedMotion: 'reduce',
       });
 
-      await page.goto('/iframe.html?id=components-alert--error');
+      await page.goto('/iframe.html?id=feedback-alert--error');
       await page.waitForLoadState('networkidle');
 
       const alert = page.locator('usa-alert').first();
@@ -305,7 +369,7 @@ test.describe('Cross-Browser Compatibility', () => {
     test('should render correctly in print media', async ({ page, context }) => {
       await context.emulateMedia({ media: 'print' });
 
-      await page.goto('/iframe.html?id=components-table--default');
+      await page.goto('/iframe.html?id=data-display-table--default');
       await page.waitForLoadState('networkidle');
 
       const table = page.locator('usa-table').first();

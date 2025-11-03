@@ -8,18 +8,31 @@ import { test, expect } from '@playwright/test';
  */
 test.describe('Accordion Component Cross-Browser Tests', () => {
 
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/iframe.html?id=components-accordion--default');
+  test.beforeEach(async ({ page, browserName }) => {
+    await page.goto('/iframe.html?id=structure-accordion--default');
     await page.waitForLoadState('networkidle');
+
+    // Wait for web component to be fully initialized
+    // Webkit needs extra time for custom element registration and USWDS initialization
+    await page.waitForSelector('usa-accordion', { state: 'attached' });
+
+    // Wait for USWDS JavaScript to initialize by checking for ARIA attributes
+    // This ensures USWDS has finished adding event listeners and ARIA attributes
+    const firstButton = page.locator('.usa-accordion__button').first();
+    await expect(firstButton).toHaveAttribute('aria-expanded');
   });
 
   test('should expand and collapse consistently across browsers @smoke', async ({ page, browserName }) => {
+    // Webkit needs longer timeouts for element visibility checks
+    const timeout = browserName === 'webkit' ? 10000 : 5000;
+
     // Find first accordion button
     const firstButton = page.locator('.usa-accordion__button').first();
-    await expect(firstButton).toBeVisible();
+    await expect(firstButton).toBeVisible({ timeout });
 
     // Initially should be collapsed
-    await expect(firstButton).toHaveAttribute('aria-expanded', 'false');
+    // Wait for USWDS to set aria-expanded attribute
+    await expect(firstButton).toHaveAttribute('aria-expanded', 'false', { timeout });
 
     // Click to expand
     await firstButton.click();
@@ -41,6 +54,9 @@ test.describe('Accordion Component Cross-Browser Tests', () => {
 
   test('should handle keyboard navigation correctly', async ({ page }) => {
     const firstButton = page.locator('.usa-accordion__button').first();
+
+    // Wait for button to be ready before focusing
+    await expect(firstButton).toBeVisible();
 
     // Focus first button
     await firstButton.focus();
@@ -141,19 +157,9 @@ test.describe('Accordion Component Cross-Browser Tests', () => {
     await secondButton.click();
     await expect(secondButton).toHaveAttribute('aria-expanded', 'true');
 
-    // Check if first item is still expanded (multi-select mode)
-    // or collapsed (single-select mode)
-    const firstExpandedState = await firstButton.getAttribute('aria-expanded');
-
-    if (firstExpandedState === 'false') {
-      // Single-select mode
-      console.log('Accordion is in single-select mode');
-    } else {
-      // Multi-select mode
-      console.log('Accordion is in multi-select mode');
-    }
-
+    // Verify first item state: can be expanded (multi-select) or collapsed (single-select)
     // Both modes are valid USWDS patterns
+    const firstExpandedState = await firstButton.getAttribute('aria-expanded');
     expect(['true', 'false']).toContain(firstExpandedState);
   });
 
@@ -269,7 +275,7 @@ test.describe('Accordion Component Cross-Browser Tests', () => {
 
     // Test hover state
     await firstButton.hover();
-    await page.waitForTimeout(100);
+    // CSS hover styles apply immediately, no wait needed
 
     const hoverStyles = await firstButton.evaluate((el) => {
       const styles = window.getComputedStyle(el);

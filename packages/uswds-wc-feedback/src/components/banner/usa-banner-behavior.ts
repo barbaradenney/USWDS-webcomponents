@@ -47,7 +47,11 @@ const HIDDEN = 'hidden';
  * @param root - Root element to search within (falls back to document)
  * @returns The final expanded state
  */
-const toggle = (button: HTMLElement, expanded?: boolean, root?: HTMLElement | Document): boolean => {
+const toggle = (
+  button: HTMLElement,
+  expanded?: boolean,
+  root?: HTMLElement | Document
+): boolean => {
   let safeExpanded = expanded;
 
   if (typeof safeExpanded !== 'boolean') {
@@ -91,7 +95,11 @@ const toggle = (button: HTMLElement, expanded?: boolean, root?: HTMLElement | Do
  * @param event - Click event
  * @param root - Root element to search within
  */
-const toggleBanner = function (this: HTMLElement, event: Event, root?: HTMLElement | Document): void {
+const toggleBanner = function (
+  this: HTMLElement,
+  event: Event,
+  root?: HTMLElement | Document
+): void {
   event.preventDefault();
   const trigger = (event.target as HTMLElement).closest(BANNER_BUTTON) as HTMLElement;
 

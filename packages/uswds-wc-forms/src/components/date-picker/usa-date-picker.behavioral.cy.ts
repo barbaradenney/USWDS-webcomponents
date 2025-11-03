@@ -31,7 +31,9 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       cy.get('.usa-date-picker__calendar__date').first().should('be.visible');
 
       // Verify calendar has clickable date elements
-      cy.get('.usa-date-picker__calendar__date').first().should('not.have.css', 'pointer-events', 'none');
+      cy.get('.usa-date-picker__calendar__date')
+        .first()
+        .should('not.have.css', 'pointer-events', 'none');
     });
 
     it('should verify calendar popup has correct visual dimensions and is not collapsed', () => {
@@ -68,11 +70,13 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       });
 
       // Verify dates have proper dimensions (not collapsed)
-      cy.get('.usa-date-picker__calendar__date').first().then(($date) => {
-        const rect = $date[0].getBoundingClientRect();
-        expect(rect.width).to.be.greaterThan(20);
-        expect(rect.height).to.be.greaterThan(20);
-      });
+      cy.get('.usa-date-picker__calendar__date')
+        .first()
+        .then(($date) => {
+          const rect = $date[0].getBoundingClientRect();
+          expect(rect.width).to.be.greaterThan(20);
+          expect(rect.height).to.be.greaterThan(20);
+        });
     });
 
     it('should verify calendar navigation elements are visible and functional', () => {
@@ -176,14 +180,16 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       });
 
       // Verify calendar dates have proper styling
-      cy.get('.usa-date-picker__calendar__date').first().then(($date) => {
-        const computedStyle = window.getComputedStyle($date[0]);
+      cy.get('.usa-date-picker__calendar__date')
+        .first()
+        .then(($date) => {
+          const computedStyle = window.getComputedStyle($date[0]);
 
-        // Date buttons should have background or border
-        const hasBackground = computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
-        const hasBorder = computedStyle.border !== 'none';
-        expect(hasBackground || hasBorder).to.be.true;
-      });
+          // Date buttons should have background or border
+          const hasBackground = computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
+          const hasBorder = computedStyle.border !== 'none';
+          expect(hasBackground || hasBorder).to.be.true;
+        });
     });
 
     it('should verify button icon is visible via CSS background-image', () => {
@@ -301,21 +307,25 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       cy.get('.usa-date-picker__calendar').should('be.visible');
 
       // Get initial input value
-      cy.get('.usa-input').invoke('val').then((initialValue) => {
-        // Click on a date
-        cy.get('.usa-date-picker__calendar__date').first().click();
+      cy.get('.usa-input')
+        .invoke('val')
+        .then((initialValue) => {
+          // Click on a date
+          cy.get('.usa-date-picker__calendar__date').first().click();
 
-        // Calendar should close
-        cy.get('.usa-date-picker__calendar').should('not.be.visible');
+          // Calendar should close
+          cy.get('.usa-date-picker__calendar').should('not.be.visible');
 
-        // Input should have new value
-        cy.get('.usa-input').invoke('val').should('not.equal', initialValue);
-        cy.get('.usa-input').should('not.have.value', '');
-      });
+          // Input should have new value
+          cy.get('.usa-input').invoke('val').should('not.equal', initialValue);
+          cy.get('.usa-input').should('not.have.value', '');
+        });
     });
 
     it('should verify selected date appears highlighted in calendar', () => {
-      cy.mount(`<usa-date-picker id="test-date-picker" label="Test Date" value="2024-01-15"></usa-date-picker>`);
+      cy.mount(
+        `<usa-date-picker id="test-date-picker" label="Test Date" value="2024-01-15"></usa-date-picker>`
+      );
 
       // Open calendar
       cy.get('.usa-date-picker__button').click();
@@ -333,7 +343,7 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       });
     });
 
-    it('should verify today\'s date is highlighted appropriately', () => {
+    it("should verify today's date is highlighted appropriately", () => {
       cy.mount(`<usa-date-picker id="test-date-picker" label="Test Date"></usa-date-picker>`);
 
       // Open calendar
@@ -363,18 +373,23 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       cy.get('.usa-date-picker__calendar').should('be.visible');
 
       // Get current month text
-      cy.get('.usa-date-picker__calendar__month-label').invoke('text').then((currentMonth) => {
-        // Click next month
-        cy.get('.usa-date-picker__calendar__next-month').click();
+      cy.get('.usa-date-picker__calendar__month-label')
+        .invoke('text')
+        .then((currentMonth) => {
+          // Click next month
+          cy.get('.usa-date-picker__calendar__next-month').click();
 
-        // Month should change
-        cy.get('.usa-date-picker__calendar__month-label').should('not.contain.text', currentMonth);
+          // Month should change
+          cy.get('.usa-date-picker__calendar__month-label').should(
+            'not.contain.text',
+            currentMonth
+          );
 
-        // Calendar should still be visible and functional
-        cy.get('.usa-date-picker__calendar').should('be.visible');
-        cy.get('.usa-date-picker__calendar__date').should('be.visible');
-        cy.get('.usa-date-picker__calendar__date').should('have.length.greaterThan', 0);
-      });
+          // Calendar should still be visible and functional
+          cy.get('.usa-date-picker__calendar').should('be.visible');
+          cy.get('.usa-date-picker__calendar__date').should('be.visible');
+          cy.get('.usa-date-picker__calendar__date').should('have.length.greaterThan', 0);
+        });
     });
 
     it('should verify previous month navigation works correctly', () => {
@@ -385,16 +400,21 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       cy.get('.usa-date-picker__calendar').should('be.visible');
 
       // Get current month text
-      cy.get('.usa-date-picker__calendar__month-label').invoke('text').then((currentMonth) => {
-        // Click previous month
-        cy.get('.usa-date-picker__calendar__previous-month').click();
+      cy.get('.usa-date-picker__calendar__month-label')
+        .invoke('text')
+        .then((currentMonth) => {
+          // Click previous month
+          cy.get('.usa-date-picker__calendar__previous-month').click();
 
-        // Month should change
-        cy.get('.usa-date-picker__calendar__month-label').should('not.contain.text', currentMonth);
+          // Month should change
+          cy.get('.usa-date-picker__calendar__month-label').should(
+            'not.contain.text',
+            currentMonth
+          );
 
-        // Calendar dates should be updated
-        cy.get('.usa-date-picker__calendar__date').should('be.visible');
-      });
+          // Calendar dates should be updated
+          cy.get('.usa-date-picker__calendar__date').should('be.visible');
+        });
     });
 
     it('should verify year changes when navigating past month boundaries', () => {
@@ -420,7 +440,9 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
 
   describe('Error State and Edge Case Handling', () => {
     it('should verify calendar remains functional when component has error state', () => {
-      cy.mount(`<usa-date-picker id="test-date-picker" label="Test Date" error="Please enter a valid date"></usa-date-picker>`);
+      cy.mount(
+        `<usa-date-picker id="test-date-picker" label="Test Date" error="Please enter a valid date"></usa-date-picker>`
+      );
 
       // Input should show error styling
       cy.get('.usa-input').should('have.class', 'usa-input--error');
@@ -437,7 +459,9 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
     });
 
     it('should verify disabled state prevents calendar interaction', () => {
-      cy.mount(`<usa-date-picker id="test-date-picker" label="Test Date" disabled></usa-date-picker>`);
+      cy.mount(
+        `<usa-date-picker id="test-date-picker" label="Test Date" disabled></usa-date-picker>`
+      );
 
       // Button should be disabled
       cy.get('.usa-date-picker__button').should('be.disabled');
@@ -452,7 +476,9 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       const minDate = '2024-01-01';
       const maxDate = '2024-01-31';
 
-      cy.mount(`<usa-date-picker id="test-date-picker" label="Test Date" min-date="${minDate}" max-date="${maxDate}"></usa-date-picker>`);
+      cy.mount(
+        `<usa-date-picker id="test-date-picker" label="Test Date" min-date="${minDate}" max-date="${maxDate}"></usa-date-picker>`
+      );
 
       // Open calendar
       cy.get('.usa-date-picker__button').click();
@@ -478,11 +504,13 @@ describe('USA Date Picker - Comprehensive Behavioral Tests', () => {
       cy.get('.usa-date-picker__button').click();
 
       // Calendar should appear quickly (within reasonable time)
-      cy.get('.usa-date-picker__calendar').should('be.visible').then(() => {
-        const endTime = Date.now();
-        const duration = endTime - startTime;
-        expect(duration).to.be.lessThan(500); // Should open within 500ms
-      });
+      cy.get('.usa-date-picker__calendar')
+        .should('be.visible')
+        .then(() => {
+          const endTime = Date.now();
+          const duration = endTime - startTime;
+          expect(duration).to.be.lessThan(500); // Should open within 500ms
+        });
     });
 
     it('should verify calendar remains responsive during rapid interactions', () => {

@@ -1247,7 +1247,10 @@ describe('USA Modal Component Tests', () => {
 
         // Content should still be accessible regardless of where USWDS moves it
         cy.get('[data-testid="preserved-content"]').should('exist');
-        cy.get('[data-testid="preserved-content"]').should('contain', 'This content should be preserved');
+        cy.get('[data-testid="preserved-content"]').should(
+          'contain',
+          'This content should be preserved'
+        );
       });
     });
 
@@ -1370,7 +1373,7 @@ describe('USA Modal Component Tests', () => {
         cy.get('.usa-modal').should('not.have.class', 'usa-modal--lg');
 
         // Store normal modal width for comparison
-        cy.get('.usa-modal').then($normalModal => {
+        cy.get('.usa-modal').then(($normalModal) => {
           const normalWidth = $normalModal[0].getBoundingClientRect().width;
 
           // Test large modal
@@ -1384,7 +1387,7 @@ describe('USA Modal Component Tests', () => {
           cy.get('[data-testid="wide-regression-table"] th').should('have.length', 8);
 
           // Large modal should be wider than normal modal
-          cy.get('.usa-modal').then($largeModal => {
+          cy.get('.usa-modal').then(($largeModal) => {
             const largeWidth = $largeModal[0].getBoundingClientRect().width;
             expect(largeWidth).to.be.greaterThan(normalWidth);
           });

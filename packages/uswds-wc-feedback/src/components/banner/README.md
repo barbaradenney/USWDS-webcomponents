@@ -20,20 +20,20 @@ import 'path/to/uswds-webcomponents/src/components/banner/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `flagImageSrc` | `any` | `'/img/us_flag_small.png'` | Property description |
-| `flagImageAlt` | `any` | `'U.S. flag'` | Property description |
-| `dotGovIconSrc` | `any` | `'/img/icon-dot-gov.svg'` | Property description |
-| `httpsIconSrc` | `any` | `'/img/icon-https.svg'` | Property description |
-| `headerText` | `any` | `'An official website of the United States government'` | Property description |
-| `actionText` | `any` | `"Here's how you know"` | Property description |
-| `expanded` | `any` | `false` | Property description |
+| Property        | Type  | Default                                                 | Description          |
+| --------------- | ----- | ------------------------------------------------------- | -------------------- |
+| `flagImageSrc`  | `any` | `'/img/us_flag_small.png'`                              | Property description |
+| `flagImageAlt`  | `any` | `'U.S. flag'`                                           | Property description |
+| `dotGovIconSrc` | `any` | `'/img/icon-dot-gov.svg'`                               | Property description |
+| `httpsIconSrc`  | `any` | `'/img/icon-https.svg'`                                 | Property description |
+| `headerText`    | `any` | `'An official website of the United States government'` | Property description |
+| `actionText`    | `any` | `"Here's how you know"`                                 | Property description |
+| `expanded`      | `any` | `false`                                                 | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event           | Type        | Description       |
+| --------------- | ----------- | ----------------- |
 | `banner-toggle` | CustomEvent | Event description |
 
 ## Accessibility

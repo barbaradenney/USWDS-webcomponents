@@ -156,9 +156,7 @@ const hideAccordion = (button: HTMLElement): void => {
  * @param root - Root element or document
  * @returns Cleanup function
  */
-export function initializeLanguageSelector(
-  root: HTMLElement | Document = document
-): () => void {
+export function initializeLanguageSelector(root: HTMLElement | Document = document): () => void {
   const trapContainer = (root as HTMLElement).matches?.(LANGUAGE_SUB)
     ? (root as HTMLElement)
     : (root as Document | HTMLElement).querySelector(LANGUAGE_SUB);
@@ -175,11 +173,19 @@ export function initializeLanguageSelector(
     const previouslyFocused = document.activeElement as HTMLElement;
     languageSelector.focusTrap.on();
     // Restore focus if it wasn't body (preventing unwanted focus steal during init)
-    if (previouslyFocused && previouslyFocused !== document.body && typeof previouslyFocused.focus === 'function') {
+    if (
+      previouslyFocused &&
+      previouslyFocused !== document.body &&
+      typeof previouslyFocused.focus === 'function'
+    ) {
       previouslyFocused.focus();
     } else {
       // If body was focused, blur the first tab stop to return focus to body
-      if (document.activeElement && document.activeElement !== document.body && typeof (document.activeElement as HTMLElement).blur === 'function') {
+      if (
+        document.activeElement &&
+        document.activeElement !== document.body &&
+        typeof (document.activeElement as HTMLElement).blur === 'function'
+      ) {
         (document.activeElement as HTMLElement).blur();
       }
     }

@@ -38,13 +38,15 @@ describe('Character Count DOM Structure Validation', () => {
     it('should have input or textarea', async () => {
       await element.updateComplete;
 
-      const input = element.querySelector('input.usa-character-count__field, textarea.usa-character-count__field');
+      const input = element.querySelector(
+        'input.usa-character-count__field, textarea.usa-character-count__field'
+      );
       expect(input).toBeTruthy();
     });
 
     it('should have message element', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const message = element.querySelector('.usa-character-count__message');
       expect(message).toBeTruthy();
@@ -58,7 +60,7 @@ describe('Character Count DOM Structure Validation', () => {
       await element.updateComplete;
 
       // Wait longer for USWDS to initialize and update counter
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Check both component-rendered status and USWDS-created message
       const status = element.querySelector('.usa-character-count__status');
@@ -73,7 +75,7 @@ describe('Character Count DOM Structure Validation', () => {
       element.maxLength = 10;
       element.value = '12345678';
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const message = element.querySelector('.usa-character-count__message');
       expect(message).toBeTruthy();
@@ -90,7 +92,7 @@ describe('Character Count DOM Structure Validation', () => {
 
     it('should have correctly structured message element per USWDS spec', async () => {
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const message = element.querySelector('.usa-character-count__message');
 

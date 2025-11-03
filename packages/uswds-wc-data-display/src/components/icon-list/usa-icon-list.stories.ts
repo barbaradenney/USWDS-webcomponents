@@ -67,7 +67,7 @@ export const DoAndDont: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Use contrasting icons and colors to highlight do-and-don\'t lists.',
+        story: "Use contrasting icons and colors to highlight do-and-don't lists.",
       },
     },
   },
@@ -77,10 +77,26 @@ export const DoAndDont: Story = {
         <h3 class="margin-top-0">Do</h3>
         <usa-icon-list
           .items=${[
-            { icon: 'check_circle', content: 'Write clear, descriptive link text', iconColor: 'text-success' },
-            { icon: 'check_circle', content: 'Use proper heading hierarchy', iconColor: 'text-success' },
-            { icon: 'check_circle', content: 'Provide alt text for images', iconColor: 'text-success' },
-            { icon: 'check_circle', content: 'Test with keyboard navigation', iconColor: 'text-success' },
+            {
+              icon: 'check_circle',
+              content: 'Write clear, descriptive link text',
+              iconColor: 'text-success',
+            },
+            {
+              icon: 'check_circle',
+              content: 'Use proper heading hierarchy',
+              iconColor: 'text-success',
+            },
+            {
+              icon: 'check_circle',
+              content: 'Provide alt text for images',
+              iconColor: 'text-success',
+            },
+            {
+              icon: 'check_circle',
+              content: 'Test with keyboard navigation',
+              iconColor: 'text-success',
+            },
           ]}
         ></usa-icon-list>
       </div>
@@ -91,7 +107,11 @@ export const DoAndDont: Story = {
             { icon: 'cancel', content: 'Use "click here" as link text', iconColor: 'text-error' },
             { icon: 'cancel', content: 'Skip heading levels', iconColor: 'text-error' },
             { icon: 'cancel', content: 'Use images without alt text', iconColor: 'text-error' },
-            { icon: 'cancel', content: 'Rely only on color to convey meaning', iconColor: 'text-error' },
+            {
+              icon: 'cancel',
+              content: 'Rely only on color to convey meaning',
+              iconColor: 'text-error',
+            },
           ]}
         ></usa-icon-list>
       </div>
@@ -110,9 +130,17 @@ export const Features: Story = {
   args: {
     size: 'lg',
     items: [
-      { icon: 'check_circle', content: 'Mobile-responsive design out of the box', iconColor: 'text-primary' },
+      {
+        icon: 'check_circle',
+        content: 'Mobile-responsive design out of the box',
+        iconColor: 'text-primary',
+      },
       { icon: 'check_circle', content: 'Accessibility-first approach', iconColor: 'text-primary' },
-      { icon: 'check_circle', content: 'Comprehensive component library', iconColor: 'text-primary' },
+      {
+        icon: 'check_circle',
+        content: 'Comprehensive component library',
+        iconColor: 'text-primary',
+      },
       { icon: 'check_circle', content: 'Based on USWDS standards', iconColor: 'text-primary' },
     ],
   },

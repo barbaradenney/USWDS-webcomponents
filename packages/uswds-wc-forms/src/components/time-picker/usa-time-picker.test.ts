@@ -1,13 +1,10 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-time-picker.ts';
 import type { USATimePicker } from './usa-time-picker.js';
 import {
   waitForUpdate,
   testPropertyChanges,
-  assertAccessibilityAttributes,
   assertDOMStructure,
-  validateComponentJavaScript,
-  runUSWDSTransformationTests,
 } from '@uswds-wc/test-utils/test-utils.js';
 import {
   testComponentAccessibility,
@@ -25,7 +22,7 @@ describe('USATimePicker', () => {
   afterEach(async () => {
     // Wait for any pending async operations to complete before cleanup
     // Time picker initialization includes async combo-box transformation
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     element.remove();
   });
 
@@ -44,7 +41,7 @@ describe('USATimePicker', () => {
       await waitForUpdate(element);
 
       // Give USWDS time to initialize and transform the DOM
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       assertDOMStructure(element, '.usa-form-group', 1, 'Should have form group container');
       assertDOMStructure(element, '.usa-label', 1, 'Should have label element');
@@ -99,7 +96,7 @@ describe('USATimePicker', () => {
       await waitForUpdate(element);
 
       // Give USWDS time to initialize and transform the DOM
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const input = element.querySelector('.usa-combo-box__input') as HTMLInputElement;
       const toggle = element.querySelector('.usa-combo-box__toggle-list') as HTMLButtonElement;
@@ -113,7 +110,7 @@ describe('USATimePicker', () => {
       await waitForUpdate(element);
 
       // Give USWDS time to initialize and transform the DOM
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const input = element.querySelector('.usa-combo-box__input') as HTMLInputElement;
       const formGroup = element.querySelector('.usa-form-group');

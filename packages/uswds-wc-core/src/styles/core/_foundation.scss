@@ -7,9 +7,15 @@ html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   box-sizing: border-box;
-  font-feature-settings: "kern" 1;
+  font-feature-settings: 'kern' 1;
   font-kerning: normal;
-  font-family: Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
+  font-family:
+    Source Sans Pro Web,
+    Helvetica Neue,
+    Helvetica,
+    Roboto,
+    Arial,
+    sans-serif;
   font-size: 100%;
 }
 
@@ -35,7 +41,7 @@ textarea:not([disabled]):focus {
   outline-offset: 0;
 }
 
-[contentEditable="true"]:focus,
+[contentEditable='true']:focus,
 [href]:focus,
 [tabindex]:focus,
 iframe:focus {
@@ -57,19 +63,19 @@ iframe:focus {
 
 // Font faces
 @font-face {
-  font-family: "Source Sans Pro Web";
+  font-family: 'Source Sans Pro Web';
   font-style: normal;
   font-weight: 400;
   font-display: fallback;
-  src: url(../fonts/source-sans-pro/sourcesanspro-regular-webfont.woff2) format("woff2");
+  src: url(../fonts/source-sans-pro/sourcesanspro-regular-webfont.woff2) format('woff2');
 }
 
 @font-face {
-  font-family: "Source Sans Pro Web";
+  font-family: 'Source Sans Pro Web';
   font-style: normal;
   font-weight: 700;
   font-display: fallback;
-  src: url(../fonts/source-sans-pro/sourcesanspro-bold-webfont.woff2) format("woff2");
+  src: url(../fonts/source-sans-pro/sourcesanspro-bold-webfont.woff2) format('woff2');
 }
 
 // Add other essential font-faces as needed...

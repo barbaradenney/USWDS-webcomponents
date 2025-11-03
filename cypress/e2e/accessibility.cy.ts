@@ -20,11 +20,12 @@ describe('USWDS Components Accessibility Tests', () => {
         cy.injectAxe();
         cy.wait(500); // Wait for axe to be ready
 
+        // Run axe with standard WCAG rules
+        // Note: 'keyboard-navigation' and 'focus-management' are not valid axe-core rules
+        // Keyboard and focus testing is handled in separate test cases below
         cy.checkAccessibility({
           rules: {
             'color-contrast': { enabled: true },
-            'keyboard-navigation': { enabled: true },
-            'focus-management': { enabled: true },
           }
         });
       });

@@ -113,7 +113,7 @@ export class USAComboBox extends USWDSBaseComponent {
 
     // Wait for DOM to be fully rendered
     await this.updateComplete;
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)));
 
     // Initialize using mirrored USWDS behavior
     this.cleanup = initializeComboBox(this);
@@ -157,8 +157,7 @@ export class USAComboBox extends USWDSBaseComponent {
     // Always provide a label for accessibility
     return html`
       <label class="usa-label" for="${selectId}">
-        ${this.label || 'Combo Box'}
-        ${this.renderRequiredIndicator()}
+        ${this.label || 'Combo Box'} ${this.renderRequiredIndicator()}
       </label>
     `;
   }
@@ -170,9 +169,11 @@ export class USAComboBox extends USWDSBaseComponent {
 
   private renderSelectOption(option: ComboBoxOption) {
     return html`
-      <option value="${option.value}"
-              ?selected=${this.value === option.value}
-              ?disabled=${option.disabled}>
+      <option
+        value="${option.value}"
+        ?selected=${this.value === option.value}
+        ?disabled=${option.disabled}
+      >
         ${option.label}
       </option>
     `;
@@ -189,7 +190,8 @@ export class USAComboBox extends USWDSBaseComponent {
 
     // Ensure we always have a valid, unique ID for the select element
     // Using a more robust ID that's less likely to conflict with USWDS internals
-    const selectId = this.selectId || this.inputId || `uswds-combo-box-${Math.random().toString(36).substr(2, 9)}`;
+    const selectId =
+      this.selectId || this.inputId || `uswds-combo-box-${Math.random().toString(36).substr(2, 9)}`;
 
     const ariaDescribedBy = [
       this.hint ? `${selectId}-hint` : '',
@@ -202,10 +204,14 @@ export class USAComboBox extends USWDSBaseComponent {
 
     return html`
       <div class="${formGroupClasses}">
-        ${this.renderError()}
-        ${this.renderLabel(selectId)}
-        ${this.renderHint()}
-        <div class="usa-combo-box" data-enhanced="false" data-default-value="${this.value || ''}" data-placeholder="${this.placeholder || ''}" data-disable-filtering="${this.disableFiltering}">
+        ${this.renderError()} ${this.renderLabel(selectId)} ${this.renderHint()}
+        <div
+          class="usa-combo-box"
+          data-enhanced="false"
+          data-default-value="${this.value || ''}"
+          data-placeholder="${this.placeholder || ''}"
+          data-disable-filtering="${this.disableFiltering}"
+        >
           <select
             id="${selectId}"
             name="${this.name}"

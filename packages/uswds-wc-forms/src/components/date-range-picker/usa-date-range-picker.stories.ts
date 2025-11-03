@@ -496,11 +496,7 @@ export const FormValidationDemo: Story = {
 
         <div class="margin-top-3">
           <button type="submit" class="usa-button">Submit Business Report</button>
-          <button
-            type="reset"
-            class="usa-button usa-button--secondary"
-            class="margin-left-05"
-          >
+          <button type="reset" class="usa-button usa-button--secondary" class="margin-left-05">
             Reset Form
           </button>
         </div>

@@ -17,10 +17,12 @@
 The Banner component mirrors USWDS JavaScript behavior exactly to maintain 100% behavioral parity.
 
 **Implementation Files**:
+
 - `src/components/banner/usa-banner-behavior.ts` - USWDS behavior mirror
 - `src/components/banner/usa-banner.ts` - Web component wrapper
 
 **Validation**:
+
 - `src/components/banner/usa-banner-behavior.test.ts` - Behavioral tests
 
 ---
@@ -32,11 +34,13 @@ The Banner component mirrors USWDS JavaScript behavior exactly to maintain 100% 
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should button toggle', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -56,11 +60,13 @@ it('should button toggle', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should content expand/collapse', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -80,11 +86,13 @@ it('should content expand/collapse', async () => {
 **USWDS Source**: Lines [TBD] in `index.js`
 
 **Required Behavior**:
+
 - ✅ [Describe expected behavior based on USWDS source]
 - ✅ [Additional behavior requirement]
 - ✅ [Additional behavior requirement]
 
 **Validation Test**:
+
 ```typescript
 it('should aria expanded state', async () => {
   // TODO: Implement test based on USWDS behavior
@@ -96,7 +104,6 @@ it('should aria expanded state', async () => {
   expect(true).toBe(true);
 });
 ```
-
 
 ---
 
@@ -115,31 +122,37 @@ it('should aria expanded state', async () => {
 Key functions from USWDS source (for reference during implementation):
 
 - **`behavior()`** - Line 1
+
   ```javascript
-  const behavior = require("../../uswds-core/src/js/utils/behavior");
+  const behavior = require('../../uswds-core/src/js/utils/behavior');
   ```
 
 - **`select()`** - Line 2
+
   ```javascript
-  const select = require("../../uswds-core/src/js/utils/select");
+  const select = require('../../uswds-core/src/js/utils/select');
   ```
 
 - **`toggle()`** - Line 5
+
   ```javascript
-  const toggle = require("../../uswds-core/src/js/utils/toggle");
+  const toggle = require('../../uswds-core/src/js/utils/toggle');
   ```
 
 - **`HEADER()`** - Line 7
+
   ```javascript
   const HEADER = `.${PREFIX}-banner__header`;
   ```
 
 - **`EXPANDED_CLASS()`** - Line 8
+
   ```javascript
   const EXPANDED_CLASS = `${PREFIX}-banner__header--expanded`;
   ```
 
 - **`BANNER_BUTTON()`** - Line 9
+
   ```javascript
   const BANNER_BUTTON = `${HEADER} [aria-controls]`;
   ```
@@ -148,8 +161,6 @@ Key functions from USWDS source (for reference during implementation):
   ```javascript
   const toggleBanner = function toggleEl(event) {
   ```
-
-
 
 ---
 
@@ -165,11 +176,13 @@ Key functions from USWDS source (for reference during implementation):
 ## Maintenance Notes
 
 **When to Update**:
+
 - 🔄 USWDS version upgrade
 - 🐛 USWDS source code changes
 - 🧪 New behavioral requirements discovered
 
 **Update Process**:
+
 1. Review USWDS source changes
 2. Update behavior implementation
 3. Update this contract document
@@ -177,6 +190,7 @@ Key functions from USWDS source (for reference during implementation):
 5. Update `Last Synced` date
 
 **Validation Command**:
+
 ```bash
 npm test -- usa-banner-behavior.test.ts
 ```
@@ -189,10 +203,12 @@ npm test -- usa-banner-behavior.test.ts
 > DO NOT add custom logic - ALL changes must come from USWDS source updates.
 
 **Why Vanilla JS?**
+
 - Component behavior requires USWDS source mirroring
 - Ensures 100% behavioral parity with USWDS
 - Prevents Storybook navigation issues and module caching conflicts
 
 **Related Documentation**:
+
 - [JavaScript Integration Strategy](../../../docs/JAVASCRIPT_INTEGRATION_STRATEGY.md)
 - [Component README](./README.mdx)

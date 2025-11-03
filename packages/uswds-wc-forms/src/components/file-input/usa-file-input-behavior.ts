@@ -44,8 +44,7 @@ const WORD_PREVIEW_CLASS = `${GENERIC_PREVIEW_CLASS_NAME}--word`;
 const VIDEO_PREVIEW_CLASS = `${GENERIC_PREVIEW_CLASS_NAME}--video`;
 const EXCEL_PREVIEW_CLASS = `${GENERIC_PREVIEW_CLASS_NAME}--excel`;
 const SR_ONLY_CLASS = `${PREFIX}-sr-only`;
-const SPACER_GIF =
-  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const SPACER_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 const DEFAULT_ERROR_LABEL_TEXT = 'Error: This is not a valid file type.';
 
 let TYPE_IS_VALID = Boolean(true); // logic gate for change listener
@@ -159,8 +158,7 @@ const makeSafeForID = (name: string): string => name.replace(/[^a-z0-9]/g, repla
  * @param name - Safe ID name
  * @returns Unique ID with timestamp
  */
-const createUniqueID = (name: string): string =>
-  `${name}-${Math.floor(Date.now() / 1000)}`;
+const createUniqueID = (name: string): string => `${name}-${Math.floor(Date.now() / 1000)}`;
 
 /**
  * Determines if the singular or plural item label should be used
@@ -239,10 +237,7 @@ const createVisibleInstructions = (fileInputEl: HTMLInputElement): HTMLElement =
   fileInputEl.parentNode!.insertBefore(instructions, fileInputEl);
 
   // IE11 and Edge do not support drop files on file inputs, so we've removed text that indicates that
-  if (
-    /rv:11.0/i.test(navigator.userAgent) ||
-    /Edge\/\d./i.test(navigator.userAgent)
-  ) {
+  if (/rv:11.0/i.test(navigator.userAgent) || /Edge\/\d./i.test(navigator.userAgent)) {
     const dragTextEl = fileInputParent.querySelector(`.${DRAG_TEXT_CLASS}`);
     if (dragTextEl) {
       dragTextEl.outerHTML = '';
@@ -483,11 +478,7 @@ const handleChange = (
       const fileExtension = fileName.split('.').pop();
       if (fileExtension === 'pdf') {
         setPreviewFallback(previewImage, PDF_PREVIEW_CLASS);
-      } else if (
-        fileExtension === 'doc' ||
-        fileExtension === 'docx' ||
-        fileExtension === 'pages'
-      ) {
+      } else if (fileExtension === 'doc' || fileExtension === 'docx' || fileExtension === 'pages') {
         setPreviewFallback(previewImage, WORD_PREVIEW_CLASS);
       } else if (
         fileExtension === 'xls' ||
@@ -574,16 +565,14 @@ const preventInvalidFiles = (
     // If multiple files are dragged, this iterates through them and look for any files that are not accepted.
     let allFilesAllowed = true;
     const target = e.target as HTMLInputElement;
-    const scannedFiles =
-      target.files || (e as DragEvent).dataTransfer?.files || new FileList();
+    const scannedFiles = target.files || (e as DragEvent).dataTransfer?.files || new FileList();
     for (let i = 0; i < scannedFiles.length; i += 1) {
       const file = scannedFiles[i];
       if (allFilesAllowed) {
         for (let j = 0; j < acceptedFiles.length; j += 1) {
           const fileType = acceptedFiles[j];
           allFilesAllowed =
-            file.name.indexOf(fileType) > 0 ||
-            isIncluded(file.type, fileType.replace(/\*/g, ''));
+            file.name.indexOf(fileType) > 0 || isIncluded(file.type, fileType.replace(/\*/g, ''));
           if (allFilesAllowed) {
             TYPE_IS_VALID = true;
             break;

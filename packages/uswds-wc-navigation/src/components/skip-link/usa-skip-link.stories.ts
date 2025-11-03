@@ -61,10 +61,7 @@ export const Default: Story = {
         .multiple=${args.multiple}
       ></usa-skip-link>
 
-      <div
-        id="main-content"
-        class="margin-top-4 padding-2 border-2px border-primary radius-md"
-      >
+      <div id="main-content" class="margin-top-4 padding-2 border-2px border-primary radius-md">
         <h3>Main Content</h3>
         <p>This is the main content area that users can skip to.</p>
         <p>Notice how the skip link focuses this element when activated.</p>
@@ -91,10 +88,7 @@ export const CustomTarget: Story = {
         .multiple=${args.multiple}
       ></usa-skip-link>
 
-      <nav
-        id="navigation"
-        class="margin-top-4 padding-2 border-2px border-primary-dark radius-md"
-      >
+      <nav id="navigation" class="margin-top-4 padding-2 border-2px border-primary-dark radius-md">
         <h3>Navigation</h3>
         <ul>
           <li><a href="#home">Home</a></li>
@@ -142,10 +136,7 @@ export const MultipleSkipLinks: Story = {
         .multiple=${args.multiple}
       ></usa-skip-link>
 
-      <nav
-        id="navigation"
-        class="margin-top-4 padding-2 border-2px border-primary-dark radius-md"
-      >
+      <nav id="navigation" class="margin-top-4 padding-2 border-2px border-primary-dark radius-md">
         <h3>Navigation</h3>
         <ul>
           <li><a href="#home">Home</a></li>
@@ -154,27 +145,18 @@ export const MultipleSkipLinks: Story = {
       </nav>
 
       <div class="display-flex gap-2 margin-top-2">
-        <main
-          id="main-content"
-          class="flex-2 padding-2 border-2px border-primary radius-md"
-        >
+        <main id="main-content" class="flex-2 padding-2 border-2px border-primary radius-md">
           <h3>Main Content</h3>
           <p>Primary page content goes here.</p>
         </main>
 
-        <aside
-          id="sidebar"
-          class="flex-1 padding-2 border-2px border-secondary-dark radius-md"
-        >
+        <aside id="sidebar" class="flex-1 padding-2 border-2px border-secondary-dark radius-md">
           <h3>Sidebar</h3>
           <p>Secondary content or navigation.</p>
         </aside>
       </div>
 
-      <footer
-        id="footer"
-        class="margin-top-2 padding-2 border-2px border-base-dark radius-md"
-      >
+      <footer id="footer" class="margin-top-2 padding-2 border-2px border-base-dark radius-md">
         <h3>Footer</h3>
         <p>Footer content and links.</p>
       </footer>
@@ -226,16 +208,11 @@ export const ComplexWebsite: Story = {
       ></usa-skip-link>
 
       <!-- Page Structure -->
-      <header
-        class="margin-top-4 padding-2 bg-primary-dark text-white radius-md"
-      >
+      <header class="margin-top-4 padding-2 bg-primary-dark text-white radius-md">
         <h1>Example Organization</h1>
       </header>
 
-      <nav
-        id="site-nav"
-        class="margin-top-2 padding-2 border-2px border-primary-dark radius-md"
-      >
+      <nav id="site-nav" class="margin-top-2 padding-2 border-2px border-primary-dark radius-md">
         <h2>Site Navigation</h2>
         <ul>
           <li><a href="#about">About Us</a></li>
@@ -246,20 +223,14 @@ export const ComplexWebsite: Story = {
       </nav>
 
       <div class="display-flex gap-2 margin-top-2">
-        <main
-          id="main-content"
-          class="flex-2 padding-2 border-2px border-primary radius-md"
-        >
+        <main id="main-content" class="flex-2 padding-2 border-2px border-primary radius-md">
           <h2>Main Content</h2>
           <p>
             Welcome to Example Organization. We provide essential services and solutions to our
             customers and partners.
           </p>
 
-          <section
-            id="services"
-            class="margin-top-2 padding-2 bg-base-lightest radius-md"
-          >
+          <section id="services" class="margin-top-2 padding-2 bg-base-lightest radius-md">
             <h3>Our Services</h3>
             <ul>
               <li>Customer programs and solutions</li>
@@ -271,10 +242,7 @@ export const ComplexWebsite: Story = {
         </main>
 
         <aside class="flex-1 padding-2 border-2px border-secondary-dark radius-md">
-          <div
-            id="search"
-            class="margin-bottom-2 padding-2 bg-base-lightest radius-md"
-          >
+          <div id="search" class="margin-bottom-2 padding-2 bg-base-lightest radius-md">
             <h3>Search</h3>
             <input
               type="search"
@@ -294,10 +262,7 @@ export const ComplexWebsite: Story = {
         </aside>
       </div>
 
-      <footer
-        id="contact"
-        class="margin-top-2 padding-2 bg-base-dark text-white radius-md"
-      >
+      <footer id="contact" class="margin-top-2 padding-2 bg-base-dark text-white radius-md">
         <h2>Contact Information</h2>
         <p>Phone: (555) 123-4567 | Email: info@example.com</p>
         <p>123 Example Street, City, State 12345</p>
@@ -338,9 +303,7 @@ export const AccessibilityDemo: Story = {
         }}
       ></usa-skip-link>
 
-      <div
-        class="margin-top-4 padding-2 bg-base-lightest border-1px border-base-lighter radius-md"
-      >
+      <div class="margin-top-4 padding-2 bg-base-lightest border-1px border-base-lighter radius-md">
         <p><em>Simulated page header and navigation content...</em></p>
         <p>This represents content that users might want to skip over.</p>
       </div>
@@ -390,9 +353,7 @@ export const InteractiveDemo: Story = {
         }}
       ></usa-skip-link>
 
-      <div
-        class="margin-top-4 padding-4 bg-base-lightest radius-md text-center"
-      >
+      <div class="margin-top-4 padding-4 bg-base-lightest radius-md text-center">
         <p>📝 This content would normally be skipped...</p>
         <p>🧭 Header navigation, breadcrumbs, sidebar links, etc.</p>
       </div>
@@ -685,9 +646,7 @@ export const RealWorldExample: Story = {
 
         <footer class="usa-footer" id="footer">
           <h2 class="margin-top-0">Contact Information</h2>
-          <div
-            class="display-grid grid-col grid-gap-2"
-          >
+          <div class="display-grid grid-col grid-gap-2">
             <div>
               <h3>Headquarters</h3>
               <p>1600 Example Street<br />Washington, DC 20500<br />Phone: (202) 555-0100</p>

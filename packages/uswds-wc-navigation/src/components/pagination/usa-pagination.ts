@@ -228,15 +228,17 @@ export class USAPagination extends USWDSBaseComponent {
     this.currentPage = page;
 
     // Dispatch page change event
-    this.dispatchEvent(new CustomEvent('page-change', {
-      detail: {
-        page: this.currentPage,
-        oldPage: oldPage,
-        totalPages: this.totalPages
-      },
-      bubbles: true,
-      composed: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('page-change', {
+        detail: {
+          page: this.currentPage,
+          oldPage: oldPage,
+          totalPages: this.totalPages,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private renderPreviousButton() {
@@ -312,8 +314,7 @@ export class USAPagination extends USWDSBaseComponent {
     return html`
       <nav aria-label="${this.ariaLabel}" role="navigation" class="usa-pagination">
         <ul class="usa-pagination__list">
-          ${this.renderPreviousButton()}
-          ${visiblePages.map(page => this.renderPageItem(page))}
+          ${this.renderPreviousButton()} ${visiblePages.map((page) => this.renderPageItem(page))}
           ${this.renderNextButton()}
         </ul>
       </nav>

@@ -14,19 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.15.0'
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Check current USWDS version
         id: current-version
@@ -38,7 +33,7 @@ jobs:
       - name: Check latest USWDS version
         id: latest-version
         run: |
-          LATEST=$(pnpm view @uswds/uswds version)
+          LATEST=$(npm view @uswds/uswds version)
           echo "latest=$LATEST" >> $GITHUB_OUTPUT
           echo "Latest USWDS version: $LATEST"
 
@@ -88,7 +83,7 @@ jobs:
           cd temp-uswds-analysis
 
           # Download and extract new USWDS version
-          pnpm pack @uswds/uswds@$LATEST
+          npm pack @uswds/uswds@$LATEST
           tar -xzf uswds-*.tgz
 
           # Compare CSS structure (simplified analysis)
@@ -122,10 +117,10 @@ jobs:
           git checkout -b $BRANCH_NAME
 
           # Update package.json
-          pnpm install @uswds/uswds@$LATEST
+          npm install @uswds/uswds@$LATEST
 
           # Run build to check for immediate issues
-          pnpm run build || echo "Build failed - manual intervention required"
+          npm run build || echo "Build failed - manual intervention required"
 
           # Stage changes
           git add package.json package-lock.json
@@ -154,22 +149,22 @@ jobs:
           echo "Running compatibility tests..."
 
           # Run linting
-          pnpm run lint || echo "⚠️ Linting issues detected"
+          npm run lint || echo "⚠️ Linting issues detected"
 
           # Run type checking
-          pnpm run typecheck || echo "⚠️ Type checking issues detected"
+          npm run typecheck || echo "⚠️ Type checking issues detected"
 
           # Run unit tests
-          pnpm test || echo "⚠️ Unit test failures detected"
+          npm test || echo "⚠️ Unit test failures detected"
 
           # Check bundle size impact
-          pnpm run build
+          npm run build
 
           # Save test results
           echo "## 🧪 Compatibility Test Results" > test-results.md
-          echo "- Linting: $(pnpm run lint >/dev/null 2>&1 && echo '✅ Passed' || echo '❌ Failed')" >> test-results.md
-          echo "- Type Checking: $(pnpm run typecheck >/dev/null 2>&1 && echo '✅ Passed' || echo '❌ Failed')" >> test-results.md
-          echo "- Unit Tests: $(pnpm test >/dev/null 2>&1 && echo '✅ Passed' || echo '❌ Failed')" >> test-results.md
+          echo "- Linting: $(npm run lint >/dev/null 2>&1 && echo '✅ Passed' || echo '❌ Failed')" >> test-results.md
+          echo "- Type Checking: $(npm run typecheck >/dev/null 2>&1 && echo '✅ Passed' || echo '❌ Failed')" >> test-results.md
+          echo "- Unit Tests: $(npm test >/dev/null 2>&1 && echo '✅ Passed' || echo '❌ Failed')" >> test-results.md
 
       - name: Create issue for USWDS update
         if: steps.version-check.outputs.update-available == 'true'

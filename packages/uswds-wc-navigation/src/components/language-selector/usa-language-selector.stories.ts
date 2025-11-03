@@ -237,13 +237,9 @@ export const AccessibilityShowcase: Story = {
         ></usa-language-selector>
       </div>
 
-      <div
-        id="a11y-feedback"
-        class="margin-top-1 padding-1 bg-base-lightest radius-md minh-6"
-      >
+      <div id="a11y-feedback" class="margin-top-1 padding-1 bg-base-lightest radius-md minh-6">
         <strong>Accessibility Feedback:</strong> Select a language to see accessibility information
       </div>
     </div>
   `,
 };
-

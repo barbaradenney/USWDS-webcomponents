@@ -63,25 +63,19 @@ function toggleHtmlTag(isMobile: boolean): void {
 
   primaryLinks.forEach((currentElement) => {
     const currentElementClasses = currentElement.getAttribute('class');
-    const preservedHtmlTag =
-      currentElement.getAttribute('data-tag') || currentElement.tagName;
+    const preservedHtmlTag = currentElement.getAttribute('data-tag') || currentElement.tagName;
 
     const newElementType = isMobile ? 'button' : preservedHtmlTag;
 
     // Create the new element
     const newElement = document.createElement(newElementType);
     newElement.setAttribute('class', currentElementClasses || '');
-    newElement.classList.toggle(
-      `${PREFIX}-footer__primary-link--button`,
-      isMobile
-    );
+    newElement.classList.toggle(`${PREFIX}-footer__primary-link--button`, isMobile);
     newElement.textContent = currentElement.textContent;
 
     if (isMobile) {
       newElement.setAttribute('data-tag', currentElement.tagName);
-      const menuId = `${PREFIX}-footer-menu-list-${Math.floor(
-        Math.random() * 100000
-      )}`;
+      const menuId = `${PREFIX}-footer-menu-list-${Math.floor(Math.random() * 100000)}`;
 
       newElement.setAttribute('aria-controls', menuId);
       newElement.setAttribute('aria-expanded', 'false');

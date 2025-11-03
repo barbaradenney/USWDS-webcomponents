@@ -323,7 +323,7 @@ export class USACharacterCount extends USWDSBaseComponent {
     return this as any;
   }
 
-    override render() {
+  override render() {
     // Calculate over limit state directly from current value
     const isOverLimit = this.maxlength > 0 && this.value.length > this.maxlength;
     const hasError = this.error || isOverLimit;
@@ -331,33 +331,34 @@ export class USACharacterCount extends USWDSBaseComponent {
 
     // Render the initial structure that USWDS expects
     return html`
-      <div
-        class="${containerClasses}"
-        data-maxlength="${this.maxlength}"
-        data-enhanced="false"
-      >
+      <div class="${containerClasses}" data-maxlength="${this.maxlength}" data-enhanced="false">
         <label class="usa-label" for="${this.name}">
           ${this.label} ${this.renderRequiredIndicator()}
         </label>
         ${this.renderHint()}
-        ${this.error ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>` : ''}
+        ${this.error
+          ? html`<div class="usa-error-message" id="${this.name}-error">${this.error}</div>`
+          : ''}
         ${this.renderField()}
         <!-- Render message element (hidden per USWDS spec for backwards compatibility) -->
-        <span
-          class="usa-character-count__message usa-sr-only"
-          id="${this.name}-info"
-        >
+        <span class="usa-character-count__message usa-sr-only" id="${this.name}-info">
           ${this.getCharacterCountMessage()}
         </span>
         <!-- This status element matches USWDS structure -->
         <span
-          class="usa-character-count__status usa-hint${this._isOverLimit ? ' usa-character-count__status--invalid' : ''}"
+          class="usa-character-count__status usa-hint${this._isOverLimit
+            ? ' usa-character-count__status--invalid'
+            : ''}"
           id="${this.name}-status"
           aria-hidden="true"
         >
           ${this.getCharacterCountMessage()}
         </span>
-        <span class="usa-sr-only usa-character-count__sr-status" aria-live="polite" aria-atomic="true">
+        <span
+          class="usa-sr-only usa-character-count__sr-status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           ${this.getCharacterCountMessage()}
         </span>
       </div>

@@ -94,7 +94,7 @@ describe('USA Input Prefix Suffix Component Tests', () => {
 
     cy.get('input').type('123.45');
     cy.get('input').should('have.value', '123.45');
-    
+
     cy.get('input').clear().type('999.99');
     cy.get('input').should('have.value', '999.99');
   });
@@ -112,7 +112,7 @@ describe('USA Input Prefix Suffix Component Tests', () => {
       const input = win.document.getElementById('test-input') as any;
       const inputSpy = cy.stub();
       input.addEventListener('input', inputSpy);
-      
+
       cy.get('input').type('100');
       cy.then(() => {
         expect(inputSpy).to.have.been.called;
@@ -133,7 +133,7 @@ describe('USA Input Prefix Suffix Component Tests', () => {
       const input = win.document.getElementById('test-input') as any;
       const changeSpy = cy.stub();
       input.addEventListener('change', changeSpy);
-      
+
       cy.get('input').type('50').blur();
       cy.then(() => {
         expect(changeSpy).to.have.been.called;
@@ -216,8 +216,8 @@ describe('USA Input Prefix Suffix Component Tests', () => {
 
   it('should handle different input types', () => {
     const types = ['text', 'number', 'email', 'tel', 'url'];
-    
-    types.forEach(type => {
+
+    types.forEach((type) => {
       cy.mount(`
         <usa-input-prefix-suffix 
           id="test-input-${type}"
@@ -226,7 +226,7 @@ describe('USA Input Prefix Suffix Component Tests', () => {
           name="${type}-field">
         </usa-input-prefix-suffix>
       `);
-      
+
       cy.get(`#test-input-${type} input`).should('have.attr', 'type', type);
     });
   });
@@ -291,7 +291,7 @@ describe('USA Input Prefix Suffix Component Tests', () => {
     // Tab to input
     cy.get('input').focus();
     cy.focused().should('have.attr', 'name', 'amount');
-    
+
     // Type in focused input
     cy.focused().type('100');
     cy.get('input').should('have.value', '100');
@@ -354,7 +354,7 @@ describe('USA Input Prefix Suffix Component Tests', () => {
         const formData = new FormData(form);
         submitSpy(formData.get('price'));
       });
-      
+
       cy.get('button[type="submit"]').click();
       cy.then(() => {
         expect(submitSpy).to.have.been.calledWith('99.99');

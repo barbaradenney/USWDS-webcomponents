@@ -44,6 +44,6 @@ export {
   SUPPORTED_USWDS_MODULES,
   CSS_ONLY_USWDS_MODULES,
   type SupportedUSWDSModule,
-  type CSSOnlyUSWDSModule
+  type CSSOnlyUSWDSModule,
 } from './utils/uswds-loader.js';
 export * from './utils/uswds-modules-registry.js';

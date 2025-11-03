@@ -1194,8 +1194,7 @@ describe('USAButton', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/button/usa-button.ts`;
+        const componentPath = `${process.cwd()}/src/components/button/usa-button.ts`;
         const validation = validateComponentJavaScript(componentPath, 'button');
 
         if (!validation.isValid) {

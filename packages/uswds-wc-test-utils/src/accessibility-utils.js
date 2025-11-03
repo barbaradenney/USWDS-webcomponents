@@ -16,24 +16,29 @@ expect.extend({
     if (violations.length === 0) {
       return {
         pass: true,
-        message: () => 'Expected accessibility violations, but found none'
+        message: () => 'Expected accessibility violations, but found none',
       };
     }
 
-    const violationMessages = violations.map(violation => {
-      const nodeMessages = violation.nodes.map(node => {
-        const target = node.target.join(', ');
-        return `  ${target}: ${node.failureSummary}`;
-      }).join('\n');
+    const violationMessages = violations
+      .map((violation) => {
+        const nodeMessages = violation.nodes
+          .map((node) => {
+            const target = node.target.join(', ');
+            return `  ${target}: ${node.failureSummary}`;
+          })
+          .join('\n');
 
-      return `${violation.id} (${violation.impact}): ${violation.description}\n${nodeMessages}`;
-    }).join('\n\n');
+        return `${violation.id} (${violation.impact}): ${violation.description}\n${nodeMessages}`;
+      })
+      .join('\n\n');
 
     return {
       pass: false,
-      message: () => `Expected no accessibility violations, but found ${violations.length}:\n\n${violationMessages}`
+      message: () =>
+        `Expected no accessibility violations, but found ${violations.length}:\n\n${violationMessages}`,
     };
-  }
+  },
 });
 
 /**
@@ -48,8 +53,8 @@ export const USWDS_A11Y_CONFIG = {
   FULL_COMPLIANCE: {
     runOnly: {
       type: 'tag',
-      values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
-    }
+      values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
+    },
   },
 
   /**
@@ -59,8 +64,8 @@ export const USWDS_A11Y_CONFIG = {
   USWDS_PATTERNS: {
     runOnly: {
       type: 'tag',
-      values: ['wcag2a', 'wcag2aa', 'best-practice']
-    }
+      values: ['wcag2a', 'wcag2aa', 'best-practice'],
+    },
   },
 
   /**
@@ -70,8 +75,8 @@ export const USWDS_A11Y_CONFIG = {
   BASIC: {
     runOnly: {
       type: 'tag',
-      values: ['wcag2a']
-    }
+      values: ['wcag2a'],
+    },
   },
 
   /**
@@ -91,9 +96,9 @@ export const USWDS_A11Y_CONFIG = {
         'aria-valid-attr-value',
         'form-field-multiple-labels',
         'input-button-name',
-        'input-image-alt'
-      ]
-    }
+        'input-image-alt',
+      ],
+    },
   },
 
   /**
@@ -109,10 +114,10 @@ export const USWDS_A11Y_CONFIG = {
         'aria-command-name',
         'keyboard-accessible',
         'focus-order-semantics',
-        'aria-hidden-focus'
-      ]
-    }
-  }
+        'aria-hidden-focus',
+      ],
+    },
+  },
 };
 
 /**
@@ -121,7 +126,10 @@ export const USWDS_A11Y_CONFIG = {
  * @param {Object} config - axe-core configuration (optional)
  * @returns {Promise<void>}
  */
-export async function testComponentAccessibility(element, config = USWDS_A11Y_CONFIG.FULL_COMPLIANCE) {
+export async function testComponentAccessibility(
+  element,
+  config = USWDS_A11Y_CONFIG.FULL_COMPLIANCE
+) {
   // Ensure element is in the document
   if (!document.body.contains(element)) {
     throw new Error('Element must be attached to document.body for accessibility testing');
@@ -135,8 +143,8 @@ export async function testComponentAccessibility(element, config = USWDS_A11Y_CO
   }
 
   // Additional wait for DOM to stabilize and Lit markers to reconcile
-  await new Promise(resolve => requestAnimationFrame(() => resolve()));
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
   // Run axe-core accessibility tests
   const results = await axe.run(element, config);
@@ -193,13 +201,7 @@ export function assertARIAAttributes(element, expectedAttrs) {
  */
 export function isKeyboardAccessible(element) {
   const tabIndex = element.getAttribute('tabindex');
-  const isInteractive = [
-    'BUTTON',
-    'A',
-    'INPUT',
-    'SELECT',
-    'TEXTAREA'
-  ].includes(element.tagName);
+  const isInteractive = ['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName);
 
   return isInteractive || (tabIndex !== null && parseInt(tabIndex) >= 0);
 }
@@ -214,7 +216,7 @@ export function checkFocusManagement(element) {
     isFocusable: isKeyboardAccessible(element),
     hasFocusIndicator: window.getComputedStyle(element, ':focus').outlineWidth !== '0px',
     hasTabIndex: element.hasAttribute('tabindex'),
-    tabIndexValue: element.getAttribute('tabindex')
+    tabIndexValue: element.getAttribute('tabindex'),
   };
 }
 
@@ -228,13 +230,13 @@ export async function testKeyPress(element, key) {
   const event = new KeyboardEvent('keydown', {
     key,
     bubbles: true,
-    cancelable: true
+    cancelable: true,
   });
 
   element.dispatchEvent(event);
 
   // Wait for any updates
-  await new Promise(resolve => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 /**
@@ -266,8 +268,8 @@ export async function checkColorContrast(element) {
   const results = await axe.run(element, {
     runOnly: {
       type: 'rule',
-      values: ['color-contrast']
-    }
+      values: ['color-contrast'],
+    },
   });
 
   return results.violations.length === 0;

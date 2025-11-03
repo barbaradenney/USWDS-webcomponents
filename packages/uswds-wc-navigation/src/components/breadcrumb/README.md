@@ -20,15 +20,15 @@ import 'path/to/uswds-webcomponents/src/components/breadcrumb/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `items` | `BreadcrumbItem[]` | `[]` | Property description |
-| `wrap` | `any` | `false` | Property description |
+| Property | Type               | Default | Description          |
+| -------- | ------------------ | ------- | -------------------- |
+| `items`  | `BreadcrumbItem[]` | `[]`    | Property description |
+| `wrap`   | `any`              | `false` | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
+| Event              | Type        | Description       |
+| ------------------ | ----------- | ----------------- |
 | `breadcrumb-click` | CustomEvent | Event description |
 
 ## Accessibility

@@ -20,21 +20,21 @@ import 'path/to/uswds-webcomponents/src/components/step-indicator/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `steps` | `StepItem[]` | `[]` | Property description |
-| `currentStep` | `any` | `1` | Property description |
-| `showLabels` | `any` | `true` | Property description |
-| `counters` | `any` | `false` | Property description |
-| `center` | `any` | `false` | Property description |
-| `small` | `any` | `false` | Property description |
-| `heading` | `any` | `''` | Property description |
+| Property      | Type         | Default | Description          |
+| ------------- | ------------ | ------- | -------------------- |
+| `steps`       | `StepItem[]` | `[]`    | Property description |
+| `currentStep` | `any`        | `1`     | Property description |
+| `showLabels`  | `any`        | `true`  | Property description |
+| `counters`    | `any`        | `false` | Property description |
+| `center`      | `any`        | `false` | Property description |
+| `small`       | `any`        | `false` | Property description |
+| `heading`     | `any`        | `''`    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

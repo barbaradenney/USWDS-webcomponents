@@ -20,16 +20,16 @@ import 'path/to/uswds-webcomponents/src/components/list/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `type` | `'unordered' | 'ordered'` | `'unordered'` | Property description |
-| `unstyled` | `any` | `false` | Property description |
+| Property   | Type         | Default    | Description          |
+| ---------- | ------------ | ---------- | -------------------- | -------------------- |
+| `type`     | `'unordered' | 'ordered'` | `'unordered'`        | Property description |
+| `unstyled` | `any`        | `false`    | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| No custom events | | |
+| Event            | Type | Description |
+| ---------------- | ---- | ----------- |
+| No custom events |      |             |
 
 ## Accessibility
 

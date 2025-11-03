@@ -59,8 +59,7 @@ const isActive = (): boolean => document.body.classList.contains(ACTIVE_CLASS);
  *
  * SOURCE: index.js (Lines 33-36)
  */
-const isSafari =
-  navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
+const isSafari = navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
 
 /**
  * Calculate scrollbar width and padding
@@ -68,12 +67,9 @@ const isSafari =
  * SOURCE: index.js (Lines 37-44)
  */
 const SCROLLBAR_WIDTH = getScrollbarWidth();
-const INITIAL_PADDING = window
-  .getComputedStyle(document.body)
-  .getPropertyValue('padding-right');
+const INITIAL_PADDING = window.getComputedStyle(document.body).getPropertyValue('padding-right');
 const TEMPORARY_PADDING = `${
-  parseInt(INITIAL_PADDING.replace(/px/, ''), 10) +
-  parseInt(SCROLLBAR_WIDTH.replace(/px/, ''), 10)
+  parseInt(INITIAL_PADDING.replace(/px/, ''), 10) + parseInt(SCROLLBAR_WIDTH.replace(/px/, ''), 10)
 }px`;
 
 /**
@@ -185,11 +181,7 @@ const toggleNav = (active?: boolean): boolean => {
   if (safeActive && closeButton) {
     // The mobile nav was just activated. Focus on the close button
     closeButton.focus();
-  } else if (
-    !safeActive &&
-    menuButton &&
-    getComputedStyle(menuButton).display !== 'none'
-  ) {
+  } else if (!safeActive && menuButton && getComputedStyle(menuButton).display !== 'none') {
     // The mobile nav was just deactivated. Focus on menu button if visible
     menuButton.focus();
   }

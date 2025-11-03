@@ -10,8 +10,7 @@
  * @returns {boolean} Whether USWDS has enhanced the element
  */
 export function isUSWDSEnhanced(element) {
-  return element.hasAttribute('data-enhanced') &&
-         element.getAttribute('data-enhanced') === 'true';
+  return element.hasAttribute('data-enhanced') && element.getAttribute('data-enhanced') === 'true';
 }
 
 /**
@@ -27,7 +26,7 @@ export async function waitForUSWDSTransformation(element, timeout = 1000) {
     if (isUSWDSEnhanced(element)) {
       return true;
     }
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
   }
 
   return false;
@@ -74,8 +73,8 @@ export const USWDS_TEST_CONFIGS = {
     componentType: 'date-picker',
     expectUSWDSEnhancement: false,
     allowFallback: true,
-    maxElementCounts: { buttons: 1, calendars: 1, inputs: 2 }
-  }
+    maxElementCounts: { buttons: 1, calendars: 1, inputs: 2 },
+  },
 };
 
 /**
@@ -92,10 +91,10 @@ export async function testUSWDSIntegration(element, config) {
     elementCounts: {
       buttons: element.querySelectorAll('.usa-date-picker__button').length,
       calendars: element.querySelectorAll('.usa-date-picker__calendar').length,
-      inputs: element.querySelectorAll('input').length
+      inputs: element.querySelectorAll('input').length,
     },
     errors: [],
-    warnings: []
+    warnings: [],
   };
 
   // Check for double initialization

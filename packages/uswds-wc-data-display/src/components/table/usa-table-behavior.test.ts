@@ -27,13 +27,13 @@ describe('USWDS Table Behavior Contract', () => {
     element.headers = [
       { key: 'name', label: 'Name', sortable: true, sortType: 'text' },
       { key: 'age', label: 'Age', sortable: true, sortType: 'number' },
-      { key: 'email', label: 'Email', sortable: false }
+      { key: 'email', label: 'Email', sortable: false },
     ];
 
     element.data = [
       { name: 'Alice', age: 30, email: 'alice@example.com' },
       { name: 'Bob', age: 25, email: 'bob@example.com' },
-      { name: 'Charlie', age: 35, email: 'charlie@example.com' }
+      { name: 'Charlie', age: 35, email: 'charlie@example.com' },
     ];
 
     document.body.appendChild(element);
@@ -262,7 +262,7 @@ describe('USWDS Table Behavior Contract', () => {
       element.data = [
         { name: 'Zebra', age: 35, email: 'z@example.com' },
         { name: 'Apple', age: 25, email: 'a@example.com' },
-        { name: 'Mango', age: 30, email: 'm@example.com' }
+        { name: 'Mango', age: 30, email: 'm@example.com' },
       ];
 
       await waitForBehaviorInit(element);
@@ -347,7 +347,9 @@ describe('USWDS Table Behavior Contract', () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const sortButtons = element.querySelectorAll('.usa-table__header__button') as NodeListOf<HTMLButtonElement>;
+      const sortButtons = element.querySelectorAll(
+        '.usa-table__header__button'
+      ) as NodeListOf<HTMLButtonElement>;
 
       if (sortButtons.length < 2) {
         return; // Skip if not enough sortable columns
@@ -376,7 +378,9 @@ describe('USWDS Table Behavior Contract', () => {
       await waitForBehaviorInit(element);
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const sortButtons = element.querySelectorAll('.usa-table__header__button') as NodeListOf<HTMLButtonElement>;
+      const sortButtons = element.querySelectorAll(
+        '.usa-table__header__button'
+      ) as NodeListOf<HTMLButtonElement>;
 
       if (sortButtons.length < 2) {
         return;
@@ -397,7 +401,9 @@ describe('USWDS Table Behavior Contract', () => {
       const firstHeader = firstButton.closest('th') as HTMLElement;
       const secondHeader = secondButton.closest('th') as HTMLElement;
       const firstColumnIndex = Array.from(firstHeader.parentElement!.children).indexOf(firstHeader);
-      const secondColumnIndex = Array.from(secondHeader.parentElement!.children).indexOf(secondHeader);
+      const secondColumnIndex = Array.from(secondHeader.parentElement!.children).indexOf(
+        secondHeader
+      );
 
       const tbody = element.querySelector('tbody');
       const rows = Array.from(tbody?.querySelectorAll('tr') || []);

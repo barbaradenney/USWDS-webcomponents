@@ -1021,8 +1021,7 @@ describe('USAValidation', () => {
     describe('JavaScript Implementation Validation', () => {
       it('should pass JavaScript implementation validation', async () => {
         // Validate USWDS JavaScript implementation patterns
-        const componentPath =
-          `${process.cwd()}/src/components/validation/usa-validation.ts`;
+        const componentPath = `${process.cwd()}/src/components/validation/usa-validation.ts`;
         const validation = validateComponentJavaScript(componentPath, 'validation');
 
         if (!validation.isValid) {

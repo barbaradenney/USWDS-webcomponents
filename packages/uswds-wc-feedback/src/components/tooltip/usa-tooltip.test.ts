@@ -7,7 +7,6 @@ import {
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import { quickUSWDSComplianceTest } from '@uswds-wc/test-utils/uswds-compliance-utils.js';
-import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
 
 describe('USATooltip', () => {
   let element: USATooltip;
@@ -73,9 +72,14 @@ describe('USATooltip', () => {
     });
 
     it('should update text property', async () => {
+      // Wait for initial USWDS transformation to complete
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       element.text = 'Updated tooltip text';
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 10));
+
+      // Wait for updated() method to process the change
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // After USWDS transformation, the text is in the tooltip body, not as a title attribute
       // USWDS removes the title attribute during setUpAttributes()
@@ -84,11 +88,10 @@ describe('USATooltip', () => {
       expect(tooltipBody?.textContent).toBe('Updated tooltip text');
     });
 
-
     it('should update classes property', async () => {
       element.classes = 'custom-class margin-2';
       await element.updateComplete;
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       // After USWDS transforms slotted content, classes are applied to the wrapper
       const wrapper = element.querySelector('.usa-tooltip') as HTMLElement;
@@ -96,20 +99,17 @@ describe('USATooltip', () => {
 
       // Check that wrapper has the classes (or at least verify the classes prop is set)
       // Note: In test environment, USWDS transformation may vary
-      const hasClasses = wrapper?.classList.contains('custom-class') && wrapper?.classList.contains('margin-2');
       const classesPropertySet = element.classes === 'custom-class margin-2';
 
       // Pass if either the classes are applied OR the property is correctly set
       // (USWDS timing in tests can vary)
       expect(classesPropertySet, 'Classes property should be set').toBe(true);
     });
-
   });
 
   describe('DOM Restructuring', () => {
     // NOTE: DOM restructuring tests moved to Cypress (cypress/e2e/tooltip-positioning.cy.ts)
     // USWDS DOM transformation requires real browser environment
-
 
     it('should add tabindex to non-focusable elements', async () => {
       element = document.createElement('usa-tooltip') as USATooltip;
@@ -273,8 +273,6 @@ describe('USATooltip', () => {
       expect(element.visible).toBe(false);
     });
 
-
-
     it('should not hide tooltip if already hidden', async () => {
       const trigger = element.querySelector('.usa-tooltip__trigger') as HTMLElement;
       const hideSpy = vi.fn();
@@ -348,9 +346,6 @@ describe('USATooltip', () => {
       expect(hideSpy).toHaveBeenCalledOnce();
     });
   });
-
-
-
 
   describe('Event Listener Cleanup', () => {
     beforeEach(async () => {
@@ -437,9 +432,7 @@ describe('USATooltip', () => {
         element.show();
       }).not.toThrow();
     });
-
   });
-
 
   describe('Component Lifecycle Stability (CRITICAL)', () => {
     beforeEach(async () => {
@@ -472,7 +465,6 @@ describe('USATooltip', () => {
       expect(element.parentElement).toBe(originalParent);
     });
 
-
     it('should maintain DOM presence during rapid show/hide cycles', async () => {
       const originalParent = element.parentElement;
 
@@ -491,7 +483,6 @@ describe('USATooltip', () => {
       expect(element.isConnected).toBe(true);
     });
   });
-
 
   describe('Accessibility', () => {
     beforeEach(() => {

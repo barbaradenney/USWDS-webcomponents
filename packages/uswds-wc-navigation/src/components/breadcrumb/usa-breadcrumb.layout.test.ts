@@ -16,7 +16,7 @@ describe('USABreadcrumb Layout Tests', () => {
     element.items = [
       { label: 'Home', href: '/' },
       { label: 'Products', href: '/products' },
-      { label: 'Current Page' }
+      { label: 'Current Page' },
     ];
     document.body.appendChild(element);
   });
@@ -41,26 +41,26 @@ describe('USABreadcrumb Layout Tests', () => {
     breadcrumbItems.forEach((item, index) => {
       expect(breadcrumbList.contains(item), `Item ${index} should be in list`).toBe(true);
     });
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/breadcrumb/usa-breadcrumb.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'breadcrumb');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/breadcrumb/usa-breadcrumb.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'breadcrumb');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {

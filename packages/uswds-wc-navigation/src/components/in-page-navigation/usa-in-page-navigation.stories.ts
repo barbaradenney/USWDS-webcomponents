@@ -115,8 +115,8 @@ const createContentSections = () => html`
     </p>
     <p>
       Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-      laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-      architecto beatae vitae dicta sunt explicabo.
+      laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto
+      beatae vitae dicta sunt explicabo.
     </p>
   </section>
   <section class="margin-bottom-6">
@@ -241,7 +241,9 @@ export const Default: Story = {
           @section-change="${(e: CustomEvent) => console.log('Section changed:', e.detail)}"
           @nav-click="${(e: CustomEvent) => console.log('Navigation clicked:', e.detail)}"
         ></usa-in-page-navigation>
-        <main id="main-content" class="usa-prose desktop:grid-col-8">${createContentSections()}</main>
+        <main id="main-content" class="usa-prose desktop:grid-col-8">
+          ${createContentSections()}
+        </main>
       </div>
     </div>
   `,
@@ -452,7 +454,8 @@ export const WithEventHandlers: Story = {
               the current section.
             </p>
             <p>
-              Events are emitted when the active section changes or when navigation items are clicked.
+              Events are emitted when the active section changes or when navigation items are
+              clicked.
             </p>
           </section>
 
@@ -523,8 +526,8 @@ export const CustomScrollBehavior: Story = {
                 header.
               </p>
               <p>
-                When you click a navigation link, the page scrolls to the section with a 100px offset,
-                ensuring the content isn't hidden behind the fixed header.
+                When you click a navigation link, the page scrolls to the section with a 100px
+                offset, ensuring the content isn't hidden behind the fixed header.
               </p>
             </section>
 
@@ -543,7 +546,8 @@ export const CustomScrollBehavior: Story = {
             <section class="margin-bottom-6 padding-top-4">
               <h2>Section 3</h2>
               <p>
-                Smooth scrolling provides a better user experience by animating the scroll transition.
+                Smooth scrolling provides a better user experience by animating the scroll
+                transition.
               </p>
               <p>This can be disabled if you prefer instant scrolling to sections.</p>
             </section>

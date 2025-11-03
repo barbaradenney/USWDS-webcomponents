@@ -25,7 +25,7 @@ describe('Pagination JavaScript Interaction Testing', () => {
     await waitForUpdate(element);
 
     // Wait for USWDS to initialize
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   afterEach(() => {
@@ -36,10 +36,11 @@ describe('Pagination JavaScript Interaction Testing', () => {
   describe('🔧 USWDS JavaScript Integration Detection', () => {
     it('should have USWDS module successfully loaded', () => {
       // Check for successful USWDS loading messages
-      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(call =>
-        call[0]?.includes('✅ USWDS') ||
-        call[0]?.includes('initialized') ||
-        call[0]?.includes('pagination')
+      const hasUSWDSLoadMessage = mockConsoleLog.mock.calls.some(
+        (call) =>
+          call[0]?.includes('✅ USWDS') ||
+          call[0]?.includes('initialized') ||
+          call[0]?.includes('pagination')
       );
 
       if (!hasUSWDSLoadMessage) {
@@ -73,16 +74,15 @@ describe('Pagination JavaScript Interaction Testing', () => {
 
       if (pageButtons.length > 0) {
         const firstPageButton = pageButtons[0] as HTMLButtonElement;
-        const initialPage = element.currentPage;
 
         // Click a page button
         firstPageButton.click();
         await waitForUpdate(element);
 
         // Check if page changed or event was fired
-        let eventFired = false;
+        // Event listener for page change
         element.addEventListener('page-change', () => {
-          eventFired = true;
+          // Event tracking would happen here
         });
 
         firstPageButton.click();
@@ -95,9 +95,9 @@ describe('Pagination JavaScript Interaction Testing', () => {
 
     it('should handle next/previous button clicks', async () => {
       const nextButton = element.querySelector('.usa-pagination__next-page') as HTMLButtonElement;
-      const prevButton = element.querySelector('.usa-pagination__previous-page') as HTMLButtonElement;
-
-      const initialPage = element.currentPage;
+      const prevButton = element.querySelector(
+        '.usa-pagination__previous-page'
+      ) as HTMLButtonElement;
 
       if (nextButton) {
         nextButton.click();

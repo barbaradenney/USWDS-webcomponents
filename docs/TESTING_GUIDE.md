@@ -318,6 +318,222 @@ test('CRITICAL: message element structure per USWDS spec', async ({ page }) => {
 - **Test Improvements**: `TEST_IMPROVEMENT_SUMMARY.md` - Bug analysis
 - **Infrastructure Integration**: `TESTING_INFRASTRUCTURE_INTEGRATION_SUMMARY.md`
 
+### 7. Cross-Browser Testing (Playwright) ⭐ OPTIMIZED
+
+Automated cross-browser testing with parallel job execution for optimal CI performance:
+
+```bash
+# Local Development (Full Browser Matrix)
+pnpm run test:cross-browser              # All 12 browsers
+pnpm run test:cross-browser:chromium     # Chromium only
+pnpm run test:cross-browser:firefox      # Firefox only
+pnpm run test:cross-browser:webkit       # Safari/Webkit only
+pnpm run test:cross-browser:mobile       # Mobile browsers
+pnpm run test:cross-browser:accessibility # A11y-specific testing
+```
+
+**CI/CD Optimization - Split Parallel Jobs:**
+
+To prevent timeout issues with large test suites (252+ test executions), cross-browser tests are split into 2 parallel CI jobs:
+
+1. **Cross-Browser Testing (Desktop)**
+   - Browsers: Chromium + Firefox
+   - ~126 test executions (63 tests × 2 browsers)
+   - Timeout: 25 minutes
+   - Typical completion: 15-18 minutes
+
+2. **Cross-Browser Testing (Webkit + A11y)**
+   - Browsers: Webkit + Accessibility-Chrome
+   - ~126 test executions (63 tests × 2 browsers)
+   - Timeout: 25 minutes
+   - Typical completion: 15-18 minutes
+
+**Performance Benefits:**
+- ⚡ **Parallel execution** - Both jobs run simultaneously (half total time)
+- ✅ **No timeouts** - Each job completes well under 25-minute limit
+- 🎯 **Optimized browser installation** - Only installs needed browsers per job
+- 🐛 **Better debugging** - Separate artifacts for desktop vs webkit/a11y
+
+**Configuration:**
+- Local: Full 12-browser matrix (`playwright.config.ts`)
+- CI: Optimized 4-browser split (`.github/workflows/ci.yml`)
+
+**Why This Approach:**
+- Original single job: 252 executions × ~7.5s/test = 31+ minutes → timeout
+- Split jobs: 126 executions × ~7.5s/test = 15-16 minutes → success
+
+**Example Playwright Test:**
+```typescript
+// tests/playwright/accordion-cross-browser.spec.ts
+test('should expand and collapse consistently across browsers', async ({ page, browserName }) => {
+  // Webkit needs longer timeouts for element visibility
+  const timeout = browserName === 'webkit' ? 10000 : 5000;
+
+  const firstButton = page.locator('.usa-accordion__button').first();
+  await expect(firstButton).toBeVisible({ timeout });
+
+  // Initially collapsed
+  await expect(firstButton).toHaveAttribute('aria-expanded', 'false', { timeout });
+
+  // Click to expand
+  await firstButton.click();
+  await expect(firstButton).toHaveAttribute('aria-expanded', 'true');
+
+  // Content visible
+  const firstContent = page.locator('.usa-accordion__content').first();
+  await expect(firstContent).toBeVisible();
+});
+```
+
+### 8. Playwright Story Path Validation
+
+**Ensures test story paths match actual Storybook stories** to prevent 100% test failure rates from invalid story references.
+
+#### Problem It Solves
+
+When Playwright tests reference incorrect story paths (e.g., after component refactoring or monorepo restructure), all tests fail because they can't find the target stories:
+
+```typescript
+// ❌ Test references old story path
+await page.goto('/iframe.html?id=data-display-table--with-large-dataset');
+// Story was renamed to: data-display-table--large-dataset
+
+// Result: 100% test failure rate
+```
+
+#### Validation Script
+
+**Location:** `scripts/validate/validate-playwright-story-paths.cjs`
+
+**What it does:**
+1. Extracts all story paths referenced in Playwright tests
+2. Extracts all story IDs from Storybook `.stories.ts` files
+3. Compares and reports mismatches
+4. Suggests closest matching paths using Levenshtein distance
+
+**How Storybook generates story IDs:**
+```typescript
+// Storybook meta title
+const meta = {
+  title: 'Data Display/Table',
+  // ...
+};
+
+export const LargeDataset: Story = { /* ... */ };
+
+// Generated story ID: data-display-table--large-dataset
+// Format: lowercase + replace spaces/slashes with dashes + --story-name
+```
+
+#### Running Validation
+
+```bash
+# Validate all story paths
+pnpm run validate:playwright-story-paths
+
+# Output example:
+# 🔍 Validating Playwright Story Paths...
+#
+# 📊 Found:
+#    10 unique story paths in Playwright tests
+#    477 story IDs in Storybook
+#
+# ✅ All Playwright story paths are valid!
+```
+
+#### Example Validation Output (with errors)
+
+```bash
+❌ Found 3 invalid story path(s):
+
+1. Story path not found: data-display-table--with-large-dataset
+   Referenced in:
+   - tests/playwright/cross-browser-compatibility.spec.ts
+
+   💡 Did you mean: data-display-table--large-dataset?
+
+2. Story path not found: structure-accordion--multiple-items
+   Referenced in:
+   - tests/playwright/cross-browser-compatibility.spec.ts
+
+   💡 Did you mean: structure-accordion--multiselectable?
+```
+
+#### CI Integration
+
+**Validation runs automatically in CI pipeline:**
+
+`.github/workflows/ci.yml` - Quality job:
+```yaml
+- name: Validate Playwright Story Paths
+  run: pnpm run validate:playwright-story-paths
+```
+
+**When it runs:**
+- Every commit (via CI)
+- Before pull request merge
+- On push to main/develop branches
+
+**Result:** Prevents invalid story paths from being merged, ensuring cross-browser tests always work.
+
+#### Common Issues and Fixes
+
+**Issue 1: Story renamed but test not updated**
+```typescript
+// Fix: Update test to match new story name
+- await page.goto('/iframe.html?id=forms-text-input--in-form');
++ await page.goto('/iframe.html?id=forms-text-input--default');
+```
+
+**Issue 2: Component moved to different category**
+```typescript
+// Fix: Update category in path
+- await page.goto('/iframe.html?id=components-modal--default');
++ await page.goto('/iframe.html?id=feedback-modal--default');
+```
+
+**Issue 3: Story export name changed**
+```typescript
+// In stories file:
+- export const WithLargeDataset: Story = { /* ... */ };
++ export const LargeDataset: Story = { /* ... */ };
+
+// In test file:
+- await page.goto('/iframe.html?id=data-display-table--with-large-dataset');
++ await page.goto('/iframe.html?id=data-display-table--large-dataset');
+```
+
+#### Validation Script Maintenance
+
+**Critical bug fix (Dec 2024):** Script was matching wrong `title:` property in stories files.
+
+**Problem:** Regex matched first `title:` occurrence, which could be inside story content instead of meta object:
+```typescript
+// ❌ Old regex matched this first
+export const Default: Story = {
+  args: {
+    title: 'Getting Started'  // Wrong title!
+  }
+};
+
+const meta = {
+  title: 'Structure/Accordion'  // Should match this
+};
+```
+
+**Solution:** Updated regex to specifically match meta object title:
+```javascript
+// scripts/validate/validate-playwright-story-paths.cjs:84
+const metaMatch = content.match(/const meta[^{]*\{[^}]*title:\s*['"]([^'"]+)['"]/s);
+```
+
+#### Best Practices
+
+1. **Always validate after refactoring** - Run validation script after renaming stories or moving components
+2. **Check validation output** - Pay attention to fuzzy match suggestions
+3. **Update tests immediately** - Fix story paths in same commit as story changes
+4. **Use consistent naming** - Keep story export names aligned with their purpose
+
 ## Comprehensive Testing Infrastructure
 
 Complete test suite with consolidated reporting:

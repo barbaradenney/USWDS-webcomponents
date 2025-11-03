@@ -18,21 +18,21 @@ This document defines the behavioral contract between our vanilla JS implementat
 
 ### Constants
 
-| Constant | Source Lines | Value | Purpose |
-|----------|--------------|-------|---------|
-| PREFIX | 8 | `'usa'` | USWDS namespace prefix |
-| COMBO_BOX_CLASS | 10 | `'usa-combo-box'` | Main combo box class |
-| COMBO_BOX_PRISTINE_CLASS | 11 | `'usa-combo-box--pristine'` | Pristine state indicator |
-| SELECT_CLASS | 12 | `'usa-combo-box__select'` | Hidden select element |
-| INPUT_CLASS | 13 | `'usa-combo-box__input'` | Typeahead input |
-| CLEAR_INPUT_BUTTON_CLASS | 14 | `'usa-combo-box__clear-input'` | Clear button |
-| TOGGLE_LIST_BUTTON_CLASS | 16 | `'usa-combo-box__toggle-list'` | Toggle dropdown button |
-| LIST_CLASS | 18 | `'usa-combo-box__list'` | Dropdown list |
-| LIST_OPTION_CLASS | 19 | `'usa-combo-box__list-option'` | Individual option |
-| LIST_OPTION_FOCUSED_CLASS | 20 | `'usa-combo-box__list-option--focused'` | Focused option |
-| LIST_OPTION_SELECTED_CLASS | 21 | `'usa-combo-box__list-option--selected'` | Selected option |
-| STATUS_CLASS | 22 | `'usa-combo-box__status'` | Screen reader status |
-| DEFAULT_FILTER | 38 | `'.*{{query}}.*'` | Default regex filter pattern |
+| Constant                   | Source Lines | Value                                    | Purpose                      |
+| -------------------------- | ------------ | ---------------------------------------- | ---------------------------- |
+| PREFIX                     | 8            | `'usa'`                                  | USWDS namespace prefix       |
+| COMBO_BOX_CLASS            | 10           | `'usa-combo-box'`                        | Main combo box class         |
+| COMBO_BOX_PRISTINE_CLASS   | 11           | `'usa-combo-box--pristine'`              | Pristine state indicator     |
+| SELECT_CLASS               | 12           | `'usa-combo-box__select'`                | Hidden select element        |
+| INPUT_CLASS                | 13           | `'usa-combo-box__input'`                 | Typeahead input              |
+| CLEAR_INPUT_BUTTON_CLASS   | 14           | `'usa-combo-box__clear-input'`           | Clear button                 |
+| TOGGLE_LIST_BUTTON_CLASS   | 16           | `'usa-combo-box__toggle-list'`           | Toggle dropdown button       |
+| LIST_CLASS                 | 18           | `'usa-combo-box__list'`                  | Dropdown list                |
+| LIST_OPTION_CLASS          | 19           | `'usa-combo-box__list-option'`           | Individual option            |
+| LIST_OPTION_FOCUSED_CLASS  | 20           | `'usa-combo-box__list-option--focused'`  | Focused option               |
+| LIST_OPTION_SELECTED_CLASS | 21           | `'usa-combo-box__list-option--selected'` | Selected option              |
+| STATUS_CLASS               | 22           | `'usa-combo-box__status'`                | Screen reader status         |
+| DEFAULT_FILTER             | 38           | `'.*{{query}}.*'`                        | Default regex filter pattern |
 
 ### Core Functions
 
@@ -326,14 +326,14 @@ This document defines the behavioral contract between our vanilla JS implementat
 
 **USWDS Pattern**: Full keyboard support
 
-| Key | From Input | From List Option |
-|-----|-----------|-----------------|
-| ArrowDown/Down | Open list, focus first option | Focus next option |
-| ArrowUp/Up | - | Focus previous option, close if at first |
-| Enter | Complete selection, close list | Select option |
-| Escape | Close list, reset selection | - |
-| Space | - | Select option |
-| Shift+Tab | - | No-op (prevent default handling) |
+| Key            | From Input                     | From List Option                         |
+| -------------- | ------------------------------ | ---------------------------------------- |
+| ArrowDown/Down | Open list, focus first option  | Focus next option                        |
+| ArrowUp/Up     | -                              | Focus previous option, close if at first |
+| Enter          | Complete selection, close list | Select option                            |
+| Escape         | Close list, reset selection    | -                                        |
+| Space          | -                              | Select option                            |
+| Shift+Tab      | -                              | No-op (prevent default handling)         |
 
 ### 4. Focus Management
 

@@ -293,7 +293,8 @@ export const Error: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Alias for OverLimit story - demonstrates error state when character limit is exceeded.',
+        story:
+          'Alias for OverLimit story - demonstrates error state when character limit is exceeded.',
       },
     },
   },
@@ -315,7 +316,8 @@ export const Input: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Alias for TextInput story - demonstrates text input variant with character counting.',
+        story:
+          'Alias for TextInput story - demonstrates text input variant with character counting.',
       },
     },
   },

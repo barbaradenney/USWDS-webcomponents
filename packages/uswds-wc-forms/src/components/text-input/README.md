@@ -20,29 +20,29 @@ import 'path/to/uswds-webcomponents/src/components/text-input/index.js';
 
 ## Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `type` | `'text' | 'email' | 'password' | 'number' | 'tel' | 'url'` | `'text'` | Property description |
-| `name` | `any` | `''` | Property description |
-| `value` | `any` | `''` | Property description |
-| `placeholder` | `any` | `''` | Property description |
-| `label` | `any` | `''` | Property description |
-| `hint` | `any` | `''` | Property description |
-| `error` | `any` | `''` | Property description |
-| `width` | `'' | '2xs' | 'xs' | 'sm' | 'small' | 'md' | 'medium' | 'lg' | 'xl' | '2xl'` | `''` | Property description |
-| `disabled` | `any` | `false` | Property description |
-| `required` | `any` | `false` | Property description |
-| `readonly` | `any` | `false` | Property description |
-| `autocomplete` | `any` | `''` | Property description |
-| `pattern` | `any` | `''` | Property description |
-| `maxlength` | `number | null` | `null` | Property description |
-| `minlength` | `number | null` | `null` | Property description |
+| Property       | Type    | Default | Description          |
+| -------------- | ------- | ------- | -------------------- | -------------------- | ------- | ------ | -------- | -------------------- | ---- | ------ | ---- | -------------------- |
+| `type`         | `'text' | 'email' | 'password'           | 'number'             | 'tel'   | 'url'` | `'text'` | Property description |
+| `name`         | `any`   | `''`    | Property description |
+| `value`        | `any`   | `''`    | Property description |
+| `placeholder`  | `any`   | `''`    | Property description |
+| `label`        | `any`   | `''`    | Property description |
+| `hint`         | `any`   | `''`    | Property description |
+| `error`        | `any`   | `''`    | Property description |
+| `width`        | `''     | '2xs'   | 'xs'                 | 'sm'                 | 'small' | 'md'   | 'medium' | 'lg'                 | 'xl' | '2xl'` | `''` | Property description |
+| `disabled`     | `any`   | `false` | Property description |
+| `required`     | `any`   | `false` | Property description |
+| `readonly`     | `any`   | `false` | Property description |
+| `autocomplete` | `any`   | `''`    | Property description |
+| `pattern`      | `any`   | `''`    | Property description |
+| `maxlength`    | `number | null`   | `null`               | Property description |
+| `minlength`    | `number | null`   | `null`               | Property description |
 
 ## Events
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `input` | CustomEvent | Event description |
+| Event    | Type        | Description       |
+| -------- | ----------- | ----------------- |
+| `input`  | CustomEvent | Event description |
 | `change` | CustomEvent | Event description |
 
 ## Accessibility

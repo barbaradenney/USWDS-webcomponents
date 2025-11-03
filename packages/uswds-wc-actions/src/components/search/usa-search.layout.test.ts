@@ -42,14 +42,8 @@ describe('USASearch Layout Tests', () => {
       searchForm.contains(form) || form === searchForm,
       'Form should be inside search container or be the container'
     ).toBe(true);
-    expect(
-      form.contains(input),
-      'Input should be inside form'
-    ).toBe(true);
-    expect(
-      form.contains(button),
-      'Button should be inside form'
-    ).toBe(true);
+    expect(form.contains(input), 'Input should be inside form').toBe(true);
+    expect(form.contains(button), 'Button should be inside form').toBe(true);
   });
 
   it('should position search input and button correctly in form', async () => {
@@ -72,10 +66,7 @@ describe('USASearch Layout Tests', () => {
 
     expect(inputIndex, 'Input should be found in search container').toBeGreaterThan(-1);
     expect(buttonIndex, 'Button should be found in search container').toBeGreaterThan(-1);
-    expect(
-      Math.abs(buttonIndex - inputIndex),
-      'Button should be adjacent to input'
-    ).toBe(1);
+    expect(Math.abs(buttonIndex - inputIndex), 'Button should be adjacent to input').toBe(1);
   });
 
   it('should handle small size variant correctly', async () => {
@@ -212,7 +203,7 @@ describe('USASearch Layout Tests', () => {
       expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
       // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
+      const criticalIssues = validation.issues.filter((issue) =>
         issue.includes('Missing USWDS JavaScript integration')
       );
       expect(criticalIssues.length).toBe(0);
@@ -278,7 +269,10 @@ describe('USASearch Layout Tests', () => {
 
         // Structure should remain intact after keyboard interaction
         const searchForm = element.querySelector('.usa-search');
-        expect(searchForm, 'Search form should maintain structure after keyboard interaction').toBeTruthy();
+        expect(
+          searchForm,
+          'Search form should maintain structure after keyboard interaction'
+        ).toBeTruthy();
       }
     });
 
@@ -342,7 +336,9 @@ describe('USASearch Layout Tests', () => {
       const input = element.querySelector('.usa-input') as HTMLInputElement;
 
       if (input) {
-        expect(input.placeholder, 'Input should have custom placeholder').toBe('Enter search terms');
+        expect(input.placeholder, 'Input should have custom placeholder').toBe(
+          'Enter search terms'
+        );
       }
     });
 

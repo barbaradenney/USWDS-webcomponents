@@ -120,9 +120,7 @@ export class USAInputPrefixSuffix extends LitElement {
     if (!this.prefix && !this.prefixIcon) return '';
 
     return html`
-      <div class="usa-input-prefix" aria-hidden="true">
-        ${this.renderPrefixContent()}
-      </div>
+      <div class="usa-input-prefix" aria-hidden="true">${this.renderPrefixContent()}</div>
     `;
   }
 
@@ -137,9 +135,7 @@ export class USAInputPrefixSuffix extends LitElement {
     if (!this.suffix && !this.suffixIcon) return '';
 
     return html`
-      <div class="usa-input-suffix" aria-hidden="true">
-        ${this.renderSuffixContent()}
-      </div>
+      <div class="usa-input-suffix" aria-hidden="true">${this.renderSuffixContent()}</div>
     `;
   }
 
@@ -196,42 +192,28 @@ export class USAInputPrefixSuffix extends LitElement {
 
   override render() {
     const hasError = !!(this.error && this.error.trim() !== '');
-    const formGroupClasses = [
-      'usa-form-group',
-      hasError ? 'usa-form-group--error' : ''
-    ]
+    const formGroupClasses = ['usa-form-group', hasError ? 'usa-form-group--error' : '']
       .filter(Boolean)
       .join(' ');
 
-    const labelClasses = [
-      'usa-label',
-      hasError ? 'usa-label--error' : ''
-    ]
+    const labelClasses = ['usa-label', hasError ? 'usa-label--error' : '']
       .filter(Boolean)
       .join(' ');
 
-    const inputGroupClasses = [
-      'usa-input-group',
-      hasError ? 'usa-input-group--error' : ''
-    ]
+    const inputGroupClasses = ['usa-input-group', hasError ? 'usa-input-group--error' : '']
       .filter(Boolean)
       .join(' ');
 
-    const inputClasses = [
-      'usa-input',
-      hasError ? 'usa-input--error' : ''
-    ]
+    const inputClasses = ['usa-input', hasError ? 'usa-input--error' : '']
       .filter(Boolean)
       .join(' ');
 
     return html`
       <div class="${formGroupClasses}">
         <label class="${labelClasses}" for="${this.inputId}">
-          ${this.label}
-          ${this.renderRequiredIndicator()}
+          ${this.label} ${this.renderRequiredIndicator()}
         </label>
-        ${this.renderHint()}
-        ${this.renderErrorMessage()}
+        ${this.renderHint()} ${this.renderErrorMessage()}
 
         <div class="${inputGroupClasses}">
           ${this.renderPrefix()}

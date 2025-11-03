@@ -254,4 +254,3 @@ export const EmptyState: Story = {
     </div>
   `,
 };
-

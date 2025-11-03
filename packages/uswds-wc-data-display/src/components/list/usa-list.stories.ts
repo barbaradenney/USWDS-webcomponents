@@ -61,7 +61,7 @@ export const UnorderedList: Story = {
     docs: {
       description: {
         story: 'Example of mixed nested lists with both ordered and unordered sub-lists.',
-        },
+      },
     },
   },
   render: () => html`
@@ -160,7 +160,7 @@ export const InteractiveDemo: Story = {
     docs: {
       description: {
         story: 'Interactive demonstration showing dynamic list manipulation and property changes.',
-        },
+      },
     },
   },
   render: () => html`
@@ -250,7 +250,7 @@ export const AccessibilityShowcase: Story = {
     docs: {
       description: {
         story: 'Demonstrates accessibility features and screen reader behavior with lists.',
-        },
+      },
     },
   },
   render: () => html`
@@ -285,8 +285,6 @@ export const AccessibilityShowcase: Story = {
     </div>
   `,
 };
-
-
 
 export const CustomContent: Story = {
   parameters: {

@@ -2,7 +2,8 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-side-navigation.ts';
 import type { USASideNavigation, SideNavItem } from './usa-side-navigation.js';
 import {
-  setupTestEnvironment, waitForUpdate,
+  setupTestEnvironment,
+  waitForUpdate,
   validateComponentJavaScript,
 } from '@uswds-wc/test-utils/test-utils.js';
 import {
@@ -759,26 +760,26 @@ describe('USASideNavigation', () => {
       const mainItems = element.querySelectorAll('nav > .usa-sidenav > .usa-sidenav__item');
       expect(mainItems.length).toBe(5);
     });
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/side-navigation/usa-side-navigation.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'side-navigation');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/side-navigation/usa-side-navigation.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'side-navigation');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {

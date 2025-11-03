@@ -1,6 +1,6 @@
 /**
  * Enhanced Accessibility Utilities for USWDS Web Components
- * 
+ *
  * Provides comprehensive accessibility support including dynamic ARIA
  * management, keyboard navigation, focus management, and screen reader
  * compatibility utilities.
@@ -39,24 +39,24 @@ export class ARIAManager {
   /**
    * Get ARIA attribute value
    */
-  getAttribute<K extends keyof AccessibilityProps>(
-    attribute: K
-  ): AccessibilityProps[K] | null {
+  getAttribute<K extends keyof AccessibilityProps>(attribute: K): AccessibilityProps[K] | null {
     const value = this.element.getAttribute(attribute);
     if (value === null) return null;
-    
+
     // Convert string back to boolean for boolean ARIA attributes
-    if (attribute === 'aria-expanded' || 
-        attribute === 'aria-selected' || 
-        attribute === 'aria-pressed' ||
-        attribute === 'aria-hidden' ||
-        attribute === 'aria-atomic' ||
-        attribute === 'aria-invalid' ||
-        attribute === 'aria-required' ||
-        attribute === 'aria-disabled') {
+    if (
+      attribute === 'aria-expanded' ||
+      attribute === 'aria-selected' ||
+      attribute === 'aria-pressed' ||
+      attribute === 'aria-hidden' ||
+      attribute === 'aria-atomic' ||
+      attribute === 'aria-invalid' ||
+      attribute === 'aria-required' ||
+      attribute === 'aria-disabled'
+    ) {
       return (value === 'true') as AccessibilityProps[K];
     }
-    
+
     return value as AccessibilityProps[K];
   }
 
@@ -87,24 +87,21 @@ export class ARIAManager {
   /**
    * Set up dynamic ARIA label based on content
    */
-  dynamicLabel(
-    labelSelector?: string,
-    fallback?: string
-  ): this {
+  dynamicLabel(labelSelector?: string, fallback?: string): this {
     const updateLabel = () => {
       let label = fallback || '';
-      
+
       if (labelSelector) {
         const labelElement = this.element.querySelector(labelSelector);
         if (labelElement) {
           label = labelElement.textContent?.trim() || label;
         }
       }
-      
+
       if (!label) {
         label = this.element.textContent?.trim() || '';
       }
-      
+
       if (label) {
         this.setAttribute('aria-label', label);
       }
@@ -118,9 +115,9 @@ export class ARIAManager {
     observer.observe(this.element, {
       childList: true,
       subtree: true,
-      characterData: true
+      characterData: true,
     });
-    
+
     this.observers.set('label', observer);
     return this;
   }
@@ -128,10 +125,7 @@ export class ARIAManager {
   /**
    * Set up described-by relationship with dynamic content
    */
-  dynamicDescribedBy(
-    descriptionSelector: string,
-    generateId: boolean = true
-  ): this {
+  dynamicDescribedBy(descriptionSelector: string, generateId: boolean = true): this {
     const updateDescribedBy = () => {
       const descElement = this.element.querySelector(descriptionSelector);
       if (descElement) {
@@ -151,9 +145,9 @@ export class ARIAManager {
     const observer = new MutationObserver(updateDescribedBy);
     observer.observe(this.element, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
-    
+
     this.observers.set('describedby', observer);
     return this;
   }
@@ -162,7 +156,7 @@ export class ARIAManager {
    * Clean up observers
    */
   destroy(): void {
-    this.observers.forEach(observer => observer.disconnect());
+    this.observers.forEach((observer) => observer.disconnect());
     this.observers.clear();
   }
 }
@@ -191,13 +185,11 @@ export class FocusManager {
       'textarea:not([disabled])',
       'a[href]',
       '[tabindex]:not([tabindex="-1"])',
-      '[contenteditable="true"]'
+      '[contenteditable="true"]',
     ].join(', ');
 
-    this.focusableElements = Array.from(
-      this.element.querySelectorAll(selector)
-    ) as HTMLElement[];
-    
+    this.focusableElements = Array.from(this.element.querySelectorAll(selector)) as HTMLElement[];
+
     // Update current index
     const focused = document.activeElement as HTMLElement;
     this.currentIndex = this.focusableElements.indexOf(focused);
@@ -236,7 +228,7 @@ export class FocusManager {
   focusNext(): boolean {
     this.updateFocusableElements();
     if (this.focusableElements.length === 0) return false;
-    
+
     this.currentIndex = (this.currentIndex + 1) % this.focusableElements.length;
     this.focusableElements[this.currentIndex].focus();
     return true;
@@ -248,10 +240,9 @@ export class FocusManager {
   focusPrevious(): boolean {
     this.updateFocusableElements();
     if (this.focusableElements.length === 0) return false;
-    
-    this.currentIndex = this.currentIndex <= 0 
-      ? this.focusableElements.length - 1 
-      : this.currentIndex - 1;
+
+    this.currentIndex =
+      this.currentIndex <= 0 ? this.focusableElements.length - 1 : this.currentIndex - 1;
     this.focusableElements[this.currentIndex].focus();
     return true;
   }
@@ -261,7 +252,7 @@ export class FocusManager {
    */
   trapFocus(event: KeyboardEvent): boolean {
     if (event.key !== 'Tab') return false;
-    
+
     this.updateFocusableElements();
     if (this.focusableElements.length === 0) return false;
 
@@ -337,10 +328,10 @@ export class KeyboardNavigationHandler {
     this.addHandler('ArrowUp', () => this.focusManager.focusPrevious());
     this.addHandler('Home', () => this.focusManager.focusFirst());
     this.addHandler('End', () => this.focusManager.focusLast());
-    
+
     // Tab trapping
     this.addHandler('Tab', (event) => this.focusManager.trapFocus(event));
-    
+
     return this;
   }
 
@@ -360,7 +351,10 @@ export class KeyboardNavigationHandler {
     return this;
   }
 
-  private normalizeKey(key: string, options?: { ctrl?: boolean; shift?: boolean; alt?: boolean }): string {
+  private normalizeKey(
+    key: string,
+    options?: { ctrl?: boolean; shift?: boolean; alt?: boolean }
+  ): string {
     let normalizedKey = key;
     if (options?.ctrl) normalizedKey = `ctrl+${normalizedKey}`;
     if (options?.shift) normalizedKey = `shift+${normalizedKey}`;
@@ -372,7 +366,7 @@ export class KeyboardNavigationHandler {
     this.element.addEventListener('keydown', (event) => {
       const keyCode = this.buildKeyCode(event);
       const handler = this.keyHandlers.get(keyCode);
-      
+
       if (handler) {
         const handled = handler(event);
         if (handled) {
@@ -406,18 +400,15 @@ export class ScreenReaderUtils {
   /**
    * Announce message to screen readers
    */
-  static announce(
-    message: string,
-    priority: 'polite' | 'assertive' = 'polite'
-  ): void {
+  static announce(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
     const announcement = document.createElement('div');
     announcement.setAttribute('aria-live', priority);
     announcement.setAttribute('aria-atomic', 'true');
     announcement.className = 'usa-sr-only';
     announcement.textContent = message;
-    
+
     document.body.appendChild(announcement);
-    
+
     // Remove after announcement
     setTimeout(() => {
       document.body.removeChild(announcement);
@@ -492,18 +483,14 @@ export class AccessibilityHelper {
   /**
    * Set up component as interactive element
    */
-  setupInteractive(
-    role: string,
-    ariaLabel?: string,
-    tabIndex: number = 0
-  ): this {
+  setupInteractive(role: string, ariaLabel?: string, tabIndex: number = 0): this {
     this.element.setAttribute('role', role);
     this.element.setAttribute('tabindex', tabIndex.toString());
-    
+
     if (ariaLabel) {
       this.ariaManager.setAttribute('aria-label', ariaLabel);
     }
-    
+
     return this;
   }
 
@@ -517,27 +504,24 @@ export class AccessibilityHelper {
   ): this {
     this.ariaManager.setAttribute('aria-required', required);
     this.ariaManager.setAttribute('aria-invalid', invalid);
-    
+
     if (describedBy) {
       this.ariaManager.setAttribute('aria-describedby', describedBy);
     }
-    
+
     return this;
   }
 
   /**
    * Set up component as expandable/collapsible
    */
-  setupExpandable(
-    expanded: boolean = false,
-    controls?: string
-  ): this {
+  setupExpandable(expanded: boolean = false, controls?: string): this {
     this.ariaManager.setAttribute('aria-expanded', expanded);
-    
+
     if (controls) {
       this.ariaManager.setAttribute('aria-controls', controls);
     }
-    
+
     return this;
   }
 
@@ -587,10 +571,10 @@ export const a11yUtils = {
       'textarea:not([disabled])',
       'a[href]',
       '[tabindex]:not([tabindex="-1"])',
-      '[contenteditable="true"]'
+      '[contenteditable="true"]',
     ];
-    
-    return focusableSelectors.some(selector => element.matches(selector));
+
+    return focusableSelectors.some((selector) => element.matches(selector));
   },
 
   /**
@@ -600,14 +584,14 @@ export const a11yUtils = {
     // Try aria-label first
     const ariaLabel = element.getAttribute('aria-label');
     if (ariaLabel) return ariaLabel;
-    
+
     // Try aria-labelledby
     const labelledBy = element.getAttribute('aria-labelledby');
     if (labelledBy) {
       const labelElement = document.getElementById(labelledBy);
       if (labelElement) return labelElement.textContent?.trim() || '';
     }
-    
+
     // Fall back to text content
     return element.textContent?.trim() || '';
   },
@@ -618,19 +602,19 @@ export const a11yUtils = {
   validateAriaAttributes(element: HTMLElement): string[] {
     const errors: string[] = [];
     const role = element.getAttribute('role');
-    
+
     // Basic validation rules
     if (role === 'button' && !element.hasAttribute('aria-label') && !element.textContent?.trim()) {
       errors.push('Button role requires accessible text');
     }
-    
+
     if (element.hasAttribute('aria-labelledby')) {
       const labelledBy = element.getAttribute('aria-labelledby');
       if (labelledBy && !document.getElementById(labelledBy)) {
         errors.push(`aria-labelledby references non-existent element: ${labelledBy}`);
       }
     }
-    
+
     return errors;
-  }
+  },
 };

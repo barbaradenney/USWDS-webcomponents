@@ -189,8 +189,7 @@ export class USATextarea extends USWDSBaseComponent {
 
     return html`
       <label class="${this.getLabelClasses()}" for="${textareaId}">
-        ${this.label}
-        ${this.renderRequiredIndicator()}
+        ${this.label} ${this.renderRequiredIndicator()}
       </label>
     `;
   }
@@ -214,26 +213,20 @@ export class USATextarea extends USWDSBaseComponent {
     if (!this.success) return '';
 
     return html`
-      <div
-        class="usa-alert usa-alert--success usa-alert--validation usa-alert--slim"
-        role="status"
-      >
+      <div class="usa-alert usa-alert--success usa-alert--validation usa-alert--slim" role="status">
         <div class="usa-alert__body">
-          <p class="usa-alert__text">
-            <span class="usa-sr-only">Success:</span> ${this.success}
-          </p>
+          <p class="usa-alert__text"><span class="usa-sr-only">Success:</span> ${this.success}</p>
         </div>
       </div>
     `;
   }
-
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
     return this as any;
   }
 
-    override render() {
+  override render() {
     const textareaId = this.textareaId;
 
     const ariaDescribedBy = [
@@ -246,10 +239,8 @@ export class USATextarea extends USWDSBaseComponent {
 
     return html`
       <div class="${this.getFormGroupClasses()}">
-        ${this.renderLabel(textareaId)}
-        ${this.renderHint(textareaId)}
-        ${this.renderError(textareaId)}
-        ${this.renderSuccess()}
+        ${this.renderLabel(textareaId)} ${this.renderHint(textareaId)}
+        ${this.renderError(textareaId)} ${this.renderSuccess()}
         <textarea
           class="${this.getTextareaClasses()}"
           id="${textareaId}"

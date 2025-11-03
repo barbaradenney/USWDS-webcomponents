@@ -225,9 +225,7 @@ export const CardGrid: Story = {
     controls: { disable: true }, // Static demo - no interactive controls needed
   },
   render: () => html`
-    <div
-      class="display-grid grid-col grid-gap-1 maxw-dedth: 1200px;"
-    >
+    <div class="display-grid grid-col grid-gap-1 maxw-dedth: 1200px;">
       <h2 class="grid-col-fill">Service Cards Grid</h2>
       <p class="grid-col-fill">Example of cards arranged in a responsive grid layout.</p>
 
@@ -321,13 +319,9 @@ export const NewsUpdates: Story = {
     controls: { disable: true }, // Static demo - no interactive controls needed
   },
   render: () => html`
-    <div
-      class="display-grid grid-col grid-gap-1 maxw-dedth: 1200px;"
-    >
+    <div class="display-grid grid-col grid-gap-1 maxw-dedth: 1200px;">
       <h2 class="grid-col-fill">Latest News & Updates</h2>
-      <p class="grid-col-fill">
-        Stay informed with the latest news, updates, and announcements.
-      </p>
+      <p class="grid-col-fill">Stay informed with the latest news, updates, and announcements.</p>
 
       <usa-card
         heading="New Features Released"
@@ -500,7 +494,9 @@ export const CustomContent: Story = {
   render: () => html`
     <div class="maxw-tablet">
       <h2 class="margin-bottom-2">Custom Content</h2>
-      <p class="margin-bottom-3">Cards support custom content through slots for advanced layouts and rich media.</p>
+      <p class="margin-bottom-3">
+        Cards support custom content through slots for advanced layouts and rich media.
+      </p>
 
       <div class="margin-bottom-3">
         <usa-card heading="Card with Custom Body Content">
@@ -530,9 +526,7 @@ export const CustomContent: Story = {
             <p><strong>Processing Time:</strong> 5 business days</p>
           </div>
           <div slot="footer">
-            <button class="usa-button usa-button--outline margin-right-1">
-              View Details
-            </button>
+            <button class="usa-button usa-button--outline margin-right-1">View Details</button>
             <button class="usa-button usa-button--secondary">Download Approval</button>
           </div>
         </usa-card>
@@ -549,7 +543,9 @@ export const CustomContent: Story = {
           </usa-alert>
         </div>
         <div slot="footer">
-          <p class="text-base-dark font-body-xs margin-0">System Administrator | Posted: Today 2:30 PM EST</p>
+          <p class="text-base-dark font-body-xs margin-0">
+            System Administrator | Posted: Today 2:30 PM EST
+          </p>
         </div>
       </usa-card>
     </div>

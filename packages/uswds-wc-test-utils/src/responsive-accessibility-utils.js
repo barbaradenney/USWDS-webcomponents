@@ -36,7 +36,7 @@ export function checkMobileAccessibility(element) {
   return {
     hasTouchTargets: checkTouchTargetSize(element),
     hasProperSpacing: true, // Simplified
-    isReadable: true // Simplified
+    isReadable: true, // Simplified
   };
 }
 
@@ -57,7 +57,7 @@ export const VIEWPORTS = {
   MOBILE: { name: 'mobile', width: 375, height: 667 },
   TABLET: { name: 'tablet', width: 768, height: 1024 },
   DESKTOP: { name: 'desktop', width: 1280, height: 800 },
-  LARGE_DESKTOP: { name: 'large-desktop', width: 1920, height: 1080 }
+  LARGE_DESKTOP: { name: 'large-desktop', width: 1920, height: 1080 },
 };
 
 /**
@@ -78,14 +78,14 @@ export function testTextResize(element, _percentage = 200) {
     violations.push({
       element,
       fontSize,
-      message: 'Font size may be too small when zoomed'
+      message: 'Font size may be too small when zoomed',
     });
   }
 
   return {
     originalFontSize: fontSize || 0,
     violations,
-    passed: violations.length === 0
+    passed: violations.length === 0,
   };
 }
 
@@ -105,7 +105,7 @@ export function testReflow(element, width = 320) {
       element,
       contentWidth: rect.width,
       viewportWidth: width,
-      message: `Content width ${rect.width}px exceeds viewport width ${width}px`
+      message: `Content width ${rect.width}px exceeds viewport width ${width}px`,
     });
   }
 
@@ -114,7 +114,7 @@ export function testReflow(element, width = 320) {
     viewportWidth: width,
     requiresHorizontalScroll: rect.width > width,
     warnings,
-    passed: rect.width <= width
+    passed: rect.width <= width,
   };
 }
 
@@ -135,13 +135,13 @@ export function testTextSpacing(element) {
     violations.push({
       element,
       lineHeight: lineHeight / fontSize,
-      message: 'Line height should be at least 1.5x font size'
+      message: 'Line height should be at least 1.5x font size',
     });
   }
 
   return {
     readable: violations.length === 0,
-    violations
+    violations,
   };
 }
 
@@ -163,13 +163,17 @@ export async function testMobileAccessibility(element) {
   if (!touchTargetResult) errors.push('Touch targets too small');
 
   return {
-    passed: reflowResult.passed && textResizeResult.passed && textSpacingResult.readable && touchTargetResult,
+    passed:
+      reflowResult.passed &&
+      textResizeResult.passed &&
+      textSpacingResult.readable &&
+      touchTargetResult,
     errors,
     details: {
       reflowWorks: reflowResult.passed,
       textResizable: textResizeResult.passed,
       textSpacingWorks: textSpacingResult.readable,
-      touchTargetsAdequate: touchTargetResult
-    }
+      touchTargetsAdequate: touchTargetResult,
+    },
   };
 }

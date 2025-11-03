@@ -16,11 +16,11 @@ describe('USATable Layout Tests', () => {
     element.columns = [
       { key: 'name', label: 'Name', sortable: true },
       { key: 'age', label: 'Age', sortable: true, sortType: 'number' },
-      { key: 'email', label: 'Email' }
+      { key: 'email', label: 'Email' },
     ];
     element.data = [
       { name: 'John Doe', age: 30, email: 'john@example.com' },
-      { name: 'Jane Smith', age: 25, email: 'jane@example.com' }
+      { name: 'Jane Smith', age: 25, email: 'jane@example.com' },
     ];
     document.body.appendChild(element);
   });
@@ -43,18 +43,9 @@ describe('USATable Layout Tests', () => {
     expect(tbody, 'Table body should exist').toBeTruthy();
 
     // Verify USWDS structure hierarchy
-    expect(
-      tableContainer.contains(table),
-      'Table should be inside container'
-    ).toBe(true);
-    expect(
-      table.contains(thead),
-      'Header should be inside table'
-    ).toBe(true);
-    expect(
-      table.contains(tbody),
-      'Body should be inside table'
-    ).toBe(true);
+    expect(tableContainer.contains(table), 'Table should be inside container').toBe(true);
+    expect(table.contains(thead), 'Header should be inside table').toBe(true);
+    expect(table.contains(tbody), 'Body should be inside table').toBe(true);
   });
 
   it('should position table headers correctly', async () => {
@@ -89,10 +80,9 @@ describe('USATable Layout Tests', () => {
     // Each sortable header should contain a button
     sortButtons.forEach((button, index) => {
       const header = sortableHeaders[index];
-      expect(
-        header.contains(button),
-        `Sort button ${index} should be inside its header`
-      ).toBe(true);
+      expect(header.contains(button), `Sort button ${index} should be inside its header`).toBe(
+        true
+      );
     });
   });
 
@@ -101,7 +91,9 @@ describe('USATable Layout Tests', () => {
 
     const tbody = element.querySelector('tbody');
     const rows = element.querySelectorAll('tbody tr');
-    const firstRowCells = element.querySelectorAll('tbody tr:first-child th, tbody tr:first-child td');
+    const firstRowCells = element.querySelectorAll(
+      'tbody tr:first-child th, tbody tr:first-child td'
+    );
 
     expect(tbody, 'Table body should exist').toBeTruthy();
     expect(rows.length, 'Should have correct number of rows').toBe(2);
@@ -191,26 +183,26 @@ describe('USATable Layout Tests', () => {
         'Striped table should have correct CSS class'
       ).toBe(true);
     }
-  describe('JavaScript Implementation Validation', () => {
-    it('should pass JavaScript implementation validation', async () => {
-      // Validate USWDS JavaScript implementation patterns
-      const componentPath = `${process.cwd()}/src/components/table/usa-table.ts`;
-      const validation = validateComponentJavaScript(componentPath, 'table');
+    describe('JavaScript Implementation Validation', () => {
+      it('should pass JavaScript implementation validation', async () => {
+        // Validate USWDS JavaScript implementation patterns
+        const componentPath = `${process.cwd()}/src/components/table/usa-table.ts`;
+        const validation = validateComponentJavaScript(componentPath, 'table');
 
-      if (!validation.isValid) {
-        console.warn('JavaScript validation issues:', validation.issues);
-      }
+        if (!validation.isValid) {
+          console.warn('JavaScript validation issues:', validation.issues);
+        }
 
-      // JavaScript validation should pass for critical integration patterns
-      expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
+        // JavaScript validation should pass for critical integration patterns
+        expect(validation.score).toBeGreaterThan(50); // Allow some non-critical issues
 
-      // Critical USWDS integration should be present
-      const criticalIssues = validation.issues.filter(issue =>
-        issue.includes('Missing USWDS JavaScript integration')
-      );
-      expect(criticalIssues.length).toBe(0);
+        // Critical USWDS integration should be present
+        const criticalIssues = validation.issues.filter((issue) =>
+          issue.includes('Missing USWDS JavaScript integration')
+        );
+        expect(criticalIssues.length).toBe(0);
+      });
     });
-  });
   });
 
   describe('Visual Regression Prevention', () => {
@@ -245,7 +237,9 @@ describe('USATable Layout Tests', () => {
     it('should handle sorting interactions correctly', async () => {
       await element.updateComplete;
 
-      const firstSortButton = element.querySelector('.usa-table__header__button') as HTMLButtonElement;
+      const firstSortButton = element.querySelector(
+        '.usa-table__header__button'
+      ) as HTMLButtonElement;
 
       if (firstSortButton) {
         // Should respond to sort button clicks
@@ -290,7 +284,7 @@ describe('USATable Layout Tests', () => {
       const largeData = Array.from({ length: 100 }, (_, i) => ({
         name: `User ${i + 1}`,
         age: 20 + (i % 50),
-        email: `user${i + 1}@example.com`
+        email: `user${i + 1}@example.com`,
       }));
 
       element.data = largeData;
@@ -308,20 +302,19 @@ describe('USATable Layout Tests', () => {
       await element.updateComplete;
 
       // Add a new column
-      element.columns = [
-        ...element.columns,
-        { key: 'phone', label: 'Phone' }
-      ];
-      element.data = element.data.map(row => ({
+      element.columns = [...element.columns, { key: 'phone', label: 'Phone' }];
+      element.data = element.data.map((row) => ({
         ...row,
-        phone: '555-0123'
+        phone: '555-0123',
       }));
       await element.updateComplete;
 
       const headers = element.querySelectorAll('thead th');
       expect(headers.length, 'Should have updated number of headers').toBe(4);
 
-      const firstRowCells = element.querySelectorAll('tbody tr:first-child th, tbody tr:first-child td');
+      const firstRowCells = element.querySelectorAll(
+        'tbody tr:first-child th, tbody tr:first-child td'
+      );
       expect(firstRowCells.length, 'Should have updated number of cells').toBe(4);
     });
 
@@ -338,7 +331,9 @@ describe('USATable Layout Tests', () => {
 
       sortableHeaders.forEach((header) => {
         const ariaSort = header.getAttribute('aria-sort');
-        expect(ariaSort === 'none' || ariaSort === 'ascending' || ariaSort === 'descending').toBe(true);
+        expect(ariaSort === 'none' || ariaSort === 'ascending' || ariaSort === 'descending').toBe(
+          true
+        );
       });
 
       sortButtons.forEach((button) => {
@@ -348,11 +343,13 @@ describe('USATable Layout Tests', () => {
 
     it('should handle cell content overflow correctly', async () => {
       // Add data with long content
-      element.data = [{
-        name: 'Very Long Name That Might Cause Layout Issues',
-        age: 30,
-        email: 'very.long.email.address.that.might.cause.overflow@example.com'
-      }];
+      element.data = [
+        {
+          name: 'Very Long Name That Might Cause Layout Issues',
+          age: 30,
+          email: 'very.long.email.address.that.might.cause.overflow@example.com',
+        },
+      ];
       await element.updateComplete;
 
       const cells = element.querySelectorAll('tbody th, tbody td');

@@ -53,19 +53,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🎯 Configure test strategy
         id: config
@@ -108,28 +103,23 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🔍 Lint code
-        run: pnpm run lint
+        run: npm run lint
 
       - name: 🔍 Type check
-        run: pnpm run typecheck
+        run: npm run typecheck
 
       - name: 🧪 Run unit tests
-        run: pnpm run test:coverage
+        run: npm run test:coverage
 
       - name: 📊 Upload coverage to Codecov
         uses: codecov/codecov-action@v3
@@ -164,19 +154,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -207,19 +192,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -231,8 +211,8 @@ jobs:
             --config=playwright.comprehensive.config.ts \
             --reporter=json
 
-      - name: 🔍 Run pnpm audit
-        run: pnpm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
+      - name: 🔍 Run npm audit
+        run: npm audit --audit-level=moderate --json > test-reports/npm-audit.json || true
 
       - name: 📊 Upload security results
         uses: actions/upload-artifact@v4
@@ -271,19 +251,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
@@ -314,19 +289,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -359,22 +329,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 👁️ Run visual regression tests
-        run: pnpm run test:visual
+        run: npm run test:visual
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
@@ -396,19 +361,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -439,19 +399,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 📥 Download all test artifacts
         uses: actions/download-artifact@v4
@@ -572,44 +527,39 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-
       - name: 🔧 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: 🧠 AI Test Generation Analysis
         run: |
           echo "🤖 Running AI-powered test analysis..."
-          pnpm run ai:analyze
+          npm run ai:analyze
 
       - name: 🔮 Predictive Regression Testing
         run: |
           echo "🔮 Running predictive regression testing..."
-          pnpm run test:predict:dry-run --verbose
+          npm run test:predict:dry-run --verbose
 
       - name: 💡 Smart Test Recommendations
         run: |
           echo "💡 Generating smart test recommendations..."
-          pnpm run test:recommend --verbose
+          npm run test:recommend --verbose
 
       - name: 🌪️ Chaos Engineering Tests
         run: |
           echo "🌪️ Running chaos engineering tests..."
-          pnpm run test:chaos:medium --verbose
+          npm run test:chaos:medium --verbose
 
       - name: ⚡ Intelligent Test Optimization
         run: |
           echo "⚡ Analyzing test optimization opportunities..."
-          pnpm run test:optimize:dry-run
+          npm run test:optimize:dry-run
 
       - name: 📊 Upload Phase 5 Reports
         uses: actions/upload-artifact@v4
