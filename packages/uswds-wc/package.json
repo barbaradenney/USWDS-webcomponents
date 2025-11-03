@@ -1,6 +1,6 @@
 {
   "name": "@uswds-wc/all",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "U.S. Web Design System components as Web Components - Complete Package",
   "type": "module",
   "main": "./dist/index.js",
