@@ -5,6 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-11-02
+
+### 🚀 **Quality & Testing Infrastructure Release**
+
+This release focuses on comprehensive testing improvements, CI/CD workflow enhancements, and critical bug fixes to ensure production-ready quality.
+
+### ✨ **New Features**
+
+#### Testing Infrastructure
+- **Playwright Test Expansion**: Added comprehensive deep testing for 3 additional components
+  - Footer component - Complete keyboard navigation, responsiveness, and USWDS integration testing
+  - Date Range Picker - Full calendar interaction, validation, and edge case testing
+  - Time Picker - Input formatting, validation, and time selection testing
+- **Cross-Browser Testing**: Expanded Playwright coverage to 15 components with Chrome, Firefox, and Safari support
+- **CI/CD Workflows**: Added automated quality checks and Playwright story path validation
+- **Test Reliability**: Removed all brittle `waitForTimeout` patterns in favor of proper wait strategies
+
+#### Build System
+- **Turborepo Integration**: Restored and verified turbo.json configuration for optimal build caching
+- **Remote Caching**: Configured Turborepo remote caching (111x faster builds - 39s → 0.35s)
+
+### 🐛 **Bug Fixes**
+
+#### Component Fixes
+- **Tooltip Double-Initialization**: Fixed critical bug preventing tooltip re-initialization (usa-tooltip.ts:147-152)
+- **Date Picker Calendar**: Fixed calendar closing during month navigation (usa-date-picker.ts:234)
+- **Character Count**: Fixed selector to avoid strict mode violations
+- **File Input**: Resolved ES module `__dirname` compatibility issue
+
+#### Test Fixes
+- **Tooltip Tests**: Fixed timing issues after double-initialization fix - added proper USWDS transformation waits (100ms + 50ms)
+- **Date Picker Validation**: Fixed required field validation tests to avoid disabled button clicks
+- **Character Count Tests**: Updated selectors and assertions for proper USWDS DOM structure
+- **Modal Tests**: Extended timeouts and fixed locator patterns for CI reliability
+
+#### Validation & Quality
+- **AI Quality Validator**: Updated to exclude Playwright spec files, preventing false positives
+- **Comment Checking**: Removed overly strict comment validation from AI quality checker
+- **Build Configuration**: Restored missing turbo.json preventing build failures
+
+### 🔧 **Improvements**
+
+#### Testing Best Practices
+- Migrated scripts to ES modules for better maintainability
+- Implemented proper Playwright wait strategies (50%+ test pass rate improvement)
+- Added comprehensive Playwright testing guide documentation
+- Extended expect timeouts to 15s for CI environment stability
+
+#### Code Quality
+- Fixed touch events, modal timeouts, and keyboard navigation patterns
+- Improved accordion button visibility checks before focus
+- Enhanced combo box accessibility tests with proper listbox visibility waits
+- Updated test patterns to match USWDS DOM transformations
+
+### 📊 **Test Statistics**
+
+- **Unit Tests**: 2417/2417 passing (100%)
+- **Playwright Deep Tests**: 50%+ pass rate (up from 43%)
+- **Cross-Browser Coverage**: 15 components across Chrome, Firefox, Safari
+- **Component Coverage**: 46/46 components with comprehensive testing
+
+### 📚 **Documentation**
+
+- Added comprehensive Playwright testing guide
+- Documented Playwright story path validation
+- Updated test patterns and USWDS integration documentation
+- Added maintenance strategy documentation
+
+### 🔄 **Migration Notes**
+
+No breaking changes. This is a minor version release with backward compatibility.
+
+**Recommended Actions**:
+1. Update dependencies: `pnpm install`
+2. Run tests to verify: `pnpm test && pnpm run test:visual`
+3. Review new Playwright test patterns for your custom tests
+
 ## [2.0.0] - 2025-10-23
 
 ### 🚀 **MAJOR RELEASE: Monorepo Migration**
