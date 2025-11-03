@@ -72,9 +72,14 @@ describe('USATooltip', () => {
     });
 
     it('should update text property', async () => {
+      // Wait for initial USWDS transformation to complete
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       element.text = 'Updated tooltip text';
       await element.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Wait for updated() method to process the change
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       // After USWDS transformation, the text is in the tooltip body, not as a title attribute
       // USWDS removes the title attribute during setUpAttributes()
