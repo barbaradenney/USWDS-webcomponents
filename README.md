@@ -1,5 +1,9 @@
 # USWDS Web Components
 
+[![npm version](https://img.shields.io/npm/v/@uswds-wc/core.svg)](https://www.npmjs.com/package/@uswds-wc/core)
+[![npm downloads](https://img.shields.io/npm/dm/@uswds-wc/core.svg)](https://www.npmjs.com/package/@uswds-wc/core)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 A lightweight web component library that wraps the official U.S. Web Design System (USWDS) 3.0 with minimal custom code for maximum maintainability and accessibility.
 
 ## 📦 Monorepo Architecture
@@ -22,7 +26,7 @@ Organized as independent packages for optimal tree-shaking and bundle sizes.
 ## 🔗 Quick Links
 
 - **📚 [Live Storybook](https://barbaradenney.github.io/uswds-wc/)** - Interactive component documentation
-- **📦 [npm Packages](https://www.npmjs.com/org/uswds-wc)** - Install category packages or full library
+- **📦 [npm Packages](https://www.npmjs.com/org/uswds-wc)** - Install category packages or full library (v2.1.0 published!)
 - **🐙 [GitHub Repository](https://github.com/barbaramiles/uswds-wc)** - Source code and issues
 - **📖 [Component Catalog](docs/COMPONENTS.md)** - Complete reference of all 45 components
 
@@ -113,22 +117,22 @@ import '@uswds-wc/core/styles.css';
 ## 📦 Available Packages
 
 ### Core Package
-- **@uswds-wc/core** - Base utilities, USWDS integration, shared types
+- **[@uswds-wc/core](https://www.npmjs.com/package/@uswds-wc/core)** - Base utilities, USWDS integration, shared types
 
 ### Category Packages
 
 | Package | Components | Bundle Size | Use Case |
 |---------|-----------|-------------|----------|
-| `@uswds-wc/forms` | 15 | ~45 KB | Form inputs, validation |
-| `@uswds-wc/navigation` | 8 | ~32 KB | Headers, menus, breadcrumbs |
-| `@uswds-wc/data-display` | 8 | ~28 KB | Tables, cards, lists |
-| `@uswds-wc/feedback` | 5 | ~18 KB | Alerts, modals, tooltips |
-| `@uswds-wc/actions` | 4 | ~12 KB | Buttons, links, search |
-| `@uswds-wc/layout` | 4 | ~15 KB | Grid, containers, spacing |
-| `@uswds-wc/structure` | 1 | ~8 KB | Accordion |
+| **[@uswds-wc/forms](https://www.npmjs.com/package/@uswds-wc/forms)** | 15 | ~45 KB | Form inputs, validation |
+| **[@uswds-wc/navigation](https://www.npmjs.com/package/@uswds-wc/navigation)** | 8 | ~32 KB | Headers, menus, breadcrumbs |
+| **[@uswds-wc/data-display](https://www.npmjs.com/package/@uswds-wc/data-display)** | 8 | ~28 KB | Tables, cards, lists |
+| **[@uswds-wc/feedback](https://www.npmjs.com/package/@uswds-wc/feedback)** | 5 | ~18 KB | Alerts, modals, tooltips |
+| **[@uswds-wc/actions](https://www.npmjs.com/package/@uswds-wc/actions)** | 4 | ~12 KB | Buttons, links, search |
+| **[@uswds-wc/layout](https://www.npmjs.com/package/@uswds-wc/layout)** | 4 | ~15 KB | Grid, containers, spacing |
+| **[@uswds-wc/structure](https://www.npmjs.com/package/@uswds-wc/structure)** | 1 | ~8 KB | Accordion |
 
 ### Meta Package
-- **@uswds-wc** - All components (convenience package)
+- **[@uswds-wc/all](https://www.npmjs.com/package/@uswds-wc/all)** - All components (convenience package)
 
 ## 🎯 Project Goals
 
