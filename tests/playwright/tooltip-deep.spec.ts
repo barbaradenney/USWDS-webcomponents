@@ -20,6 +20,21 @@ const STORY_URL_LEFT = '/iframe.html?id=feedback-tooltip--left-position';
 const STORY_URL_RIGHT = '/iframe.html?id=feedback-tooltip--right-position';
 const COMPONENT_SELECTOR = 'usa-tooltip';
 
+// Helper function to wait for USWDS tooltip initialization
+async function waitForTooltipInit(page: any) {
+  // Wait for USWDS to transform the tooltip structure
+  // USWDS adds .usa-tooltip wrapper and .usa-tooltip__body elements
+  try {
+    await page.waitForSelector('.usa-tooltip__body, [role="tooltip"]', {
+      timeout: 5000,
+      state: 'attached' // Just needs to exist in DOM, doesn't need to be visible
+    });
+  } catch (e) {
+    // Tooltip body not created - USWDS may not have initialized
+    // Tests will handle this with their fallback logic
+  }
+}
+
 test.describe('Tooltip Deep Testing', () => {
   // Note: No beforeEach navigation needed - each test navigates to its specific story URL
 
@@ -34,6 +49,9 @@ test.describe('Tooltip Deep Testing', () => {
 
       // Wait for the button text to appear (ensures story is fully rendered)
       await page.waitForSelector('text=Hover for tooltip', { timeout: 10000 });
+
+      // Wait for USWDS tooltip initialization
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       // usa-tooltip is inline-block wrapping button, check it's attached to DOM
@@ -62,6 +80,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should handle keyboard accessibility', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       const trigger = page.locator('button, .usa-tooltip__trigger').first();
@@ -93,6 +112,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should be accessible', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       const trigger = page.locator('button, .usa-tooltip__trigger').first();
@@ -124,6 +144,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should handle responsive design', async ({ page, isMobile }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       await expect(component).toBeVisible();
@@ -161,6 +182,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should position tooltip on top', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Set position to top
       await page.evaluate(() => {
@@ -205,6 +227,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should position tooltip on bottom', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Set position to bottom
       await page.evaluate(() => {
@@ -243,6 +266,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should position tooltip on left', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Set position to left
       await page.evaluate(() => {
@@ -281,6 +305,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should position tooltip on right', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Set position to right
       await page.evaluate(() => {
@@ -325,6 +350,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should show tooltip on hover', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       const trigger = page.locator('button, .usa-tooltip__trigger').first();
@@ -358,6 +384,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should show tooltip on focus', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       const trigger = page.locator('button, .usa-tooltip__trigger').first();
@@ -386,6 +413,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should hide tooltip on Escape key', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       const component = page.locator(COMPONENT_SELECTOR).first();
       const trigger = page.locator('button, .usa-tooltip__trigger').first();
@@ -419,6 +447,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should handle long tooltip text', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Set long text
       await page.evaluate(() => {
@@ -461,6 +490,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should handle tooltip near viewport edges', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Position trigger near right edge
       await page.evaluate(() => {
@@ -503,6 +533,7 @@ test.describe('Tooltip Deep Testing', () => {
     test('should handle multiple tooltips on page', async ({ page }) => {
       await page.goto(STORY_URL_DEFAULT);
       await page.waitForLoadState('networkidle');
+      await waitForTooltipInit(page);
 
       // Add second tooltip programmatically
       await page.evaluate(() => {
