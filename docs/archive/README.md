@@ -168,3 +168,34 @@ For bundle optimization, see:
 - **Category**: TEMPORARY
 - **Age**: 8 days
 
+
+### CI_CD_COMPLETE_SUMMARY.md (Archived 2025-11-05)
+- **Reason**: Temporary doc older than 7 days (9 days)
+- **Category**: TEMPORARY
+- **Age**: 9 days
+
+### CI_CD_IMPROVEMENTS_TODO.md (Archived 2025-11-05)
+- **Reason**: Temporary doc older than 7 days (9 days)
+- **Category**: TEMPORARY
+- **Age**: 9 days
+
+### MONOREPO_EFFICIENCY_IMPROVEMENTS.md (Archived 2025-11-05)
+- **Reason**: Temporary doc older than 7 days (11 days)
+- **Category**: TEMPORARY
+- **Age**: 11 days
+
+### MONOREPO_MIGRATION_PLAN.md (Archived 2025-11-05)
+- **Reason**: Temporary doc older than 7 days (16 days)
+- **Category**: TEMPORARY
+- **Age**: 16 days
+
+### PATH_TO_100_PERCENT.md (Archived 2025-11-05)
+- **Reason**: Temporary doc older than 7 days (9 days)
+- **Category**: TEMPORARY
+- **Age**: 9 days
+
+### PRE_PUBLICATION_CHECKLIST.md (Archived 2025-11-05)
+- **Reason**: Temporary doc older than 7 days (9 days)
+- **Category**: TEMPORARY
+- **Age**: 9 days
+
