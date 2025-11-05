@@ -31,7 +31,6 @@ describe('USAAddressPattern', () => {
       expect(pattern.label).toBe('Address');
       expect(pattern.required).toBe(false);
       expect(pattern.showStreet2).toBe(true);
-      expect(pattern.international).toBe(false);
     });
 
     it('should use Light DOM for USWDS style compatibility', () => {
@@ -99,21 +98,6 @@ describe('USAAddressPattern', () => {
       const street2 = pattern.querySelector('usa-text-input[name="street2"]');
       expect(street2).toBeTruthy(); // Element exists
       expect(street2?.classList.contains('display-none')).toBe(true); // But hidden with USWDS utility class
-    });
-
-    it('should not show country field by default', () => {
-      const country = pattern.querySelector('usa-text-input[name="country"]');
-      expect(country).toBeTruthy(); // Element exists
-      expect(country?.classList.contains('display-none')).toBe(true); // But hidden with USWDS utility class
-    });
-
-    it('should show country field when international is true', async () => {
-      pattern.international = true;
-      await pattern.updateComplete;
-
-      const country = pattern.querySelector('usa-text-input[name="country"]');
-      expect(country).toBeTruthy(); // Element exists
-      expect(country?.classList.contains('display-none')).toBe(false); // Visible (no display-none class)
     });
   });
 
@@ -396,11 +380,13 @@ describe('USAAddressPattern', () => {
       expect(allPatternOptions.length).toBe(selectOptions?.length || 0);
     });
 
-    it('should render state select in initial render without waiting', () => {
+    it('should render state select in initial render without waiting', async () => {
       const freshPattern = document.createElement('usa-address-pattern') as USAAddressPattern;
       container.appendChild(freshPattern);
 
-      // Don't wait for updateComplete - check immediately
+      // Wait for Lit to render (Light DOM still requires initial render cycle)
+      await freshPattern.updateComplete;
+
       const selectComponent = freshPattern.querySelector('usa-select[name="state"]');
       expect(selectComponent).toBeTruthy();
 

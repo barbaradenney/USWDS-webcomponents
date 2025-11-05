@@ -45,18 +45,6 @@ export const WithoutStreetLine2: Story = {
 };
 
 /**
- * International address support with country field.
- */
-export const International: Story = {
-  render: () => html`
-    <usa-address-pattern
-      international
-      label="International Address"
-    ></usa-address-pattern>
-  `,
-};
-
-/**
  * Address pattern with event handling and validation.
  */
 export const WithEventHandling: Story = {

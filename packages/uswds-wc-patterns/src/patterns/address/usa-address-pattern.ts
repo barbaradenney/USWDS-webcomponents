@@ -9,6 +9,10 @@ import '@uswds-wc/forms';
 
 /**
  * Address data interface
+ *
+ * USWDS Address Pattern - U.S. Domestic Addresses Only
+ * Supports U.S. states, territories, and military posts.
+ * Does NOT support international addresses per USWDS specification.
  */
 export interface AddressData {
   street1?: string;
@@ -17,17 +21,21 @@ export interface AddressData {
   state?: string;
   zipCode?: string;
   urbanization?: string;
-  country?: string;
 }
 
 /**
  * USA Address Pattern
  *
  * USWDS pattern for collecting physical or mailing addresses.
- * Handles US and international addresses with proper validation and formatting.
+ * Supports U.S. domestic addresses only (states, territories, and military posts).
+ *
+ * **IMPORTANT:** This pattern does NOT support international addresses per USWDS specification.
+ * The USWDS documentation states: "This pattern supports domestic U.S. addresses, including
+ * the U.S. territories and military outposts. If you need to collect addresses that may not
+ * fit this format, such as international addresses, you will need to use something else."
  *
  * **Pattern Responsibilities:**
- * - Manage address field visibility (US vs international)
+ * - Manage address field visibility
  * - Handle optional street line 2
  * - Provide state/ZIP validation
  * - Emit address data changes
@@ -88,20 +96,6 @@ export class USAAddressPattern extends LitElement {
   private _showStreet2 = true;
 
   /**
-   * Whether to support international addresses
-   */
-  @property({ type: Boolean, attribute: 'international' })
-  get international() {
-    return this._international;
-  }
-  set international(value: boolean) {
-    this._international = value;
-    // Manually toggle visibility immediately (don't trigger Lit's update cycle)
-    Promise.resolve().then(() => this.toggleCountryVisibility());
-  }
-  private _international = false;
-
-  /**
    * Current address data
    */
   @state()
@@ -139,7 +133,7 @@ export class USAAddressPattern extends LitElement {
     }
 
     // Check if only visibility properties or internal state changed
-    const noRerenderProps = ['showStreet2', 'international', 'addressData'];
+    const noRerenderProps = ['showStreet2', 'addressData'];
     const hasRerenderNeeded = Array.from(changedProperties.keys()).some(
       (key) => !noRerenderProps.includes(key as string)
     );
@@ -175,11 +169,6 @@ export class USAAddressPattern extends LitElement {
     if (changedProperties.has('showStreet2') || changedProperties.size === 0) {
       this.toggleStreet2Visibility();
     }
-
-    // Toggle country field visibility
-    if (changedProperties.has('international') || changedProperties.size === 0) {
-      this.toggleCountryVisibility();
-    }
   }
 
   /**
@@ -192,20 +181,6 @@ export class USAAddressPattern extends LitElement {
         street2.classList.remove('display-none');
       } else {
         street2.classList.add('display-none');
-      }
-    }
-  }
-
-  /**
-   * Toggle country field visibility
-   */
-  private toggleCountryVisibility() {
-    const country = this.querySelector('usa-text-input[name="country"]');
-    if (country) {
-      if (this.international) {
-        country.classList.remove('display-none');
-      } else {
-        country.classList.add('display-none');
       }
     }
   }
@@ -374,17 +349,6 @@ export class USAAddressPattern extends LitElement {
           @input="${(e: Event) =>
             this.handleFieldChange('urbanization', (e.target as HTMLInputElement).value)}"
         ></usa-text-input>
-
-        <!-- International Address (Optional) - visibility controlled by updated() -->
-        <usa-text-input
-          id="country"
-          name="country"
-          label="Country"
-          ?required="${this.required}"
-          compact
-          @input="${(e: Event) =>
-            this.handleFieldChange('country', (e.target as HTMLInputElement).value)}"
-        ></usa-text-input>
       </fieldset>
     `;
   }
@@ -411,7 +375,6 @@ export class USAAddressPattern extends LitElement {
       const state = this.querySelector('usa-select[name="state"]') as any;
       const zipCode = this.querySelector('usa-text-input[name="zipCode"]') as any;
       const urbanization = this.querySelector('usa-text-input[name="urbanization"]') as any;
-      const country = this.querySelector('usa-text-input[name="country"]') as any;
 
       if (street1) street1.value = data.street1 || '';
       if (street2) street2.value = data.street2 || '';
@@ -419,7 +382,6 @@ export class USAAddressPattern extends LitElement {
       if (state) state.value = data.state || '';
       if (zipCode) zipCode.value = data.zipCode || '';
       if (urbanization) urbanization.value = data.urbanization || '';
-      if (country) country.value = data.country || '';
     });
   }
 
