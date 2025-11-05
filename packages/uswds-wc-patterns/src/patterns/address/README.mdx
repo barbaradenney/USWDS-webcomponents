@@ -1,0 +1,210 @@
+# USA Address Pattern
+
+A USWDS pattern for collecting physical or mailing addresses with support for both US and international addresses.
+
+## Overview
+
+The Address Pattern orchestrates multiple form components to collect complete address information. It handles field visibility, state selection, ZIP code validation, and international address variations.
+
+## USWDS Reference
+
+- **Pattern**: [Create a user profile - Address](https://designsystem.digital.gov/patterns/create-a-user-profile/address/)
+- **Components Used**:
+  - `usa-text-input` - Street address, city, ZIP code
+  - `usa-select` - State/territory selection
+  - `usa-fieldset` - Groups address fields
+
+## Pattern Responsibilities
+
+This pattern handles:
+- Managing address field visibility (US vs international)
+- State/territory dropdown with all US states
+- ZIP code format validation (5-digit or 9-digit)
+- Optional street line 2 field
+- International address support (country field)
+- Address data serialization/deserialization
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `label` | `string` | `'Address'` | Label for the address fieldset |
+| `required` | `boolean` | `false` | Whether all address fields are required |
+| `show-street2` | `boolean` | `true` | Whether to show street address line 2 |
+| `international` | `boolean` | `false` | Whether to support international addresses |
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ addressData: AddressData }` | Emitted when pattern initializes |
+| `address-change` | `{ addressData: AddressData, field: string }` | Emitted when any address field changes |
+
+## Public API
+
+### Methods
+
+#### `getAddressData(): AddressData`
+Returns the current address data.
+
+**Returns**: `AddressData` object with properties:
+- `street1?: string` - Street address line 1
+- `street2?: string` - Street address line 2 (optional)
+- `city?: string` - City
+- `state?: string` - State/territory code (e.g., 'CA', 'NY')
+- `zipCode?: string` - ZIP code (5 or 9 digits)
+- `country?: string` - Country (only if `international` is enabled)
+
+#### `setAddressData(data: AddressData): void`
+Populates the address fields with provided data.
+
+**Parameters**:
+- `data` - Address data object
+
+#### `clearAddress(): void`
+Clears all address fields.
+
+#### `validateAddress(): boolean`
+Validates the address fields. Returns `true` if valid (or not required), `false` otherwise.
+
+**Note**: Only validates if `required` is `true`. Otherwise always returns `true`.
+
+## Usage Examples
+
+### Basic US Address
+
+```html
+<usa-address-pattern
+  label="Mailing Address"
+  required
+></usa-address-pattern>
+```
+
+### International Address
+
+```html
+<usa-address-pattern
+  label="Shipping Address"
+  international
+  required
+></usa-address-pattern>
+```
+
+### Hide Street Line 2
+
+```html
+<usa-address-pattern
+  label="Billing Address"
+  show-street2="false"
+></usa-address-pattern>
+```
+
+### Programmatic Usage
+
+```javascript
+const addressPattern = document.querySelector('usa-address-pattern');
+
+// Set address data
+addressPattern.setAddressData({
+  street1: '1600 Pennsylvania Avenue NW',
+  city: 'Washington',
+  state: 'DC',
+  zipCode: '20500'
+});
+
+// Get current address
+const address = addressPattern.getAddressData();
+console.log(address.street1); // '1600 Pennsylvania Avenue NW'
+
+// Listen for changes
+addressPattern.addEventListener('address-change', (e) => {
+  console.log('Address changed:', e.detail.addressData);
+  console.log('Field that changed:', e.detail.field);
+});
+
+// Validate
+if (addressPattern.validateAddress()) {
+  console.log('Address is valid');
+}
+
+// Clear form
+addressPattern.clearAddress();
+```
+
+## Component Composition
+
+This pattern composes the following USWDS components:
+
+- **usa-fieldset** - Groups address fields with a legend
+- **usa-text-input** - For street1, street2, city, zipCode, country fields
+- **usa-select** - For state selection with all US states/territories
+
+The pattern uses the `.options` property for the state selector rather than slotted content to ensure proper rendering in Light DOM.
+
+## Accessibility
+
+- Uses `<fieldset>` and `<legend>` for proper grouping
+- All fields have associated `<label>` elements
+- State is properly connected via `for` attribute
+- ZIP code has `pattern` attribute for format validation
+- Required fields are marked with `required` attribute
+- Supports keyboard navigation
+
+## Validation
+
+When `required="true"`:
+- Street 1, City, State, and ZIP Code are required
+- ZIP code validates against pattern: `[0-9]{5}(-[0-9]{4})?`
+- Maximum length: 10 characters (5-digit or 9-digit with hyphen)
+
+## State Options
+
+Includes all 50 US states, DC, and territories:
+- All 50 states
+- District of Columbia (DC)
+- American Samoa (AS)
+- Guam (GU)
+- Northern Mariana Islands (MP)
+- Puerto Rico (PR)
+- US Virgin Islands (VI)
+- Armed Forces (AA, AE, AP)
+
+## Implementation Notes
+
+- **Light DOM**: Uses Light DOM (no Shadow DOM) for USWDS style compatibility
+- **Pattern Architecture**: Orchestrates components, doesn't duplicate HTML
+- **Data Flow**: Changes bubble up as `address-change` events
+- **Validation**: Optional pattern-level validation, components handle individual validation
+- **USWDS Compliance**: Follows USWDS address pattern guidance
+
+## Testing
+
+Comprehensive test coverage includes:
+- Pattern initialization
+- Field visibility toggling (street2, international)
+- Data get/set/clear operations
+- Address validation
+- Event emission
+- Component composition
+- Accessibility requirements
+
+See `usa-address-pattern.test.ts` for complete test suite.
+
+## Related Patterns
+
+- **Name Pattern** - For collecting person names
+- **Phone Number Pattern** - For collecting phone numbers
+- **User Profile Pattern** - Combines multiple patterns
+
+## Browser Support
+
+Supports all modern browsers and USWDS-supported browsers:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Version History
+
+- **2.1.0** - Updated to use `.options` property for state select
+- **2.0.0** - Initial pattern implementation

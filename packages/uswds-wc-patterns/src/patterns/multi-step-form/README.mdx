@@ -1,0 +1,372 @@
+# USA Multi-Step Form Pattern
+
+A USWDS pattern for "Progress Easily" - helps users navigate multi-step forms with progress tracking and state management.
+
+## Overview
+
+The Multi-Step Form Pattern manages step navigation, progress tracking, and optional state persistence for complex multi-page forms.
+
+## USWDS Reference
+
+- **Pattern**: [Complete a complex form - Progress easily](https://designsystem.digital.gov/patterns/complete-a-complex-form/progress-easily/)
+- **Components Used**:
+  - `usa-button` - Navigation buttons (Back, Next, Skip, Submit)
+
+## Pattern Responsibilities
+
+- Manage current step state
+- Handle navigation between steps (next, back, skip)
+- Track form progress
+- Persist form state to localStorage (optional)
+- Validate steps before progression
+- Emit events for step changes
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `steps` | `FormStep[]` | `[]` | Array of form steps |
+| `show-navigation` | `boolean` | `true` | Whether to show navigation buttons |
+| `back-button-label` | `string` | `'Back'` | Label for the back button |
+| `next-button-label` | `string` | `'Next'` | Label for the next button |
+| `skip-button-label` | `string` | `'Skip'` | Label for the skip button |
+| `submit-button-label` | `string` | `'Submit'` | Label for the submit button (final step) |
+| `persist-state` | `boolean` | `false` | Whether to persist form state to localStorage |
+| `storage-key` | `string` | `'uswds-form-progress'` | localStorage key for persisting state |
+
+## Types
+
+### FormStep
+
+```typescript
+interface FormStep {
+  id: string;
+  label: string;
+  optional?: boolean;
+  validate?: () => boolean | Promise<boolean>;
+}
+```
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ currentStep, totalSteps, step }` | Emitted when pattern initializes |
+| `step-change` | `{ currentStep, previousStep, direction, step }` | Emitted when user navigates to a different step |
+| `form-complete` | `{ totalSteps }` | Emitted when user completes the final step |
+
+## Public API
+
+### Methods
+
+#### `setSteps(steps: FormStep[]): void`
+Sets the form steps. Resets to first step if current step index becomes invalid.
+
+#### `goToStep(stepIndex: number): void`
+Navigate to a specific step by index.
+
+#### `getCurrentStepIndex(): number`
+Returns the current step index (0-based).
+
+#### `getCurrentStepData(): FormStep | undefined`
+Returns the current step's data.
+
+#### `clearPersistedState(): void`
+Clears persisted state from localStorage.
+
+#### `reset(): void`
+Resets to the first step.
+
+## Usage Examples
+
+### Basic Multi-Step Form
+
+```html
+<usa-multi-step-form-pattern id="myForm">
+  <div slot="step-personal-info">
+    <h2>Personal Information</h2>
+    <usa-text-input label="Full Name" required></usa-text-input>
+    <usa-text-input label="Email" type="email" required></usa-text-input>
+  </div>
+
+  <div slot="step-address">
+    <h2>Address</h2>
+    <usa-address-pattern required></usa-address-pattern>
+  </div>
+
+  <div slot="step-review">
+    <h2>Review Your Information</h2>
+    <p>Please review your information before submitting.</p>
+  </div>
+</usa-multi-step-form-pattern>
+
+<script>
+  const form = document.getElementById('myForm');
+
+  // Configure steps
+  form.steps = [
+    { id: 'personal-info', label: 'Personal Information' },
+    { id: 'address', label: 'Address' },
+    { id: 'review', label: 'Review' }
+  ];
+</script>
+```
+
+### With Validation
+
+```html
+<usa-multi-step-form-pattern id="myForm">
+  <div slot="step-personal-info">
+    <h2>Personal Information</h2>
+    <usa-text-input id="name" label="Full Name" required></usa-text-input>
+  </div>
+
+  <div slot="step-contact">
+    <h2>Contact Details</h2>
+    <usa-text-input id="email" label="Email" type="email" required></usa-text-input>
+  </div>
+</usa-multi-step-form-pattern>
+
+<script>
+  const form = document.getElementById('myForm');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+
+  form.steps = [
+    {
+      id: 'personal-info',
+      label: 'Personal Information',
+      validate: () => {
+        return nameInput.value.trim().length > 0;
+      }
+    },
+    {
+      id: 'contact',
+      label: 'Contact Details',
+      validate: async () => {
+        // Can be async for API validation
+        const email = emailInput.value;
+        return email.includes('@') && email.includes('.');
+      }
+    }
+  ];
+</script>
+```
+
+### With Optional Steps
+
+```html
+<usa-multi-step-form-pattern id="myForm">
+  <div slot="step-required">
+    <h2>Required Information</h2>
+    <usa-text-input label="Name" required></usa-text-input>
+  </div>
+
+  <div slot="step-optional">
+    <h2>Optional Information</h2>
+    <usa-text-input label="Middle Name"></usa-text-input>
+  </div>
+
+  <div slot="step-review">
+    <h2>Review</h2>
+  </div>
+</usa-multi-step-form-pattern>
+
+<script>
+  const form = document.getElementById('myForm');
+
+  form.steps = [
+    { id: 'required', label: 'Required Information' },
+    { id: 'optional', label: 'Optional Information', optional: true }, // Skip button shown
+    { id: 'review', label: 'Review' }
+  ];
+</script>
+```
+
+### With State Persistence
+
+```html
+<usa-multi-step-form-pattern
+  persist-state
+  storage-key="my-application-progress"
+>
+  <!-- Steps defined via slots -->
+</usa-multi-step-form-pattern>
+```
+
+**State is automatically restored on page reload when `persist-state` is enabled.**
+
+### Custom Progress Indicator
+
+```html
+<usa-multi-step-form-pattern id="myForm">
+  <div slot="progress">
+    <div class="usa-step-indicator" aria-label="progress">
+      <ol class="usa-step-indicator__segments">
+        <li class="usa-step-indicator__segment usa-step-indicator__segment--current">
+          <span class="usa-step-indicator__segment-label">Personal info</span>
+        </li>
+        <li class="usa-step-indicator__segment">
+          <span class="usa-step-indicator__segment-label">Contact</span>
+        </li>
+        <li class="usa-step-indicator__segment">
+          <span class="usa-step-indicator__segment-label">Review</span>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step slots -->
+</usa-multi-step-form-pattern>
+```
+
+### Programmatic Usage
+
+```javascript
+const form = document.querySelector('usa-multi-step-form-pattern');
+
+// Configure steps
+form.steps = [
+  { id: 'step1', label: 'Step 1' },
+  { id: 'step2', label: 'Step 2', optional: true },
+  { id: 'step3', label: 'Step 3' }
+];
+
+// Get current step
+const currentIndex = form.getCurrentStepIndex(); // 0
+const currentStep = form.getCurrentStepData(); // { id: 'step1', label: 'Step 1' }
+
+// Navigate programmatically
+form.goToStep(1); // Go to step 2
+
+// Listen for step changes
+form.addEventListener('step-change', (e) => {
+  console.log('Changed from step', e.detail.previousStep, 'to step', e.detail.currentStep);
+  console.log('Direction:', e.detail.direction); // 'forward', 'back', or 'skip'
+  console.log('Step data:', e.detail.step);
+});
+
+// Listen for form completion
+form.addEventListener('form-complete', (e) => {
+  console.log('Form completed! Total steps:', e.detail.totalSteps);
+  // Submit form data to server
+});
+
+// Clear persisted state
+form.clearPersistedState();
+
+// Reset to first step
+form.reset();
+```
+
+## Component Composition
+
+- **usa-button** - Navigation buttons (Back, Next, Skip, Submit)
+- Custom progress indicators can be slotted
+
+## Slots
+
+| Slot | Description |
+|------|-------------|
+| `step-{id}` | Content for each step (e.g., `slot="step-personal-info"`) |
+| `progress` | Optional custom progress indicator (defaults to simple text) |
+
+## Navigation Behavior
+
+### Next Button
+- Validates current step before proceeding
+- Disabled during validation
+- Becomes "Submit" button on final step
+
+### Back Button
+- Hidden on first step
+- No validation when going back
+- Preserves form state
+
+### Skip Button
+- Only shown for steps marked `optional: true`
+- Advances to next step without validation
+- Emits `step-change` event with `direction: 'skip'`
+
+### Submit Button
+- Only shown on final step (replaces Next)
+- Validates final step
+- Emits `form-complete` event
+- Clears persisted state
+
+## State Persistence
+
+When `persist-state` is enabled:
+- Current step index saved to localStorage after each navigation
+- State automatically restored on page load
+- State cleared when form is completed
+- Uses timestamp for tracking
+
+**Persisted data:**
+```json
+{
+  "stepIndex": 2,
+  "timestamp": 1234567890
+}
+```
+
+**Note:** Form field data is NOT persisted - only the current step index. Implement field persistence separately if needed.
+
+## Validation
+
+Steps can have custom validation:
+
+```javascript
+{
+  id: 'step1',
+  label: 'Step 1',
+  validate: () => {
+    // Return boolean or Promise<boolean>
+    return document.querySelector('#required-field').value.length > 0;
+  }
+}
+```
+
+**Validation timing:**
+- Runs when clicking Next or Submit
+- Does NOT run when clicking Back or Skip
+- Can be synchronous or asynchronous
+- Prevents navigation if validation fails
+
+## Accessibility
+
+- Proper semantic HTML structure
+- Navigation buttons have descriptive labels
+- Progress indicator has `aria-label`
+- Keyboard navigation fully supported
+- Screen reader announces step changes
+- Disabled state during validation
+
+## Implementation Notes
+
+- **Light DOM**: Uses Light DOM (no Shadow DOM) for USWDS style compatibility
+- **Pattern Architecture**: Manages navigation and state, not form content
+- **Simplicity**: Developers provide form content via slots
+- **Event-Driven**: All interactions emit events for parent integration
+- **Progressive Enhancement**: Works without JavaScript (submit button always visible)
+
+## Testing
+
+See `usa-multi-step-form-pattern.test.ts` for complete test suite.
+
+## Related Patterns
+
+- **Form Summary Pattern** - Review step often uses form summary
+- **User Profile Pattern** - Complex forms often broken into multiple steps
+
+## Browser Support
+
+Supports all modern browsers and USWDS-supported browsers:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Version History
+
+- **2.0.0** - Initial pattern implementation

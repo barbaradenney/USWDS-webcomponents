@@ -1,0 +1,228 @@
+# USA Phone Number Pattern
+
+A USWDS pattern for collecting US phone numbers with automatic formatting, validation, extensions, and phone type classification.
+
+## Overview
+
+The Phone Number Pattern orchestrates form components to collect complete phone contact information. It handles automatic formatting, validation, optional extensions, phone type selection, and SMS capability indication.
+
+## USWDS Reference
+
+- **Pattern**: [Create a user profile - Phone number](https://designsystem.digital.gov/patterns/create-a-user-profile/phone-number/)
+- **Components Used**:
+  - `usa-text-input` - Phone number and extension fields
+  - `usa-select` - Phone type selection (mobile/home/work)
+  - `usa-checkbox` - SMS capability indication
+
+## Pattern Responsibilities
+
+This pattern handles:
+- US phone number collection (10-digit format)
+- Automatic formatting (999-999-9999)
+- Format validation (`[0-9]{3}-[0-9]{3}-[0-9]{4}`)
+- Optional extension field
+- Phone type classification (mobile/home/work)
+- SMS capability checkbox (for mobile numbers)
+- Phone number data serialization/deserialization
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `label` | `string` | `'Phone number'` | Label for the phone number field |
+| `required` | `boolean` | `false` | Whether phone number is required |
+| `show-extension` | `boolean` | `false` | Whether to show extension field |
+| `show-type` | `boolean` | `false` | Whether to show phone type selector |
+| `sms-required` | `boolean` | `false` | Whether to show SMS capability checkbox |
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ phoneData: PhoneNumberData }` | Emitted when pattern initializes |
+| `phone-change` | `{ phoneData: PhoneNumberData, field: string }` | Emitted when any phone field changes |
+
+## Public API
+
+### Methods
+
+#### `getPhoneData(): PhoneNumberData`
+Returns the current phone number data.
+
+**Returns**: `PhoneNumberData` object with properties:
+- `phoneNumber?: string` - 10-digit US phone number (formatted as 999-999-9999)
+- `extension?: string` - Extension number (if shown)
+- `type?: 'mobile' | 'home' | 'work' | ''` - Phone type (if shown)
+
+#### `setPhoneData(data: PhoneNumberData): void`
+Populates the phone fields with provided data.
+
+**Parameters**:
+- `data` - Phone number data object
+
+#### `clearPhone(): void`
+Clears all phone number fields.
+
+#### `validatePhone(): boolean`
+Validates the phone number. Returns `true` if valid (or not required), `false` otherwise.
+
+**Note**: Only validates if `required` is `true`. Otherwise always returns `true`.
+
+## Usage Examples
+
+### Basic Phone Number
+
+```html
+<usa-phone-number-pattern
+  label="Primary Phone"
+  required
+></usa-phone-number-pattern>
+```
+
+### Business Phone with Extension
+
+```html
+<usa-phone-number-pattern
+  label="Office Phone"
+  show-extension
+  show-type
+></usa-phone-number-pattern>
+```
+
+### Mobile with SMS Capability
+
+```html
+<usa-phone-number-pattern
+  label="Mobile Phone"
+  show-type
+  sms-required
+  required
+></usa-phone-number-pattern>
+```
+
+### Programmatic Usage
+
+```javascript
+const phonePattern = document.querySelector('usa-phone-number-pattern');
+
+// Set phone data
+phonePattern.setPhoneData({
+  phoneNumber: '202-555-0123',
+  extension: '1234',
+  type: 'work'
+});
+
+// Get current phone
+const phone = phonePattern.getPhoneData();
+console.log(phone.phoneNumber); // '202-555-0123'
+console.log(phone.extension); // '1234'
+console.log(phone.type); // 'work'
+
+// Listen for changes
+phonePattern.addEventListener('phone-change', (e) => {
+  console.log('Phone changed:', e.detail.phoneData);
+  console.log('Field that changed:', e.detail.field);
+});
+
+// Validate
+if (phonePattern.validatePhone()) {
+  console.log('Phone is valid');
+}
+
+// Clear form
+phonePattern.clearPhone();
+```
+
+## Component Composition
+
+This pattern composes the following USWDS components:
+
+- **usa-text-input** - For phone number and extension fields
+- **usa-select** - For phone type selection (Mobile/Home/Work)
+- **usa-checkbox** - For SMS capability indication
+
+The pattern uses the `.options` property for the phone type selector rather than slotted content to ensure proper rendering in Light DOM.
+
+## Phone Type Options
+
+When `show-type` is enabled:
+- **Mobile** - Mobile/cell phone
+- **Home** - Home/residential phone
+- **Work** - Office/business phone
+
+## Accessibility
+
+- Phone number field has proper `label` association
+- Type selector is properly labeled
+- Extension field has clear label
+- SMS checkbox has descriptive label
+- Required fields marked with `required` attribute
+- Pattern attribute provides format guidance
+- Supports keyboard navigation
+
+## Validation
+
+When `required="true"`:
+- Phone number must be provided
+- Phone number validates against pattern: `[0-9]{3}-[0-9]{3}-[0-9]{4}`
+- Maximum length: 12 characters (10 digits + 2 hyphens)
+- Automatic formatting as user types
+
+Extension and Type fields are always optional.
+
+## Format Specification
+
+**US Phone Number Format:**
+- 10 digits required
+- Format: `999-999-9999`
+- Hyphens automatically added
+- Accepts input with or without hyphens
+- First digit cannot be 0 or 1
+
+**Extension Format:**
+- Numeric only
+- No maximum length
+- Optional field
+
+## Implementation Notes
+
+- **Light DOM**: Uses Light DOM (no Shadow DOM) for USWDS style compatibility
+- **Pattern Architecture**: Orchestrates components, doesn't duplicate HTML
+- **Data Flow**: Changes bubble up as `phone-change` events
+- **Validation**: Pattern-level validation, components handle individual validation
+- **USWDS Compliance**: Follows USWDS phone number pattern guidance
+- **Format Masking**: Automatic formatting applied as user types
+
+## Testing
+
+Comprehensive test coverage includes:
+- Pattern initialization
+- Phone number formatting and validation
+- Extension field visibility
+- Phone type selection
+- Data get/set/clear operations
+- Phone validation
+- Event emission
+- Component composition
+- Accessibility requirements
+
+See `usa-phone-number-pattern.test.ts` for complete test suite.
+
+## Related Patterns
+
+- **Address Pattern** - For collecting addresses
+- **Name Pattern** - For collecting person names
+- **User Profile Pattern** - Combines multiple patterns
+
+## Browser Support
+
+Supports all modern browsers and USWDS-supported browsers:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Version History
+
+- **2.1.0** - Updated to use `.options` property for phone type select
+- **2.0.0** - Initial pattern implementation

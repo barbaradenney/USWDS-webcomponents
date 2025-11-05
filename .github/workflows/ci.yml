@@ -48,6 +48,9 @@ jobs:
       - name: Validate Playwright Story Paths
         run: pnpm run validate:playwright-story-paths
 
+      - name: Validate Pattern Standards
+        run: pnpm run validate:pattern-standards
+
   # Job 2: Security Audit
   security:
     name: Security Audit

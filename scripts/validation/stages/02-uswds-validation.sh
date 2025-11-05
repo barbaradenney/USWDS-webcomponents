@@ -139,3 +139,18 @@ if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
   exit 1
 fi
 echo "   ✅ Pass"
+
+# Stage 4e/9: USWDS HTML structure validation
+echo "🏛️  4e/9 USWDS HTML structure validation..."
+node scripts/validate/validate-uswds-html-structure.cjs > /dev/null 2>&1
+VALIDATION_EXIT_CODE=$?
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+  echo "❌ USWDS HTML structure validation failed!"
+  echo ""
+  # Run again without redirection to show detailed output
+  node scripts/validate/validate-uswds-html-structure.cjs
+  echo ""
+  echo "See: docs/patterns/USWDS-HTML-STRUCTURE-ALIGNMENT.md"
+  exit 1
+fi
+echo "   ✅ Pass"

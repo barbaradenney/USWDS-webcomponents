@@ -61,6 +61,14 @@ export class USACheckbox extends LitElement {
   @property({ type: Boolean, reflect: true })
   tile = false;
 
+  /**
+   * Whether to render in compact mode (no form-group wrapper)
+   * Use this when the checkbox is inside a fieldset or pattern where
+   * the parent handles spacing and grouping
+   */
+  @property({ type: Boolean })
+  compact = false;
+
   private checkboxElement?: HTMLInputElement;
   private _checkboxId?: string;
   private usingUSWDSEnhancement = false;
@@ -170,6 +178,15 @@ export class USACheckbox extends LitElement {
     );
   }
 
+  /**
+   * Public API: Reset checkbox to unchecked state
+   * Allows patterns to clear the checkbox without DOM manipulation
+   */
+  reset(): void {
+    this.checked = false;
+    this.requestUpdate();
+  }
+
   private get checkboxId() {
     // Always check for element id first, then use cached generated id
     if (this.id) {
@@ -277,9 +294,19 @@ export class USACheckbox extends LitElement {
       <div class="${wrapperClasses}">
         <input
           id="${checkboxId}"
-          class="usa-checkbox__input"
+          class="usa-checkbox__input ${this.tile ? 'usa-checkbox__input--tile' : ''} ${this
+            .error
+            ? 'usa-input--error'
+            : ''}"
           type="checkbox"
+          name="${this.name}"
+          value="${this.value}"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          ?required="${this.required}"
+          .indeterminate="${this.indeterminate}"
           aria-describedby="${ariaDescribedby || undefined}"
+          aria-invalid="${this.error ? 'true' : undefined}"
           @change=${this.handleChange}
         />
         <label class="usa-checkbox__label" for="${checkboxId}">

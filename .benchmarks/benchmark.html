@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Performance Benchmarks</title>
+  <script type="module">
+    // Import patterns
+    import '@uswds-wc/patterns';
+
+    const PATTERNS = [
+  {
+    "name": "address",
+    "tagName": "usa-address-pattern",
+    "iterations": 100
+  },
+  {
+    "name": "phone-number",
+    "tagName": "usa-phone-number-pattern",
+    "iterations": 100
+  },
+  {
+    "name": "name",
+    "tagName": "usa-name-pattern",
+    "iterations": 100
+  },
+  {
+    "name": "contact-preferences",
+    "tagName": "usa-contact-preferences-pattern",
+    "iterations": 100
+  },
+  {
+    "name": "language-selection",
+    "tagName": "usa-language-selector-pattern",
+    "iterations": 100
+  },
+  {
+    "name": "form-summary",
+    "tagName": "usa-form-summary-pattern",
+    "iterations": 100
+  },
+  {
+    "name": "multi-step-form",
+    "tagName": "usa-multi-step-form-pattern",
+    "iterations": 100
+  }
+];
+
+    async function runBenchmark(pattern) {
+      const results = {
+        initialization: [],
+        rendering: [],
+      };
+
+      for (let i = 0; i < pattern.iterations; i++) {
+        // Measure initialization
+        const initStart = performance.now();
+        const element = document.createElement(pattern.tagName);
+        const initEnd = performance.now();
+        results.initialization.push(initEnd - initStart);
+
+        // Measure rendering
+        const renderStart = performance.now();
+        document.body.appendChild(element);
+        await element.updateComplete;
+        const renderEnd = performance.now();
+        results.rendering.push(renderEnd - renderStart);
+
+        // Clean up
+        element.remove();
+      }
+
+      return results;
+    }
+
+    async function runAll() {
+      const results = {};
+
+      for (const pattern of PATTERNS) {
+        console.log(`Benchmarking ${pattern.name}...`);
+        results[pattern.name] = await runBenchmark(pattern);
+      }
+
+      console.log('Results:', results);
+      return results;
+    }
+
+    // Auto-run on load
+    window.addEventListener('load', () => {
+      runAll();
+    });
+  </script>
+</head>
+<body>
+  <h1>Pattern Performance Benchmarks</h1>
+  <p>Check console for results...</p>
+</body>
+</html>

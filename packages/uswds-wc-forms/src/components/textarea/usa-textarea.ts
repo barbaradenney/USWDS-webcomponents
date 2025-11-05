@@ -85,6 +85,14 @@ export class USATextarea extends USWDSBaseComponent {
   @property({ type: String, reflect: true })
   override id = '';
 
+  /**
+   * Whether to render in compact mode (no form-group wrapper)
+   * Use this when the textarea is inside a fieldset or pattern where
+   * the parent handles spacing and grouping
+   */
+  @property({ type: Boolean })
+  compact = false;
+
   private _textareaId?: string;
 
   override connectedCallback() {
@@ -132,6 +140,15 @@ export class USATextarea extends USWDSBaseComponent {
         composed: true,
       })
     );
+  }
+
+  /**
+   * Public API: Reset textarea to empty value
+   * Allows patterns to clear the textarea without DOM manipulation
+   */
+  reset(): void {
+    this.value = '';
+    this.requestUpdate();
   }
 
   private get textareaId() {
@@ -237,30 +254,36 @@ export class USATextarea extends USWDSBaseComponent {
       .filter(Boolean)
       .join(' ');
 
-    return html`
-      <div class="${this.getFormGroupClasses()}">
-        ${this.renderLabel(textareaId)} ${this.renderHint(textareaId)}
-        ${this.renderError(textareaId)} ${this.renderSuccess()}
-        <textarea
-          class="${this.getTextareaClasses()}"
-          id="${textareaId}"
-          name="${this.name}"
-          .value="${this.value}"
-          placeholder="${this.placeholder}"
-          ?disabled=${this.disabled}
-          ?required=${this.required}
-          ?readonly=${this.readonly}
-          rows="${this.rows}"
-          cols="${this.cols || ''}"
-          maxlength="${this.maxlength || ''}"
-          minlength="${this.minlength || ''}"
-          autocomplete="${this.autocomplete}"
-          aria-describedby="${ifDefined(ariaDescribedBy.length > 0 ? ariaDescribedBy : undefined)}"
-          aria-invalid="${ifDefined(this.error ? 'true' : undefined)}"
-          @input="${this.handleInput}"
-          @change="${this.handleChange}"
-        ></textarea>
-      </div>
+    const textareaTemplate = html`
+      ${this.renderLabel(textareaId)} ${this.renderHint(textareaId)}
+      ${this.renderError(textareaId)} ${this.renderSuccess()}
+      <textarea
+        class="${this.getTextareaClasses()}"
+        id="${textareaId}"
+        name="${this.name}"
+        .value="${this.value}"
+        placeholder="${this.placeholder}"
+        ?disabled=${this.disabled}
+        ?required=${this.required}
+        ?readonly=${this.readonly}
+        rows="${this.rows}"
+        cols="${this.cols || ''}"
+        maxlength="${this.maxlength || ''}"
+        minlength="${this.minlength || ''}"
+        autocomplete="${this.autocomplete}"
+        aria-describedby="${ifDefined(ariaDescribedBy.length > 0 ? ariaDescribedBy : undefined)}"
+        aria-invalid="${ifDefined(this.error ? 'true' : undefined)}"
+        @input="${this.handleInput}"
+        @change="${this.handleChange}"
+      ></textarea>
     `;
+
+    // Compact mode: no form-group wrapper (for use inside fieldsets/patterns)
+    if (this.compact) {
+      return textareaTemplate;
+    }
+
+    // Standard mode: wrap in form-group
+    return html`<div class="${this.getFormGroupClasses()}">${textareaTemplate}</div>`;
   }
 }

@@ -111,6 +111,39 @@ if [ $? -ne 0 ]; then
 fi
 echo "   ✅ Pass"
 
+# Pattern standards validation (NEW - ensures patterns maintain standards)
+MODIFIED_PATTERNS=$(git diff --cached --name-only | grep -E "packages/uswds-wc-patterns/src/patterns/" | wc -l | tr -d ' ')
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "📋 4c/9 Pattern standards validation..."
+  pnpm validate:pattern-standards > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern standards validation failed!"
+    echo "   Run: pnpm validate:pattern-standards (for details)"
+    echo "   Patterns must have: README.mdx, test file, standard APIs"
+    exit 1
+  fi
+  echo "   ✅ Pass ($MODIFIED_PATTERNS pattern files modified)"
+else
+  echo "📋 4c/9 Pattern standards validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
+# Pattern changelog validation (NEW - ensures patterns have changelogs)
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "📝 4d/9 Pattern changelog validation..."
+  pnpm changelog:validate-patterns > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern changelog validation failed!"
+    echo "   Run: pnpm changelog:init-patterns (to create missing changelogs)"
+    echo "   Run: pnpm changelog:update-pattern (to add changelog entries)"
+    exit 1
+  fi
+  echo "   ✅ Pass (all patterns have changelogs)"
+else
+  echo "📝 4d/9 Pattern changelog validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
 # Auto-clear discovered issues tracker if all validations passed
 if [ -f ".git/DISCOVERED_ISSUES.json" ]; then
   echo "   🗑️  All validations passed - clearing discovered issues tracker"
@@ -133,6 +166,21 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
 else
   echo "   ⏭️  Skipped (no components modified)"
 fi
+
+# USWDS HTML structure validation (ensures compact mode, combo-box wrappers, etc.)
+echo "🏛️  4b/9 USWDS HTML structure..."
+node scripts/validate/validate-uswds-html-structure.cjs > /dev/null 2>&1
+VALIDATION_EXIT_CODE=$?
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+  echo "❌ USWDS HTML structure validation failed!"
+  echo ""
+  # Run again without redirection to show detailed output
+  node scripts/validate/validate-uswds-html-structure.cjs
+  echo ""
+  echo "See: docs/patterns/USWDS-HTML-STRUCTURE-ALIGNMENT.md"
+  exit 1
+fi
+echo "   ✅ Pass"
 
 # Linting (fast, blocks bad code)
 echo "🔍 5/9 Linting..."

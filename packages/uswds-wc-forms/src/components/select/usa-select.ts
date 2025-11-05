@@ -73,9 +73,15 @@ export class USASelect extends LitElement {
   @property({ type: String })
   defaultOption = '';
 
+  /**
+   * Whether to render in compact mode (no form-group wrapper)
+   * Use this when the select is inside a fieldset or pattern where
+   * the parent handles spacing and grouping
+   */
+  @property({ type: Boolean })
+  compact = false;
+
   private selectElement?: HTMLSelectElement;
-  private slottedContent: string = '';
-  private slottedContentApplied: boolean = false;
 
   // Use light DOM for USWDS compatibility
   protected override createRenderRoot(): HTMLElement {
@@ -88,12 +94,12 @@ export class USASelect extends LitElement {
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
 
-    // Capture any initial slotted content before render
-    // This allows using BOTH property-based options AND custom slotted option elements
-    if (this.childNodes.length > 0) {
-      this.slottedContent = this.innerHTML;
-      this.innerHTML = '';
-    }
+    // Don't capture innerHTML in connectedCallback - it's too early for composed components
+    // Light DOM parent components haven't rendered their children yet
+    // The <slot> in render() will handle slotted content naturally
+
+    // Note: For direct HTML usage like <usa-select><option>...</option></usa-select>,
+    // the options will be preserved via the <slot> element in the template
 
     // Don't set role on the host element - it will be on the select
     // Initialize progressive enhancement
@@ -115,27 +121,10 @@ export class USASelect extends LitElement {
       this.updateSelectElement();
     }
 
-    // Apply captured content using DOM manipulation
-    this.applySlottedContent();
+    // Slotted content is handled naturally via <slot> in template
+    // No manual content application needed for Light DOM components
   }
 
-  private applySlottedContent() {
-    // Only apply slotted content once to prevent duplication
-    if (this.slottedContent && !this.slottedContentApplied) {
-      const slotElement = this.querySelector('slot');
-      if (slotElement) {
-        // Parse content safely using DOMParser instead of innerHTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(`<div>${this.slottedContent}</div>`, 'text/html');
-        const tempDiv = doc.querySelector('div');
-
-        if (tempDiv) {
-          slotElement.replaceWith(...Array.from(tempDiv.childNodes));
-          this.slottedContentApplied = true;
-        }
-      }
-    }
-  }
 
   private updateSelectElement() {
     if (!this.selectElement) return;
@@ -212,6 +201,15 @@ export class USASelect extends LitElement {
         composed: true,
       })
     );
+  }
+
+  /**
+   * Public API: Reset select to empty value
+   * Allows patterns to clear the select without DOM manipulation
+   */
+  reset(): void {
+    this.value = '';
+    this.requestUpdate();
   }
 
   private get selectId() {
@@ -408,11 +406,11 @@ export class USASelect extends LitElement {
       .filter(Boolean)
       .join(' ');
 
-    return html`
-      <div class="${formGroupClasses}">
-        ${this.renderLabel(selectId)} ${this.renderHint(selectId)} ${this.renderError(selectId)}
-        ${this.renderSuccess(selectId)}
+    const selectTemplate = html`
+      ${this.renderLabel(selectId)} ${this.renderHint(selectId)} ${this.renderError(selectId)}
+      ${this.renderSuccess(selectId)}
 
+      <div class="usa-combo-box">
         <select
           class="usa-select"
           id="${selectId}"
@@ -430,5 +428,13 @@ export class USASelect extends LitElement {
         </select>
       </div>
     `;
+
+    // Compact mode: no form-group wrapper (for use inside fieldsets/patterns)
+    if (this.compact) {
+      return selectTemplate;
+    }
+
+    // Standard mode: wrap in form-group
+    return html`<div class="${formGroupClasses}">${selectTemplate}</div>`;
   }
 }

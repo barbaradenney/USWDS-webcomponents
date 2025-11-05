@@ -1,0 +1,114 @@
+# USA Name Pattern
+
+A USWDS pattern for collecting person names with cultural sensitivity and support for diverse naming conventions.
+
+## Overview
+
+The Name Pattern provides flexible name collection supporting single-field (full name), separate fields (given/middle/family), or flexible mode (user's choice). Designed to accommodate diverse cultural naming conventions.
+
+## USWDS Reference
+
+- **Pattern**: [Create a user profile - Name](https://designsystem.digital.gov/patterns/create-a-user-profile/name/)
+- **Components Used**:
+  - `usa-text-input` - Name fields (full name, given name, family name, etc.)
+  - `usa-select` - Name suffix selection (Jr., Sr., III, etc.)
+
+## Pattern Responsibilities
+
+- Flexible name formats (full name or separate fields)
+- Cultural sensitivity in naming conventions
+- Preferred name support
+- Suffix selection (Jr., Sr., III, IV, etc.)
+- Name validation and length limits
+- Name data serialization/deserialization
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `format` | `'full' \| 'separate' \| 'flexible'` | `'full'` | Name collection format |
+| `label` | `string` | `'Name'` | Label for the name section |
+| `required` | `boolean` | `false` | Whether name is required |
+| `show-middle` | `boolean` | `false` | Show middle name field (separate format) |
+| `show-suffix` | `boolean` | `false` | Show name suffix selector |
+| `show-preferred` | `boolean` | `false` | Show preferred name field |
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ nameData: NameData }` | Emitted when pattern initializes |
+| `name-change` | `{ nameData: NameData, field: string }` | Emitted when any name field changes |
+
+## Public API
+
+### Methods
+
+#### `getNameData(): NameData`
+Returns current name data.
+
+#### `setNameData(data: NameData): void`
+Populates name fields with provided data.
+
+#### `clearName(): void`
+Clears all name fields.
+
+#### `validateName(): boolean`
+Validates name fields. Returns `true` if valid (or not required).
+
+## Usage Examples
+
+### Full Name (Single Field)
+
+```html
+<usa-name-pattern
+  format="full"
+  required
+></usa-name-pattern>
+```
+
+### Separate Fields with Suffix
+
+```html
+<usa-name-pattern
+  format="separate"
+  show-middle
+  show-suffix
+  required
+></usa-name-pattern>
+```
+
+### With Preferred Name
+
+```html
+<usa-name-pattern
+  format="separate"
+  show-preferred
+></usa-name-pattern>
+```
+
+## Component Composition
+
+- **usa-text-input** - For all name fields
+- **usa-select** - For suffix selection (Jr., Sr., III, etc.)
+
+## Cultural Sensitivity
+
+- Uses "given name" and "family name" (not "first/last")
+- Supports single names (mononyms)
+- Accommodates multiple family names
+- Supports diacritics and special characters
+- Maximum 128 characters per field
+
+## Suffix Options
+
+- Jr., Sr., II, III, IV, V, VI, VII, VIII, IX, X
+
+## Testing
+
+See `usa-name-pattern.test.ts` for complete test suite.
+
+## Version History
+
+- **2.1.0** - Updated to use `.options` property for suffix select
+- **2.0.0** - Initial pattern implementation

@@ -92,6 +92,104 @@ describe('USACheckbox', () => {
     });
   });
 
+  describe('Light DOM Initial Render (CRITICAL)', () => {
+    it('should set checked attribute in initial render', async () => {
+      // Create fresh element with checked property set before appending
+      const freshElement = document.createElement('usa-checkbox') as USACheckbox;
+      freshElement.checked = true;
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render (Light DOM still uses async rendering)
+      await freshElement.updateComplete;
+
+      const checkbox = freshElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      expect(checkbox?.checked).toBe(true);
+
+      freshElement.remove();
+    });
+
+    it('should set name and value attributes in initial render', async () => {
+      const freshElement = document.createElement('usa-checkbox') as USACheckbox;
+      freshElement.name = 'test-name';
+      freshElement.value = 'test-value';
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const checkbox = freshElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      expect(checkbox?.name).toBe('test-name');
+      expect(checkbox?.value).toBe('test-value');
+
+      freshElement.remove();
+    });
+
+    it('should set disabled attribute in initial render', async () => {
+      const freshElement = document.createElement('usa-checkbox') as USACheckbox;
+      freshElement.disabled = true;
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const checkbox = freshElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      expect(checkbox?.disabled).toBe(true);
+
+      freshElement.remove();
+    });
+
+    it('should set required attribute in initial render', async () => {
+      const freshElement = document.createElement('usa-checkbox') as USACheckbox;
+      freshElement.required = true;
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const checkbox = freshElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      expect(checkbox?.required).toBe(true);
+
+      freshElement.remove();
+    });
+
+    it('should apply USWDS classes in initial render', async () => {
+      const freshElement = document.createElement('usa-checkbox') as USACheckbox;
+      freshElement.tile = true;
+      freshElement.error = 'Error message';
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const checkbox = freshElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      expect(checkbox?.classList.contains('usa-checkbox__input')).toBe(true);
+      expect(checkbox?.classList.contains('usa-checkbox__input--tile')).toBe(true);
+      expect(checkbox?.classList.contains('usa-input--error')).toBe(true);
+
+      freshElement.remove();
+    });
+
+    it('should set aria-invalid in initial render when error exists', async () => {
+      const freshElement = document.createElement('usa-checkbox') as USACheckbox;
+      freshElement.error = 'Error message';
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const checkbox = freshElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
+      expect(checkbox?.getAttribute('aria-invalid')).toBe('true');
+
+      freshElement.remove();
+    });
+  });
+
   describe('Label and Description', () => {
     it('should render label text', async () => {
       element.label = 'Test checkbox';

@@ -1,0 +1,64 @@
+{
+  "name": "@uswds-wc/patterns",
+  "version": "1.0.0",
+  "description": "USWDS Patterns - Web Component Compositions",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/patterns/*.js",
+      "types": "./dist/patterns/*.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@uswds-wc/core": "workspace:*",
+    "@uswds-wc/actions": "workspace:*",
+    "@uswds-wc/forms": "workspace:*",
+    "@uswds-wc/navigation": "workspace:*",
+    "@uswds-wc/data-display": "workspace:*",
+    "@uswds-wc/feedback": "workspace:*",
+    "@uswds-wc/layout": "workspace:*",
+    "@uswds-wc/structure": "workspace:*"
+  },
+  "peerDependencies": {
+    "lit": "^3.0.0"
+  },
+  "devDependencies": {
+    "@uswds-wc/test-utils": "workspace:*",
+    "jsdom": "27.0.1",
+    "lit": "^3.0.0",
+    "vitest": "3.2.4"
+  },
+  "keywords": [
+    "uswds",
+    "web-components",
+    "patterns",
+    "design-patterns",
+    "user-workflows"
+  ],
+  "author": "Barbara Miles",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barbaradenney/uswds-wc.git",
+    "directory": "packages/uswds-wc-patterns"
+  }
+}

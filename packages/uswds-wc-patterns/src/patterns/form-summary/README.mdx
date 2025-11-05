@@ -1,0 +1,260 @@
+# USA Form Summary Pattern
+
+A USWDS pattern for "Keep a Record" - helps users review and retain submitted information.
+
+## Overview
+
+The Form Summary Pattern displays submitted form data in organized sections with print/download functionality, edit capabilities, and confirmation messaging.
+
+## USWDS Reference
+
+- **Pattern**: [Complete a complex form - Keep a record](https://designsystem.digital.gov/patterns/complete-a-complex-form/keep-a-record/)
+- **Components Used**:
+  - `usa-button` - Print and download actions
+  - `usa-alert` - Confirmation messaging
+
+## Pattern Responsibilities
+
+- Display submitted form data in organized sections
+- Provide print/download capability
+- Allow editing of reviewed information
+- Show confirmation messaging
+- Emit events for integration
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `sections` | `SummarySection[]` | `[]` | Summary sections with data |
+| `title` | `string` | `'Review Your Information'` | Title for the summary |
+| `show-confirmation` | `boolean` | `false` | Whether to show confirmation message |
+| `confirmation-title` | `string` | `'Success'` | Confirmation message title |
+| `confirmation-type` | `'success' \| 'info' \| 'warning' \| 'error'` | `'success'` | Confirmation message type |
+| `show-print` | `boolean` | `true` | Whether to show print button |
+| `show-download` | `boolean` | `false` | Whether to show download button |
+| `show-edit` | `boolean` | `false` | Whether to show edit buttons on each field |
+| `print-button-label` | `string` | `'Print'` | Label for print button |
+| `download-button-label` | `string` | `'Download'` | Label for download button |
+
+## Types
+
+### SummarySection
+
+```typescript
+interface SummarySection {
+  heading: string;
+  items: SummaryItem[];
+}
+```
+
+### SummaryItem
+
+```typescript
+interface SummaryItem {
+  label: string;
+  value: string;
+  onEdit?: () => void;
+}
+```
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ sections: number }` | Emitted when pattern initializes |
+| `edit-field` | `{ section, field, currentValue }` | Emitted when user clicks edit on a field |
+| `print-summary` | `{ sections }` | Emitted when user clicks print |
+| `download-summary` | `{ sections }` | Emitted when user clicks download |
+
+## Public API
+
+### Methods
+
+#### `getSummaryData(): SummarySection[]`
+Returns the current summary data. Returns a copy of the sections array.
+
+#### `setSummaryData(sections: SummarySection[]): void`
+Sets the summary data sections.
+
+#### `addSection(section: SummarySection): void`
+Adds a section to the summary.
+
+#### `clearSummary(): void`
+Clears all sections from the summary.
+
+#### `print(): void`
+Programmatically triggers print functionality.
+
+#### `download(): void`
+Programmatically triggers download functionality.
+
+## Usage Examples
+
+### Basic Summary
+
+```html
+<usa-form-summary-pattern
+  .sections="${sections}"
+></usa-form-summary-pattern>
+```
+
+### With Confirmation Message
+
+```html
+<usa-form-summary-pattern
+  .sections="${sections}"
+  show-confirmation
+  confirmation-title="Application Submitted"
+  confirmation-type="success"
+>
+  <div slot="confirmation">
+    <p>Your application has been successfully submitted.</p>
+    <p>Reference number: <strong>APP-2024-001234</strong></p>
+  </div>
+</usa-form-summary-pattern>
+```
+
+### With Print and Download
+
+```html
+<usa-form-summary-pattern
+  .sections="${sections}"
+  show-print
+  show-download
+  show-edit
+></usa-form-summary-pattern>
+```
+
+### With Custom Header and Footer
+
+```html
+<usa-form-summary-pattern .sections="${sections}">
+  <div slot="header">
+    <h1>Application Summary</h1>
+    <p class="usa-intro">Please review your information before finalizing.</p>
+  </div>
+  <div slot="footer">
+    <p>By submitting, you agree to our terms of service.</p>
+  </div>
+</usa-form-summary-pattern>
+```
+
+### Programmatic Usage
+
+```javascript
+const summary = document.querySelector('usa-form-summary-pattern');
+
+// Set summary data
+summary.setSummaryData([
+  {
+    heading: 'Personal Information',
+    items: [
+      { label: 'Name', value: 'Jane Smith' },
+      { label: 'Email', value: 'jane.smith@example.com' }
+    ]
+  },
+  {
+    heading: 'Address',
+    items: [
+      { label: 'Street', value: '1600 Pennsylvania Ave' },
+      { label: 'City', value: 'Washington' },
+      { label: 'State', value: 'DC' }
+    ]
+  }
+]);
+
+// Add a section
+summary.addSection({
+  heading: 'Emergency Contact',
+  items: [
+    { label: 'Name', value: 'John Doe' },
+    { label: 'Phone', value: '202-555-0123' }
+  ]
+});
+
+// Listen for events
+summary.addEventListener('edit-field', (e) => {
+  console.log('Edit:', e.detail.section, e.detail.field);
+});
+
+summary.addEventListener('print-summary', (e) => {
+  console.log('Printing summary...');
+});
+
+summary.addEventListener('download-summary', (e) => {
+  console.log('Downloading summary...');
+  // Implement custom download logic
+});
+
+// Trigger print
+summary.print();
+
+// Clear summary
+summary.clearSummary();
+```
+
+## Component Composition
+
+- **usa-button** - Print and download actions
+- **usa-alert** - Confirmation messaging (via USWDS CSS classes)
+- **usa-summary-box** - Section containers (via USWDS CSS classes)
+
+## Slots
+
+| Slot | Description |
+|------|-------------|
+| `header` | Optional header content above summary (defaults to title) |
+| `footer` | Optional footer content below summary |
+| `confirmation` | Optional confirmation message content |
+
+## Default Actions
+
+### Print
+
+By default, triggers `window.print()`. Listen to `print-summary` event to customize.
+
+### Download
+
+Emits `download-summary` event for developers to implement custom download logic (PDF, JSON, etc.).
+
+### Edit
+
+When `show-edit` is enabled, each item can have an `onEdit` callback or listen to the `edit-field` event.
+
+## Accessibility
+
+- Uses semantic HTML with `<dl>`, `<dt>`, `<dd>` for key-value pairs
+- Edit buttons have descriptive `aria-label` attributes
+- Confirmation messages use USWDS alert component with proper roles
+- Summary boxes use USWDS structural patterns
+- Keyboard navigation fully supported
+- Print-friendly layout
+
+## Implementation Notes
+
+- **Light DOM**: Uses Light DOM (no Shadow DOM) for USWDS style compatibility
+- **Pattern Architecture**: Orchestrates display and actions, doesn't dictate data structure
+- **Simplicity**: Intentionally simple - developers provide data structure and handle actions
+- **Print Styling**: Uses USWDS print styles automatically
+- **Data Flow**: Events bubble up for parent integration
+
+## Testing
+
+See `usa-form-summary-pattern.test.ts` for complete test suite.
+
+## Related Patterns
+
+- **Multi-Step Form Pattern** - Collects data that flows into form summary
+- **User Profile Pattern** - Can use form summary for review step
+
+## Browser Support
+
+Supports all modern browsers and USWDS-supported browsers:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Version History
+
+- **2.0.0** - Initial pattern implementation
