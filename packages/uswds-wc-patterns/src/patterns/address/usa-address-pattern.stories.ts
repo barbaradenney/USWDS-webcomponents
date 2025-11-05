@@ -38,7 +38,7 @@ export const Required: Story = {
 export const WithoutStreetLine2: Story = {
   render: () => html`
     <usa-address-pattern
-      show-street2="false"
+      .showStreet2="${false}"
       label="Shipping Address"
     ></usa-address-pattern>
   `,
