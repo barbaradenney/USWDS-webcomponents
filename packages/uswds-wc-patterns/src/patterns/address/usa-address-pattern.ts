@@ -21,6 +21,7 @@ export interface AddressData {
   state?: string;
   zipCode?: string;
   urbanization?: string;
+  plusCode?: string;
 }
 
 /**
@@ -96,6 +97,20 @@ export class USAAddressPattern extends LitElement {
   private _showStreet2 = true;
 
   /**
+   * Whether to show Google Plus Code field
+   */
+  @property({ type: Boolean, attribute: 'show-plus-code' })
+  get showPlusCode() {
+    return this._showPlusCode;
+  }
+  set showPlusCode(value: boolean) {
+    this._showPlusCode = value;
+    // Manually toggle visibility immediately (don't trigger Lit's update cycle)
+    Promise.resolve().then(() => this.togglePlusCodeVisibility());
+  }
+  private _showPlusCode = false;
+
+  /**
    * Current address data
    */
   @state()
@@ -133,7 +148,7 @@ export class USAAddressPattern extends LitElement {
     }
 
     // Check if only visibility properties or internal state changed
-    const noRerenderProps = ['showStreet2', 'addressData'];
+    const noRerenderProps = ['showStreet2', 'showPlusCode', 'addressData'];
     const hasRerenderNeeded = Array.from(changedProperties.keys()).some(
       (key) => !noRerenderProps.includes(key as string)
     );
@@ -169,6 +184,11 @@ export class USAAddressPattern extends LitElement {
     if (changedProperties.has('showStreet2') || changedProperties.size === 0) {
       this.toggleStreet2Visibility();
     }
+
+    // Toggle plus code visibility
+    if (changedProperties.has('showPlusCode') || changedProperties.size === 0) {
+      this.togglePlusCodeVisibility();
+    }
   }
 
   /**
@@ -181,6 +201,20 @@ export class USAAddressPattern extends LitElement {
         street2.classList.remove('display-none');
       } else {
         street2.classList.add('display-none');
+      }
+    }
+  }
+
+  /**
+   * Toggle plus code field visibility
+   */
+  private togglePlusCodeVisibility() {
+    const plusCode = this.querySelector('usa-text-input[name="plusCode"]');
+    if (plusCode) {
+      if (this.showPlusCode) {
+        plusCode.classList.remove('display-none');
+      } else {
+        plusCode.classList.add('display-none');
       }
     }
   }
@@ -274,7 +308,7 @@ export class USAAddressPattern extends LitElement {
   override render() {
     return html`
       <fieldset class="usa-fieldset">
-        <legend class="usa-legend">${this.label}</legend>
+        <legend class="usa-legend usa-legend--large">${this.label}</legend>
 
         <!-- Street Address Line 1 -->
         <usa-text-input
@@ -349,6 +383,18 @@ export class USAAddressPattern extends LitElement {
           @input="${(e: Event) =>
             this.handleFieldChange('urbanization', (e.target as HTMLInputElement).value)}"
         ></usa-text-input>
+
+        <!-- Google Plus Code (Optional) - visibility controlled by updated() -->
+        <usa-text-input
+          id="plusCode"
+          name="plusCode"
+          label="Google Plus Code"
+          hint="A location code for places without street addresses (optional)"
+          compact
+          class="display-none"
+          @input="${(e: Event) =>
+            this.handleFieldChange('plusCode', (e.target as HTMLInputElement).value)}"
+        ></usa-text-input>
       </fieldset>
     `;
   }
@@ -375,6 +421,7 @@ export class USAAddressPattern extends LitElement {
       const state = this.querySelector('usa-select[name="state"]') as any;
       const zipCode = this.querySelector('usa-text-input[name="zipCode"]') as any;
       const urbanization = this.querySelector('usa-text-input[name="urbanization"]') as any;
+      const plusCode = this.querySelector('usa-text-input[name="plusCode"]') as any;
 
       if (street1) street1.value = data.street1 || '';
       if (street2) street2.value = data.street2 || '';
@@ -382,6 +429,7 @@ export class USAAddressPattern extends LitElement {
       if (state) state.value = data.state || '';
       if (zipCode) zipCode.value = data.zipCode || '';
       if (urbanization) urbanization.value = data.urbanization || '';
+      if (plusCode) plusCode.value = data.plusCode || '';
     });
   }
 

@@ -120,7 +120,8 @@ PATTERNS.forEach((patternConfig) => {
           const legend = pattern.querySelector('legend');
 
           expect(fieldset?.className).toBe('usa-fieldset');
-          expect(legend?.className).toBe('usa-legend');
+          // Pattern legends should use usa-legend--large modifier for proper visual hierarchy
+          expect(legend?.className).toBe('usa-legend usa-legend--large');
         });
       });
     }
@@ -212,7 +213,8 @@ PATTERNS.forEach((patternConfig) => {
 
           // Should not have custom classes
           expect(fieldset?.className).toBe('usa-fieldset');
-          expect(legend?.className).toBe('usa-legend');
+          // Pattern legends should use usa-legend--large modifier for proper visual hierarchy
+          expect(legend?.className).toBe('usa-legend usa-legend--large');
         });
       });
     }

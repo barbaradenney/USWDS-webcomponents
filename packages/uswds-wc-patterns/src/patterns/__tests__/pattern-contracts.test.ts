@@ -19,6 +19,11 @@ import { USAAddressPattern } from '../address/usa-address-pattern.js';
 import { USAPhoneNumberPattern } from '../phone-number/usa-phone-number-pattern.js';
 import { USANamePattern } from '../name/usa-name-pattern.js';
 import { USAContactPreferencesPattern } from '../contact-preferences/usa-contact-preferences-pattern.js';
+import { USAEmailAddressPattern } from '../email-address/usa-email-address-pattern.js';
+import { USADateOfBirthPattern } from '../date-of-birth/usa-date-of-birth-pattern.js';
+import { USASexPattern } from '../sex/usa-sex-pattern.js';
+import { USASSNPattern } from '../ssn/usa-ssn-pattern.js';
+import { USARaceEthnicityPattern } from '../race-ethnicity/usa-race-ethnicity-pattern.js';
 import { USALanguageSelectorPattern } from '../language-selection/usa-language-selector-pattern.js';
 import { USAFormSummaryPattern } from '../form-summary/usa-form-summary-pattern.js';
 import { USAMultiStepFormPattern } from '../multi-step-form/usa-multi-step-form-pattern.js';
@@ -32,6 +37,31 @@ const DATA_PATTERNS = [
     name: 'contact-preferences',
     class: USAContactPreferencesPattern,
     tagName: 'usa-contact-preferences-pattern',
+  },
+  {
+    name: 'email-address',
+    class: USAEmailAddressPattern,
+    tagName: 'usa-email-address-pattern',
+  },
+  {
+    name: 'date-of-birth',
+    class: USADateOfBirthPattern,
+    tagName: 'usa-date-of-birth-pattern',
+  },
+  {
+    name: 'sex',
+    class: USASexPattern,
+    tagName: 'usa-sex-pattern',
+  },
+  {
+    name: 'ssn',
+    class: USASSNPattern,
+    tagName: 'usa-ssn-pattern',
+  },
+  {
+    name: 'race-ethnicity',
+    class: USARaceEthnicityPattern,
+    tagName: 'usa-race-ethnicity-pattern',
   },
 ];
 
@@ -85,25 +115,25 @@ describe('Pattern Contracts', () => {
     DATA_PATTERNS.forEach(({ name, class: PatternClass }) => {
       it(`${name} should have getData() method`, () => {
         const instance = new PatternClass() as any;
-        const hasGetData = typeof (instance.getAddressData || instance.getPhoneData || instance.getNameData || instance.getPreferencesData) === 'function';
+        const hasGetData = typeof (instance.getAddressData || instance.getPhoneData || instance.getNameData || instance.getPreferencesData || instance.getEmailData || instance.getDateOfBirthData || instance.getSexData || instance.getSSNData || instance.getRaceEthnicityData) === 'function';
         expect(hasGetData).toBe(true);
       });
 
       it(`${name} should have setData() method`, () => {
         const instance = new PatternClass() as any;
-        const hasSetData = typeof (instance.setAddressData || instance.setPhoneData || instance.setNameData || instance.setPreferencesData) === 'function';
+        const hasSetData = typeof (instance.setAddressData || instance.setPhoneData || instance.setNameData || instance.setPreferencesData || instance.setEmailData || instance.setDateOfBirthData || instance.setSexData || instance.setSSNData || instance.setRaceEthnicityData) === 'function';
         expect(hasSetData).toBe(true);
       });
 
       it(`${name} should have clear() method`, () => {
         const instance = new PatternClass() as any;
-        const hasClear = typeof (instance.clearAddress || instance.clearPhoneNumber || instance.clearName || instance.clearPreferences) === 'function';
+        const hasClear = typeof (instance.clearAddress || instance.clearPhoneNumber || instance.clearName || instance.clearPreferences || instance.clearEmail || instance.clearDateOfBirth || instance.clearSex || instance.clearSSN || instance.clearRaceEthnicity) === 'function';
         expect(hasClear).toBe(true);
       });
 
       it(`${name} should have validate() method`, () => {
         const instance = new PatternClass() as any;
-        const hasValidate = typeof (instance.validateAddress || instance.validatePhoneNumber || instance.validateName || instance.validatePreferences) === 'function';
+        const hasValidate = typeof (instance.validateAddress || instance.validatePhoneNumber || instance.validateName || instance.validatePreferences || instance.validateEmail || instance.validateDateOfBirth || instance.validateSex || instance.validateSSN || instance.validateRaceEthnicity) === 'function';
         expect(hasValidate).toBe(true);
       });
     });
@@ -157,9 +187,14 @@ describe('Pattern Contracts', () => {
         instance.addEventListener('phone-change', () => (changeEventFired = true));
         instance.addEventListener('name-change', () => (changeEventFired = true));
         instance.addEventListener('preferences-change', () => (changeEventFired = true));
+        instance.addEventListener('email-change', () => (changeEventFired = true));
+        instance.addEventListener('date-of-birth-change', () => (changeEventFired = true));
+        instance.addEventListener('sex-change', () => (changeEventFired = true));
+        instance.addEventListener('ssn-change', () => (changeEventFired = true));
+        instance.addEventListener('race-ethnicity-change', () => (changeEventFired = true));
 
         // Trigger a change
-        const input = instance.querySelector('usa-text-input, usa-checkbox');
+        const input = instance.querySelector('usa-text-input, usa-checkbox, usa-radio, usa-select');
         if (input) {
           input.dispatchEvent(new Event('change', { bubbles: true }));
           await instance.updateComplete;
@@ -186,6 +221,7 @@ describe('Pattern Contracts', () => {
           instance.querySelector('usa-text-input') ||
           instance.querySelector('usa-select') ||
           instance.querySelector('usa-checkbox') ||
+          instance.querySelector('usa-radio') ||
           instance.querySelector('usa-button') ||
           instance.querySelector('usa-fieldset') ||
           instance.querySelector('usa-textarea') ||
@@ -234,7 +270,8 @@ describe('Pattern Contracts', () => {
       const instance = new USAAddressPattern();
       // USWDS address pattern requires these fields
       expect('showStreet2' in instance).toBe(true);
-      expect('international' in instance).toBe(true);
+      // Note: USWDS does not support international addresses per spec
+      // https://designsystem.digital.gov/patterns/create-a-user-profile/address/
     });
 
     it('phone-number pattern aligns with USWDS phone pattern', () => {
@@ -268,6 +305,34 @@ describe('Pattern Contracts', () => {
       expect('persistState' in instance).toBe(true);
       expect('showNavigation' in instance).toBe(true);
       expect('steps' in instance).toBe(true);
+    });
+  });
+
+  describe('Pattern USWDS Styling Requirements', () => {
+    DATA_PATTERNS.forEach(({ name, class: PatternClass }) => {
+      it(`${name} should use usa-legend--large for pattern header`, async () => {
+        const instance = new PatternClass();
+        document.body.appendChild(instance);
+        await instance.updateComplete;
+
+        const legend = instance.querySelector('.usa-legend');
+        expect(legend).toBeTruthy();
+        expect(legend?.classList.contains('usa-legend--large')).toBe(true);
+
+        instance.remove();
+      });
+
+      it(`${name} should use usa-fieldset wrapper`, async () => {
+        const instance = new PatternClass();
+        document.body.appendChild(instance);
+        await instance.updateComplete;
+
+        const fieldset = instance.querySelector('.usa-fieldset');
+        expect(fieldset).toBeTruthy();
+        expect(fieldset?.tagName.toLowerCase()).toBe('fieldset');
+
+        instance.remove();
+      });
     });
   });
 

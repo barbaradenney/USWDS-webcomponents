@@ -42,7 +42,8 @@ export function validateFieldsetStructure(pattern: Element) {
 
   // Only USWDS classes used
   expect(fieldset?.className).toBe('usa-fieldset');
-  expect(legend?.className).toBe('usa-legend');
+  // Pattern legends should use usa-legend--large modifier for proper visual hierarchy per USWDS spec
+  expect(legend?.className).toBe('usa-legend usa-legend--large');
 }
 
 /**

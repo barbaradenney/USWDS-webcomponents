@@ -330,7 +330,7 @@ export class USAPhoneNumberPattern extends LitElement {
 
     return html`
       <fieldset class="usa-fieldset">
-        <legend class="usa-legend">${this.label}</legend>
+        <legend class="usa-legend usa-legend--large">${this.label}</legend>
 
         <!-- Phone Type (Optional) - CSS visibility control -->
         <usa-select

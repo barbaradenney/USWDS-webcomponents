@@ -1,0 +1,298 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as EmailAddressStories from './usa-email-address-pattern.stories';
+
+<Meta of={EmailAddressStories} />
+
+# Email Address Pattern
+
+USWDS pattern for collecting email addresses with proper validation and optional consent for sending sensitive information.
+
+## USWDS Documentation
+
+- [Email Address Pattern](https://designsystem.digital.gov/patterns/create-a-user-profile/email-address/)
+- [Create a User Profile Patterns](https://designsystem.digital.gov/patterns/create-a-user-profile/)
+
+## Overview
+
+The Email Address Pattern provides a standardized way to collect email addresses from users. It includes built-in email validation, autocomplete support, and an optional consent section for sensitive information.
+
+### When to Use
+
+- **User profile creation**: Collecting primary contact email
+- **Account registration**: Email for verification and login
+- **Newsletter signup**: Email for marketing communications
+- **Contact forms**: Email for follow-up communication
+- **Sensitive information**: When planning to send sensitive content via email
+
+### Pattern Responsibilities
+
+1. **Email Collection**: Proper input field with email validation
+2. **Format Validation**: Ensures email contains @ with characters before/after
+3. **Consent Management**: Optional section for sensitive information consent
+4. **Autocomplete Support**: Proper attributes for browser autocomplete
+5. **Data Events**: Emits events for data changes
+
+## Examples
+
+### Default
+
+Basic email address collection with validation.
+
+<Canvas of={EmailAddressStories.Default} />
+
+### With Hint
+
+Include hint text to explain why the email is needed.
+
+<Canvas of={EmailAddressStories.WithHint} />
+
+### With Consent
+
+Include consent section when planning to send sensitive information.
+
+<Canvas of={EmailAddressStories.WithConsent} />
+
+### Optional Email
+
+Email field that is not required.
+
+<Canvas of={EmailAddressStories.Optional} />
+
+### Interactive Demo
+
+Try the API methods and see data updates in real-time.
+
+<Canvas of={EmailAddressStories.Interactive} />
+
+## Properties
+
+<Controls />
+
+## Events
+
+| Event | Description | Detail |
+|-------|-------------|--------|
+| `email-change` | Fired when email data changes | `{ emailData: EmailAddressData, field: string, value: string }` |
+| `pattern-ready` | Fired when pattern initializes | `{ emailData: EmailAddressData }` |
+
+## Methods
+
+### `getEmailData(): EmailAddressData`
+
+Returns the current email data.
+
+```typescript
+const pattern = document.querySelector('usa-email-address-pattern');
+const data = pattern.getEmailData();
+// { email: 'user@example.com', sensitiveInfoConsent: 'yes-info' }
+```
+
+### `setEmailData(data: EmailAddressData): void`
+
+Sets the email data programmatically.
+
+```typescript
+const pattern = document.querySelector('usa-email-address-pattern');
+pattern.setEmailData({
+  email: 'user@example.com',
+  sensitiveInfoConsent: 'yes-info'
+});
+```
+
+### `clearEmail(): void`
+
+Clears all email data and resets form controls.
+
+```typescript
+const pattern = document.querySelector('usa-email-address-pattern');
+pattern.clearEmail();
+```
+
+### `validateEmail(): boolean`
+
+Validates the current email. Returns `true` if valid or not required.
+
+```typescript
+const pattern = document.querySelector('usa-email-address-pattern');
+const isValid = pattern.validateEmail();
+```
+
+### `getEmail(): string`
+
+Returns just the email value.
+
+```typescript
+const pattern = document.querySelector('usa-email-address-pattern');
+const email = pattern.getEmail();
+```
+
+### `getConsent(): string`
+
+Returns just the consent value.
+
+```typescript
+const pattern = document.querySelector('usa-email-address-pattern');
+const consent = pattern.getConsent();
+```
+
+## Data Interface
+
+```typescript
+interface EmailAddressData {
+  email?: string;
+  sensitiveInfoConsent?: 'yes-info' | 'no-info' | '';
+}
+```
+
+## Validation Rules
+
+### Email Format
+
+- **Must contain @**: Email must have @ symbol with characters before and after
+- **Maximum length**: 256 characters
+- **Allowed characters**: Letters, numbers, hyphens, underscores, plus signs, periods
+- **No TLD restrictions**: All valid TLDs are allowed
+
+### Examples
+
+✅ **Valid emails:**
+- `user@example.com`
+- `first.last@example.co.uk`
+- `user+tag@example.com`
+- `user_name@example-domain.com`
+
+❌ **Invalid emails:**
+- `@example.com` (no local part)
+- `user@` (no domain)
+- `user.example.com` (no @ symbol)
+- `user@example` (technically valid but uncommon)
+
+## Accessibility Features
+
+- **Semantic HTML**: Uses proper `<fieldset>` and `<legend>` elements
+- **Form labeling**: All inputs have associated labels
+- **Keyboard navigation**: Full keyboard support for all controls
+- **ARIA attributes**: Proper ARIA attributes for screen readers
+- **Unique IDs**: Each pattern instance has unique IDs for ARIA connections
+
+## USWDS Best Practices
+
+### When to Show Consent Section
+
+Per USWDS guidelines, show the consent section (`show-consent`) only when:
+
+1. **Planning to send sensitive information**: Health records, financial data, personal identifiable information
+2. **Compliance required**: Legal or regulatory requirements for consent
+3. **User privacy concerns**: When users may have privacy concerns about email content
+
+### Email Collection Best Practices
+
+1. **Explain why you need it**: Use hint text to explain purpose
+2. **Privacy considerations**: Explain how email will be used and protected
+3. **Email verification**: Send verification link for account creation
+4. **Shared email addresses**: Consider privacy implications of shared addresses
+5. **Autocomplete support**: Enable browser autocomplete for better UX
+
+### Example: Healthcare Application
+
+```html
+<usa-email-address-pattern
+  label="Contact email"
+  hint="We'll use this to send appointment reminders and test results"
+  show-consent
+  consent-label="May we send lab results and health information to this email?"
+  required
+></usa-email-address-pattern>
+```
+
+## Implementation Notes
+
+### Light DOM Architecture
+
+This pattern uses Light DOM (no Shadow DOM) to allow USWDS styles to cascade properly. This means:
+
+- ✅ USWDS CSS classes work without modification
+- ✅ Global USWDS JavaScript can enhance components
+- ✅ Styles are consistent with official USWDS
+
+### Visibility Handling
+
+The consent section uses the Light DOM Pattern for visibility toggling:
+
+1. Section always exists in DOM with `display-none` class
+2. `showConsent` property manually toggles the class
+3. No template re-rendering after initial render
+4. Maintains 100% USWDS compliance
+
+## Usage in Forms
+
+### Basic Form Integration
+
+```typescript
+const form = document.querySelector('form');
+const emailPattern = document.querySelector('usa-email-address-pattern');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  // Validate email
+  if (!emailPattern.validateEmail()) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  // Get data
+  const emailData = emailPattern.getEmailData();
+  console.log('Email:', emailData.email);
+  console.log('Consent:', emailData.sensitiveInfoConsent);
+
+  // Submit form...
+});
+```
+
+### Listen for Changes
+
+```typescript
+const emailPattern = document.querySelector('usa-email-address-pattern');
+
+emailPattern.addEventListener('email-change', (e) => {
+  console.log('Field changed:', e.detail.field);
+  console.log('New value:', e.detail.value);
+  console.log('Complete data:', e.detail.emailData);
+});
+```
+
+### Pre-fill from API
+
+```typescript
+// Load user data from API
+const userData = await fetchUserData();
+
+// Pre-fill pattern
+const emailPattern = document.querySelector('usa-email-address-pattern');
+emailPattern.setEmailData({
+  email: userData.email,
+  sensitiveInfoConsent: userData.emailConsent
+});
+```
+
+## Related Patterns
+
+- [Name Pattern](../name/README.mdx) - Collecting user names
+- [Phone Number Pattern](../phone-number/README.mdx) - Collecting phone numbers
+- [Address Pattern](../address/README.mdx) - Collecting mailing addresses
+- [Date of Birth Pattern](../date-of-birth/README.mdx) - Collecting birth dates
+
+## Browser Support
+
+- ✅ Chrome/Edge (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Technical Details
+
+- **Base**: `LitElement`
+- **DOM**: Light DOM (no Shadow DOM)
+- **CSS**: 100% USWDS classes
+- **Dependencies**: `@uswds-wc/forms` (text-input, radio)

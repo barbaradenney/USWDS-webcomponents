@@ -374,7 +374,7 @@ export const ProgrammaticControl: Story = {
     const getCurrentLanguage = () => {
       const pattern = document.querySelector('usa-language-selector-pattern') as any;
       const lang = pattern?.getCurrentLanguage();
-      alert(`Current language: ${lang?.nativeName} (${lang?.code})`);
+      alert('Current language: ' + (lang?.nativeName || '') + ' (' + (lang?.code || '') + ')');
     };
 
     return html`

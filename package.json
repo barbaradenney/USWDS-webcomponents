@@ -59,6 +59,8 @@
     "validate:architecture": "node scripts/validate-architecture.js",
     "validate:option-b": "node scripts/validate-option-b-compliance.cjs",
     "validate:no-custom-css": "node scripts/validate/validate-no-custom-css.js",
+    "validate:pattern-styling": "node scripts/validate/validate-pattern-styling.cjs",
+    "validate:pattern-fields": "node scripts/validate/validate-pattern-field-completeness.cjs",
     "validate:option-b:strict": "node scripts/validate-option-b-compliance.cjs --strict",
     "arch:validate": "npm run validate:architecture",
     "arch:guide": "code docs/USWDS_TRANSFORMATION_PATTERNS.md",

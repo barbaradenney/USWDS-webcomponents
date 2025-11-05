@@ -1,0 +1,531 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/blocks';
+import * as SSNStories from './usa-ssn-pattern.stories';
+
+<Meta of={SSNStories} />
+
+# SSN Pattern
+
+The SSN Pattern is a USWDS-compliant web component for collecting Social Security Number information in user profile forms.
+
+**USWDS Documentation**: [Social Security Number Pattern](https://designsystem.digital.gov/patterns/create-a-user-profile/social-security-number/)
+
+## CRITICAL USWDS Requirements
+
+This pattern follows strict USWDS guidelines:
+
+- ✅ **Use SINGLE text field** - Do NOT split into three separate fields
+- ✅ **Input type: text** with inputmode="numeric"
+- ✅ **Accept hyphens and spaces** - Fault tolerance for user entry
+- ✅ **NO placeholder text** - Use hint text with format example instead
+- ✅ **Validate per SSA standards** - Area, group, and serial number rules
+- ✅ **Explain why you're asking** - Privacy and security transparency
+- ✅ **Only collect when necessary** - Identity verification only
+
+## Overview
+
+The SSN Pattern provides a standardized way to collect Social Security Numbers using a single text input field. It includes SSA-compliant validation, format tolerance, and features to explain why this sensitive information is being collected.
+
+### When to Use
+
+Only collect SSN when:
+- **Confirming identity** for government services/benefits eligibility
+- **Federal student loans** applications
+- **Public assistance** programs
+- **Medicare** applications
+- **Legal requirement** with no alternative method
+
+### When NOT to Use
+
+- When SSN is not absolutely required for identification
+- When alternative identity verification methods exist
+- For general account creation or marketing purposes
+- Without clear explanation of data usage and privacy protections
+
+**Important**: If SSN is not absolutely required, do not ask for it. Consider alternatives for users without SSNs or documentation.
+
+## Examples
+
+### Default
+
+<Canvas of={SSNStories.Default} />
+
+### Required Field
+
+Use for applications where SSN is legally required.
+
+<Canvas of={SSNStories.Required} />
+
+### With Explanation Link
+
+Always explain why you're collecting this sensitive information.
+
+<Canvas of={SSNStories.WithExplanationLink} />
+
+### Student Loan Example
+
+Example showing appropriate usage in a federal student loan application.
+
+<Canvas of={SSNStories.StudentLoanExample} />
+
+### Medicare Example
+
+Example showing appropriate usage in a Medicare application.
+
+<Canvas of={SSNStories.MedicareExample} />
+
+### With Pre-filled Data
+
+<Canvas of={SSNStories.WithData} />
+
+### Interactive Demo
+
+<Canvas of={SSNStories.Interactive} />
+
+### USWDS Compliance
+
+This example demonstrates full USWDS compliance.
+
+<Canvas of={SSNStories.USWDSCompliance} />
+
+## Properties
+
+<ArgTypes of={SSNStories} />
+
+## Events
+
+### `ssn-change`
+
+Fired when the SSN input changes.
+
+**Event Detail:**
+```typescript
+{
+  value: string,
+  ssnData: SSNData
+}
+```
+
+**Example:**
+```typescript
+pattern.addEventListener('ssn-change', (e) => {
+  console.log('SSN changed to:', e.detail.value);
+  console.log('Full data:', e.detail.ssnData);
+});
+```
+
+### `pattern-ready`
+
+Fired when the pattern is initialized and ready to use.
+
+**Event Detail:**
+```typescript
+{
+  ssnData: SSNData
+}
+```
+
+## Methods
+
+### `getSSNData(): SSNData`
+
+Returns the current SSN data.
+
+**Returns:**
+```typescript
+{
+  ssn?: string
+}
+```
+
+**Example:**
+```typescript
+const pattern = document.querySelector('usa-ssn-pattern');
+const data = pattern.getSSNData();
+console.log(data); // { ssn: '123-45-6789' }
+```
+
+### `setSSNData(data: SSNData): void`
+
+Sets the SSN data programmatically.
+
+**Parameters:**
+- `data: SSNData` - The SSN data to set
+
+**Example:**
+```typescript
+pattern.setSSNData({ ssn: '123-45-6789' });
+```
+
+### `clearSSN(): void`
+
+Clears the SSN input.
+
+**Example:**
+```typescript
+pattern.clearSSN();
+```
+
+### `validateSSN(): boolean`
+
+Validates the SSN according to SSA standards. Returns `true` if valid, `false` otherwise.
+
+If the field is not required and empty, it returns `true`. If required and empty, it returns `false`.
+
+**SSA Validation Rules:**
+- Must be exactly 9 digits (after removing hyphens/spaces)
+- Area (first 3 digits) cannot be 000, 666, or 900-999
+- Group (middle 2 digits) cannot be 00
+- Serial (last 4 digits) cannot be 0000
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+if (pattern.validateSSN()) {
+  console.log('SSN is valid');
+} else {
+  console.log('SSN is invalid');
+}
+```
+
+### `getSSN(): string`
+
+Returns just the SSN value as a string (as entered by user).
+
+**Returns:** `string`
+
+**Example:**
+```typescript
+const ssn = pattern.getSSN();
+console.log(ssn); // '123-45-6789'
+```
+
+### `getNormalizedSSN(): string`
+
+Returns the SSN with hyphens and spaces removed.
+
+**Returns:** `string` - SSN with only digits
+
+**Example:**
+```typescript
+const normalized = pattern.getNormalizedSSN();
+console.log(normalized); // '123456789'
+```
+
+### `getFormattedSSN(): string`
+
+Returns the SSN formatted with hyphens (XXX-XX-XXXX).
+
+**Returns:** `string` - SSN formatted with hyphens
+
+**Example:**
+```typescript
+const formatted = pattern.getFormattedSSN();
+console.log(formatted); // '123-45-6789'
+```
+
+## Accessibility
+
+The SSN Pattern follows USWDS accessibility guidelines:
+
+- **Fieldset and Legend**: Input is properly grouped with `<fieldset>` and `<legend>`
+- **Hint Text**: Provides clear format example and explanation
+- **ARIA Attributes**: Input connected to hint via `aria-describedby`
+- **Input Type**: Uses `type="text"` with `inputmode="numeric"` for better mobile support
+- **No Placeholder**: Uses hint text instead for better accessibility
+- **Keyboard Navigation**: Full keyboard support
+- **Screen Reader Support**: Proper semantic HTML and ARIA attributes
+
+## USWDS Best Practices
+
+### Always Explain Why
+
+Per USWDS guidelines, you must explain why you're collecting SSN:
+
+```html
+<usa-ssn-pattern
+  label="Social Security number"
+  hint="Required for identity verification and benefits eligibility"
+  show-why-link
+  why-url="/privacy-policy#ssn"
+  required
+></usa-ssn-pattern>
+```
+
+### Single Field, Not Three
+
+**❌ Don't do this:**
+```html
+<!-- Bad: Three separate fields -->
+<input placeholder="XXX" maxlength="3">
+<input placeholder="XX" maxlength="2">
+<input placeholder="XXXX" maxlength="4">
+```
+
+**✅ Do this instead:**
+```html
+<!-- Good: Single field with fault tolerance -->
+<usa-ssn-pattern
+  label="Social Security number"
+  hint="For example, 555 11 0000"
+></usa-ssn-pattern>
+```
+
+**Why?** Splitting SSN into three fields creates unnecessary friction, accessibility issues, and doesn't reflect how users think about or enter their SSN.
+
+### Fault Tolerance
+
+The pattern accepts multiple formats:
+- `123456789` (no separators)
+- `123-45-6789` (hyphens)
+- `123 45 6789` (spaces)
+
+All are normalized internally for validation.
+
+### Privacy and Security
+
+**Always:**
+- Use `autocomplete="off"` (built-in)
+- Explain data usage and privacy protections
+- Only collect when legally required
+- Secure transmission and storage
+- Consider alternatives for users without SSNs
+
+## Usage Examples
+
+### Basic Usage
+
+```html
+<usa-ssn-pattern
+  label="Social Security number"
+  required
+></usa-ssn-pattern>
+```
+
+### With Privacy Explanation
+
+```html
+<usa-ssn-pattern
+  label="Social Security number"
+  hint="Required for federal benefits verification. For example, 555 11 0000"
+  show-why-link
+  why-url="/privacy-policy"
+  required
+></usa-ssn-pattern>
+```
+
+### Programmatic Usage
+
+```typescript
+import { USASSNPattern, SSNData } from '@uswds-wc/patterns';
+
+// Get the pattern element
+const pattern = document.querySelector('usa-ssn-pattern') as USASSNPattern;
+
+// Listen for changes
+pattern.addEventListener('ssn-change', (e: CustomEvent) => {
+  const { value, ssnData } = e.detail;
+  console.log('SSN changed to:', value);
+
+  // Save to your form state
+  saveToForm(ssnData);
+});
+
+// Set data programmatically
+pattern.setSSNData({ ssn: '123-45-6789' });
+
+// Get current data
+const data = pattern.getSSNData();
+
+// Get normalized (digits only)
+const normalized = pattern.getNormalizedSSN(); // '123456789'
+
+// Get formatted (with hyphens)
+const formatted = pattern.getFormattedSSN(); // '123-45-6789'
+
+// Validate
+if (!pattern.validateSSN()) {
+  alert('Please enter a valid SSN');
+}
+
+// Clear
+pattern.clearSSN();
+```
+
+## Integration with Forms
+
+### React Example
+
+```tsx
+import { useRef, useEffect } from 'react';
+import '@uswds-wc/patterns';
+import type { USASSNPattern, SSNData } from '@uswds-wc/patterns';
+
+function BenefitsForm() {
+  const patternRef = useRef<USASSNPattern>(null);
+
+  useEffect(() => {
+    const pattern = patternRef.current;
+    if (!pattern) return;
+
+    const handleChange = (e: CustomEvent) => {
+      const { ssnData } = e.detail;
+      console.log('SSN data:', ssnData);
+
+      // Validate in real-time
+      if (pattern.validateSSN()) {
+        console.log('Valid SSN');
+      }
+    };
+
+    pattern.addEventListener('ssn-change', handleChange);
+    return () => pattern.removeEventListener('ssn-change', handleChange);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!patternRef.current?.validateSSN()) {
+      alert('Please enter a valid Social Security number');
+      return;
+    }
+
+    const normalized = patternRef.current.getNormalizedSSN();
+    console.log('Submitting SSN:', normalized);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <usa-ssn-pattern
+        ref={patternRef}
+        label="Social Security number"
+        hint="Required for benefits verification"
+        show-why-link
+        why-url="/privacy"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### Angular Example
+
+```typescript
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import type { USASSNPattern, SSNData } from '@uswds-wc/patterns';
+
+@Component({
+  selector: 'app-benefits-form',
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <usa-ssn-pattern
+        #ssnPattern
+        label="Social Security number"
+        hint="Required for benefits verification"
+        show-why-link
+        why-url="/privacy"
+        required
+        (ssn-change)="onSSNChange($event)"
+      ></usa-ssn-pattern>
+      <button type="submit">Submit</button>
+    </form>
+  `
+})
+export class BenefitsFormComponent {
+  @ViewChild('ssnPattern') ssnPattern!: ElementRef<USASSNPattern>;
+
+  onSSNChange(event: CustomEvent) {
+    const { ssnData } = event.detail;
+    console.log('SSN data:', ssnData);
+  }
+
+  onSubmit() {
+    const pattern = this.ssnPattern.nativeElement;
+
+    if (!pattern.validateSSN()) {
+      alert('Please enter a valid Social Security number');
+      return;
+    }
+
+    const normalized = pattern.getNormalizedSSN();
+    console.log('Submitting SSN:', normalized);
+  }
+}
+```
+
+## SSA Validation Rules
+
+The pattern validates SSNs according to Social Security Administration standards:
+
+### Area (First 3 Digits)
+- Cannot be `000`
+- Cannot be `666`
+- Cannot be `900-999` (reserved for TINs)
+
+### Group (Middle 2 Digits)
+- Cannot be `00`
+
+### Serial (Last 4 Digits)
+- Cannot be `0000`
+
+### Examples
+
+**Valid:**
+- `123-45-6789`
+- `555-11-2222`
+- `987-65-4321`
+
+**Invalid:**
+- `000-45-6789` (area cannot be 000)
+- `666-45-6789` (area cannot be 666)
+- `900-45-6789` (area cannot be 900+)
+- `123-00-6789` (group cannot be 00)
+- `123-45-0000` (serial cannot be 0000)
+
+## Related Patterns
+
+- [Name Pattern](../?path=/docs/patterns-user-profile-name--docs) - Collect user's name
+- [Date of Birth Pattern](../?path=/docs/patterns-user-profile-date-of-birth--docs) - Collect birth date
+- [Address Pattern](../?path=/docs/patterns-user-profile-address--docs) - Collect mailing address
+
+## Technical Notes
+
+### Light DOM Architecture
+
+This pattern uses Light DOM (no Shadow DOM) to allow USWDS styles to cascade properly. This means:
+
+- USWDS CSS classes work directly
+- Parent form styles apply naturally
+- Browser form features work seamlessly
+
+### Data Immutability
+
+The `getSSNData()` method returns a copy of the data, not a reference. This prevents external code from accidentally mutating the pattern's internal state.
+
+```typescript
+const data1 = pattern.getSSNData();
+const data2 = pattern.getSSNData();
+
+console.log(data1 === data2); // false (different objects)
+console.log(data1.ssn === data2.ssn); // true (same values)
+```
+
+### Security Considerations
+
+- Pattern uses `autocomplete="off"` to prevent browser autofill
+- No data is stored in the component beyond current session
+- Use HTTPS for transmission
+- Implement server-side encryption for storage
+- Consider tokenization for payment processing
+
+## Browser Support
+
+The SSN Pattern supports all modern browsers:
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+
+For older browsers, polyfills for Web Components may be required.

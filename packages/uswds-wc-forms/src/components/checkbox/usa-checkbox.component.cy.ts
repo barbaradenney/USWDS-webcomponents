@@ -34,8 +34,7 @@ describe('USA Checkbox Component Tests', () => {
 
   it('should handle clicking on label', () => {
     cy.mount(`
-      <usa-checkbox id="test-checkbox" name="agreement" value="agreed">
-        I agree to the terms and conditions
+      <usa-checkbox id="test-checkbox" name="agreement" value="agreed" label="I agree to the terms and conditions">
       </usa-checkbox>
     `);
 
@@ -45,6 +44,43 @@ describe('USA Checkbox Component Tests', () => {
 
     cy.get('.usa-checkbox__label').click();
     cy.get('input[type="checkbox"]').should('not.be.checked');
+  });
+
+  it('should handle label click in Light DOM (regression test)', () => {
+    cy.mount(`
+      <usa-checkbox
+        id="light-dom-test"
+        name="lightdom"
+        value="test"
+        label="Click me in Light DOM">
+      </usa-checkbox>
+    `);
+
+    // Verify checkbox is initially unchecked
+    cy.get('#light-dom-test input[type="checkbox"]').should('not.be.checked');
+
+    // Click on the label element (not the checkbox input)
+    cy.get('#light-dom-test .usa-checkbox__label').click();
+
+    // Checkbox should be checked
+    cy.get('#light-dom-test input[type="checkbox"]').should('be.checked');
+
+    // Verify change event was dispatched
+    cy.window().then((win) => {
+      const checkbox = win.document.getElementById('light-dom-test') as any;
+      const changeSpy = cy.stub();
+      checkbox.addEventListener('change', changeSpy);
+
+      // Click label again to uncheck
+      cy.get('#light-dom-test .usa-checkbox__label').click();
+
+      cy.then(() => {
+        expect(changeSpy).to.have.been.called;
+      });
+    });
+
+    // Should be unchecked after second click
+    cy.get('#light-dom-test input[type="checkbox"]').should('not.be.checked');
   });
 
   it('should emit change events', () => {

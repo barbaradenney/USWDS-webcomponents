@@ -1,0 +1,431 @@
+import { Meta, Canvas, Controls } from '@storybook/blocks';
+import * as DateOfBirthStories from './usa-date-of-birth-pattern.stories';
+
+<Meta of={DateOfBirthStories} />
+
+# Date of Birth Pattern
+
+USWDS pattern for collecting date of birth with proper validation, leap year support, and critical accessibility compliance.
+
+## USWDS Documentation
+
+- [Date of Birth Pattern](https://designsystem.digital.gov/patterns/create-a-user-profile/date-of-birth/)
+- [Create a User Profile Patterns](https://designsystem.digital.gov/patterns/create-a-user-profile/)
+
+## Overview
+
+The Date of Birth Pattern provides a standardized way to collect birth dates from users using three separate fields (month, day, year). It includes built-in validation, leap year support, and follows USWDS accessibility requirements.
+
+### When to Use
+
+- **User profile creation**: Collecting date of birth for identity verification
+- **Age verification**: Confirming user meets age requirements
+- **Healthcare applications**: Recording patient birth dates
+- **Government forms**: Collecting required demographic data
+- **Insurance applications**: Recording beneficiary information
+
+### Pattern Responsibilities
+
+1. **Date Collection**: Three separate fields (month select, day input, year input)
+2. **Date Validation**: Validates month (01-12), day (01-31 based on month), year (4 digits)
+3. **Leap Year Support**: Correctly validates February 29 for leap years
+4. **Accessibility Compliance**: NO auto-advance focus, proper input types
+5. **Data Events**: Emits events for data changes
+
+## Examples
+
+### Default
+
+Basic date of birth collection with validation.
+
+<Canvas of={DateOfBirthStories.Default} />
+
+### Custom Hint
+
+Include hint text to guide users.
+
+<Canvas of={DateOfBirthStories.CustomHint} />
+
+### Optional
+
+Date of birth field that is not required.
+
+<Canvas of={DateOfBirthStories.Optional} />
+
+### With Data
+
+Date of birth pattern with pre-filled data.
+
+<Canvas of={DateOfBirthStories.WithData} />
+
+### Interactive Demo
+
+Try the API methods and see data updates in real-time.
+
+<Canvas of={DateOfBirthStories.Interactive} />
+
+### Leap Year Validation
+
+Demonstrates leap year validation logic.
+
+<Canvas of={DateOfBirthStories.LeapYearValidation} />
+
+### Accessibility Compliance
+
+Shows proper accessibility implementation (NO auto-advance).
+
+<Canvas of={DateOfBirthStories.AccessibilityCompliance} />
+
+## Properties
+
+<Controls />
+
+## Events
+
+| Event | Description | Detail |
+|-------|-------------|--------|
+| `dob-change` | Fired when date data changes | `{ dobData: DateOfBirthData, field: string, value: string }` |
+| `pattern-ready` | Fired when pattern initializes | `{ dobData: DateOfBirthData }` |
+
+## Methods
+
+### `getDateOfBirthData(): DateOfBirthData`
+
+Returns the current date of birth data.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const data = pattern.getDateOfBirthData();
+// { month: '06', day: '15', year: '1990' }
+```
+
+### `setDateOfBirthData(data: DateOfBirthData): void`
+
+Sets the date of birth data programmatically.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+pattern.setDateOfBirthData({
+  month: '12',
+  day: '25',
+  year: '1985'
+});
+```
+
+### `clearDateOfBirth(): void`
+
+Clears all date data and resets form controls.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+pattern.clearDateOfBirth();
+```
+
+### `validateDateOfBirth(): boolean`
+
+Validates the current date. Returns `true` if valid or not required.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const isValid = pattern.validateDateOfBirth();
+```
+
+### `getMonth(): string`
+
+Returns just the month value.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const month = pattern.getMonth(); // "06"
+```
+
+### `getDay(): string`
+
+Returns just the day value.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const day = pattern.getDay(); // "15"
+```
+
+### `getYear(): string`
+
+Returns just the year value.
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const year = pattern.getYear(); // "1990"
+```
+
+### `getFormattedDate(): string`
+
+Returns formatted date string (MM/DD/YYYY).
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const formatted = pattern.getFormattedDate(); // "06/15/1990"
+```
+
+### `getISODate(): string`
+
+Returns ISO date string (YYYY-MM-DD).
+
+```typescript
+const pattern = document.querySelector('usa-date-of-birth-pattern');
+const iso = pattern.getISODate(); // "1990-06-15"
+```
+
+## Data Interface
+
+```typescript
+interface DateOfBirthData {
+  month?: string; // "01" through "12"
+  day?: string;   // "01" through "31"
+  year?: string;  // "YYYY" (4 digits)
+}
+```
+
+## Validation Rules
+
+### Month Validation
+
+- **Range**: Must be 01-12
+- **Format**: Two digits with leading zero
+
+### Day Validation
+
+- **Range**: Must be 01-31 based on month
+- **Days per month**:
+  - 31 days: January, March, May, July, August, October, December
+  - 30 days: April, June, September, November
+  - 28/29 days: February (depends on leap year)
+
+### Year Validation
+
+- **Format**: Must be exactly 4 digits
+- **Range**: No artificial restrictions (user may enter any 4-digit year)
+
+### Leap Year Logic
+
+A year is a leap year if:
+- Divisible by 4 AND NOT divisible by 100, OR
+- Divisible by 400
+
+**Examples:**
+- ✅ 2000: Leap year (divisible by 400)
+- ❌ 1900: Not a leap year (divisible by 100 but not 400)
+- ✅ 2024: Leap year (divisible by 4, not by 100)
+- ❌ 2023: Not a leap year
+
+## CRITICAL Accessibility Requirements
+
+### ⚠️ NO Auto-Advance Focus
+
+**NEVER** automatically advance focus between fields. This is a critical accessibility violation.
+
+❌ **Bad** - Auto-advance:
+```javascript
+// DON'T DO THIS
+dayInput.addEventListener('input', (e) => {
+  if (e.target.value.length === 2) {
+    yearInput.focus(); // ❌ NEVER auto-advance
+  }
+});
+```
+
+✅ **Good** - Let users navigate naturally:
+```javascript
+// Let browser handle focus naturally via Tab key
+// Users decide when to move between fields
+```
+
+### Input Type Requirements
+
+Use `type="text"` with `inputmode="numeric"`, **NOT** `type="number"`.
+
+**Why?**
+- `type="number"` shows spinner buttons (confusing for dates)
+- `type="number"` allows scientific notation (1e5)
+- `inputmode="numeric"` provides numeric keyboard on mobile
+- `type="text"` with `pattern` provides better validation control
+
+✅ **Correct**:
+```html
+<input
+  type="text"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  maxlength="2"
+/>
+```
+
+❌ **Wrong**:
+```html
+<input type="number" />
+```
+
+### Other Requirements
+
+- **Visible labels**: All fields must have visible labels
+- **No auto-submission**: Don't submit form automatically
+- **Fieldset grouping**: Group fields in fieldset with legend
+- **Hint text**: Provide example format
+
+## Accessibility Features
+
+- **Semantic HTML**: Uses proper `<fieldset>` and `<legend>` elements
+- **Form labeling**: All inputs have associated labels
+- **Keyboard navigation**: Full keyboard support via natural Tab order
+- **ARIA attributes**: Proper ARIA attributes for screen readers
+- **Memorable date pattern**: Uses USWDS memorable date structure
+
+## USWDS Best Practices
+
+### When to Collect Date of Birth
+
+Per USWDS guidelines, only collect date of birth when:
+
+1. **Required for services**: Age verification, eligibility determination
+2. **Legal requirement**: Healthcare, financial services, government forms
+3. **Identity verification**: Confirming user identity
+4. **Demographic data**: Statistical analysis (with privacy protections)
+
+### Best Practices
+
+1. **Explain why you need it**: Use hint text to explain purpose
+2. **Privacy considerations**: Explain how data will be protected
+3. **Optional when possible**: Only require when absolutely necessary
+4. **Provide examples**: Show expected format in hint text
+5. **Validate on submit**: Don't block input, validate on form submission
+
+### Example: Healthcare Application
+
+```html
+<usa-date-of-birth-pattern
+  label="Date of birth"
+  hint="Required for medical records and age verification"
+  required
+></usa-date-of-birth-pattern>
+```
+
+## Implementation Notes
+
+### Light DOM Architecture
+
+This pattern uses Light DOM (no Shadow DOM) to allow USWDS styles to cascade properly. This means:
+
+- ✅ USWDS CSS classes work without modification
+- ✅ Global USWDS JavaScript can enhance components
+- ✅ Styles are consistent with official USWDS
+
+### Memorable Date Structure
+
+The pattern uses USWDS's `.usa-memorable-date` wrapper class for proper field layout and styling.
+
+## Usage in Forms
+
+### Basic Form Integration
+
+```typescript
+const form = document.querySelector('form');
+const dobPattern = document.querySelector('usa-date-of-birth-pattern');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  // Validate date
+  if (!dobPattern.validateDateOfBirth()) {
+    alert('Please enter a valid date of birth');
+    return;
+  }
+
+  // Get data
+  const dobData = dobPattern.getDateOfBirthData();
+  console.log('Month:', dobData.month);
+  console.log('Day:', dobData.day);
+  console.log('Year:', dobData.year);
+  console.log('Formatted:', dobPattern.getFormattedDate());
+  console.log('ISO:', dobPattern.getISODate());
+
+  // Submit form...
+});
+```
+
+### Listen for Changes
+
+```typescript
+const dobPattern = document.querySelector('usa-date-of-birth-pattern');
+
+dobPattern.addEventListener('dob-change', (e) => {
+  console.log('Field changed:', e.detail.field);
+  console.log('New value:', e.detail.value);
+  console.log('Complete data:', e.detail.dobData);
+
+  // Check if date is complete
+  const formatted = dobPattern.getFormattedDate();
+  if (formatted) {
+    console.log('Complete date:', formatted);
+  }
+});
+```
+
+### Pre-fill from API
+
+```typescript
+// Load user data from API
+const userData = await fetchUserData();
+
+// Parse ISO date
+const [year, month, day] = userData.dateOfBirth.split('-');
+
+// Pre-fill pattern
+const dobPattern = document.querySelector('usa-date-of-birth-pattern');
+dobPattern.setDateOfBirthData({ month, day, year });
+```
+
+### Age Calculation
+
+```typescript
+function calculateAge(dobPattern: USADateOfBirthPattern): number {
+  const iso = dobPattern.getISODate();
+  if (!iso) return 0;
+
+  const birthDate = new Date(iso);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
+// Usage
+const dobPattern = document.querySelector('usa-date-of-birth-pattern');
+const age = calculateAge(dobPattern);
+console.log('Age:', age);
+```
+
+## Related Patterns
+
+- [Email Address Pattern](../email-address/README.mdx) - Collecting email addresses
+- [Name Pattern](../name/README.mdx) - Collecting user names
+- [Phone Number Pattern](../phone-number/README.mdx) - Collecting phone numbers
+- [Address Pattern](../address/README.mdx) - Collecting mailing addresses
+
+## Browser Support
+
+- ✅ Chrome/Edge (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Technical Details
+
+- **Base**: `LitElement`
+- **DOM**: Light DOM (no Shadow DOM)
+- **CSS**: 100% USWDS classes
+- **Dependencies**: `@uswds-wc/forms` (text-input, select)

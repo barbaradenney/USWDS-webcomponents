@@ -25,6 +25,11 @@ export * from './patterns/address/index.js';
 export * from './patterns/name/index.js';
 export * from './patterns/phone-number/index.js';
 export * from './patterns/contact-preferences/index.js';
+export * from './patterns/email-address/index.js';
+export * from './patterns/date-of-birth/index.js';
+export * from './patterns/sex/index.js';
+export * from './patterns/ssn/index.js';
+export * from './patterns/race-ethnicity/index.js';
 
 // Future patterns
 // export * from './patterns/form-trust/index.js';

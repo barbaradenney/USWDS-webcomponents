@@ -229,7 +229,7 @@ export class USAContactPreferencesPattern extends LitElement {
 
     return html`
       <fieldset class="usa-fieldset" aria-describedby="${fieldsetDescribedBy}">
-        <legend class="usa-legend">${this.label}</legend>
+        <legend class="usa-legend usa-legend--large">${this.label}</legend>
         ${this.hint
           ? html`
               <span class="usa-hint" id="${hintId}">
@@ -250,8 +250,7 @@ export class USAContactPreferencesPattern extends LitElement {
               value="${method.value}"
               label="${method.label}"
               description="${method.description || ''}"
-              @change="${(e: Event) =>
-                this.handleMethodChange(method.value, (e.target as HTMLInputElement).checked)}"
+              @change="${(e: CustomEvent) => this.handleMethodChange(method.value, e.detail.checked)}"
             ></usa-checkbox>
           `
         )}
@@ -266,8 +265,7 @@ export class USAContactPreferencesPattern extends LitElement {
                   hint="For example, accessibility needs, preferred language, best time to contact, etc. (optional)"
                   rows="3"
                   compact
-          @input="${(e: Event) =>
-                    this.handleAdditionalInfoChange((e.target as HTMLTextAreaElement).value)}"
+                  @input="${(e: CustomEvent) => this.handleAdditionalInfoChange(e.detail.value)}"
                 ></usa-textarea>
               </div>
             `

@@ -144,6 +144,38 @@ else
   echo "   ⏭️  Skipped (no patterns modified)"
 fi
 
+# Pattern USWDS styling validation (ensures usa-legend--large, usa-fieldset)
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "🎨 4e/9 Pattern USWDS styling validation..."
+  pnpm validate:pattern-styling > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern USWDS styling validation failed!"
+    echo "   Run: pnpm validate:pattern-styling (for details)"
+    echo "   Patterns must use: usa-legend--large, usa-fieldset wrapper"
+    exit 1
+  fi
+  echo "   ✅ Pass (all patterns use correct USWDS styling)"
+else
+  echo "🎨 4e/9 Pattern USWDS styling validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
+# Pattern field completeness validation (ensures all USWDS fields present)
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "📋 4f/9 Pattern field completeness validation..."
+  pnpm validate:pattern-fields > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern field completeness validation failed!"
+    echo "   Run: pnpm validate:pattern-fields (for details)"
+    echo "   Patterns must include all fields specified in USWDS patterns"
+    exit 1
+  fi
+  echo "   ✅ Pass (all patterns have complete field sets)"
+else
+  echo "📋 4f/9 Pattern field completeness validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
 # Auto-clear discovered issues tracker if all validations passed
 if [ -f ".git/DISCOVERED_ISSUES.json" ]; then
   echo "   🗑️  All validations passed - clearing discovered issues tracker"

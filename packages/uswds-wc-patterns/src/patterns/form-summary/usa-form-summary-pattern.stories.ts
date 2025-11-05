@@ -74,7 +74,7 @@ export const WithEditCapability: Story = {
       ...section,
       items: section.items.map((item) => ({
         ...item,
-        onEdit: () => alert(`Edit ${item.label}: ${item.value}`),
+        onEdit: () => alert('Edit ' + item.label + ': ' + item.value),
       })),
     }));
 

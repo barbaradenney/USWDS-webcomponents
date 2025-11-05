@@ -339,7 +339,7 @@ export class USANamePattern extends LitElement {
   override render() {
     return html`
       <fieldset class="usa-fieldset">
-        <legend class="usa-legend">${this.label}</legend>
+        <legend class="usa-legend usa-legend--large">${this.label}</legend>
 
         <!-- Full Name Field - visibility controlled by updated() -->
         <div class="full-name-container">

@@ -87,8 +87,23 @@ export class USARadio extends LitElement {
 
     // Get reference to the radio element after first render
     this.radioElement = this.querySelector('input[type="radio"]') as HTMLInputElement;
-    if (this.radioElement) {
+    const label = this.querySelector('label') as HTMLLabelElement;
+
+    if (this.radioElement && label) {
       this.updateRadioElement();
+
+      // Listen to the native input element's change event
+      this.radioElement.addEventListener('change', this.handleChange);
+
+      // Light DOM workaround: The native <label for="..."> mechanism doesn't always
+      // work reliably in Light DOM web components. Add a direct click listener on the
+      // label to manually toggle the radio as a fallback.
+      label.addEventListener('click', (e) => {
+        if (this.radioElement && !e.defaultPrevented && !this.disabled) {
+          this.radioElement.checked = true;
+          this.radioElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
     }
   }
 
@@ -137,7 +152,7 @@ export class USARadio extends LitElement {
     }
   }
 
-  private handleChange(e: Event) {
+  private handleChange = (e: Event) => {
     const radio = e.target as HTMLInputElement;
     this.checked = radio.checked;
 
@@ -165,7 +180,7 @@ export class USARadio extends LitElement {
         composed: true,
       })
     );
-  }
+  };
 
   private get radioId() {
     // Always check for element id first, then use cached generated id
@@ -206,6 +221,15 @@ export class USARadio extends LitElement {
   }
 
   override disconnectedCallback() {
+    // Clean up event listeners
+    if (this.radioElement) {
+      this.radioElement.removeEventListener('change', this.handleChange);
+    }
+    const label = this.querySelector('label');
+    if (label) {
+      // Note: We can't remove the anonymous function, but it will be garbage collected
+      // when the element is removed from the DOM
+    }
     super.disconnectedCallback();
     this.cleanupUSWDS();
   }
@@ -272,6 +296,11 @@ export class USARadio extends LitElement {
             ? ' usa-input--error'
             : ''}"
           type="radio"
+          name="${this.name}"
+          value="${this.value}"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          ?required="${this.required}"
           aria-describedby="${ifDefined(
             describedByIds.length > 0 ? describedByIds.join(' ') : undefined
           )}"
