@@ -95,7 +95,12 @@ export default defineConfig({
       },
     },
     // Progress reporting
-    reporters: process.env.VITEST_VERBOSE ? ['verbose', 'basic'] : process.env.VITEST_DEBUG_HANGING ? ['default', 'hanging-process'] : ['default'],
+    // Use custom reporter to clarify "skipped" vs "other packages" distinction
+    reporters: process.env.VITEST_VERBOSE
+      ? ['verbose', 'basic']
+      : process.env.VITEST_DEBUG_HANGING
+        ? ['default', 'hanging-process']
+        : ['./scripts/test/vitest-clarified-reporter.js'],
     // Show test names as they start (not just when they finish)
     logHeapUsage: true,
     // Increased timeouts for large test suite (187 test files)
