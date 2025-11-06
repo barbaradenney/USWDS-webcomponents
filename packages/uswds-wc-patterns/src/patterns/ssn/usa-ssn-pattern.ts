@@ -201,7 +201,7 @@ export class USASSNPattern extends LitElement {
 
         <usa-text-input
           id="${this.patternId}-input"
-          name="ssn"
+          name="social-security-no"
           type="text"
           inputmode="numeric"
           class="usa-input--xl"
