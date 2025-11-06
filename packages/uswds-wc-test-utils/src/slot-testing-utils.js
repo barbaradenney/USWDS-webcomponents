@@ -127,9 +127,7 @@ export async function verifyHorizontalLayout(parent, childSelectors, maxYDiffere
   });
 
   // Wait for all children to render
-  await Promise.all(
-    children.map((child) => child?.updateComplete || Promise.resolve())
-  );
+  await Promise.all(children.map((child) => child?.updateComplete || Promise.resolve()));
 
   // Get bounding boxes
   const boxes = children.map((child) => child.getBoundingClientRect());
@@ -146,10 +144,9 @@ export async function verifyHorizontalLayout(parent, childSelectors, maxYDiffere
 
   // Verify they're in left-to-right order
   for (let i = 0; i < boxes.length - 1; i++) {
-    expect(
-      boxes[i].x,
-      `Component ${i} not left of component ${i + 1}`
-    ).toBeLessThan(boxes[i + 1].x);
+    expect(boxes[i].x, `Component ${i} not left of component ${i + 1}`).toBeLessThan(
+      boxes[i + 1].x
+    );
   }
 }
 
@@ -224,7 +221,12 @@ export async function verifyUSWDSStructure(pattern, config) {
  * await verifyPropertyBinding(select, 'select', 'option', 2);
  * ```
  */
-export async function verifyPropertyBinding(component, containerSelector, elementSelector, expectedCount) {
+export async function verifyPropertyBinding(
+  component,
+  containerSelector,
+  elementSelector,
+  expectedCount
+) {
   await component.updateComplete;
 
   const container = component.querySelector(containerSelector);
@@ -255,10 +257,7 @@ export async function verifyNoComboBoxWrapper(selectComponent) {
   await selectComponent?.updateComplete;
 
   // Verify no-combo-box attribute is set
-  expect(
-    selectComponent.hasAttribute('no-combo-box'),
-    'no-combo-box attribute not set'
-  ).toBe(true);
+  expect(selectComponent.hasAttribute('no-combo-box'), 'no-combo-box attribute not set').toBe(true);
 
   // Verify no combo-box wrapper in DOM
   const comboBox = selectComponent.querySelector('.usa-combo-box');
@@ -350,21 +349,17 @@ export async function verifyCompactMode(component) {
   await component.updateComplete;
 
   // Verify compact attribute is set
-  expect(
-    component.hasAttribute('compact'),
-    'compact attribute not set'
-  ).toBe(true);
+  expect(component.hasAttribute('compact'), 'compact attribute not set').toBe(true);
 
   // Verify no form-group wrapper
   const formGroup = component.querySelector('.usa-form-group');
-  expect(
-    formGroup,
-    'Form-group wrapper should not exist in compact mode'
-  ).toBeFalsy();
+  expect(formGroup, 'Form-group wrapper should not exist in compact mode').toBeFalsy();
 
   // Verify label and input are direct children
   const label = component.querySelector('label.usa-label');
-  const input = component.querySelector('input.usa-input, select.usa-select, textarea.usa-textarea');
+  const input = component.querySelector(
+    'input.usa-input, select.usa-select, textarea.usa-textarea'
+  );
 
   expect(label, 'Label not found').toBeTruthy();
   expect(input, 'Input not found').toBeTruthy();

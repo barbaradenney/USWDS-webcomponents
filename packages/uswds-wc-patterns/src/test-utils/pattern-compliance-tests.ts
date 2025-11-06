@@ -96,9 +96,7 @@ export function validateFieldsAreDirectChildren(pattern: Element) {
   const formComponents = pattern.querySelectorAll('usa-text-input, usa-select, usa-textarea');
 
   formComponents.forEach((component) => {
-    expect(
-      component.parentElement === fieldset || fieldset?.contains(component)
-    ).toBe(true);
+    expect(component.parentElement === fieldset || fieldset?.contains(component)).toBe(true);
   });
 }
 
@@ -196,11 +194,14 @@ export async function validateCompactRendering(pattern: Element) {
 /**
  * Validates field count matches expectations
  */
-export function validateFieldCounts(pattern: Element, config: {
-  textInputs?: number;
-  selects?: number;
-  textareas?: number;
-}) {
+export function validateFieldCounts(
+  pattern: Element,
+  config: {
+    textInputs?: number;
+    selects?: number;
+    textareas?: number;
+  }
+) {
   if (config.textInputs !== undefined) {
     const textInputs = pattern.querySelectorAll('usa-text-input');
     expect(textInputs.length).toBe(config.textInputs);
