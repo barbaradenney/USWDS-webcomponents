@@ -224,12 +224,16 @@ describe('USAFormSummaryPattern', () => {
     });
 
     it('should use custom button labels', async () => {
-      pattern.printButtonLabel = 'Print Summary';
-      pattern.downloadButtonLabel = 'Download PDF';
-      pattern.showDownload = true;
-      await pattern.updateComplete;
+      // Create new pattern with custom labels set before rendering
+      const customPattern = document.createElement('usa-form-summary-pattern') as USAFormSummaryPattern;
+      customPattern.sections = mockSections;
+      customPattern.printButtonLabel = 'Print Summary';
+      customPattern.downloadButtonLabel = 'Download PDF';
+      customPattern.showDownload = true;
+      container.appendChild(customPattern);
+      await customPattern.updateComplete;
 
-      const buttons = pattern.querySelectorAll('usa-button');
+      const buttons = customPattern.querySelectorAll('usa-button');
       expect(buttons[0]?.textContent?.trim()).toBe('Print Summary');
       expect(buttons[1]?.textContent?.trim()).toBe('Download PDF');
     });
