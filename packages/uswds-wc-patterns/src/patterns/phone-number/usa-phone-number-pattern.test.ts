@@ -2,6 +2,12 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import './usa-phone-number-pattern.js';
 import type { USAPhoneNumberPattern, PhoneNumberData } from './usa-phone-number-pattern.js';
+import {
+  verifyChildComponent,
+  verifyPropertyBinding,
+  verifyUSWDSStructure,
+  verifyCompactMode,
+} from '@uswds-wc/test-utils/slot-testing-utils.js';
 
 describe('USAPhoneNumberPattern', () => {
   let pattern: USAPhoneNumberPattern;
@@ -568,6 +574,514 @@ describe('USAPhoneNumberPattern', () => {
       const text = alert?.querySelector('.usa-alert__text');
       expect(text?.textContent).toContain('verification code');
       expect(text?.textContent).toContain('text message');
+    });
+  });
+
+  describe('Slot Rendering & Composition', () => {
+    describe('Child Component Initialization', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should initialize phone type select component', async () => {
+        const phoneType = await verifyChildComponent(pattern, 'usa-select[name="phoneType"]');
+        expect(phoneType).toBeTruthy();
+
+        // Verify internal structure rendered
+        const select = phoneType.querySelector('select.usa-select');
+        expect(select).toBeTruthy();
+      });
+
+      it('should initialize phone number text input component', async () => {
+        const phoneNumber = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="phoneNumber"]'
+        );
+        expect(phoneNumber).toBeTruthy();
+
+        const input = phoneNumber.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize extension text input component', async () => {
+        const extension = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="extension"]'
+        );
+        expect(extension).toBeTruthy();
+
+        const input = extension.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should render all child components', async () => {
+        // All components should exist
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]');
+        const extension = pattern.querySelector('usa-text-input[name="extension"]');
+
+        expect(phoneType).toBeTruthy();
+        expect(phoneNumber).toBeTruthy();
+        expect(extension).toBeTruthy();
+
+        // Phone number is always visible
+        expect(phoneNumber?.closest('.display-none')).toBe(null);
+
+        // Phone type and extension are visible when enabled
+        expect(phoneType?.classList.contains('display-none')).toBe(false);
+        expect(extension?.classList.contains('display-none')).toBe(false);
+      });
+
+      it('should hide optional components by default', async () => {
+        const defaultPattern = document.createElement(
+          'usa-phone-number-pattern'
+        ) as USAPhoneNumberPattern;
+        container.appendChild(defaultPattern);
+        await defaultPattern.updateComplete;
+
+        const phoneType = defaultPattern.querySelector('usa-select[name="phoneType"]');
+        const extension = defaultPattern.querySelector('usa-text-input[name="extension"]');
+
+        // Components exist but are hidden
+        expect(phoneType).toBeTruthy();
+        expect(extension).toBeTruthy();
+        expect(phoneType?.classList.contains('display-none')).toBe(true);
+        expect(extension?.classList.contains('display-none')).toBe(true);
+
+        defaultPattern.remove();
+      });
+    });
+
+    describe('Child Components Render with Correct USWDS Classes', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should have correct USWDS classes on phone type select', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+        const select = phoneType?.querySelector('select');
+
+        expect(select?.classList.contains('usa-select')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on phone number input', async () => {
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]');
+        const input = phoneNumber?.querySelector('input');
+
+        expect(input?.classList.contains('usa-input')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on extension input', async () => {
+        const extension = pattern.querySelector('usa-text-input[name="extension"]');
+        const input = extension?.querySelector('input');
+
+        expect(input?.classList.contains('usa-input')).toBe(true);
+      });
+
+      it('should have labels for all child components', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]');
+        const extension = pattern.querySelector('usa-text-input[name="extension"]');
+
+        expect(phoneType?.querySelector('label')).toBeTruthy();
+        expect(phoneNumber?.querySelector('label')).toBeTruthy();
+        expect(extension?.querySelector('label')).toBeTruthy();
+      });
+    });
+
+    describe('Pattern Composition and USWDS Structure Compliance', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should compose all expected fields', async () => {
+        await verifyUSWDSStructure(pattern, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: [
+            'usa-select[name="phoneType"]',
+            'usa-text-input[name="phoneNumber"]',
+            'usa-text-input[name="extension"]',
+          ],
+        });
+      });
+
+      it('should have proper fieldset structure', () => {
+        const fieldset = pattern.querySelector('fieldset.usa-fieldset');
+        const legend = pattern.querySelector('legend.usa-legend');
+
+        expect(fieldset).toBeTruthy();
+        expect(legend).toBeTruthy();
+        expect(legend?.textContent).toBe('Phone number');
+      });
+
+      it('should show/hide phone type based on showType property', async () => {
+        pattern.showType = false;
+        await pattern.updateComplete;
+
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+        expect(phoneType?.classList.contains('display-none')).toBe(true);
+
+        pattern.showType = true;
+        await pattern.updateComplete;
+        expect(phoneType?.classList.contains('display-none')).toBe(false);
+      });
+
+      it('should show/hide extension based on showExtension property', async () => {
+        pattern.showExtension = false;
+        await pattern.updateComplete;
+
+        const extension = pattern.querySelector('usa-text-input[name="extension"]');
+        expect(extension?.classList.contains('display-none')).toBe(true);
+
+        pattern.showExtension = true;
+        await pattern.updateComplete;
+        expect(extension?.classList.contains('display-none')).toBe(false);
+      });
+
+      it('should show/hide SMS alert based on smsRequired property', async () => {
+        pattern.smsRequired = false;
+        await pattern.updateComplete;
+
+        const alert = pattern.querySelector('.usa-alert');
+        expect(alert?.classList.contains('display-none')).toBe(true);
+
+        pattern.smsRequired = true;
+        await pattern.updateComplete;
+        expect(alert?.classList.contains('display-none')).toBe(false);
+      });
+
+      it('should render SMS alert with correct USWDS classes', async () => {
+        pattern.smsRequired = true;
+        await pattern.updateComplete;
+
+        const alert = pattern.querySelector('.usa-alert');
+        expect(alert?.classList.contains('usa-alert--info')).toBe(true);
+        expect(alert?.classList.contains('usa-alert--slim')).toBe(true);
+
+        const body = alert?.querySelector('.usa-alert__body');
+        const text = alert?.querySelector('.usa-alert__text');
+        expect(body).toBeTruthy();
+        expect(text).toBeTruthy();
+      });
+    });
+
+    describe('Event Propagation from Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should propagate change event from phone type select child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('phone-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]') as any;
+        await phoneType?.updateComplete;
+
+        const select = phoneType?.querySelector('select') as HTMLSelectElement;
+        select.value = 'mobile';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('type');
+        expect(events[0].value).toBe('mobile');
+      });
+
+      it('should propagate input event from phone number child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('phone-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]') as any;
+        await phoneNumber?.updateComplete;
+
+        const input = phoneNumber?.querySelector('input') as HTMLInputElement;
+        input.value = '5551234567';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('phoneNumber');
+        // Phone number should be formatted
+        expect(events[0].value).toBe('555-123-4567');
+      });
+
+      it('should propagate input event from extension child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('phone-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const extension = pattern.querySelector('usa-text-input[name="extension"]') as any;
+        await extension?.updateComplete;
+
+        const input = extension?.querySelector('input') as HTMLInputElement;
+        input.value = '1234';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('extension');
+        expect(events[0].value).toBe('1234');
+      });
+
+      it('should include full phone data in phone-change event', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('phone-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        // Set phone type
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]') as any;
+        const select = phoneType?.querySelector('select') as HTMLSelectElement;
+        select.value = 'work';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        await pattern.updateComplete;
+
+        // Set phone number
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]') as any;
+        const phoneInput = phoneNumber?.querySelector('input') as HTMLInputElement;
+        phoneInput.value = '5551234567';
+        phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
+        await pattern.updateComplete;
+
+        expect(events.length).toBeGreaterThan(0);
+        const lastEvent = events[events.length - 1];
+        expect(lastEvent.phoneData).toBeDefined();
+        expect(lastEvent.phoneData.type).toBe('work');
+        expect(lastEvent.phoneData.phoneNumber).toBe('555-123-4567');
+      });
+    });
+
+    describe('Phone Type Select Property Binding', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should render phone type options via property binding', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]') as any;
+        await phoneType?.updateComplete;
+
+        // Verify options were created from property binding
+        // - Select - + 3 types (mobile, home, work) = 4 options
+        await verifyPropertyBinding(phoneType, 'select', 'option', 4);
+      });
+
+      it('should have correct phone type option values', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+        const select = phoneType?.querySelector('select');
+        const options = select?.querySelectorAll('option');
+
+        const values = Array.from(options || []).map((opt) => (opt as HTMLOptionElement).value);
+
+        expect(values).toContain('');
+        expect(values).toContain('mobile');
+        expect(values).toContain('home');
+        expect(values).toContain('work');
+      });
+
+      it('should have correct phone type option text', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+        const select = phoneType?.querySelector('select');
+        const options = select?.querySelectorAll('option');
+
+        const texts = Array.from(options || []).map((opt) =>
+          (opt as HTMLOptionElement).textContent?.trim()
+        );
+
+        expect(texts).toContain('- Select -');
+        expect(texts).toContain('Mobile');
+        expect(texts).toContain('Home');
+        expect(texts).toContain('Work');
+      });
+    });
+
+    describe('Compact Mode for Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should use compact mode for phone type select component', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+
+        // Verify compact attribute is set
+        expect(phoneType?.hasAttribute('compact')).toBe(true);
+
+        // Note: Select components use combo-box wrapper, so verifyCompactMode won't work
+        // Just verify no form-group wrapper
+        const formGroup = phoneType?.querySelector('.usa-form-group');
+        expect(formGroup).toBeFalsy();
+      });
+
+      it('should use compact mode for phone number text input component', async () => {
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]');
+        await verifyCompactMode(phoneNumber as HTMLElement);
+      });
+
+      it('should use compact mode for extension text input component', async () => {
+        const extension = pattern.querySelector('usa-text-input[name="extension"]');
+        await verifyCompactMode(extension as HTMLElement);
+      });
+
+      it('should not have form-group wrappers in compact mode', async () => {
+        const components = pattern.querySelectorAll('usa-text-input, usa-select');
+        await Promise.all(
+          Array.from(components).map((c: any) => c.updateComplete || Promise.resolve())
+        );
+
+        components.forEach((component) => {
+          const formGroup = component.querySelector('.usa-form-group');
+          expect(formGroup).toBeFalsy();
+        });
+      });
+    });
+
+    describe('Programmatic Access to Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should allow direct access to child component APIs', async () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]') as any;
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]') as any;
+        const extension = pattern.querySelector('usa-text-input[name="extension"]') as any;
+
+        expect(typeof phoneType?.reset).toBe('function');
+        expect(typeof phoneNumber?.reset).toBe('function');
+        expect(typeof extension?.reset).toBe('function');
+      });
+
+      it('should allow setting child component values programmatically', async () => {
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]') as any;
+        await phoneNumber?.updateComplete;
+
+        phoneNumber.value = '555-123-4567';
+        await phoneNumber.updateComplete;
+
+        expect(phoneNumber.value).toBe('555-123-4567');
+        const input = phoneNumber.querySelector('input') as HTMLInputElement;
+        expect(input.value).toBe('555-123-4567');
+      });
+
+      it('should allow resetting child components via pattern API', async () => {
+        // Set some values
+        pattern.setPhoneData({
+          phoneNumber: '555-123-4567',
+          extension: '1234',
+          type: 'mobile',
+        });
+        await pattern.updateComplete;
+
+        // Clear via pattern API
+        pattern.clearPhoneNumber();
+        await pattern.updateComplete;
+
+        // Verify all children were reset
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]') as any;
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]') as any;
+        const extension = pattern.querySelector('usa-text-input[name="extension"]') as any;
+
+        const select = phoneType?.querySelector('select') as HTMLSelectElement;
+        const phoneInput = phoneNumber?.querySelector('input') as HTMLInputElement;
+        const extInput = extension?.querySelector('input') as HTMLInputElement;
+
+        expect(select?.value).toBe('');
+        expect(phoneInput?.value).toBe('');
+        expect(extInput?.value).toBe('');
+      });
+    });
+
+    describe('Child Component Attributes and Properties', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-phone-number-pattern') as USAPhoneNumberPattern;
+        pattern.showType = true;
+        pattern.showExtension = true;
+        pattern.required = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should set correct attributes on phone type select', () => {
+        const phoneType = pattern.querySelector('usa-select[name="phoneType"]');
+
+        expect(phoneType?.getAttribute('name')).toBe('phoneType');
+        expect(phoneType?.getAttribute('label')).toBe('Phone type');
+        expect(phoneType?.hasAttribute('compact')).toBe(true);
+      });
+
+      it('should set correct attributes on phone number input', () => {
+        const phoneNumber = pattern.querySelector('usa-text-input[name="phoneNumber"]');
+
+        expect(phoneNumber?.getAttribute('name')).toBe('phoneNumber');
+        expect(phoneNumber?.getAttribute('type')).toBe('text');
+        expect(phoneNumber?.getAttribute('inputmode')).toBe('numeric');
+        expect(phoneNumber?.getAttribute('pattern')).toBe('[0-9]{3}-[0-9]{3}-[0-9]{4}');
+        expect(phoneNumber?.getAttribute('maxlength')).toBe('12');
+        expect(phoneNumber?.hasAttribute('required')).toBe(true);
+        expect(phoneNumber?.hasAttribute('compact')).toBe(true);
+      });
+
+      it('should set correct attributes on extension input', () => {
+        const extension = pattern.querySelector('usa-text-input[name="extension"]');
+
+        expect(extension?.getAttribute('name')).toBe('extension');
+        expect(extension?.getAttribute('label')).toBe('Extension');
+        expect(extension?.getAttribute('type')).toBe('text');
+        expect(extension?.getAttribute('inputmode')).toBe('numeric');
+        expect(extension?.getAttribute('pattern')).toBe('[0-9]*');
+        expect(extension?.getAttribute('maxlength')).toBe('6');
+        expect(extension?.hasAttribute('required')).toBe(false);
+        expect(extension?.hasAttribute('compact')).toBe(true);
+      });
+
+      it('should set phone number label based on initial showType property', async () => {
+        // When showType is true at initialization, label should be "Number"
+        expect(pattern.showType).toBe(true);
+        const phoneNumberWithType = pattern.querySelector('usa-text-input[name="phoneNumber"]');
+        expect(phoneNumberWithType?.getAttribute('label')).toBe('Number');
+      });
+
+      it('should set phone number label to "Phone number" when showType is false', async () => {
+        // Create pattern without showType
+        const patternWithoutType = document.createElement(
+          'usa-phone-number-pattern'
+        ) as USAPhoneNumberPattern;
+        container.appendChild(patternWithoutType);
+        await patternWithoutType.updateComplete;
+
+        const phoneNumber = patternWithoutType.querySelector('usa-text-input[name="phoneNumber"]');
+        expect(phoneNumber?.getAttribute('label')).toBe('Phone number');
+
+        patternWithoutType.remove();
+      });
     });
   });
 });

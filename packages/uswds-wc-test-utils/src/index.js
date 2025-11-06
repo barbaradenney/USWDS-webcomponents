@@ -20,3 +20,4 @@ export * from './story-validation-utils.js';
 export * from './touch-pointer-utils.js';
 export * from './uswds-compliance-utils.js';
 export * from './uswds-integration-utils.js';
+export * from './slot-testing-utils.js';

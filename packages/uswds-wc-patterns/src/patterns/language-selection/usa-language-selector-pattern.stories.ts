@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/web-components-vite-vite';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import './index.js';
 import type { USALanguageSelectorPattern, LanguageOption } from './usa-language-selector-pattern.js';

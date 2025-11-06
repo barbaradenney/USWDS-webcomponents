@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import '@uswds-wc/test-utils/test-utils.js';
 import { USARaceEthnicityPattern } from './usa-race-ethnicity-pattern.js';
 import type { RaceEthnicityData } from './usa-race-ethnicity-pattern.js';
+import {
+  verifyChildComponent,
+  verifyUSWDSStructure,
+  verifyCompactMode,
+} from '@uswds-wc/test-utils/slot-testing-utils.js';
 
 // Register the component
 if (!customElements.get('usa-race-ethnicity-pattern')) {
@@ -629,6 +635,657 @@ describe('USARaceEthnicityPattern', () => {
     it('should use usa-input--xl for ethnicity input', () => {
       const input = element.querySelector('usa-text-input[name="ethnicity"]');
       expect(input?.classList.contains('usa-input--xl')).toBe(true);
+    });
+  });
+
+  describe('Slot Rendering & Composition', () => {
+    describe('Child Component Initialization', () => {
+      beforeEach(async () => {
+        element = document.createElement('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+        document.body.appendChild(element);
+        await element.updateComplete;
+      });
+
+      it('should initialize American Indian or Alaska Native checkbox component', async () => {
+        const checkbox = await verifyChildComponent(
+          element,
+          'usa-checkbox[value="american-indian-alaska-native"]'
+        );
+        expect(checkbox).toBeTruthy();
+
+        // Verify internal structure rendered
+        const input = checkbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('checkbox');
+      });
+
+      it('should initialize Asian checkbox component', async () => {
+        const checkbox = await verifyChildComponent(
+          element,
+          'usa-checkbox[value="asian"]'
+        );
+        expect(checkbox).toBeTruthy();
+
+        const input = checkbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('checkbox');
+      });
+
+      it('should initialize Black or African American checkbox component', async () => {
+        const checkbox = await verifyChildComponent(
+          element,
+          'usa-checkbox[value="black-african-american"]'
+        );
+        expect(checkbox).toBeTruthy();
+
+        const input = checkbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('checkbox');
+      });
+
+      it('should initialize Native Hawaiian or Pacific Islander checkbox component', async () => {
+        const checkbox = await verifyChildComponent(
+          element,
+          'usa-checkbox[value="native-hawaiian-pacific-islander"]'
+        );
+        expect(checkbox).toBeTruthy();
+
+        const input = checkbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('checkbox');
+      });
+
+      it('should initialize White checkbox component', async () => {
+        const checkbox = await verifyChildComponent(
+          element,
+          'usa-checkbox[value="white"]'
+        );
+        expect(checkbox).toBeTruthy();
+
+        const input = checkbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('checkbox');
+      });
+
+      it('should initialize ethnicity text input component', async () => {
+        const textInput = await verifyChildComponent(
+          element,
+          'usa-text-input[name="ethnicity"]'
+        );
+        expect(textInput).toBeTruthy();
+
+        const input = textInput.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('text');
+      });
+
+      it('should initialize prefer not to share checkbox component', async () => {
+        const checkbox = await verifyChildComponent(
+          element,
+          'usa-checkbox[name="prefer-not-to-share"]'
+        );
+        expect(checkbox).toBeTruthy();
+
+        const input = checkbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+        expect(input?.getAttribute('type')).toBe('checkbox');
+      });
+
+      it('should render all 5 OMB race category checkboxes', async () => {
+        // Wait for all checkbox components to initialize
+        const checkboxes = element.querySelectorAll('usa-checkbox[name="race"]');
+        expect(checkboxes.length).toBe(5);
+
+        await Promise.all(
+          Array.from(checkboxes).map((c: any) => c.updateComplete || Promise.resolve())
+        );
+
+        // Verify each checkbox rendered its internal structure
+        checkboxes.forEach((checkbox) => {
+          const input = checkbox.querySelector('input.usa-checkbox__input');
+          expect(input).toBeTruthy();
+        });
+      });
+
+      it('should hide prefer not to share when showPreferNotToShare is false', async () => {
+        element.showPreferNotToShare = false;
+        await element.updateComplete;
+
+        const checkbox = element.querySelector('usa-checkbox[name="prefer-not-to-share"]');
+        expect(checkbox).toBeFalsy();
+      });
+    });
+
+    describe('Child Component DOM Structure', () => {
+      beforeEach(async () => {
+        element = document.createElement('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+        document.body.appendChild(element);
+        await element.updateComplete;
+      });
+
+      it('should render race checkboxes in correct DOM structure', async () => {
+        // Wait for all checkbox components to initialize
+        const checkboxes = element.querySelectorAll('usa-checkbox[name="race"]');
+        await Promise.all(
+          Array.from(checkboxes).map((c: any) => c.updateComplete || Promise.resolve())
+        );
+
+        // Verify each checkbox rendered its internal structure
+        const americanIndian = element.querySelector(
+          'usa-checkbox[value="american-indian-alaska-native"]'
+        );
+        const asian = element.querySelector('usa-checkbox[value="asian"]');
+        const black = element.querySelector('usa-checkbox[value="black-african-american"]');
+        const hawaiian = element.querySelector(
+          'usa-checkbox[value="native-hawaiian-pacific-islander"]'
+        );
+        const white = element.querySelector('usa-checkbox[value="white"]');
+
+        expect(americanIndian?.querySelector('input')).toBeTruthy();
+        expect(asian?.querySelector('input')).toBeTruthy();
+        expect(black?.querySelector('input')).toBeTruthy();
+        expect(hawaiian?.querySelector('input')).toBeTruthy();
+        expect(white?.querySelector('input')).toBeTruthy();
+      });
+
+      it('should have correct USWDS classes on race checkboxes', async () => {
+        const checkboxes = element.querySelectorAll('usa-checkbox[name="race"]');
+
+        checkboxes.forEach((checkbox) => {
+          const input = checkbox.querySelector('input');
+          const label = checkbox.querySelector('label');
+
+          expect(input?.classList.contains('usa-checkbox__input')).toBe(true);
+          expect(label?.classList.contains('usa-checkbox__label')).toBe(true);
+        });
+      });
+
+      it('should have correct USWDS classes on ethnicity input', async () => {
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]');
+        const input = textInput?.querySelector('input');
+
+        expect(input?.classList.contains('usa-input')).toBe(true);
+        expect(textInput?.classList.contains('usa-input--xl')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on prefer not to share checkbox', async () => {
+        const checkbox = element.querySelector('usa-checkbox[name="prefer-not-to-share"]');
+        const input = checkbox?.querySelector('input');
+        const label = checkbox?.querySelector('label');
+
+        expect(input?.classList.contains('usa-checkbox__input')).toBe(true);
+        expect(label?.classList.contains('usa-checkbox__label')).toBe(true);
+      });
+
+      it('should have labels for all checkbox components', async () => {
+        const checkboxes = element.querySelectorAll('usa-checkbox[name="race"]');
+
+        checkboxes.forEach((checkbox) => {
+          const label = checkbox.querySelector('label');
+          expect(label).toBeTruthy();
+          expect(label?.textContent?.trim()).toBeTruthy();
+        });
+      });
+
+      it('should have label for ethnicity input component', async () => {
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]');
+
+        // The ethnicity input doesn't have a label attribute in the pattern
+        // It relies on the fieldset/legend for labeling (USWDS pattern)
+        // Verify the fieldset structure instead
+        const fieldset = element.querySelectorAll('fieldset.usa-fieldset')[1]; // Ethnicity fieldset
+        const legend = fieldset?.querySelector('legend');
+
+        expect(legend).toBeTruthy();
+        expect(legend?.textContent).toContain('ethnicity');
+      });
+    });
+
+    describe('Pattern Composition', () => {
+      beforeEach(async () => {
+        element = document.createElement('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+        document.body.appendChild(element);
+        await element.updateComplete;
+      });
+
+      it('should compose race section with all OMB categories', async () => {
+        await verifyUSWDSStructure(element, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: [
+            'usa-checkbox[value="american-indian-alaska-native"]',
+            'usa-checkbox[value="asian"]',
+            'usa-checkbox[value="black-african-american"]',
+            'usa-checkbox[value="native-hawaiian-pacific-islander"]',
+            'usa-checkbox[value="white"]',
+          ],
+        });
+      });
+
+      it('should compose ethnicity section with text input', async () => {
+        const fieldsets = element.querySelectorAll('fieldset.usa-fieldset');
+        expect(fieldsets.length).toBeGreaterThanOrEqual(2);
+
+        // Ethnicity section should have text input
+        const ethnicityInput = element.querySelector('usa-text-input[name="ethnicity"]');
+        expect(ethnicityInput).toBeTruthy();
+      });
+
+      it('should compose prefer not to share option by default', async () => {
+        const checkbox = element.querySelector('usa-checkbox[name="prefer-not-to-share"]');
+        expect(checkbox).toBeTruthy();
+      });
+
+      it('should have two separate fieldsets for race and ethnicity', async () => {
+        const fieldsets = element.querySelectorAll('fieldset.usa-fieldset');
+        expect(fieldsets.length).toBeGreaterThanOrEqual(2);
+
+        const legends = element.querySelectorAll('legend.usa-legend--large');
+        expect(legends.length).toBeGreaterThanOrEqual(2);
+      });
+
+      it('should show/hide prefer not to share based on showPreferNotToShare property', async () => {
+        element.showPreferNotToShare = true;
+        await element.updateComplete;
+
+        let checkbox = element.querySelector('usa-checkbox[name="prefer-not-to-share"]');
+        expect(checkbox).toBeTruthy();
+
+        element.showPreferNotToShare = false;
+        await element.updateComplete;
+
+        checkbox = element.querySelector('usa-checkbox[name="prefer-not-to-share"]');
+        expect(checkbox).toBeFalsy();
+      });
+
+      it('should disable race checkboxes when prefer not to share is checked', async () => {
+        const preferCheckbox = element.querySelector(
+          'usa-checkbox[name="prefer-not-to-share"]'
+        ) as any;
+        preferCheckbox.checked = true;
+        preferCheckbox.dispatchEvent(new CustomEvent('change', { detail: { checked: true } }));
+        await element.updateComplete;
+
+        const raceCheckboxes = element.querySelectorAll('usa-checkbox[name="race"]');
+        raceCheckboxes.forEach((checkbox) => {
+          expect(checkbox.hasAttribute('disabled')).toBe(true);
+        });
+      });
+
+      it('should disable ethnicity input when prefer not to share is checked', async () => {
+        const preferCheckbox = element.querySelector(
+          'usa-checkbox[name="prefer-not-to-share"]'
+        ) as any;
+        preferCheckbox.checked = true;
+        preferCheckbox.dispatchEvent(new CustomEvent('change', { detail: { checked: true } }));
+        await element.updateComplete;
+
+        const ethnicityInput = element.querySelector('usa-text-input[name="ethnicity"]');
+        expect(ethnicityInput?.hasAttribute('disabled')).toBe(true);
+      });
+    });
+
+    describe('Event Propagation from Child Components', () => {
+      beforeEach(async () => {
+        element = document.createElement('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+        document.body.appendChild(element);
+        await element.updateComplete;
+      });
+
+      it('should propagate change event from American Indian checkbox component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const checkbox = element.querySelector(
+          'usa-checkbox[value="american-indian-alaska-native"]'
+        ) as any;
+        await checkbox?.updateComplete;
+
+        const input = checkbox?.querySelector('input') as HTMLInputElement;
+        input.checked = true;
+        input.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.race).toContain('american-indian-alaska-native');
+      });
+
+      it('should propagate change event from Asian checkbox component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const checkbox = element.querySelector('usa-checkbox[value="asian"]') as any;
+        await checkbox?.updateComplete;
+
+        const input = checkbox?.querySelector('input') as HTMLInputElement;
+        input.checked = true;
+        input.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.race).toContain('asian');
+      });
+
+      it('should propagate change event from Black or African American checkbox component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const checkbox = element.querySelector(
+          'usa-checkbox[value="black-african-american"]'
+        ) as any;
+        await checkbox?.updateComplete;
+
+        const input = checkbox?.querySelector('input') as HTMLInputElement;
+        input.checked = true;
+        input.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.race).toContain('black-african-american');
+      });
+
+      it('should propagate change event from Native Hawaiian checkbox component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const checkbox = element.querySelector(
+          'usa-checkbox[value="native-hawaiian-pacific-islander"]'
+        ) as any;
+        await checkbox?.updateComplete;
+
+        const input = checkbox?.querySelector('input') as HTMLInputElement;
+        input.checked = true;
+        input.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.race).toContain('native-hawaiian-pacific-islander');
+      });
+
+      it('should propagate change event from White checkbox component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const checkbox = element.querySelector('usa-checkbox[value="white"]') as any;
+        await checkbox?.updateComplete;
+
+        const input = checkbox?.querySelector('input') as HTMLInputElement;
+        input.checked = true;
+        input.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.race).toContain('white');
+      });
+
+      it('should propagate input event from ethnicity text input component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]') as any;
+        await textInput?.updateComplete;
+
+        const input = textInput?.querySelector('input') as HTMLInputElement;
+        input.value = 'Hispanic or Latino';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.ethnicity).toBe('Hispanic or Latino');
+      });
+
+      it('should propagate change event from prefer not to share checkbox component', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const checkbox = element.querySelector('usa-checkbox[name="prefer-not-to-share"]') as any;
+        await checkbox?.updateComplete;
+
+        const input = checkbox?.querySelector('input') as HTMLInputElement;
+        input.checked = true;
+        input.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].raceEthnicityData.preferNotToShare).toBe(true);
+      });
+
+      it('should include full race/ethnicity data in race-ethnicity-change event', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        // Check Asian
+        const asianCheckbox = element.querySelector('usa-checkbox[value="asian"]') as any;
+        const asianInput = asianCheckbox?.querySelector('input') as HTMLInputElement;
+        asianInput.checked = true;
+        asianInput.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+        await element.updateComplete;
+
+        // Set ethnicity
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]') as any;
+        const input = textInput?.querySelector('input') as HTMLInputElement;
+        input.value = 'Filipino';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        const lastEvent = events[events.length - 1];
+        expect(lastEvent.raceEthnicityData).toBeDefined();
+        expect(lastEvent.raceEthnicityData.race).toContain('asian');
+        expect(lastEvent.raceEthnicityData.ethnicity).toBe('Filipino');
+      });
+
+      it('should support multiple race selections through event propagation', async () => {
+        const events: any[] = [];
+        element.addEventListener('race-ethnicity-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        // Check Asian
+        const asianCheckbox = element.querySelector('usa-checkbox[value="asian"]') as any;
+        const asianInput = asianCheckbox?.querySelector('input') as HTMLInputElement;
+        asianInput.checked = true;
+        asianInput.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+        await element.updateComplete;
+
+        // Check White
+        const whiteCheckbox = element.querySelector('usa-checkbox[value="white"]') as any;
+        const whiteInput = whiteCheckbox?.querySelector('input') as HTMLInputElement;
+        whiteInput.checked = true;
+        whiteInput.dispatchEvent(new CustomEvent('change', { detail: { checked: true }, bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        const lastEvent = events[events.length - 1];
+        expect(lastEvent.raceEthnicityData.race).toContain('asian');
+        expect(lastEvent.raceEthnicityData.race).toContain('white');
+        // Check that both races are present (length may vary due to duplicate events)
+        expect(lastEvent.raceEthnicityData.race?.length).toBeGreaterThanOrEqual(2);
+      });
+    });
+
+    describe('Pattern-Level Fieldset Structure', () => {
+      beforeEach(async () => {
+        element = document.createElement('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+        document.body.appendChild(element);
+        await element.updateComplete;
+      });
+
+      it('should use pattern-level fieldset structure for race section', async () => {
+        // Pattern uses fieldset/legend structure at pattern level
+        const fieldsets = element.querySelectorAll('fieldset.usa-fieldset');
+        expect(fieldsets.length).toBeGreaterThanOrEqual(2);
+
+        const raceFieldset = fieldsets[0];
+        const raceLegend = raceFieldset?.querySelector('legend.usa-legend--large');
+        expect(raceLegend).toBeTruthy();
+        expect(raceLegend?.textContent).toContain('race');
+      });
+
+      it('should use pattern-level fieldset structure for ethnicity section', async () => {
+        const fieldsets = element.querySelectorAll('fieldset.usa-fieldset');
+        const ethnicityFieldset = fieldsets[1];
+        const ethnicityLegend = ethnicityFieldset?.querySelector('legend.usa-legend--large');
+        expect(ethnicityLegend).toBeTruthy();
+        expect(ethnicityLegend?.textContent).toContain('ethnicity');
+      });
+
+      it('should render checkbox components without individual form-group wrappers', async () => {
+        const checkboxes = element.querySelectorAll('usa-checkbox');
+        await Promise.all(
+          Array.from(checkboxes).map((c: any) => c.updateComplete || Promise.resolve())
+        );
+
+        // Checkboxes should not have form-group wrappers
+        checkboxes.forEach((checkbox) => {
+          const formGroup = checkbox.querySelector('.usa-form-group');
+          expect(formGroup).toBeFalsy();
+        });
+      });
+
+      it('should render ethnicity input with its own form-group inside pattern fieldset', async () => {
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]');
+        await textInput?.updateComplete;
+
+        // Text input has its own form-group wrapper (standard USWDS component behavior)
+        const formGroup = textInput?.querySelector('.usa-form-group');
+        expect(formGroup).toBeTruthy();
+
+        // But it's inside the pattern-level fieldset
+        const fieldsets = element.querySelectorAll('fieldset.usa-fieldset');
+        const ethnicityFieldset = fieldsets[1];
+        expect(ethnicityFieldset?.contains(textInput as Node)).toBe(true);
+      });
+
+      it('should organize all components within pattern fieldsets', async () => {
+        const fieldsets = element.querySelectorAll('fieldset.usa-fieldset');
+        expect(fieldsets.length).toBeGreaterThanOrEqual(2);
+
+        // Race fieldset contains 5 checkboxes
+        const raceFieldset = fieldsets[0];
+        const raceCheckboxes = raceFieldset?.querySelectorAll('usa-checkbox[name="race"]');
+        expect(raceCheckboxes?.length).toBe(5);
+
+        // Ethnicity fieldset contains text input
+        const ethnicityFieldset = fieldsets[1];
+        const ethnicityInput = ethnicityFieldset?.querySelector('usa-text-input[name="ethnicity"]');
+        expect(ethnicityInput).toBeTruthy();
+      });
+    });
+
+    describe('Programmatic Access to Child Components', () => {
+      beforeEach(async () => {
+        element = document.createElement('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+        document.body.appendChild(element);
+        await element.updateComplete;
+      });
+
+      it('should allow direct access to checkbox component APIs', async () => {
+        const asianCheckbox = element.querySelector('usa-checkbox[value="asian"]') as any;
+
+        expect(typeof asianCheckbox?.reset).toBe('function');
+      });
+
+      it('should allow direct access to ethnicity input component API', async () => {
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]') as any;
+
+        expect(typeof textInput?.reset).toBe('function');
+      });
+
+      it('should allow setting checkbox values programmatically', async () => {
+        const asianCheckbox = element.querySelector('usa-checkbox[value="asian"]') as any;
+        await asianCheckbox?.updateComplete;
+
+        asianCheckbox.checked = true;
+        await asianCheckbox.updateComplete;
+
+        expect(asianCheckbox.checked).toBe(true);
+        const input = asianCheckbox.querySelector('input') as HTMLInputElement;
+        expect(input.checked).toBe(true);
+      });
+
+      it('should allow setting ethnicity input value programmatically', async () => {
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]') as any;
+        await textInput?.updateComplete;
+
+        textInput.value = 'Korean and Irish';
+        await textInput.updateComplete;
+
+        expect(textInput.value).toBe('Korean and Irish');
+        const input = textInput.querySelector('input') as HTMLInputElement;
+        expect(input.value).toBe('Korean and Irish');
+      });
+
+      it('should allow resetting all child components via pattern API', async () => {
+        // Set some values
+        element.setRaceEthnicityData({
+          race: ['asian', 'white'],
+          ethnicity: 'Chinese and Irish',
+          preferNotToShare: false,
+        });
+        await element.updateComplete;
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        // Clear via pattern API
+        element.clearRaceEthnicity();
+        await element.updateComplete;
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        // Verify all checkboxes were reset
+        const raceCheckboxes = element.querySelectorAll('usa-checkbox[name="race"]');
+        raceCheckboxes.forEach((checkbox: any) => {
+          const input = checkbox?.querySelector('input') as HTMLInputElement;
+          expect(input?.checked).toBe(false);
+        });
+
+        // Verify ethnicity input was reset
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]') as any;
+        const input = textInput?.querySelector('input') as HTMLInputElement;
+        expect(input?.value).toBe('');
+
+        // Verify prefer not to share was reset
+        const preferCheckbox = element.querySelector(
+          'usa-checkbox[name="prefer-not-to-share"]'
+        ) as any;
+        const preferInput = preferCheckbox?.querySelector('input') as HTMLInputElement;
+        expect(preferInput?.checked).toBe(false);
+      });
+
+      it('should synchronize pattern data with child component states', async () => {
+        // Set data via pattern API
+        element.setRaceEthnicityData({
+          race: ['black-african-american', 'native-hawaiian-pacific-islander'],
+          ethnicity: 'Afro-Latino',
+        });
+        await element.updateComplete;
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        // Verify child components reflect the data
+        const blackCheckbox = element.querySelector(
+          'usa-checkbox[value="black-african-american"]'
+        ) as any;
+        const hawaiianCheckbox = element.querySelector(
+          'usa-checkbox[value="native-hawaiian-pacific-islander"]'
+        ) as any;
+        const textInput = element.querySelector('usa-text-input[name="ethnicity"]') as any;
+
+        expect(blackCheckbox?.checked).toBe(true);
+        expect(hawaiianCheckbox?.checked).toBe(true);
+        expect(textInput?.value).toBe('Afro-Latino');
+
+        // Verify pattern data matches
+        const data = element.getRaceEthnicityData();
+        expect(data.race).toContain('black-african-american');
+        expect(data.race).toContain('native-hawaiian-pacific-islander');
+        expect(data.ethnicity).toBe('Afro-Latino');
+      });
     });
   });
 });

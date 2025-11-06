@@ -6,6 +6,11 @@ import type {
   ContactPreferencesData,
   ContactMethod,
 } from './usa-contact-preferences-pattern.js';
+import {
+  verifyChildComponent,
+  verifyUSWDSStructure,
+  verifyCompactMode,
+} from '@uswds-wc/test-utils/slot-testing-utils.js';
 
 describe('USAContactPreferencesPattern', () => {
   let pattern: USAContactPreferencesPattern;
@@ -665,6 +670,450 @@ describe('USAContactPreferencesPattern', () => {
       );
 
       expect(optionalHint).toBeTruthy();
+    });
+  });
+
+  describe('Slot Rendering & Composition', () => {
+    describe('Child Component Initialization', () => {
+      beforeEach(async () => {
+        pattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        pattern.showAdditionalInfo = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should initialize phone checkbox component', async () => {
+        const phoneCheckbox = await verifyChildComponent(
+          pattern,
+          'usa-checkbox[value="phone"]'
+        );
+        expect(phoneCheckbox).toBeTruthy();
+
+        // Verify internal structure rendered
+        const input = phoneCheckbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize text checkbox component', async () => {
+        const textCheckbox = await verifyChildComponent(pattern, 'usa-checkbox[value="text"]');
+        expect(textCheckbox).toBeTruthy();
+
+        const input = textCheckbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize email checkbox component', async () => {
+        const emailCheckbox = await verifyChildComponent(pattern, 'usa-checkbox[value="email"]');
+        expect(emailCheckbox).toBeTruthy();
+
+        const input = emailCheckbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize mail checkbox component', async () => {
+        const mailCheckbox = await verifyChildComponent(pattern, 'usa-checkbox[value="mail"]');
+        expect(mailCheckbox).toBeTruthy();
+
+        const input = mailCheckbox.querySelector('input.usa-checkbox__input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize additional info textarea component', async () => {
+        const textarea = await verifyChildComponent(
+          pattern,
+          'usa-textarea[name="additional-info"]'
+        );
+        expect(textarea).toBeTruthy();
+
+        const textareaEl = textarea.querySelector('textarea.usa-textarea');
+        expect(textareaEl).toBeTruthy();
+      });
+
+      it('should render all default checkbox components', async () => {
+        // All 4 default contact method checkboxes should exist
+        const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]');
+        const textCheckbox = pattern.querySelector('usa-checkbox[value="text"]');
+        const emailCheckbox = pattern.querySelector('usa-checkbox[value="email"]');
+        const mailCheckbox = pattern.querySelector('usa-checkbox[value="mail"]');
+
+        expect(phoneCheckbox).toBeTruthy();
+        expect(textCheckbox).toBeTruthy();
+        expect(emailCheckbox).toBeTruthy();
+        expect(mailCheckbox).toBeTruthy();
+
+        // All checkboxes should be visible
+        const checkboxes = pattern.querySelectorAll('usa-checkbox');
+        expect(checkboxes.length).toBe(4);
+      });
+
+      it('should hide additional info by default', async () => {
+        const defaultPattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        container.appendChild(defaultPattern);
+        await defaultPattern.updateComplete;
+
+        const textarea = defaultPattern.querySelector('usa-textarea[name="additional-info"]');
+
+        // Component should not exist when showAdditionalInfo is false
+        expect(textarea).toBeFalsy();
+
+        defaultPattern.remove();
+      });
+    });
+
+    describe('Child Components Render with Correct USWDS Classes', () => {
+      beforeEach(async () => {
+        pattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        pattern.showAdditionalInfo = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should have correct USWDS classes on phone checkbox', async () => {
+        const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]');
+        const input = phoneCheckbox?.querySelector('input');
+        const label = phoneCheckbox?.querySelector('label');
+
+        expect(input?.classList.contains('usa-checkbox__input')).toBe(true);
+        expect(label?.classList.contains('usa-checkbox__label')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on text checkbox', async () => {
+        const textCheckbox = pattern.querySelector('usa-checkbox[value="text"]');
+        const input = textCheckbox?.querySelector('input');
+        const label = textCheckbox?.querySelector('label');
+
+        expect(input?.classList.contains('usa-checkbox__input')).toBe(true);
+        expect(label?.classList.contains('usa-checkbox__label')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on email checkbox', async () => {
+        const emailCheckbox = pattern.querySelector('usa-checkbox[value="email"]');
+        const input = emailCheckbox?.querySelector('input');
+        const label = emailCheckbox?.querySelector('label');
+
+        expect(input?.classList.contains('usa-checkbox__input')).toBe(true);
+        expect(label?.classList.contains('usa-checkbox__label')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on mail checkbox', async () => {
+        const mailCheckbox = pattern.querySelector('usa-checkbox[value="mail"]');
+        const input = mailCheckbox?.querySelector('input');
+        const label = mailCheckbox?.querySelector('label');
+
+        expect(input?.classList.contains('usa-checkbox__input')).toBe(true);
+        expect(label?.classList.contains('usa-checkbox__label')).toBe(true);
+      });
+
+      it('should have correct USWDS classes on textarea', async () => {
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        const textareaEl = textarea?.querySelector('textarea');
+        const label = textarea?.querySelector('label');
+
+        expect(textareaEl?.classList.contains('usa-textarea')).toBe(true);
+        expect(label?.classList.contains('usa-label')).toBe(true);
+      });
+
+      it('should have labels for all checkbox components', async () => {
+        const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]');
+        const textCheckbox = pattern.querySelector('usa-checkbox[value="text"]');
+        const emailCheckbox = pattern.querySelector('usa-checkbox[value="email"]');
+        const mailCheckbox = pattern.querySelector('usa-checkbox[value="mail"]');
+
+        expect(phoneCheckbox?.querySelector('label')).toBeTruthy();
+        expect(textCheckbox?.querySelector('label')).toBeTruthy();
+        expect(emailCheckbox?.querySelector('label')).toBeTruthy();
+        expect(mailCheckbox?.querySelector('label')).toBeTruthy();
+      });
+
+      it('should have label for textarea component', async () => {
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        expect(textarea?.querySelector('label')).toBeTruthy();
+      });
+    });
+
+    describe('Pattern Composition and USWDS Structure Compliance', () => {
+      beforeEach(async () => {
+        pattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        pattern.showAdditionalInfo = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should compose all expected fields', async () => {
+        await verifyUSWDSStructure(pattern, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: [
+            'usa-checkbox[value="phone"]',
+            'usa-checkbox[value="text"]',
+            'usa-checkbox[value="email"]',
+            'usa-checkbox[value="mail"]',
+            'usa-textarea[name="additional-info"]',
+          ],
+        });
+      });
+
+      it('should have proper fieldset structure', () => {
+        const fieldset = pattern.querySelector('fieldset.usa-fieldset');
+        const legend = pattern.querySelector('legend.usa-legend');
+
+        expect(fieldset).toBeTruthy();
+        expect(legend).toBeTruthy();
+        expect(legend?.textContent).toBe('Contact preferences');
+      });
+
+      it('should show/hide additional info based on showAdditionalInfo property', async () => {
+        // With showAdditionalInfo = true
+        let textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        expect(textarea).toBeTruthy();
+
+        // Toggle showAdditionalInfo to false
+        pattern.showAdditionalInfo = false;
+        await pattern.updateComplete;
+
+        textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        expect(textarea).toBeFalsy();
+
+        // Toggle back to true
+        pattern.showAdditionalInfo = true;
+        await pattern.updateComplete;
+
+        textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        expect(textarea).toBeTruthy();
+      });
+
+      it('should use fieldset for semantic grouping', () => {
+        const fieldset = pattern.querySelector('fieldset');
+        const checkboxes = pattern.querySelectorAll('usa-checkbox');
+
+        expect(fieldset).toBeTruthy();
+        checkboxes.forEach((checkbox) => {
+          expect(fieldset?.contains(checkbox)).toBe(true);
+        });
+      });
+
+      it('should have legend as first child of fieldset', () => {
+        const fieldset = pattern.querySelector('fieldset');
+        const firstChild = fieldset?.querySelector(':scope > legend');
+
+        expect(firstChild).toBeTruthy();
+        expect(firstChild?.classList.contains('usa-legend')).toBe(true);
+      });
+
+      it('should maintain USWDS structure with custom methods', async () => {
+        const customPattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        customPattern.methods = [
+          { value: 'fax', label: 'Fax' },
+          { value: 'video', label: 'Video call' },
+        ];
+        container.appendChild(customPattern);
+        await customPattern.updateComplete;
+
+        await verifyUSWDSStructure(customPattern, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: ['usa-checkbox[value="fax"]', 'usa-checkbox[value="video"]'],
+        });
+
+        customPattern.remove();
+      });
+    });
+
+    describe('Event Propagation from Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        pattern.showAdditionalInfo = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should propagate checkbox change events to pattern', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('preferences-change', (e) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]') as any;
+        const input = phoneCheckbox?.querySelector('input') as HTMLInputElement;
+
+        // Check the checkbox
+        input.checked = true;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        await pattern.updateComplete;
+
+        // Verify event was received
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('preferredMethods');
+        expect(events[0].value).toContain('phone');
+      });
+
+      it('should propagate textarea input events to pattern', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('preferences-change', (e) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]') as any;
+        const textareaEl = textarea?.querySelector('textarea') as HTMLTextAreaElement;
+
+        // Type in textarea
+        textareaEl.value = 'Please call after 5 PM';
+        textareaEl.dispatchEvent(new Event('input', { bubbles: true }));
+        await pattern.updateComplete;
+
+        // Verify event was received
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('additionalInfo');
+        expect(events[0].value).toBe('Please call after 5 PM');
+      });
+
+      it('should handle multiple checkbox selections', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('preferences-change', (e) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        // Select multiple checkboxes
+        const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]') as any;
+        const emailCheckbox = pattern.querySelector('usa-checkbox[value="email"]') as any;
+
+        const phoneInput = phoneCheckbox?.querySelector('input') as HTMLInputElement;
+        const emailInput = emailCheckbox?.querySelector('input') as HTMLInputElement;
+
+        phoneInput.checked = true;
+        phoneInput.dispatchEvent(new Event('change', { bubbles: true }));
+        await pattern.updateComplete;
+
+        emailInput.checked = true;
+        emailInput.dispatchEvent(new Event('change', { bubbles: true }));
+        await pattern.updateComplete;
+
+        // Verify both events were received
+        expect(events.length).toBe(2);
+        expect(events[0].value).toContain('phone');
+        expect(events[1].value).toContain('phone');
+        expect(events[1].value).toContain('email');
+      });
+    });
+
+    describe('Compact Mode for Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        pattern.showAdditionalInfo = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should render textarea in compact mode', async () => {
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+
+        // Verify compact attribute is set
+        expect(textarea?.hasAttribute('compact')).toBe(true);
+
+        await verifyCompactMode(textarea as HTMLElement);
+      });
+
+      it('should not have form-group wrapper on textarea', () => {
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        const formGroup = textarea?.querySelector('.usa-form-group');
+
+        expect(formGroup).toBeFalsy();
+      });
+
+      it('should have textarea label as direct child', () => {
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        const label = textarea?.querySelector('label.usa-label');
+
+        expect(label).toBeTruthy();
+        expect(label?.parentElement).toBe(textarea);
+      });
+
+      it('should have textarea element as direct child', () => {
+        const textarea = pattern.querySelector('usa-textarea[name="additional-info"]');
+        const textareaEl = textarea?.querySelector('textarea.usa-textarea');
+
+        expect(textareaEl).toBeTruthy();
+        expect(textareaEl?.parentElement).toBe(textarea);
+      });
+    });
+
+    describe('Checkbox Component Properties and Attributes', () => {
+      beforeEach(async () => {
+        pattern = document.createElement(
+          'usa-contact-preferences-pattern'
+        ) as USAContactPreferencesPattern;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should have correct name attribute on all checkboxes', () => {
+        const checkboxes = pattern.querySelectorAll('usa-checkbox');
+
+        checkboxes.forEach((checkbox) => {
+          expect(checkbox.getAttribute('name')).toBe('contact-preferences');
+        });
+      });
+
+      it('should have unique value attributes on checkboxes', () => {
+        const checkboxes = pattern.querySelectorAll('usa-checkbox');
+        const values = Array.from(checkboxes).map((cb) => cb.getAttribute('value'));
+
+        // All values should be unique
+        const uniqueValues = new Set(values);
+        expect(uniqueValues.size).toBe(values.length);
+
+        // Check expected values
+        expect(values).toContain('phone');
+        expect(values).toContain('text');
+        expect(values).toContain('email');
+        expect(values).toContain('mail');
+      });
+
+      it('should have unique IDs on all checkboxes', () => {
+        const checkboxes = pattern.querySelectorAll('usa-checkbox[id]');
+        const ids = Array.from(checkboxes).map((cb) => cb.id);
+
+        // All IDs should be unique
+        const uniqueIds = new Set(ids);
+        expect(uniqueIds.size).toBe(ids.length);
+
+        // All IDs should follow pattern
+        ids.forEach((id) => {
+          expect(id).toMatch(/^contact-/);
+        });
+      });
+
+      it('should have label attributes on all checkboxes', () => {
+        const checkboxes = pattern.querySelectorAll('usa-checkbox');
+
+        checkboxes.forEach((checkbox) => {
+          const label = checkbox.getAttribute('label');
+          expect(label).toBeTruthy();
+          expect(label?.length).toBeGreaterThan(0);
+        });
+      });
+
+      it('should have description attributes on some checkboxes', () => {
+        const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]');
+        const textCheckbox = pattern.querySelector('usa-checkbox[value="text"]');
+
+        expect(phoneCheckbox?.getAttribute('description')).toContain('voicemails');
+        expect(textCheckbox?.getAttribute('description')).toContain('SMS');
+      });
     });
   });
 });

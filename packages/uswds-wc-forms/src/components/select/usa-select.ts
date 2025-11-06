@@ -39,7 +39,8 @@ export class USASelect extends LitElement {
   private _selectId = '';
   static override styles = css`
     :host {
-      display: block;
+      display: inline-block;
+      width: 100%;
     }
   `;
 
@@ -80,6 +81,14 @@ export class USASelect extends LitElement {
    */
   @property({ type: Boolean })
   compact = false;
+
+  /**
+   * Whether to disable the combo-box wrapper
+   * Use this for simple selects like memorable date month field
+   * that don't need combo-box enhancement
+   */
+  @property({ type: Boolean, attribute: 'no-combo-box' })
+  noComboBox = false;
 
   private selectElement?: HTMLSelectElement;
 
@@ -406,27 +415,31 @@ export class USASelect extends LitElement {
       .filter(Boolean)
       .join(' ');
 
+    const selectElement = html`
+      <select
+        class="usa-select"
+        id="${selectId}"
+        name="${this.name}"
+        aria-describedby="${ifDefined(
+          describedByIds.length > 0 ? describedByIds.join(' ') : undefined
+        )}"
+        ?disabled=${this.disabled}
+        ?required=${this.required}
+        .value="${this.value}"
+        @change=${this.handleChange}
+      >
+        ${this.renderDefaultOption()} ${this.options.map((option) => this.renderOption(option))}
+        <slot></slot>
+      </select>
+    `;
+
     const selectTemplate = html`
       ${this.renderLabel(selectId)} ${this.renderHint(selectId)} ${this.renderError(selectId)}
       ${this.renderSuccess(selectId)}
 
-      <div class="usa-combo-box">
-        <select
-          class="usa-select"
-          id="${selectId}"
-          name="${this.name}"
-          aria-describedby="${ifDefined(
-            describedByIds.length > 0 ? describedByIds.join(' ') : undefined
-          )}"
-          ?disabled=${this.disabled}
-          ?required=${this.required}
-          .value="${this.value}"
-          @change=${this.handleChange}
-        >
-          ${this.renderDefaultOption()} ${this.options.map((option) => this.renderOption(option))}
-          <slot></slot>
-        </select>
-      </div>
+      ${this.noComboBox
+        ? selectElement
+        : html`<div class="usa-combo-box">${selectElement}</div>`}
     `;
 
     // Compact mode: no form-group wrapper (for use inside fieldsets/patterns)

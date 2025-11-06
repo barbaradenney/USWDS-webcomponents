@@ -29,7 +29,8 @@ import '@uswds-wc/core/styles.css';
 export class USATextInput extends USWDSBaseComponent {
   static override styles = css`
     :host {
-      display: block;
+      display: inline-block;
+      width: 100%;
     }
     :host([hidden]) {
       display: none;

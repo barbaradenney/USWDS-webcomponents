@@ -284,4 +284,18 @@ export class USALanguageSelectorPattern extends LitElement {
       localStorage.removeItem(this.storageKey);
     }
   }
+
+  /**
+   * Public API: Validate language selection
+   * Returns true if current language is valid (exists in languages array)
+   */
+  validateLanguageSelection(): boolean {
+    if (!this.currentLanguage) {
+      return false;
+    }
+
+    // Verify current language exists in available languages
+    const languageExists = this.languages.some((lang) => lang.code === this.currentLanguage);
+    return languageExists;
+  }
 }

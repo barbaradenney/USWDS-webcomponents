@@ -44,8 +44,28 @@ const PATTERNS = [
     viewports: ['mobile', 'tablet', 'desktop'],
   },
   {
-    name: 'multi-step-form',
-    storyId: 'patterns-multi-step-form--default',
+    name: 'date-of-birth',
+    storyId: 'patterns-date-of-birth--default',
+    viewports: ['mobile', 'tablet', 'desktop'],
+  },
+  {
+    name: 'email-address',
+    storyId: 'patterns-email-address--default',
+    viewports: ['mobile', 'tablet', 'desktop'],
+  },
+  {
+    name: 'ssn',
+    storyId: 'patterns-ssn--default',
+    viewports: ['mobile', 'tablet', 'desktop'],
+  },
+  {
+    name: 'race-ethnicity',
+    storyId: 'patterns-race-ethnicity--default',
+    viewports: ['mobile', 'tablet', 'desktop'],
+  },
+  {
+    name: 'sex',
+    storyId: 'patterns-sex--default',
     viewports: ['mobile', 'tablet', 'desktop'],
   },
 ];
@@ -73,7 +93,7 @@ test.describe('Pattern Visual Regression Tests', () => {
           await page.goto(`http://localhost:6006/iframe.html?id=${storyId}&viewMode=story`);
 
           // Wait for pattern to be ready
-          await page.waitForSelector(`usa-${name}-pattern, usa-language-selector-pattern, usa-multi-step-form-pattern, usa-form-summary-pattern`, {
+          await page.waitForSelector(`usa-${name}-pattern, usa-language-selector-pattern, usa-form-summary-pattern, usa-date-of-birth-pattern, usa-email-address-pattern, usa-ssn-pattern, usa-race-ethnicity-pattern, usa-sex-pattern`, {
             timeout: 10000,
           });
 
@@ -97,7 +117,7 @@ test.describe('Pattern Visual Regression Tests', () => {
         await page.goto(`http://localhost:6006/iframe.html?id=${storyId}&viewMode=story`);
 
         // Wait for pattern
-        await page.waitForSelector(`usa-${name}-pattern, usa-language-selector-pattern, usa-multi-step-form-pattern, usa-form-summary-pattern`, {
+        await page.waitForSelector(`usa-${name}-pattern, usa-language-selector-pattern, usa-form-summary-pattern, usa-date-of-birth-pattern, usa-email-address-pattern, usa-ssn-pattern, usa-race-ethnicity-pattern, usa-sex-pattern`, {
           timeout: 10000,
         });
 
@@ -171,14 +191,40 @@ test.describe('Pattern Visual Regression Tests', () => {
       });
     });
 
-    test('multi-step-form pattern - with validation', async ({ page }) => {
+    test('date-of-birth pattern - memorable date format', async ({ page }) => {
       await page.setViewportSize(VIEWPORTS.desktop);
-      await page.goto('http://localhost:6006/iframe.html?id=patterns-multi-step-form--with-validation&viewMode=story');
+      await page.goto('http://localhost:6006/iframe.html?id=patterns-date-of-birth--memorable-date&viewMode=story');
 
-      await page.waitForSelector('usa-multi-step-form-pattern');
+      await page.waitForSelector('usa-date-of-birth-pattern');
       await page.waitForTimeout(500);
 
-      await expect(page).toHaveScreenshot('multi-step-form-validation.png', {
+      await expect(page).toHaveScreenshot('date-of-birth-memorable.png', {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('email-address pattern - with confirmation', async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.desktop);
+      await page.goto('http://localhost:6006/iframe.html?id=patterns-email-address--with-confirmation&viewMode=story');
+
+      await page.waitForSelector('usa-email-address-pattern');
+      await page.waitForTimeout(500);
+
+      await expect(page).toHaveScreenshot('email-address-confirmation.png', {
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+
+    test('race-ethnicity pattern - with other option', async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.desktop);
+      await page.goto('http://localhost:6006/iframe.html?id=patterns-race-ethnicity--default&viewMode=story');
+
+      await page.waitForSelector('usa-race-ethnicity-pattern');
+      await page.waitForTimeout(500);
+
+      await expect(page).toHaveScreenshot('race-ethnicity-default.png', {
         fullPage: true,
         animations: 'disabled',
       });
@@ -209,13 +255,84 @@ test.describe('Pattern Visual Regression Tests', () => {
     });
   });
 
+  test.describe('Pattern Compact Mode', () => {
+    test('patterns should render correctly in compact mode', async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.desktop);
+
+      // Test a few representative patterns in compact mode
+      const compactPatterns = [
+        { name: 'address', storyId: 'patterns-address--compact' },
+        { name: 'name', storyId: 'patterns-name--compact' },
+        { name: 'phone-number', storyId: 'patterns-phone-number--compact' },
+      ];
+
+      for (const { name, storyId } of compactPatterns) {
+        await page.goto(`http://localhost:6006/iframe.html?id=${storyId}&viewMode=story`);
+        await page.waitForSelector(`usa-${name}-pattern`);
+        await page.waitForTimeout(500);
+
+        await expect(page).toHaveScreenshot(`${name}-compact.png`, {
+          fullPage: true,
+          animations: 'disabled',
+          maxDiffPixels: 100,
+        });
+      }
+    });
+  });
+
+  test.describe('Pattern Responsive Layout', () => {
+    test('patterns should adapt to mobile layout correctly', async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.mobile);
+
+      // Test patterns that have complex layouts
+      const layoutPatterns = [
+        { name: 'address', storyId: 'patterns-address--default' },
+        { name: 'date-of-birth', storyId: 'patterns-date-of-birth--memorable-date' },
+        { name: 'phone-number', storyId: 'patterns-phone-number--with-extension' },
+      ];
+
+      for (const { name, storyId } of layoutPatterns) {
+        await page.goto(`http://localhost:6006/iframe.html?id=${storyId}&viewMode=story`);
+        await page.waitForSelector(`usa-${name}-pattern`);
+        await page.waitForTimeout(500);
+
+        await expect(page).toHaveScreenshot(`${name}-mobile-layout.png`, {
+          fullPage: true,
+          animations: 'disabled',
+          maxDiffPixels: 100,
+        });
+      }
+    });
+
+    test('patterns should adapt to tablet layout correctly', async ({ page }) => {
+      await page.setViewportSize(VIEWPORTS.tablet);
+
+      const layoutPatterns = [
+        { name: 'race-ethnicity', storyId: 'patterns-race-ethnicity--default' },
+        { name: 'contact-preferences', storyId: 'patterns-contact-preferences--default' },
+      ];
+
+      for (const { name, storyId } of layoutPatterns) {
+        await page.goto(`http://localhost:6006/iframe.html?id=${storyId}&viewMode=story`);
+        await page.waitForSelector(`usa-${name}-pattern`);
+        await page.waitForTimeout(500);
+
+        await expect(page).toHaveScreenshot(`${name}-tablet-layout.png`, {
+          fullPage: true,
+          animations: 'disabled',
+          maxDiffPixels: 100,
+        });
+      }
+    });
+  });
+
   test.describe('Pattern Accessibility', () => {
     test('patterns should have proper ARIA attributes', async ({ page }) => {
       await page.setViewportSize(VIEWPORTS.desktop);
 
       for (const { name, storyId } of PATTERNS.slice(0, 3)) {
         await page.goto(`http://localhost:6006/iframe.html?id=${storyId}&viewMode=story`);
-        await page.waitForSelector(`usa-${name}-pattern, usa-language-selector-pattern, usa-multi-step-form-pattern, usa-form-summary-pattern`);
+        await page.waitForSelector(`usa-${name}-pattern, usa-language-selector-pattern, usa-form-summary-pattern, usa-date-of-birth-pattern, usa-email-address-pattern, usa-ssn-pattern, usa-race-ethnicity-pattern, usa-sex-pattern`);
 
         // Check for labels
         const labels = page.locator('label');

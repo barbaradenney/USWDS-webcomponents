@@ -129,16 +129,11 @@ export class USARaceEthnicityPattern extends LitElement {
     preferNotToShare: false,
   };
 
-  @state()
-  private hasRendered = false;
-
   // ========================================
   // Lifecycle
   // ========================================
 
   override firstUpdated() {
-    this.hasRendered = true;
-
     // Emit pattern-ready event
     this.dispatchEvent(
       new CustomEvent('pattern-ready', {

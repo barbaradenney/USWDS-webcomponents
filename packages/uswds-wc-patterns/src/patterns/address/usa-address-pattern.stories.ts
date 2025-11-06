@@ -95,6 +95,18 @@ export const WithEventHandling: Story = {
 };
 
 /**
+ * With Google Plus Code field visible (for addresses without street addresses).
+ */
+export const WithGooglePlusCode: Story = {
+  render: () => html`
+    <usa-address-pattern
+      .showPlusCode="${true}"
+      label="Remote Location Address"
+    ></usa-address-pattern>
+  `,
+};
+
+/**
  * Multiple addresses in a form (e.g., billing and shipping).
  */
 export const MultipleAddresses: Story = {

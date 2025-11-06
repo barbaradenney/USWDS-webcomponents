@@ -164,7 +164,7 @@ export class USASexPattern extends LitElement {
           label="Male"
           ?required="${this.required}"
           @change="${(e: CustomEvent) => {
-            if (e.detail?.checked || e.target?.checked) {
+            if (e.detail?.checked || (e.target as any)?.checked) {
               this.handleFieldChange('male');
             }
           }}"
@@ -178,7 +178,7 @@ export class USASexPattern extends LitElement {
           label="Female"
           ?required="${this.required}"
           @change="${(e: CustomEvent) => {
-            if (e.detail?.checked || e.target?.checked) {
+            if (e.detail?.checked || (e.target as any)?.checked) {
               this.handleFieldChange('female');
             }
           }}"

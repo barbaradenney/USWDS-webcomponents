@@ -324,7 +324,7 @@ describe('USAAddressPattern - USWDS Compliance', () => {
       const legend = pattern.querySelector('legend');
 
       expect(fieldset?.className).toBe('usa-fieldset');
-      expect(legend?.className).toBe('usa-legend');
+      expect(legend?.className).toBe('usa-legend usa-legend--large');
     });
 
     it('should have compact form components rendering correctly', async () => {

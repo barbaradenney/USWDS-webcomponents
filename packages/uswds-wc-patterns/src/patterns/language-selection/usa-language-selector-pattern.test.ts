@@ -311,6 +311,52 @@ describe('USALanguageSelectorPattern', () => {
       // Should not change language
       expect(pattern.getCurrentLanguageCode()).toBe('en');
     });
+
+    it('should validate language selection - valid language', () => {
+      const isValid = pattern.validateLanguageSelection();
+      expect(isValid).toBe(true);
+    });
+
+    it('should validate language selection - valid after language change', async () => {
+      pattern.changeLanguage('es');
+      await pattern.updateComplete;
+
+      const isValid = pattern.validateLanguageSelection();
+      expect(isValid).toBe(true);
+    });
+
+    it('should validate language selection - invalid if language not in list', async () => {
+      // Manually set current language to invalid code (bypassing changeLanguage)
+      (pattern as any).currentLanguage = 'invalid-code';
+      await pattern.updateComplete;
+
+      const isValid = pattern.validateLanguageSelection();
+      expect(isValid).toBe(false);
+    });
+
+    it('should validate language selection - invalid if currentLanguage is empty', async () => {
+      // Manually clear current language
+      (pattern as any).currentLanguage = '';
+      await pattern.updateComplete;
+
+      const isValid = pattern.validateLanguageSelection();
+      expect(isValid).toBe(false);
+    });
+
+    it('should validate language selection - valid with custom languages', async () => {
+      const newLanguages = [
+        { code: 'en', name: 'English', nativeName: 'English' },
+        { code: 'fr', name: 'French', nativeName: 'Français' },
+        { code: 'de', name: 'German', nativeName: 'Deutsch' },
+      ];
+
+      pattern.setLanguages(newLanguages);
+      pattern.changeLanguage('fr');
+      await pattern.updateComplete;
+
+      const isValid = pattern.validateLanguageSelection();
+      expect(isValid).toBe(true);
+    });
   });
 
   describe('Initialization Priority', () => {
@@ -495,6 +541,396 @@ describe('USALanguageSelectorPattern', () => {
 
       expect(pattern.getCurrentLanguageCode()).toBe('fr');
       expect(document.documentElement.lang).toBe('fr');
+    });
+  });
+
+  describe('Slot Rendering & Composition', () => {
+    beforeEach(async () => {
+      pattern = document.createElement(
+        'usa-language-selector-pattern'
+      ) as USALanguageSelectorPattern;
+      container.appendChild(pattern);
+      await pattern.updateComplete;
+    });
+
+    describe('Child Component Initialization', () => {
+      it('should render usa-language-selector component', () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector).toBeTruthy();
+        expect(selector?.tagName).toBe('USA-LANGUAGE-SELECTOR');
+      });
+
+      it('should initialize child component', async () => {
+        const selector = pattern.querySelector('usa-language-selector') as any;
+        expect(selector).toBeTruthy();
+
+        // Wait for child component to initialize
+        if (selector?.updateComplete) {
+          await selector.updateComplete;
+        }
+
+        // Verify child component is initialized
+        expect(selector).toBeInstanceOf(HTMLElement);
+      });
+
+      it('should render only one child component', () => {
+        const selectors = pattern.querySelectorAll('usa-language-selector');
+        expect(selectors.length).toBe(1);
+      });
+    });
+
+    describe('USWDS Structure Compliance', () => {
+      it('should use unstyled variant by default (pattern manages styling)', () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        // Pattern uses 'two-languages' variant
+        expect(selector?.getAttribute('variant')).toBe('two-languages');
+      });
+
+      it('should have correct USWDS structure in child component', async () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        await (selector as any)?.updateComplete;
+
+        // Verify child component rendered internal structure
+        // The exact structure depends on variant
+        expect(selector?.querySelector('.usa-language')).toBeTruthy();
+      });
+    });
+
+    describe('Event Propagation from Child Component', () => {
+      it('should propagate language-select event from child component to pattern', async () => {
+        const changeEvents: any[] = [];
+        pattern.addEventListener('pattern-language-change', (e: Event) => {
+          changeEvents.push((e as CustomEvent).detail);
+        });
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector).toBeTruthy();
+
+        // Dispatch language-select event from child component
+        const languageSelectEvent = new CustomEvent('language-select', {
+          detail: {
+            code: 'es',
+            language: { code: 'es', name: 'Spanish', nativeName: 'Español' },
+            previousCode: 'en',
+          },
+          bubbles: true,
+          composed: true,
+        });
+
+        selector?.dispatchEvent(languageSelectEvent);
+        await pattern.updateComplete;
+
+        // Verify pattern received and re-emitted event
+        expect(changeEvents.length).toBeGreaterThan(0);
+        expect(changeEvents[0].code).toBe('es');
+        expect(changeEvents[0].previousCode).toBe('en');
+      });
+
+      it('should handle language-select event and update document lang', async () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector).toBeTruthy();
+
+        const languageSelectEvent = new CustomEvent('language-select', {
+          detail: {
+            code: 'fr',
+            language: { code: 'fr', name: 'French', nativeName: 'Français' },
+            previousCode: 'en',
+          },
+          bubbles: true,
+          composed: true,
+        });
+
+        selector?.dispatchEvent(languageSelectEvent);
+        await pattern.updateComplete;
+
+        // Verify document lang was updated
+        expect(document.documentElement.lang).toBe('fr');
+      });
+
+      it('should persist language when event propagates with persistPreference enabled', async () => {
+        pattern.persistPreference = true;
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector).toBeTruthy();
+
+        const languageSelectEvent = new CustomEvent('language-select', {
+          detail: {
+            code: 'de',
+            language: { code: 'de', name: 'German', nativeName: 'Deutsch' },
+            previousCode: 'en',
+          },
+          bubbles: true,
+          composed: true,
+        });
+
+        selector?.dispatchEvent(languageSelectEvent);
+        await pattern.updateComplete;
+
+        // Verify localStorage was updated
+        expect(localStorage.getItem('uswds-language-preference')).toBe('de');
+      });
+    });
+
+    describe('Variant and Small Mode Propagation', () => {
+      it('should pass variant="two-languages" to child component by default', async () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('variant')).toBe('two-languages');
+      });
+
+      it('should pass variant="dropdown" to child component', async () => {
+        pattern.variant = 'dropdown';
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('variant')).toBe('dropdown');
+      });
+
+      it('should pass variant="unstyled" to child component', async () => {
+        pattern.variant = 'unstyled';
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('variant')).toBe('unstyled');
+      });
+
+      it('should not have small attribute by default', () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.hasAttribute('small')).toBe(false);
+      });
+
+      it('should pass small attribute to child component when enabled', async () => {
+        pattern.small = true;
+        pattern.variant = 'dropdown'; // small only applies to dropdown
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.hasAttribute('small')).toBe(true);
+      });
+
+      it('should remove small attribute when disabled', async () => {
+        pattern.small = true;
+        pattern.variant = 'dropdown';
+        await pattern.updateComplete;
+
+        let selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.hasAttribute('small')).toBe(true);
+
+        pattern.small = false;
+        await pattern.updateComplete;
+
+        selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.hasAttribute('small')).toBe(false);
+      });
+
+      it('should pass button-text to child component', async () => {
+        pattern.buttonText = 'Select Language';
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('button-text')).toBe('Select Language');
+      });
+
+      it('should update button-text dynamically', async () => {
+        pattern.buttonText = 'Choose';
+        await pattern.updateComplete;
+
+        let selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('button-text')).toBe('Choose');
+
+        pattern.buttonText = 'Language Options';
+        await pattern.updateComplete;
+
+        selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('button-text')).toBe('Language Options');
+      });
+    });
+
+    describe('Property Binding for Language Options', () => {
+      it('should pass default languages to child component', async () => {
+        const selector = pattern.querySelector('usa-language-selector') as any;
+        await selector?.updateComplete;
+
+        // Verify languages property binding
+        expect(selector?.languages).toBeDefined();
+        expect(selector?.languages.length).toBeGreaterThanOrEqual(2);
+      });
+
+      it('should pass current language to child component', async () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('current-language')).toBe('en');
+      });
+
+      it('should update current language in child when changed', async () => {
+        pattern.changeLanguage('es');
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('current-language')).toBe('es');
+      });
+
+      it('should pass custom languages to child component', async () => {
+        const customLanguages = [
+          { code: 'en', name: 'English', nativeName: 'English' },
+          { code: 'fr', name: 'French', nativeName: 'Français' },
+          { code: 'de', name: 'German', nativeName: 'Deutsch' },
+          { code: 'zh', name: 'Chinese', nativeName: '中文' },
+        ];
+
+        pattern.setLanguages(customLanguages);
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector') as any;
+        await selector?.updateComplete;
+
+        expect(selector?.languages).toBeDefined();
+        expect(selector?.languages.length).toBe(4);
+        expect(selector?.languages[3].code).toBe('zh');
+      });
+
+      it('should sync language options when updated dynamically', async () => {
+        const selector = pattern.querySelector('usa-language-selector') as any;
+        await selector?.updateComplete;
+
+        const initialLanguages = selector?.languages;
+        expect(initialLanguages?.length).toBe(2);
+
+        const newLanguages = [
+          { code: 'en', name: 'English', nativeName: 'English' },
+          { code: 'es', name: 'Spanish', nativeName: 'Español' },
+          { code: 'pt', name: 'Portuguese', nativeName: 'Português' },
+        ];
+
+        pattern.setLanguages(newLanguages);
+        await pattern.updateComplete;
+        await selector?.updateComplete;
+
+        expect(selector?.languages.length).toBe(3);
+        expect(selector?.languages[2].code).toBe('pt');
+      });
+    });
+
+    describe('Pattern-Level Event Enrichment', () => {
+      it('should enrich child component event with document lang', async () => {
+        const changeEvents: any[] = [];
+        pattern.addEventListener('pattern-language-change', (e: Event) => {
+          changeEvents.push((e as CustomEvent).detail);
+        });
+
+        const selector = pattern.querySelector('usa-language-selector');
+        const languageSelectEvent = new CustomEvent('language-select', {
+          detail: {
+            code: 'ja',
+            language: { code: 'ja', name: 'Japanese', nativeName: '日本語' },
+            previousCode: 'en',
+          },
+          bubbles: true,
+          composed: true,
+        });
+
+        selector?.dispatchEvent(languageSelectEvent);
+        await pattern.updateComplete;
+
+        expect(changeEvents.length).toBeGreaterThan(0);
+        expect(changeEvents[0].documentLang).toBeDefined();
+        expect(changeEvents[0].documentLang).toBe('ja');
+      });
+
+      it('should enrich child component event with persisted flag', async () => {
+        pattern.persistPreference = true;
+        await pattern.updateComplete;
+
+        const changeEvents: any[] = [];
+        pattern.addEventListener('pattern-language-change', (e: Event) => {
+          changeEvents.push((e as CustomEvent).detail);
+        });
+
+        const selector = pattern.querySelector('usa-language-selector');
+        const languageSelectEvent = new CustomEvent('language-select', {
+          detail: {
+            code: 'ko',
+            language: { code: 'ko', name: 'Korean', nativeName: '한국어' },
+            previousCode: 'en',
+          },
+          bubbles: true,
+          composed: true,
+        });
+
+        selector?.dispatchEvent(languageSelectEvent);
+        await pattern.updateComplete;
+
+        expect(changeEvents.length).toBeGreaterThan(0);
+        expect(changeEvents[0].persisted).toBe(true);
+      });
+
+      it('should include language object in enriched event', async () => {
+        const changeEvents: any[] = [];
+        pattern.addEventListener('pattern-language-change', (e: Event) => {
+          changeEvents.push((e as CustomEvent).detail);
+        });
+
+        const selector = pattern.querySelector('usa-language-selector');
+        const testLanguage = { code: 'it', name: 'Italian', nativeName: 'Italiano' };
+        const languageSelectEvent = new CustomEvent('language-select', {
+          detail: {
+            code: 'it',
+            language: testLanguage,
+            previousCode: 'en',
+          },
+          bubbles: true,
+          composed: true,
+        });
+
+        selector?.dispatchEvent(languageSelectEvent);
+        await pattern.updateComplete;
+
+        expect(changeEvents.length).toBeGreaterThan(0);
+        expect(changeEvents[0].language).toEqual(testLanguage);
+      });
+    });
+
+    describe('Child Component Re-rendering on Property Changes', () => {
+      it('should re-render child component when variant changes', async () => {
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.getAttribute('variant')).toBe('two-languages');
+
+        pattern.variant = 'dropdown';
+        await pattern.updateComplete;
+        await (selector as any)?.updateComplete;
+
+        expect(selector?.getAttribute('variant')).toBe('dropdown');
+      });
+
+      it('should re-render child component when small changes', async () => {
+        pattern.variant = 'dropdown';
+        await pattern.updateComplete;
+
+        const selector = pattern.querySelector('usa-language-selector');
+        expect(selector?.hasAttribute('small')).toBe(false);
+
+        pattern.small = true;
+        await pattern.updateComplete;
+        await (selector as any)?.updateComplete;
+
+        expect(selector?.hasAttribute('small')).toBe(true);
+      });
+
+      it('should re-render child component when languages change', async () => {
+        const selector = pattern.querySelector('usa-language-selector') as any;
+        await selector?.updateComplete;
+
+        expect(selector?.languages.length).toBe(2);
+
+        pattern.setLanguages([
+          { code: 'en', name: 'English', nativeName: 'English' },
+          { code: 'es', name: 'Spanish', nativeName: 'Español' },
+          { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
+        ]);
+        await pattern.updateComplete;
+        await selector?.updateComplete;
+
+        expect(selector?.languages.length).toBe(3);
+      });
     });
   });
 });

@@ -47,6 +47,9 @@
     },
     "./uswds-integration-utils.js": {
       "import": "./src/uswds-integration-utils.js"
+    },
+    "./slot-testing-utils.js": {
+      "import": "./src/slot-testing-utils.js"
     }
   },
   "files": [

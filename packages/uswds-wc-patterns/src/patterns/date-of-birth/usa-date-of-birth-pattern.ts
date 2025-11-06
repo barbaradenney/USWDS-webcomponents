@@ -101,19 +101,18 @@ export class USADateOfBirthPattern extends LitElement {
    * Month options for select dropdown
    */
   private readonly monthOptions = [
-    { value: '', label: '- Select -' },
-    { value: '01', label: '01 - January' },
-    { value: '02', label: '02 - February' },
-    { value: '03', label: '03 - March' },
-    { value: '04', label: '04 - April' },
-    { value: '05', label: '05 - May' },
-    { value: '06', label: '06 - June' },
-    { value: '07', label: '07 - July' },
-    { value: '08', label: '08 - August' },
-    { value: '09', label: '09 - September' },
-    { value: '10', label: '10 - October' },
-    { value: '11', label: '11 - November' },
-    { value: '12', label: '12 - December' },
+    { value: '01', text: '01 - January' },
+    { value: '02', text: '02 - February' },
+    { value: '03', text: '03 - March' },
+    { value: '04', text: '04 - April' },
+    { value: '05', text: '05 - May' },
+    { value: '06', text: '06 - June' },
+    { value: '07', text: '07 - July' },
+    { value: '08', text: '08 - August' },
+    { value: '09', text: '09 - September' },
+    { value: '10', text: '10 - October' },
+    { value: '11', text: '11 - November' },
+    { value: '12', text: '12 - December' },
   ];
 
   constructor() {
@@ -200,30 +199,31 @@ export class USADateOfBirthPattern extends LitElement {
 
         <div class="usa-memorable-date">
           <!-- Month Select -->
-          <usa-select
-            id="${this.patternId}-month"
-            name="date_of_birth_month"
-            label="Month"
-            ?required="${this.required}"
-            compact
-            @change="${(e: Event) => {
-              const select = e.target as HTMLSelectElement;
-              this.handleFieldChange('month', select.value);
-            }}"
-          >
-            ${this.monthOptions.map(
-              (option) =>
-                html`<option value="${option.value}">${option.label}</option>`
-            )}
-          </usa-select>
+          <div class="usa-form-group usa-form-group--month usa-form-group--select">
+            <usa-select
+              id="${this.patternId}-month"
+              name="date_of_birth_month"
+              label="Month"
+              defaultOption="- Select -"
+              .options="${this.monthOptions}"
+              ?required="${this.required}"
+              compact
+              no-combo-box
+              @change="${(e: Event) => {
+                const select = e.target as HTMLSelectElement;
+                this.handleFieldChange('month', select.value);
+              }}"
+            ></usa-select>
+          </div>
 
           <!-- Day Input -->
-          <usa-text-input
-            id="${this.patternId}-day"
-            name="date_of_birth_day"
-            label="Day"
-            type="text"
-            inputmode="numeric"
+          <div class="usa-form-group usa-form-group--day">
+            <usa-text-input
+              id="${this.patternId}-day"
+              name="date_of_birth_day"
+              label="Day"
+              type="text"
+              inputmode="numeric"
             pattern="[0-9]*"
             maxlength="2"
             ?required="${this.required}"
@@ -231,22 +231,25 @@ export class USADateOfBirthPattern extends LitElement {
             @input="${(e: Event) =>
               this.handleFieldChange('day', (e.target as HTMLInputElement).value)}"
           ></usa-text-input>
+          </div>
 
           <!-- Year Input -->
-          <usa-text-input
-            id="${this.patternId}-year"
-            name="date_of_birth_year"
-            label="Year"
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            minlength="4"
-            maxlength="4"
-            ?required="${this.required}"
-            compact
-            @input="${(e: Event) =>
-              this.handleFieldChange('year', (e.target as HTMLInputElement).value)}"
-          ></usa-text-input>
+          <div class="usa-form-group usa-form-group--year">
+            <usa-text-input
+              id="${this.patternId}-year"
+              name="date_of_birth_year"
+              label="Year"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              minlength="4"
+              maxlength="4"
+              ?required="${this.required}"
+              compact
+              @input="${(e: Event) =>
+                this.handleFieldChange('year', (e.target as HTMLInputElement).value)}"
+            ></usa-text-input>
+          </div>
         </div>
       </fieldset>
     `;

@@ -268,7 +268,7 @@ export class USASSNPattern extends LitElement {
     if (!this.required && !this.ssnData.ssn) return true;
     if (this.required && !this.ssnData.ssn) return false;
 
-    return this.isValidSSN(this.ssnData.ssn);
+    return this.isValidSSN(this.ssnData.ssn || '');
   }
 
   /**

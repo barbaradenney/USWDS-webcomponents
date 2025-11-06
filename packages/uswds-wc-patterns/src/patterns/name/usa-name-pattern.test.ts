@@ -2,6 +2,12 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import './usa-name-pattern.js';
 import type { USANamePattern, NameData, NameFormat } from './usa-name-pattern.js';
+import {
+  verifyChildComponent,
+  verifyPropertyBinding,
+  verifyUSWDSStructure,
+  verifyCompactMode,
+} from '@uswds-wc/test-utils/slot-testing-utils.js';
 
 describe('USANamePattern', () => {
   let pattern: USANamePattern;
@@ -683,6 +689,550 @@ describe('USANamePattern', () => {
 
       expect(givenName?.getAttribute('maxlength')).toBe('128');
       expect(familyName?.getAttribute('maxlength')).toBe('128');
+    });
+  });
+
+  describe('Slot Rendering & Composition', () => {
+    describe('Child Component Initialization', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        pattern.showMiddle = true;
+        pattern.showSuffix = true;
+        pattern.showPreferred = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should initialize full name text input component', async () => {
+        pattern.format = 'full';
+        await pattern.updateComplete;
+
+        const fullName = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="fullName"]'
+        );
+        expect(fullName).toBeTruthy();
+
+        // Verify internal structure rendered
+        const input = fullName.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize given name text input component', async () => {
+        const givenName = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="givenName"]'
+        );
+        expect(givenName).toBeTruthy();
+
+        const input = givenName.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize middle name text input component', async () => {
+        const middleName = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="middleName"]'
+        );
+        expect(middleName).toBeTruthy();
+
+        const input = middleName.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize family name text input component', async () => {
+        const familyName = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="familyName"]'
+        );
+        expect(familyName).toBeTruthy();
+
+        const input = familyName.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should initialize suffix select component', async () => {
+        const suffix = await verifyChildComponent(pattern, 'usa-select[name="suffix"]');
+        expect(suffix).toBeTruthy();
+
+        const select = suffix.querySelector('select.usa-select');
+        expect(select).toBeTruthy();
+      });
+
+      it('should initialize preferred name text input component', async () => {
+        const preferredName = await verifyChildComponent(
+          pattern,
+          'usa-text-input[name="preferredName"]'
+        );
+        expect(preferredName).toBeTruthy();
+
+        const input = preferredName.querySelector('input.usa-input');
+        expect(input).toBeTruthy();
+      });
+
+      it('should render all child components for full format', async () => {
+        pattern.format = 'full';
+        await pattern.updateComplete;
+
+        // Full name should be visible
+        const fullName = pattern.querySelector('usa-text-input[name="fullName"]');
+        expect(fullName).toBeTruthy();
+        expect(fullName?.closest('.display-none')).toBe(null);
+
+        // Other fields should exist but be hidden
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]');
+        expect(givenName).toBeTruthy();
+        expect(familyName).toBeTruthy();
+        expect(givenName?.closest('.display-none')).toBeTruthy();
+      });
+
+      it('should render all child components for separate format', async () => {
+        pattern.format = 'separate';
+        await pattern.updateComplete;
+
+        // Separate fields should be visible
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]');
+        expect(givenName).toBeTruthy();
+        expect(familyName).toBeTruthy();
+        expect(givenName?.closest('.display-none')).toBe(null);
+        expect(familyName?.closest('.display-none')).toBe(null);
+
+        // Full name should exist but be hidden
+        const fullName = pattern.querySelector('usa-text-input[name="fullName"]');
+        expect(fullName).toBeTruthy();
+        expect(fullName?.closest('.display-none')).toBeTruthy();
+      });
+
+      it('should render all child components for flexible format', async () => {
+        pattern.format = 'flexible';
+        await pattern.updateComplete;
+
+        // Both full name and separate fields should be visible
+        const fullName = pattern.querySelector('usa-text-input[name="fullName"]');
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]');
+
+        expect(fullName).toBeTruthy();
+        expect(givenName).toBeTruthy();
+        expect(familyName).toBeTruthy();
+
+        expect(fullName?.closest('.display-none')).toBe(null);
+        expect(givenName?.closest('.display-none')).toBe(null);
+        expect(familyName?.closest('.display-none')).toBe(null);
+      });
+    });
+
+    describe('Child Component DOM Structure', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        pattern.showMiddle = true;
+        pattern.showSuffix = true;
+        pattern.showPreferred = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should render child components in correct DOM structure', async () => {
+        // Wait for all child components to initialize
+        const components = pattern.querySelectorAll('usa-text-input, usa-select');
+        await Promise.all(
+          Array.from(components).map((c: any) => c.updateComplete || Promise.resolve())
+        );
+
+        // Verify each component rendered its internal structure
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        const middleName = pattern.querySelector('usa-text-input[name="middleName"]');
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]');
+        const suffix = pattern.querySelector('usa-select[name="suffix"]');
+        const preferredName = pattern.querySelector('usa-text-input[name="preferredName"]');
+
+        expect(givenName?.querySelector('input')).toBeTruthy();
+        expect(middleName?.querySelector('input')).toBeTruthy();
+        expect(familyName?.querySelector('input')).toBeTruthy();
+        expect(suffix?.querySelector('select')).toBeTruthy();
+        expect(preferredName?.querySelector('input')).toBeTruthy();
+      });
+
+      it('should have correct USWDS classes on child components', async () => {
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        const suffix = pattern.querySelector('usa-select[name="suffix"]');
+
+        const givenInput = givenName?.querySelector('input');
+        const suffixSelect = suffix?.querySelector('select');
+
+        expect(givenInput?.classList.contains('usa-input')).toBe(true);
+        expect(suffixSelect?.classList.contains('usa-select')).toBe(true);
+      });
+
+      it('should have labels for all child components', async () => {
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        const middleName = pattern.querySelector('usa-text-input[name="middleName"]');
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]');
+        const suffix = pattern.querySelector('usa-select[name="suffix"]');
+
+        expect(givenName?.querySelector('label')).toBeTruthy();
+        expect(middleName?.querySelector('label')).toBeTruthy();
+        expect(familyName?.querySelector('label')).toBeTruthy();
+        expect(suffix?.querySelector('label')).toBeTruthy();
+      });
+    });
+
+    describe('Pattern Composition', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        pattern.showMiddle = true;
+        pattern.showSuffix = true;
+        pattern.showPreferred = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should compose all expected fields for full format', async () => {
+        pattern.format = 'full';
+        await pattern.updateComplete;
+
+        await verifyUSWDSStructure(pattern, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: ['usa-text-input[name="fullName"]'],
+        });
+      });
+
+      it('should compose all expected fields for separate format', async () => {
+        await verifyUSWDSStructure(pattern, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: [
+            'usa-text-input[name="givenName"]',
+            'usa-text-input[name="middleName"]',
+            'usa-text-input[name="familyName"]',
+            'usa-select[name="suffix"]',
+            'usa-text-input[name="preferredName"]',
+          ],
+        });
+      });
+
+      it('should compose all expected fields for flexible format', async () => {
+        pattern.format = 'flexible';
+        await pattern.updateComplete;
+
+        await verifyUSWDSStructure(pattern, {
+          fieldsetClass: 'usa-fieldset',
+          legendClass: 'usa-legend usa-legend--large',
+          expectedChildren: [
+            'usa-text-input[name="fullName"]',
+            'usa-text-input[name="givenName"]',
+            'usa-text-input[name="familyName"]',
+          ],
+        });
+      });
+
+      it('should show/hide middle name based on showMiddle property', async () => {
+        pattern.showMiddle = false;
+        await pattern.updateComplete;
+
+        const middleName = pattern.querySelector('usa-text-input[name="middleName"]');
+        expect(middleName?.classList.contains('display-none')).toBe(true);
+
+        pattern.showMiddle = true;
+        await pattern.updateComplete;
+        expect(middleName?.classList.contains('display-none')).toBe(false);
+      });
+
+      it('should show/hide suffix based on showSuffix property', async () => {
+        pattern.showSuffix = false;
+        await pattern.updateComplete;
+
+        const suffix = pattern.querySelector('usa-select[name="suffix"]');
+        expect(suffix?.classList.contains('display-none')).toBe(true);
+
+        pattern.showSuffix = true;
+        await pattern.updateComplete;
+        expect(suffix?.classList.contains('display-none')).toBe(false);
+      });
+
+      it('should show/hide preferred name based on showPreferred property', async () => {
+        pattern.showPreferred = false;
+        await pattern.updateComplete;
+
+        const preferredName = pattern.querySelector('usa-text-input[name="preferredName"]');
+        expect(preferredName?.classList.contains('display-none')).toBe(true);
+
+        pattern.showPreferred = true;
+        await pattern.updateComplete;
+        expect(preferredName?.classList.contains('display-none')).toBe(false);
+      });
+    });
+
+    describe('Event Propagation from Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        pattern.showMiddle = true;
+        pattern.showSuffix = true;
+        pattern.showPreferred = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should propagate input event from given name child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('name-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]') as any;
+        await givenName?.updateComplete;
+
+        const input = givenName?.querySelector('input') as HTMLInputElement;
+        input.value = 'Jane';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('givenName');
+        expect(events[0].value).toBe('Jane');
+      });
+
+      it('should propagate input event from middle name child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('name-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const middleName = pattern.querySelector('usa-text-input[name="middleName"]') as any;
+        await middleName?.updateComplete;
+
+        const input = middleName?.querySelector('input') as HTMLInputElement;
+        input.value = 'Marie';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('middleName');
+        expect(events[0].value).toBe('Marie');
+      });
+
+      it('should propagate input event from family name child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('name-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]') as any;
+        await familyName?.updateComplete;
+
+        const input = familyName?.querySelector('input') as HTMLInputElement;
+        input.value = 'Smith';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('familyName');
+        expect(events[0].value).toBe('Smith');
+      });
+
+      it('should propagate change event from suffix select child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('name-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const suffix = pattern.querySelector('usa-select[name="suffix"]') as any;
+        await suffix?.updateComplete;
+
+        const select = suffix?.querySelector('select') as HTMLSelectElement;
+        select.value = 'Jr.';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('suffix');
+        expect(events[0].value).toBe('Jr.');
+      });
+
+      it('should propagate input event from preferred name child component', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('name-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        const preferredName = pattern.querySelector(
+          'usa-text-input[name="preferredName"]'
+        ) as any;
+        await preferredName?.updateComplete;
+
+        const input = preferredName?.querySelector('input') as HTMLInputElement;
+        input.value = 'Jay';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        expect(events[0].field).toBe('preferredName');
+        expect(events[0].value).toBe('Jay');
+      });
+
+      it('should include full name data in name-change event', async () => {
+        const events: any[] = [];
+        pattern.addEventListener('name-change', (e: Event) => {
+          events.push((e as CustomEvent).detail);
+        });
+
+        // Set some initial values
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]') as any;
+        const givenInput = givenName?.querySelector('input') as HTMLInputElement;
+        givenInput.value = 'John';
+        givenInput.dispatchEvent(new Event('input', { bubbles: true }));
+        await pattern.updateComplete;
+
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]') as any;
+        const familyInput = familyName?.querySelector('input') as HTMLInputElement;
+        familyInput.value = 'Doe';
+        familyInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+        expect(events.length).toBeGreaterThan(0);
+        const lastEvent = events[events.length - 1];
+        expect(lastEvent.nameData).toBeDefined();
+        expect(lastEvent.nameData.givenName).toBe('John');
+        expect(lastEvent.nameData.familyName).toBe('Doe');
+      });
+    });
+
+    describe('Suffix Select Property Binding', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        pattern.showSuffix = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should render suffix options via property binding', async () => {
+        const suffix = pattern.querySelector('usa-select[name="suffix"]') as any;
+        await suffix?.updateComplete;
+
+        // Verify options were created from property binding
+        await verifyPropertyBinding(suffix, 'select', 'option', 7); // - Select - + 6 suffixes
+      });
+
+      it('should have correct suffix option values', async () => {
+        const suffix = pattern.querySelector('usa-select[name="suffix"]');
+        const select = suffix?.querySelector('select');
+        const options = select?.querySelectorAll('option');
+
+        const values = Array.from(options || []).map((opt) => (opt as HTMLOptionElement).value);
+
+        expect(values).toContain('');
+        expect(values).toContain('Jr.');
+        expect(values).toContain('Sr.');
+        expect(values).toContain('II');
+        expect(values).toContain('III');
+        expect(values).toContain('IV');
+        expect(values).toContain('V');
+      });
+    });
+
+    describe('Compact Mode', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should use compact mode for child text input components', async () => {
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]');
+        await verifyCompactMode(givenName as HTMLElement);
+      });
+
+      it('should use compact mode for suffix select component', async () => {
+        pattern.showSuffix = true;
+        await pattern.updateComplete;
+
+        const suffix = pattern.querySelector('usa-select[name="suffix"]');
+        await verifyCompactMode(suffix as HTMLElement);
+      });
+
+      it('should not have form-group wrappers in compact mode', async () => {
+        const components = pattern.querySelectorAll('usa-text-input, usa-select');
+        await Promise.all(
+          Array.from(components).map((c: any) => c.updateComplete || Promise.resolve())
+        );
+
+        components.forEach((component) => {
+          const formGroup = component.querySelector('.usa-form-group');
+          expect(formGroup).toBeFalsy();
+        });
+      });
+    });
+
+    describe('Programmatic Access to Child Components', () => {
+      beforeEach(async () => {
+        pattern = document.createElement('usa-name-pattern') as USANamePattern;
+        pattern.format = 'separate';
+        pattern.showMiddle = true;
+        pattern.showSuffix = true;
+        pattern.showPreferred = true;
+        container.appendChild(pattern);
+        await pattern.updateComplete;
+      });
+
+      it('should allow direct access to child component APIs', async () => {
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]') as any;
+        const suffix = pattern.querySelector('usa-select[name="suffix"]') as any;
+
+        expect(typeof givenName?.reset).toBe('function');
+        expect(typeof suffix?.reset).toBe('function');
+      });
+
+      it('should allow setting child component values programmatically', async () => {
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]') as any;
+        await givenName?.updateComplete;
+
+        givenName.value = 'Alice';
+        await givenName.updateComplete;
+
+        expect(givenName.value).toBe('Alice');
+        const input = givenName.querySelector('input') as HTMLInputElement;
+        expect(input.value).toBe('Alice');
+      });
+
+      it('should allow resetting child components via pattern API', async () => {
+        // Set some values
+        pattern.setNameData({
+          givenName: 'John',
+          middleName: 'Michael',
+          familyName: 'Smith',
+          suffix: 'Jr.',
+          preferredName: 'Mike',
+        });
+        await pattern.updateComplete;
+
+        // Clear via pattern API
+        pattern.clearName();
+        await pattern.updateComplete;
+
+        // Verify all children were reset
+        const givenName = pattern.querySelector('usa-text-input[name="givenName"]') as any;
+        const middleName = pattern.querySelector('usa-text-input[name="middleName"]') as any;
+        const familyName = pattern.querySelector('usa-text-input[name="familyName"]') as any;
+        const suffix = pattern.querySelector('usa-select[name="suffix"]') as any;
+        const preferredName = pattern.querySelector(
+          'usa-text-input[name="preferredName"]'
+        ) as any;
+
+        const givenInput = givenName?.querySelector('input') as HTMLInputElement;
+        const middleInput = middleName?.querySelector('input') as HTMLInputElement;
+        const familyInput = familyName?.querySelector('input') as HTMLInputElement;
+        const suffixSelect = suffix?.querySelector('select') as HTMLSelectElement;
+        const preferredInput = preferredName?.querySelector('input') as HTMLInputElement;
+
+        expect(givenInput?.value).toBe('');
+        expect(middleInput?.value).toBe('');
+        expect(familyInput?.value).toBe('');
+        expect(suffixSelect?.value).toBe('');
+        expect(preferredInput?.value).toBe('');
+      });
     });
   });
 });

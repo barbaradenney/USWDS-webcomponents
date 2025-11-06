@@ -315,7 +315,7 @@ describe('All Patterns - Cross-Pattern Consistency', () => {
 
       // All patterns should use same USWDS classes
       expect(fieldset?.className).toBe('usa-fieldset');
-      expect(legend?.className).toBe('usa-legend');
+      expect(legend?.className).toBe('usa-legend usa-legend--large');
     });
   });
 });

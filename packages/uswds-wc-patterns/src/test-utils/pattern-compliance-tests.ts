@@ -253,7 +253,7 @@ export async function runGenericPatternCompliance(config: PatternComplianceConfi
  * Creates a describe block with all generic pattern compliance tests
  */
 export function createGenericPatternComplianceTests(
-  patternName: string,
+  _patternName: string,
   getPattern: () => Element,
   _config?: Partial<PatternComplianceConfig>
 ) {
