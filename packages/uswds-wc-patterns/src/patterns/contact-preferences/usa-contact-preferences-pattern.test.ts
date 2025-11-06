@@ -989,15 +989,12 @@ describe('USAContactPreferencesPattern', () => {
         const phoneCheckbox = pattern.querySelector('usa-checkbox[value="phone"]') as any;
         const emailCheckbox = pattern.querySelector('usa-checkbox[value="email"]') as any;
 
-        const phoneInput = phoneCheckbox?.querySelector('input') as HTMLInputElement;
-        const emailInput = emailCheckbox?.querySelector('input') as HTMLInputElement;
-
-        phoneInput.checked = true;
-        phoneInput.dispatchEvent(new Event('change', { bubbles: true }));
+        phoneCheckbox.checked = true;
+        phoneCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
         await pattern.updateComplete;
 
-        emailInput.checked = true;
-        emailInput.dispatchEvent(new Event('change', { bubbles: true }));
+        emailCheckbox.checked = true;
+        emailCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
         await pattern.updateComplete;
 
         // Verify both events were received

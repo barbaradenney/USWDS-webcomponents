@@ -250,7 +250,10 @@ export class USAContactPreferencesPattern extends LitElement {
               value="${method.value}"
               label="${method.label}"
               description="${method.description || ''}"
-              @change="${(e: CustomEvent) => this.handleMethodChange(method.value, e.detail.checked)}"
+              @change="${(e: Event) => {
+                const checkbox = e.target as any;
+                this.handleMethodChange(method.value, checkbox.checked);
+              }}"
             ></usa-checkbox>
           `
         )}
@@ -265,7 +268,10 @@ export class USAContactPreferencesPattern extends LitElement {
                   hint="For example, accessibility needs, preferred language, best time to contact, etc. (optional)"
                   rows="3"
                   compact
-                  @input="${(e: CustomEvent) => this.handleAdditionalInfoChange(e.detail.value)}"
+                  @input="${(e: Event) => {
+                    const textarea = e.target as any;
+                    this.handleAdditionalInfoChange(textarea.value);
+                  }}"
                 ></usa-textarea>
               </div>
             `
