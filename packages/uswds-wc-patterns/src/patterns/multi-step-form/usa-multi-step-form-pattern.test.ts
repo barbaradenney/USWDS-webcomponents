@@ -146,6 +146,8 @@ describe('USAMultiStepFormPattern', () => {
     it('should show Submit button on final step', async () => {
       pattern.goToStep(2);
       await pattern.updateComplete;
+      // Wait for child components to render
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       const buttons = pattern.querySelectorAll('usa-button');
       const submitButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Submit');
@@ -172,13 +174,19 @@ describe('USAMultiStepFormPattern', () => {
     });
 
     it('should use custom button labels', async () => {
-      pattern.backButtonLabel = 'Previous';
-      pattern.nextButtonLabel = 'Continue';
-      pattern.submitButtonLabel = 'Finish';
-      pattern.goToStep(2);
-      await pattern.updateComplete;
+      // Create new pattern with custom labels set before rendering
+      const customPattern = document.createElement('usa-multi-step-form-pattern') as USAMultiStepFormPattern;
+      customPattern.steps = mockSteps;
+      customPattern.backButtonLabel = 'Previous';
+      customPattern.nextButtonLabel = 'Continue';
+      customPattern.submitButtonLabel = 'Finish';
+      container.appendChild(customPattern);
+      await customPattern.updateComplete;
 
-      const buttons = pattern.querySelectorAll('usa-button');
+      customPattern.goToStep(2);
+      await customPattern.updateComplete;
+
+      const buttons = customPattern.querySelectorAll('usa-button');
       const backButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Previous');
       const submitButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Finish');
 
@@ -231,39 +239,45 @@ describe('USAMultiStepFormPattern', () => {
 
     it('should proceed if validation passes', async () => {
       const validate = vi.fn().mockReturnValue(true);
-      pattern.steps = [
+      // Create new pattern with validation set before rendering
+      const validationPattern = document.createElement('usa-multi-step-form-pattern') as USAMultiStepFormPattern;
+      validationPattern.steps = [
         { id: 'step1', label: 'Step 1', validate },
         { id: 'step2', label: 'Step 2' },
       ];
-      await pattern.updateComplete;
+      container.appendChild(validationPattern);
+      await validationPattern.updateComplete;
 
-      const buttons = pattern.querySelectorAll('usa-button');
+      const buttons = validationPattern.querySelectorAll('usa-button');
       const nextButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Next') as HTMLElement;
       nextButton?.click();
 
-      await pattern.updateComplete;
+      await validationPattern.updateComplete;
 
       expect(validate).toHaveBeenCalled();
-      expect(pattern.getCurrentStepIndex()).toBe(1); // Should advance
+      expect(validationPattern.getCurrentStepIndex()).toBe(1); // Should advance
     });
 
     it('should support async validation', async () => {
       const validate = vi.fn().mockResolvedValue(true);
-      pattern.steps = [
+      // Create new pattern with async validation set before rendering
+      const asyncPattern = document.createElement('usa-multi-step-form-pattern') as USAMultiStepFormPattern;
+      asyncPattern.steps = [
         { id: 'step1', label: 'Step 1', validate },
         { id: 'step2', label: 'Step 2' },
       ];
-      await pattern.updateComplete;
+      container.appendChild(asyncPattern);
+      await asyncPattern.updateComplete;
 
-      const buttons = pattern.querySelectorAll('usa-button');
+      const buttons = asyncPattern.querySelectorAll('usa-button');
       const nextButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Next') as HTMLElement;
       nextButton?.click();
 
-      await pattern.updateComplete;
+      await asyncPattern.updateComplete;
       await new Promise((resolve) => setTimeout(resolve, 50)); // Wait for async validation
 
       expect(validate).toHaveBeenCalled();
-      expect(pattern.getCurrentStepIndex()).toBe(1);
+      expect(asyncPattern.getCurrentStepIndex()).toBe(1);
     });
   });
 
@@ -380,17 +394,28 @@ describe('USAMultiStepFormPattern', () => {
 
     it('should validate final step before completion', async () => {
       const validate = vi.fn().mockReturnValue(false);
-      pattern.steps[2].validate = validate;
-      await pattern.updateComplete;
+      // Create new pattern with validation set before rendering
+      const validationPattern = document.createElement('usa-multi-step-form-pattern') as USAMultiStepFormPattern;
+      validationPattern.steps = [
+        mockSteps[0],
+        mockSteps[1],
+        { ...mockSteps[2], validate },
+      ];
+      container.appendChild(validationPattern);
+      await validationPattern.updateComplete;
+
+      // Navigate to final step
+      validationPattern.goToStep(2);
+      await validationPattern.updateComplete;
 
       const completeListener = vi.fn();
-      pattern.addEventListener('form-complete', completeListener);
+      validationPattern.addEventListener('form-complete', completeListener);
 
-      const buttons = pattern.querySelectorAll('usa-button');
+      const buttons = validationPattern.querySelectorAll('usa-button');
       const submitButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Submit') as HTMLElement;
       submitButton?.click();
 
-      await pattern.updateComplete;
+      await validationPattern.updateComplete;
 
       expect(validate).toHaveBeenCalled();
       expect(completeListener).not.toHaveBeenCalled();

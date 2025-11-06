@@ -365,6 +365,21 @@ export async function verifyCompactMode(component) {
   expect(input, 'Input not found').toBeTruthy();
 
   // In Light DOM, label and input should be direct children of the component
+  // Exception: select elements may have combo-box wrapper
   expect(label?.parentElement, 'Label should be direct child').toBe(component);
-  expect(input?.parentElement, 'Input should be direct child').toBe(component);
+
+  const isSelect = input?.tagName.toLowerCase() === 'select';
+  if (isSelect) {
+    // For select elements, check if parent is combo-box wrapper, then check grandparent
+    const parent = input?.parentElement;
+    if (parent?.classList.contains('usa-combo-box')) {
+      expect(parent?.parentElement, 'Select combo-box wrapper should be direct child').toBe(
+        component
+      );
+    } else {
+      expect(parent, 'Select should be direct child or in combo-box wrapper').toBe(component);
+    }
+  } else {
+    expect(input?.parentElement, 'Input should be direct child').toBe(component);
+  }
 }
