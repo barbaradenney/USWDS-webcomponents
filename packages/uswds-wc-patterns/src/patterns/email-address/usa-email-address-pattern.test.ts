@@ -478,14 +478,22 @@ describe('USAEmailAddressPattern', () => {
 
   describe('Light DOM Pattern', () => {
     it('should not re-render after initial render', async () => {
-      const initialHTML = element.innerHTML;
+      const renderSpy = vi.spyOn(element, 'render');
+
+      // After initial render
+      await element.updateComplete;
+      renderSpy.mockClear();
 
       // Try to trigger re-render with showConsent change
       element.showConsent = true;
       await element.updateComplete;
 
-      // HTML should be the same (class toggled manually, not re-rendered)
-      expect(element.innerHTML).toBe(initialHTML);
+      // render() should not have been called (class toggled manually, not re-rendered)
+      expect(renderSpy).not.toHaveBeenCalled();
+
+      // But the consent section should now be visible
+      const consentSection = element.querySelector('.consent-section');
+      expect(consentSection?.classList.contains('display-none')).toBe(false);
     });
 
     it('should prevent re-render for visibility properties', async () => {

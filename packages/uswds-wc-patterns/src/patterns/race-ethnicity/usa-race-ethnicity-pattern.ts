@@ -71,6 +71,13 @@ export class USARaceEthnicityPattern extends LitElement {
   // ========================================
 
   /**
+   * Main label for the pattern (for consistency with other data patterns)
+   * Defaults to the race section label
+   */
+  @property({ type: String })
+  label = 'Race and Ethnicity';
+
+  /**
    * Label for the race section
    */
   @property({ type: String })

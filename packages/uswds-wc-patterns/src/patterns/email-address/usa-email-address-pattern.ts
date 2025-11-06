@@ -173,8 +173,8 @@ export class USAEmailAddressPattern extends LitElement {
   override updated(changedProperties: Map<string, any>) {
     super.updated(changedProperties);
 
-    // Toggle consent visibility
-    if (changedProperties.has('showConsent') || changedProperties.size === 0) {
+    // Toggle consent visibility only when showConsent property changes
+    if (changedProperties.has('showConsent')) {
       this.toggleConsentVisibility();
     }
   }
