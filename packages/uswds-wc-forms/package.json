@@ -1,6 +1,6 @@
 {
   "name": "@uswds-wc/forms",
-  "version": "2.1.1",
+  "version": "2.3.0",
   "description": "USWDS Form Components - Web Components",
   "type": "module",
   "main": "./dist/index.js",
