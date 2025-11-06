@@ -13,6 +13,20 @@ describe('USAMultiStepFormPattern', () => {
     { id: 'review', label: 'Review' },
   ];
 
+  // Helper to wait for button to appear
+  const waitForButton = async (buttonText: string, maxWait = 500): Promise<HTMLElement | null> => {
+    const startTime = Date.now();
+    while (Date.now() - startTime < maxWait) {
+      const buttons = pattern.querySelectorAll('usa-button');
+      const button = Array.from(buttons).find((btn) => btn.textContent?.trim() === buttonText) as HTMLElement;
+      if (button) {
+        return button;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+    return null;
+  };
+
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -146,11 +160,8 @@ describe('USAMultiStepFormPattern', () => {
     it('should show Submit button on final step', async () => {
       pattern.goToStep(2);
       await pattern.updateComplete;
-      // Wait for child components to render
-      await new Promise((resolve) => setTimeout(resolve, 50));
 
-      const buttons = pattern.querySelectorAll('usa-button');
-      const submitButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Submit');
+      const submitButton = await waitForButton('Submit');
       expect(submitButton).toBeTruthy();
     });
 
@@ -176,6 +187,7 @@ describe('USAMultiStepFormPattern', () => {
     it('should use custom button labels', async () => {
       // Create new pattern with custom labels set before rendering
       const customPattern = document.createElement('usa-multi-step-form-pattern') as USAMultiStepFormPattern;
+      pattern = customPattern; // Set to outer scope for waitForButton helper
       customPattern.steps = mockSteps;
       customPattern.backButtonLabel = 'Previous';
       customPattern.nextButtonLabel = 'Continue';
@@ -186,9 +198,8 @@ describe('USAMultiStepFormPattern', () => {
       customPattern.goToStep(2);
       await customPattern.updateComplete;
 
-      const buttons = customPattern.querySelectorAll('usa-button');
-      const backButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Previous');
-      const submitButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Finish');
+      const backButton = await waitForButton('Previous');
+      const submitButton = await waitForButton('Finish');
 
       expect(backButton).toBeTruthy();
       expect(submitButton).toBeTruthy();
@@ -247,6 +258,8 @@ describe('USAMultiStepFormPattern', () => {
       ];
       container.appendChild(validationPattern);
       await validationPattern.updateComplete;
+      // Wait for child components to render
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
       const buttons = validationPattern.querySelectorAll('usa-button');
       const nextButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Next') as HTMLElement;
@@ -268,13 +281,15 @@ describe('USAMultiStepFormPattern', () => {
       ];
       container.appendChild(asyncPattern);
       await asyncPattern.updateComplete;
+      // Wait for child components to render
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
       const buttons = asyncPattern.querySelectorAll('usa-button');
       const nextButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Next') as HTMLElement;
       nextButton?.click();
 
       await asyncPattern.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 50)); // Wait for async validation
+      await new Promise((resolve) => setTimeout(resolve, 250)); // Wait for async validation
 
       expect(validate).toHaveBeenCalled();
       expect(asyncPattern.getCurrentStepIndex()).toBe(1);
@@ -377,6 +392,8 @@ describe('USAMultiStepFormPattern', () => {
       // Navigate to final step
       pattern.goToStep(2);
       await pattern.updateComplete;
+      // Wait for child components to render after navigation
+      await new Promise((resolve) => setTimeout(resolve, 250));
     });
 
     it('should emit form-complete event when submitting final step', async () => {
@@ -407,6 +424,8 @@ describe('USAMultiStepFormPattern', () => {
       // Navigate to final step
       validationPattern.goToStep(2);
       await validationPattern.updateComplete;
+      // Wait for child components to render
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
       const completeListener = vi.fn();
       validationPattern.addEventListener('form-complete', completeListener);
@@ -428,11 +447,15 @@ describe('USAMultiStepFormPattern', () => {
 
       const buttons = pattern.querySelectorAll('usa-button');
       const submitButton = Array.from(buttons).find((btn) => btn.textContent?.trim() === 'Submit') as HTMLElement;
+
+      // Ensure button exists before clicking
+      expect(submitButton).toBeTruthy();
       submitButton?.click();
 
       await pattern.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 250));
 
+      // localStorage should be cleared after form completion
       expect(localStorage.getItem('test-form-progress')).toBeNull();
     });
   });
