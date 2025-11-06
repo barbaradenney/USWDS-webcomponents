@@ -374,25 +374,40 @@ Object.defineProperty(navigator, 'userAgent', {
   value: 'Mozilla/5.0 (Node.js) AppleWebKit/537.36 (KHTML, like Gecko) Test/1.0.0',
 });
 
-// Mock localStorage for components that might use it
-const localStorageMock = {
-  getItem: (_key: string) => null,
-  setItem: (_key: string, _value: string) => {},
-  removeItem: (_key: string) => {},
-  clear: () => {},
-  length: 0,
-  key: (_index: number) => null,
+// Mock localStorage with a working implementation for tests
+// This uses a real Map to store values, unlike the previous mock that did nothing
+const createStorage = () => {
+  const store = new Map<string, string>();
+  return {
+    getItem: (key: string) => store.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      store.set(key, String(value));
+    },
+    removeItem: (key: string) => {
+      store.delete(key);
+    },
+    clear: () => {
+      store.clear();
+    },
+    get length() {
+      return store.size;
+    },
+    key: (index: number) => {
+      const keys = Array.from(store.keys());
+      return keys[index] ?? null;
+    },
+  };
 };
 
 Object.defineProperty(window, 'localStorage', {
   writable: true,
-  value: localStorageMock,
+  value: createStorage(),
 });
 
-// Mock sessionStorage
+// Mock sessionStorage with its own storage
 Object.defineProperty(window, 'sessionStorage', {
   writable: true,
-  value: localStorageMock,
+  value: createStorage(),
 });
 
 // Mock HTMLFormElement.requestSubmit for JSdom compatibility
