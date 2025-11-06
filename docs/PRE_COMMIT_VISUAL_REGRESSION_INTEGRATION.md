@@ -91,7 +91,7 @@ $ VISUAL_REGRESSION_PRECOMMIT=1 git commit -m "feat(patterns): update address la
 📸 12/14 Pattern visual regression tests (opt-in)...
    → Detected 1 pattern file(s) modified
    ✅ Storybook ready
-   ✅ Pass (12 patterns tested across 3 viewports)
+   ✅ Pass (11 patterns tested across 3 viewports)
 
 ✅ All checks passed!
 ```
