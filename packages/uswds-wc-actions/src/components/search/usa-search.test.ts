@@ -249,7 +249,7 @@ describe('USASearch', () => {
 
       // Verify no img tags with icon paths exist
       const imgTags = element.querySelectorAll('img');
-      const iconImgs = Array.from(imgTags).filter(img => {
+      const iconImgs = Array.from(imgTags).filter((img) => {
         const src = img.getAttribute('src');
         return src && (src.includes('search') || src.includes('icon'));
       });

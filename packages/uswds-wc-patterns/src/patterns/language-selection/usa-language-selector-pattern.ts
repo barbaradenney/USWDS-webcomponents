@@ -244,7 +244,9 @@ export class USALanguageSelectorPattern extends LitElement {
   /**
    * Public API: Set available languages
    */
-  setLanguages(languages: Array<{ code: string; name: string; nativeName: string; href?: string }>) {
+  setLanguages(
+    languages: Array<{ code: string; name: string; nativeName: string; href?: string }>
+  ) {
     this.languages = languages;
   }
 

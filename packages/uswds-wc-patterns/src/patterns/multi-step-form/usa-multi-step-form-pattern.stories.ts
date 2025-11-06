@@ -108,17 +108,13 @@ export const WithPersistence: Story = {
       <div class="usa-alert usa-alert--info">
         <div class="usa-alert__body">
           <p class="usa-alert__text">
-            <strong>State persistence enabled:</strong> Your progress is automatically saved.
-            Try navigating steps and refreshing the page!
+            <strong>State persistence enabled:</strong> Your progress is automatically saved. Try
+            navigating steps and refreshing the page!
           </p>
         </div>
       </div>
 
-      <usa-multi-step-form-pattern
-        .steps=${steps}
-        persist-state
-        storage-key="demo-form-progress"
-      >
+      <usa-multi-step-form-pattern .steps=${steps} persist-state storage-key="demo-form-progress">
         <div slot="step-step1">
           <h2 class="usa-prose">Step 1: Getting Started</h2>
           <p class="usa-prose">This is the first step of the form.</p>

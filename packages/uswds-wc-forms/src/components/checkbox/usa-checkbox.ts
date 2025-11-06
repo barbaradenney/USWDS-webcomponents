@@ -90,7 +90,6 @@ export class USACheckbox extends LitElement {
     this.initializeUSWDSCheckbox();
   }
 
-
   override firstUpdated() {
     // ARCHITECTURE: Script Tag Pattern
     // USWDS is loaded globally via script tag in .storybook/preview-head.html
@@ -321,8 +320,7 @@ export class USACheckbox extends LitElement {
       <div class="${wrapperClasses}">
         <input
           id="${checkboxId}"
-          class="usa-checkbox__input ${this.tile ? 'usa-checkbox__input--tile' : ''} ${this
-            .error
+          class="usa-checkbox__input ${this.tile ? 'usa-checkbox__input--tile' : ''} ${this.error
             ? 'usa-input--error'
             : ''}"
           type="checkbox"

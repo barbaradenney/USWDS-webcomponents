@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { html } from 'lit';
 import './index.js';
-import type { USALanguageSelectorPattern, LanguageOption } from './usa-language-selector-pattern.js';
+import type {
+  USALanguageSelectorPattern,
+  LanguageOption,
+} from './usa-language-selector-pattern.js';
 
 const meta: Meta<USALanguageSelectorPattern> = {
   title: 'Patterns/Language Selection',
@@ -169,10 +172,13 @@ export const WithPersistence: Story = {
     return html`
       ${pattern}
 
-      <div style="margin-top: 2rem; padding: 1rem; background: #e7f6f8; border-left: 4px solid #00bde3; border-radius: 4px;">
+      <div
+        style="margin-top: 2rem; padding: 1rem; background: #e7f6f8; border-left: 4px solid #00bde3; border-radius: 4px;"
+      >
         <h4 style="margin-top: 0;">Persistence Enabled</h4>
         <p style="margin-bottom: 0;">
-          Your language selection is saved to localStorage and will be restored when you reload the page.
+          Your language selection is saved to localStorage and will be restored when you reload the
+          page.
         </p>
         <button
           style="margin-top: 1rem;"
@@ -211,7 +217,9 @@ export const DropdownVariant: Story = {
         button-text="${args.buttonText}"
       ></usa-language-selector-pattern>
 
-      <div style="margin-top: 2rem; padding: 1rem; background: #fef0e6; border-left: 4px solid #ffbc78; border-radius: 4px;">
+      <div
+        style="margin-top: 2rem; padding: 1rem; background: #fef0e6; border-left: 4px solid #ffbc78; border-radius: 4px;"
+      >
         <h4 style="margin-top: 0;">Dropdown Variant</h4>
         <p style="margin-bottom: 0;">
           Use dropdown variant for 3+ languages. This example shows 7 languages.
@@ -230,7 +238,9 @@ export const SmallVariant: Story = {
     small: true,
   },
   render: (args) => html`
-    <div style="display: flex; align-items: center; gap: 1rem; background: #f0f0f0; padding: 0.5rem;">
+    <div
+      style="display: flex; align-items: center; gap: 1rem; background: #f0f0f0; padding: 0.5rem;"
+    >
       <span style="font-size: 0.875rem;">Compact header:</span>
       <usa-language-selector-pattern
         variant="${args.variant}"
@@ -239,7 +249,9 @@ export const SmallVariant: Story = {
       ></usa-language-selector-pattern>
     </div>
 
-    <div style="margin-top: 2rem; padding: 1rem; background: #f1f3f6; border-left: 4px solid #565c65; border-radius: 4px;">
+    <div
+      style="margin-top: 2rem; padding: 1rem; background: #f1f3f6; border-left: 4px solid #565c65; border-radius: 4px;"
+    >
       <h4 style="margin-top: 0;">Small Variant</h4>
       <p style="margin-bottom: 0;">
         Use the small variant when space is limited, such as in compact headers or mobile layouts.
@@ -343,8 +355,8 @@ export const PatternReadyEvent: Story = {
       <div style="margin-top: 2rem; padding: 1rem; background: #e7f6f8; border-radius: 4px;">
         <h4 style="margin-top: 0;">Pattern Ready Event</h4>
         <p>
-          The <code>pattern-ready</code> event fires when the pattern initializes,
-          providing the initial language state. This is useful for:
+          The <code>pattern-ready</code> event fires when the pattern initializes, providing the
+          initial language state. This is useful for:
         </p>
         <ul>
           <li>Loading initial translated content</li>
@@ -378,17 +390,11 @@ export const ProgrammaticControl: Story = {
     };
 
     return html`
-      <usa-language-selector-pattern
-        variant="dropdown"
-      ></usa-language-selector-pattern>
+      <usa-language-selector-pattern variant="dropdown"></usa-language-selector-pattern>
 
       <div style="margin-top: 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-        <button class="usa-button" @click="${changeToEnglish}">
-          Change to English
-        </button>
-        <button class="usa-button" @click="${changeToSpanish}">
-          Change to Spanish
-        </button>
+        <button class="usa-button" @click="${changeToEnglish}">Change to English</button>
+        <button class="usa-button" @click="${changeToSpanish}">Change to Spanish</button>
         <button class="usa-button usa-button--outline" @click="${getCurrentLanguage}">
           Get Current Language
         </button>

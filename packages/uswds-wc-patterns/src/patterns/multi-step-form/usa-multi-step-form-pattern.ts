@@ -416,10 +416,7 @@ export class USAMultiStepFormPattern extends LitElement {
                       </usa-button>
                     `
                   : ''}
-                <usa-button
-                  @click="${this.handleNext}"
-                  ?disabled="${this.isValidating}"
-                >
+                <usa-button @click="${this.handleNext}" ?disabled="${this.isValidating}">
                   ${this.isLastStep() ? this.submitButtonLabel : this.nextButtonLabel}
                 </usa-button>
               </div>

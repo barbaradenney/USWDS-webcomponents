@@ -685,10 +685,7 @@ describe('USAContactPreferencesPattern', () => {
       });
 
       it('should initialize phone checkbox component', async () => {
-        const phoneCheckbox = await verifyChildComponent(
-          pattern,
-          'usa-checkbox[value="phone"]'
-        );
+        const phoneCheckbox = await verifyChildComponent(pattern, 'usa-checkbox[value="phone"]');
         expect(phoneCheckbox).toBeTruthy();
 
         // Verify internal structure rendered

@@ -192,7 +192,9 @@ PATTERNS.forEach((patternConfig) => {
 
         // In Light DOM, we can query elements directly
         // Check for any USWDS components (form components or wrapper-specific components)
-        const formComponents = pattern.querySelectorAll('usa-text-input, usa-select, usa-textarea, usa-checkbox');
+        const formComponents = pattern.querySelectorAll(
+          'usa-text-input, usa-select, usa-textarea, usa-checkbox'
+        );
         const wrapperComponents = pattern.querySelectorAll('usa-language-selector');
         const totalComponents = formComponents.length + wrapperComponents.length;
 
