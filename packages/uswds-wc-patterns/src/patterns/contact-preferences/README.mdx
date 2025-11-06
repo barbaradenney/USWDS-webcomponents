@@ -1,0 +1,78 @@
+# USA Contact Preferences Pattern
+
+A USWDS pattern for collecting user contact preferences and communication opt-ins.
+
+## Overview
+
+The Contact Preferences Pattern allows users to specify their preferred methods of contact and opt into various types of communications.
+
+## USWDS Reference
+
+- **Pattern**: User profile contact preferences
+- **Components Used**:
+  - `usa-checkbox` - Individual contact method options
+  - `usa-fieldset` - Groups related checkboxes
+
+## Pattern Responsibilities
+
+- Collect preferred contact methods (email, phone, mail, SMS)
+- Handle communication type opt-ins (newsletters, updates, promotions)
+- Manage contact preference data
+- Emit preference changes
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `label` | `string` | `'Contact Preferences'` | Label for the preferences section |
+| `required` | `boolean` | `false` | Whether at least one preference is required |
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ preferencesData }` | Emitted when pattern initializes |
+| `preferences-change` | `{ preferencesData, field }` | Emitted when preferences change |
+
+## Public API
+
+### Methods
+
+#### `getPreferencesData(): ContactPreferencesData`
+Returns current contact preferences.
+
+#### `setPreferencesData(data: ContactPreferencesData): void`
+Populates preference checkboxes.
+
+#### `clearPreferences(): void`
+Clears all preference selections and resets form components.
+
+#### `validatePreferences(): boolean`
+Validates preferences. Returns `true` if valid (or not required), `false` otherwise. When required, at least one preference must be selected.
+
+#### `getSelectedMethodCount(): number`
+Returns the count of selected contact methods.
+
+#### `isMethodSelected(method: string): boolean`
+Checks if a specific contact method is selected.
+
+## Usage Examples
+
+```html
+<usa-contact-preferences-pattern
+  label="How would you like to be contacted?"
+></usa-contact-preferences-pattern>
+```
+
+## Component Composition
+
+- **usa-fieldset** - Groups checkboxes
+- **usa-checkbox** - Individual preference options
+
+## Testing
+
+See `usa-contact-preferences-pattern.test.ts` for complete test suite.
+
+## Version History
+
+- **2.0.0** - Initial pattern implementation

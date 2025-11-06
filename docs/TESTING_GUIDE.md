@@ -248,6 +248,8 @@ pnpm run test:visual                # Run all visual tests
 pnpm run test:visual:baseline       # Update visual baselines
 pnpm run test:visual:ui             # Interactive UI mode
 pnpm run test:visual:components     # Component-specific tests
+pnpm run test:visual:patterns       # Pattern visual tests (NEW)
+pnpm run test:visual:patterns:update # Update pattern baselines (NEW)
 pnpm run test:visual:headed         # Run with visible browser
 
 # Cross-Browser Testing

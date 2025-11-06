@@ -228,33 +228,45 @@ describe('USASearch', () => {
       expect(buttonText).toBeFalsy();
     });
 
-    it('should show submit icon when submitIconSrc is provided', async () => {
-      element.submitIconSrc = './custom-icon.svg';
+    it('should use usa-icon component (not hardcoded img tag)', async () => {
       await waitForUpdate(element);
 
-      const icon = element.querySelector('.usa-search__submit-icon');
+      // Verify usa-icon web component is used
+      const usaIcon = element.querySelector('usa-icon.usa-search__submit-icon');
+      expect(usaIcon).toBeTruthy();
+      expect(usaIcon?.tagName.toLowerCase()).toBe('usa-icon');
+
+      // Verify icon name is set correctly
+      expect(usaIcon?.getAttribute('name')).toBe('search');
+
+      // Verify accessibility attributes
+      expect(usaIcon?.getAttribute('role')).toBe('img');
+      expect(usaIcon?.getAttribute('aria-label')).toBe('Search');
+    });
+
+    it('should not have hardcoded img tags for icons', async () => {
+      await waitForUpdate(element);
+
+      // Verify no img tags with icon paths exist
+      const imgTags = element.querySelectorAll('img');
+      const iconImgs = Array.from(imgTags).filter(img => {
+        const src = img.getAttribute('src');
+        return src && (src.includes('search') || src.includes('icon'));
+      });
+
+      expect(iconImgs.length).toBe(0);
+    });
+
+    it('should have proper component composition for icon', async () => {
+      await waitForUpdate(element);
+
+      // Verify icon is inside button
+      const button = element.querySelector('button.usa-search__submit');
+      const icon = button?.querySelector('usa-icon');
+
+      expect(button).toBeTruthy();
       expect(icon).toBeTruthy();
-      expect(icon?.getAttribute('src')).toBe('./custom-icon.svg');
-    });
-
-    it('should show fallback text for small size when no icon', async () => {
-      // NOTE: Current implementation shows text for non-small sizes
-      // For small size, USWDS uses icon background instead of text
-      element.size = 'medium'; // Change to medium to match current implementation
-      await waitForUpdate(element);
-
-      const buttonText = element.querySelector('.usa-search__submit-text');
-      expect(buttonText?.textContent?.trim()).toBe('Search');
-    });
-
-    it('should set icon alt text', async () => {
-      element.submitIconSrc = './icon.svg';
-      element.submitIconAlt = 'Search icon';
-      element.size = 'small'; // Small size shows icon without button text to avoid redundancy
-      await waitForUpdate(element);
-
-      const icon = element.querySelector('.usa-search__submit-icon');
-      expect(icon?.getAttribute('alt')).toBe('Search icon');
+      expect(icon?.getAttribute('name')).toBe('search');
     });
   });
 
@@ -567,8 +579,6 @@ describe('USASearch', () => {
       element.name = 'updated-search';
       element.inputId = 'updated-search-field';
       element.buttonId = 'updated-search-button';
-      element.submitIconSrc = './updated-icon.svg';
-      element.submitIconAlt = 'Find';
 
       await element.updateComplete;
 
@@ -681,7 +691,6 @@ describe('USASearch', () => {
       element.name = 'storybook-search';
       element.inputId = 'storybook-search-input';
       element.buttonId = 'storybook-search-btn';
-      element.submitIconSrc = ''; // Clear icon so text shows for small size
 
       await element.updateComplete;
 

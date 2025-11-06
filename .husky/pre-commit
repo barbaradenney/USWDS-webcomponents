@@ -111,6 +111,71 @@ if [ $? -ne 0 ]; then
 fi
 echo "   ✅ Pass"
 
+# Pattern standards validation (NEW - ensures patterns maintain standards)
+MODIFIED_PATTERNS=$(git diff --cached --name-only | grep -E "packages/uswds-wc-patterns/src/patterns/" | wc -l | tr -d ' ')
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "📋 4c/9 Pattern standards validation..."
+  pnpm validate:pattern-standards > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern standards validation failed!"
+    echo "   Run: pnpm validate:pattern-standards (for details)"
+    echo "   Patterns must have: README.mdx, test file, standard APIs"
+    exit 1
+  fi
+  echo "   ✅ Pass ($MODIFIED_PATTERNS pattern files modified)"
+else
+  echo "📋 4c/9 Pattern standards validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
+# Pattern changelog validation (NEW - ensures patterns have changelogs)
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "📝 4d/9 Pattern changelog validation..."
+  pnpm changelog:validate-patterns > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern changelog validation failed!"
+    echo "   Run: pnpm changelog:init-patterns (to create missing changelogs)"
+    echo "   Run: pnpm changelog:update-pattern (to add changelog entries)"
+    exit 1
+  fi
+  echo "   ✅ Pass (all patterns have changelogs)"
+else
+  echo "📝 4d/9 Pattern changelog validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
+# Pattern USWDS styling validation (ensures usa-legend--large, usa-fieldset)
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "🎨 4e/9 Pattern USWDS styling validation..."
+  pnpm validate:pattern-styling > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern USWDS styling validation failed!"
+    echo "   Run: pnpm validate:pattern-styling (for details)"
+    echo "   Patterns must use: usa-legend--large, usa-fieldset wrapper"
+    exit 1
+  fi
+  echo "   ✅ Pass (all patterns use correct USWDS styling)"
+else
+  echo "🎨 4e/9 Pattern USWDS styling validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
+# Pattern field completeness validation (ensures all USWDS fields present)
+if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+  echo "📋 4f/9 Pattern field completeness validation..."
+  pnpm validate:pattern-fields > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "❌ Pattern field completeness validation failed!"
+    echo "   Run: pnpm validate:pattern-fields (for details)"
+    echo "   Patterns must include all fields specified in USWDS patterns"
+    exit 1
+  fi
+  echo "   ✅ Pass (all patterns have complete field sets)"
+else
+  echo "📋 4f/9 Pattern field completeness validation..."
+  echo "   ⏭️  Skipped (no patterns modified)"
+fi
+
 # Auto-clear discovered issues tracker if all validations passed
 if [ -f ".git/DISCOVERED_ISSUES.json" ]; then
   echo "   🗑️  All validations passed - clearing discovered issues tracker"
@@ -133,6 +198,21 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
 else
   echo "   ⏭️  Skipped (no components modified)"
 fi
+
+# USWDS HTML structure validation (ensures compact mode, combo-box wrappers, etc.)
+echo "🏛️  4b/9 USWDS HTML structure..."
+node scripts/validate/validate-uswds-html-structure.cjs > /dev/null 2>&1
+VALIDATION_EXIT_CODE=$?
+if [ $VALIDATION_EXIT_CODE -ne 0 ]; then
+  echo "❌ USWDS HTML structure validation failed!"
+  echo ""
+  # Run again without redirection to show detailed output
+  node scripts/validate/validate-uswds-html-structure.cjs
+  echo ""
+  echo "See: docs/patterns/USWDS-HTML-STRUCTURE-ALIGNMENT.md"
+  exit 1
+fi
+echo "   ✅ Pass"
 
 # Linting (fast, blocks bad code)
 echo "🔍 5/9 Linting..."
@@ -354,10 +434,82 @@ node scripts/validate/validate-documentation-placeholders.cjs > /dev/null 2>&1 |
 }
 echo "   ✅ Pass"
 
+# Optional: Visual regression tests for patterns (opt-in via VISUAL_REGRESSION_PRECOMMIT=1)
+if [ "$VISUAL_REGRESSION_PRECOMMIT" = "1" ]; then
+  echo ""
+  echo "📸 12/14 Pattern visual regression tests (opt-in)..."
+
+  # Check if patterns were modified
+  if [ "$MODIFIED_PATTERNS" -gt 0 ]; then
+    echo "   → Detected $MODIFIED_PATTERNS pattern file(s) modified"
+
+    # Check if Storybook is already running
+    if ! curl -s http://localhost:6006 > /dev/null 2>&1; then
+      echo "   ⚠️  Storybook not running - starting server..."
+      echo "   💡 Tip: Run 'pnpm storybook' in another terminal to speed up future commits"
+
+      # Start Storybook in background
+      pnpm storybook > /dev/null 2>&1 &
+      STORYBOOK_PID=$!
+
+      # Wait for Storybook to be ready (max 60 seconds)
+      WAIT_TIME=0
+      while ! curl -s http://localhost:6006 > /dev/null 2>&1; do
+        sleep 2
+        WAIT_TIME=$((WAIT_TIME + 2))
+        if [ $WAIT_TIME -ge 60 ]; then
+          echo "   ❌ Storybook failed to start within 60 seconds"
+          kill $STORYBOOK_PID 2>/dev/null
+          exit 1
+        fi
+      done
+      echo "   ✅ Storybook ready"
+
+      # Run visual regression tests
+      pnpm test:visual:patterns > /dev/null 2>&1
+      VISUAL_EXIT_CODE=$?
+
+      # Kill Storybook after tests
+      kill $STORYBOOK_PID 2>/dev/null
+
+      if [ $VISUAL_EXIT_CODE -ne 0 ]; then
+        echo "   ❌ Visual regression tests failed!"
+        echo ""
+        echo "   💡 Debug options:"
+        echo "      • pnpm test:visual:patterns (see detailed output)"
+        echo "      • pnpm test:visual:patterns:update (update baselines if changes are intentional)"
+        echo "      • pnpm test:visual:ui (interactive UI for debugging)"
+        echo ""
+        echo "   📖 See: PATTERN_VALIDATION_AND_VISUAL_TESTING_ENHANCEMENTS.md"
+        exit 1
+      fi
+    else
+      # Storybook already running - just run tests
+      pnpm test:visual:patterns > /dev/null 2>&1 || {
+        echo "   ❌ Visual regression tests failed!"
+        echo ""
+        echo "   💡 Debug options:"
+        echo "      • pnpm test:visual:patterns (see detailed output)"
+        echo "      • pnpm test:visual:patterns:update (update baselines if changes are intentional)"
+        echo "      • pnpm test:visual:ui (interactive UI for debugging)"
+        echo ""
+        echo "   📖 See: PATTERN_VALIDATION_AND_VISUAL_TESTING_ENHANCEMENTS.md"
+        exit 1
+      }
+    fi
+
+    echo "   ✅ Pass (11 patterns tested across 3 viewports)"
+  else
+    echo "   ⏭️  Skipped (no patterns modified)"
+  fi
+else
+  echo ""
+fi
+
 # Optional: Cypress component tests (opt-in via CYPRESS_PRECOMMIT=1)
 if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
   echo ""
-  echo "🧪 12/13 Cypress component tests (opt-in)..."
+  echo "🧪 13/14 Cypress component tests (opt-in)..."
   pnpm cypress:component > /dev/null 2>&1 || {
     echo "❌ Cypress component tests failed!"
     echo "   Run: pnpm cypress:component:open (to debug)"
@@ -370,7 +522,7 @@ fi
 # Optional: Bundle size check (opt-in via BUNDLE_SIZE_PRECOMMIT=1)
 if [ "$BUNDLE_SIZE_PRECOMMIT" = "1" ]; then
   echo ""
-  echo "📦 13/14 Bundle size validation (opt-in)..."
+  echo "📦 14/15 Bundle size validation (opt-in)..."
 
   # Check if dist directory exists
   if [ ! -d "dist" ]; then
@@ -399,7 +551,7 @@ fi
 # Optional: Smoke tests (opt-in via SMOKE_TESTS_PRECOMMIT=1)
 if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
   echo ""
-  echo "🔥 14/14 Smoke tests - critical interaction validation (opt-in)..."
+  echo "🔥 15/15 Smoke tests - critical interaction validation (opt-in)..."
   echo "   → Testing: accordion, combo-box, date-picker, modal, time-picker, character-count, file-input, search"
 
   # Check if Storybook is already running
@@ -458,14 +610,17 @@ echo ""
 
 # Summary based on what was checked
 TOTAL_STAGES=11
-if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
+if [ "$VISUAL_REGRESSION_PRECOMMIT" = "1" ]; then
   TOTAL_STAGES=12
 fi
-if [ "$BUNDLE_SIZE_PRECOMMIT" = "1" ]; then
+if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
   TOTAL_STAGES=13
 fi
-if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
+if [ "$BUNDLE_SIZE_PRECOMMIT" = "1" ]; then
   TOTAL_STAGES=14
+fi
+if [ "$SMOKE_TESTS_PRECOMMIT" = "1" ]; then
+  TOTAL_STAGES=15
 fi
 
 if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
@@ -477,6 +632,9 @@ if [ "$MODIFIED_COMPONENT_COUNT" -gt 0 ]; then
   echo "   • All component-specific checks passed"
   echo "   • JavaScript integration verified"
   echo "   • Documentation synchronized"
+  if [ "$VISUAL_REGRESSION_PRECOMMIT" = "1" ]; then
+    echo "   • Visual regression tests passed (opt-in)"
+  fi
   if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
     echo "   • Cypress component tests passed (opt-in)"
   fi
@@ -490,6 +648,9 @@ elif [ "$MODIFIED_CORE" -gt 0 ]; then
   echo "   • Component-specific checks skipped (not needed)"
   echo "   • JavaScript integration verified"
   echo "   • Documentation synchronized"
+  if [ "$VISUAL_REGRESSION_PRECOMMIT" = "1" ]; then
+    echo "   • Visual regression tests passed (opt-in)"
+  fi
   if [ "$CYPRESS_PRECOMMIT" = "1" ]; then
     echo "   • Cypress component tests passed (opt-in)"
   fi
@@ -497,6 +658,9 @@ elif [ "$MODIFIED_CORE" -gt 0 ]; then
 fi
 
 echo "💡 Additional validation available (run manually when needed):"
+if [ "$VISUAL_REGRESSION_PRECOMMIT" != "1" ]; then
+  echo "   • VISUAL_REGRESSION_PRECOMMIT=1 git commit - Run visual regression tests for patterns (~45s)"
+fi
 if [ "$CYPRESS_PRECOMMIT" != "1" ]; then
   echo "   • CYPRESS_PRECOMMIT=1 git commit - Run Cypress tests before commit"
 fi

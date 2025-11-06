@@ -1,0 +1,422 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/blocks';
+import * as SexStories from './usa-sex-pattern.stories';
+
+<Meta of={SexStories} />
+
+# Sex Pattern
+
+The Sex Pattern is a USWDS-compliant web component for collecting sex information in user profile forms.
+
+**USWDS Documentation**: [Sex Pattern](https://designsystem.digital.gov/patterns/create-a-user-profile/sex/)
+
+## CRITICAL USWDS Requirements
+
+This pattern follows strict USWDS guidelines:
+
+- ✅ **Use "sex" terminology ONLY** - Do NOT use "gender"
+- ✅ **Only provide "Male" and "Female" options** - Do NOT include:
+  - "Prefer not to answer"
+  - "X" or non-binary options
+  - Other options
+- ✅ **Explain why you're asking** - Include helper text/modal explaining data usage
+- ✅ **Reconsider if optional** - If you're considering "prefer not to answer", reconsider if the question is needed at all
+
+## Overview
+
+The Sex Pattern provides a standardized way to collect sex information using radio buttons. It includes features to explain why this sensitive information is being collected and follows USWDS accessibility and styling guidelines.
+
+### When to Use
+
+Only collect sex information when:
+- **Required for services** - Healthcare, demographics
+- **Legal requirement** - Government forms
+- **Statistical analysis** - With privacy protections
+
+**Important**: If sex information is not absolutely required, do not ask for it.
+
+### When NOT to Use
+
+- When collecting gender identity (use a different pattern)
+- When the information is not necessary for the service
+- When you cannot clearly explain why you need this information
+
+## Examples
+
+### Default
+
+<Canvas of={SexStories.Default} />
+
+### Required Field
+
+Use for government forms or when sex information is mandatory.
+
+<Canvas of={SexStories.Required} />
+
+### With Explanation Link
+
+Always explain why you're collecting this information. Provide a link to your privacy policy or explanation page.
+
+<Canvas of={SexStories.WithExplanationLink} />
+
+### Healthcare Example
+
+Example showing appropriate usage in a healthcare application.
+
+<Canvas of={SexStories.HealthcareExample} />
+
+### With Pre-filled Data
+
+<Canvas of={SexStories.WithData} />
+
+### Interactive Demo
+
+<Canvas of={SexStories.Interactive} />
+
+### USWDS Compliance
+
+This example demonstrates full USWDS compliance.
+
+<Canvas of={SexStories.USWDSCompliance} />
+
+## Properties
+
+<ArgTypes of={SexStories} />
+
+## Events
+
+### `sex-change`
+
+Fired when the sex selection changes.
+
+**Event Detail:**
+```typescript
+{
+  value: 'male' | 'female' | '',
+  sexData: SexData
+}
+```
+
+**Example:**
+```typescript
+pattern.addEventListener('sex-change', (e) => {
+  console.log('Sex changed to:', e.detail.value);
+  console.log('Full data:', e.detail.sexData);
+});
+```
+
+### `pattern-ready`
+
+Fired when the pattern is initialized and ready to use.
+
+**Event Detail:**
+```typescript
+{
+  sexData: SexData
+}
+```
+
+## Methods
+
+### `getSexData(): SexData`
+
+Returns the current sex data.
+
+**Returns:**
+```typescript
+{
+  sex?: 'male' | 'female' | ''
+}
+```
+
+**Example:**
+```typescript
+const pattern = document.querySelector('usa-sex-pattern');
+const data = pattern.getSexData();
+console.log(data); // { sex: 'female' }
+```
+
+### `setSexData(data: SexData): void`
+
+Sets the sex data programmatically.
+
+**Parameters:**
+- `data: SexData` - The sex data to set
+
+**Example:**
+```typescript
+pattern.setSexData({ sex: 'male' });
+```
+
+### `clearSex(): void`
+
+Clears the sex selection.
+
+**Example:**
+```typescript
+pattern.clearSex();
+```
+
+### `validateSex(): boolean`
+
+Validates the sex selection. Returns `true` if valid, `false` otherwise.
+
+If the field is not required, it always returns `true`. If required, it returns `true` only if a sex is selected.
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+if (pattern.validateSex()) {
+  console.log('Sex is valid');
+} else {
+  console.log('Please select your sex');
+}
+```
+
+### `getSex(): string`
+
+Returns just the sex value as a string.
+
+**Returns:** `'male' | 'female' | ''`
+
+**Example:**
+```typescript
+const sex = pattern.getSex();
+console.log(sex); // 'female'
+```
+
+## Accessibility
+
+The Sex Pattern follows USWDS accessibility guidelines:
+
+- **Fieldset and Legend**: Radio buttons are properly grouped with `<fieldset>` and `<legend>`
+- **Hint Text**: Provides explanation of why information is collected
+- **Radio Button Labels**: Clear, visible labels for both options
+- **Keyboard Navigation**: Full keyboard support for radio button selection
+- **Screen Reader Support**: Proper ARIA attributes and semantic HTML
+
+## USWDS Best Practices
+
+### Always Explain Why
+
+Per USWDS guidelines, you must explain why you're collecting sex information:
+
+```html
+<usa-sex-pattern
+  label="Sex"
+  hint="We collect this information to ensure appropriate healthcare services."
+  show-why-link
+  why-url="/privacy-policy#sex-information"
+></usa-sex-pattern>
+```
+
+### Required vs. Optional
+
+If you're considering making this field optional or adding "Prefer not to answer":
+
+**❌ Don't do this:**
+```html
+<!-- Bad: Adding "prefer not to answer" -->
+<usa-sex-pattern required="false"></usa-sex-pattern>
+<p>Select "Prefer not to answer" if you don't want to share</p>
+```
+
+**✅ Do this instead:**
+```html
+<!-- Good: Only ask if truly necessary -->
+<usa-sex-pattern
+  required
+  hint="This information is required for federal reporting."
+  show-why-link
+  why-url="/why-we-need-this"
+></usa-sex-pattern>
+```
+
+Or better yet, reconsider if you need to ask at all.
+
+## Usage Examples
+
+### Basic Usage
+
+```html
+<usa-sex-pattern
+  label="Sex"
+  required
+></usa-sex-pattern>
+```
+
+### With Explanation
+
+```html
+<usa-sex-pattern
+  label="Sex"
+  hint="We collect this information to provide appropriate medical care."
+  show-why-link
+  why-url="/privacy-policy"
+  required
+></usa-sex-pattern>
+```
+
+### Programmatic Usage
+
+```typescript
+import { USASexPattern, SexData } from '@uswds-wc/patterns';
+
+// Get the pattern element
+const pattern = document.querySelector('usa-sex-pattern') as USASexPattern;
+
+// Listen for changes
+pattern.addEventListener('sex-change', (e: CustomEvent) => {
+  const { value, sexData } = e.detail;
+  console.log('Sex changed to:', value);
+
+  // Save to your form state
+  saveToForm(sexData);
+});
+
+// Set data programmatically
+pattern.setSexData({ sex: 'female' });
+
+// Get current data
+const data = pattern.getSexData();
+
+// Validate
+if (!pattern.validateSex()) {
+  alert('Please select your sex');
+}
+
+// Clear
+pattern.clearSex();
+```
+
+## Integration with Forms
+
+### React Example
+
+```tsx
+import { useRef, useEffect } from 'react';
+import '@uswds-wc/patterns';
+import type { USASexPattern, SexData } from '@uswds-wc/patterns';
+
+function ProfileForm() {
+  const patternRef = useRef<USASexPattern>(null);
+
+  useEffect(() => {
+    const pattern = patternRef.current;
+    if (!pattern) return;
+
+    const handleChange = (e: CustomEvent) => {
+      const { sexData } = e.detail;
+      console.log('Sex data:', sexData);
+    };
+
+    pattern.addEventListener('sex-change', handleChange);
+    return () => pattern.removeEventListener('sex-change', handleChange);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!patternRef.current?.validateSex()) {
+      alert('Please select your sex');
+      return;
+    }
+
+    const data = patternRef.current.getSexData();
+    console.log('Submitting:', data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <usa-sex-pattern
+        ref={patternRef}
+        label="Sex"
+        hint="Required for medical records"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### Angular Example
+
+```typescript
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import type { USASexPattern, SexData } from '@uswds-wc/patterns';
+
+@Component({
+  selector: 'app-profile-form',
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <usa-sex-pattern
+        #sexPattern
+        label="Sex"
+        hint="Required for medical records"
+        required
+        (sex-change)="onSexChange($event)"
+      ></usa-sex-pattern>
+      <button type="submit">Submit</button>
+    </form>
+  `
+})
+export class ProfileFormComponent {
+  @ViewChild('sexPattern') sexPattern!: ElementRef<USASexPattern>;
+
+  onSexChange(event: CustomEvent) {
+    const { sexData } = event.detail;
+    console.log('Sex data:', sexData);
+  }
+
+  onSubmit() {
+    const pattern = this.sexPattern.nativeElement;
+
+    if (!pattern.validateSex()) {
+      alert('Please select your sex');
+      return;
+    }
+
+    const data = pattern.getSexData();
+    console.log('Submitting:', data);
+  }
+}
+```
+
+## Related Patterns
+
+- [Name Pattern](../?path=/docs/patterns-user-profile-name--docs) - Collect user's name
+- [Date of Birth Pattern](../?path=/docs/patterns-user-profile-date-of-birth--docs) - Collect birth date
+- [Contact Preferences Pattern](../?path=/docs/patterns-user-profile-contact-preferences--docs) - Collect contact preferences
+
+## Technical Notes
+
+### Light DOM Architecture
+
+This pattern uses Light DOM (no Shadow DOM) to allow USWDS styles to cascade properly. This means:
+
+- USWDS CSS classes work directly
+- Parent form styles apply naturally
+- Browser form features work seamlessly
+
+### Data Immutability
+
+The `getSexData()` method returns a copy of the data, not a reference. This prevents external code from accidentally mutating the pattern's internal state.
+
+```typescript
+const data1 = pattern.getSexData();
+const data2 = pattern.getSexData();
+
+console.log(data1 === data2); // false (different objects)
+console.log(data1.sex === data2.sex); // true (same values)
+```
+
+## Browser Support
+
+The Sex Pattern supports all modern browsers:
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+
+For older browsers, polyfills for Web Components may be required.

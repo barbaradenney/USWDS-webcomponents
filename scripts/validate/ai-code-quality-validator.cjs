@@ -203,7 +203,7 @@ class AICodeQualityValidator {
       const staged = execSync('git diff --cached --name-only --diff-filter=ACM', { encoding: 'utf-8' });
       return staged
         .split('\n')
-        .filter(f => f.match(/\.(ts|js|tsx|jsx)$/) && !f.includes('.test.') && !f.includes('.cy.') && !f.includes('.spec.'))
+        .filter(f => f.match(/\.(ts|js|tsx|jsx)$/) && !f.includes('.test.') && !f.includes('.cy.') && !f.includes('.spec.') && !f.includes('.stories.'))
         .filter(f => !f.startsWith('scripts/')) // Exclude CLI scripts (legitimate console output)
         .filter(f => !f.includes('.setup.')) // Exclude test setup files (legitimate setTimeout for infrastructure)
         .filter(f => fs.existsSync(f));

@@ -1,0 +1,114 @@
+# USA Language Selector Pattern
+
+A USWDS pattern for language selection with persistence and document-level language management.
+
+## Overview
+
+The Language Selector Pattern provides language switching functionality with support for multiple languages, persistence to localStorage, and automatic document `lang` attribute updates.
+
+## USWDS Reference
+
+- **Pattern**: Language selector for multilingual sites
+- **Components Used**:
+  - `usa-language-selector` - Language dropdown/menu component
+
+## Pattern Responsibilities
+
+- Manage available languages
+- Handle language selection
+- Persist language preference to localStorage (optional)
+- Update document `<html lang="">` attribute
+- Emit language change events
+
+## Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `persist-preference` | `boolean` | `false` | Save language to localStorage |
+| `storage-key` | `string` | `'uswds-language-preference'` | localStorage key |
+| `update-document-lang` | `boolean` | `true` | Update `<html lang="">` attribute |
+| `button-text` | `string` | `'Languages'` | Button text |
+| `variant` | `'default' \| 'small'` | `'default'` | Component size variant |
+
+## Events
+
+| Event | Detail | Description |
+|-------|--------|-------------|
+| `pattern-ready` | `{ code, language, persisted }` | Emitted when pattern initializes |
+| `pattern-language-change` | `{ code, language, previousCode, documentLang }` | Emitted when language changes |
+
+## Public API
+
+### Methods
+
+#### `getCurrentLanguageCode(): string`
+Returns current language code (e.g., 'en', 'es').
+
+#### `getCurrentLanguage(): Language`
+Returns current language object.
+
+#### `changeLanguage(code: string): void`
+Programmatically change language.
+
+#### `setLanguages(languages: Language[]): void`
+Update available languages.
+
+#### `clearPersistedPreference(): void`
+Clear saved language preference from localStorage.
+
+#### `validateLanguageSelection(): boolean`
+Validates that the current language exists in the available languages array. Returns `true` if valid, `false` otherwise.
+
+## Usage Examples
+
+### Basic Language Selector
+
+```html
+<usa-language-selector-pattern></usa-language-selector-pattern>
+```
+
+### With Persistence
+
+```html
+<usa-language-selector-pattern
+  persist-preference
+></usa-language-selector-pattern>
+```
+
+### Custom Languages
+
+```javascript
+const selector = document.querySelector('usa-language-selector-pattern');
+selector.setLanguages([
+  { code: 'en', name: 'English', nativeName: 'English' },
+  { code: 'es', name: 'Spanish', nativeName: 'Español' },
+  { code: 'fr', name: 'French', nativeName: 'Français' }
+]);
+```
+
+## Component Composition
+
+- **usa-language-selector** - Language dropdown component
+
+## Persistence
+
+When `persist-preference` is enabled:
+- Language choice saved to localStorage
+- Restored on page load
+- Survives browser sessions
+
+## Document Language
+
+When `update-document-lang` is enabled:
+- Updates `<html lang="">` attribute
+- Improves accessibility
+- Helps search engines
+- Assists screen readers
+
+## Testing
+
+See `usa-language-selector-pattern.test.ts` for complete test suite.
+
+## Version History
+
+- **2.0.0** - Initial pattern implementation

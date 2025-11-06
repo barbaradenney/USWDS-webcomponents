@@ -74,6 +74,108 @@ describe('USASelect', () => {
     });
   });
 
+  describe('Light DOM Initial Render (CRITICAL)', () => {
+    it('should render options from array in initial render', async () => {
+      const freshElement = document.createElement('usa-select') as USASelect;
+      freshElement.options = [
+        { value: 'opt1', text: 'Option 1' },
+        { value: 'opt2', text: 'Option 2' },
+        { value: 'opt3', text: 'Option 3' },
+      ];
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const select = freshElement.querySelector('select') as HTMLSelectElement;
+      const options = select?.querySelectorAll('option');
+
+      expect(options?.length).toBe(3);
+      expect(options?.[0].value).toBe('opt1');
+      expect(options?.[1].value).toBe('opt2');
+      expect(options?.[2].value).toBe('opt3');
+
+      freshElement.remove();
+    });
+
+    it('should render options inside select element not as siblings', async () => {
+      const freshElement = document.createElement('usa-select') as USASelect;
+      freshElement.options = [
+        { value: 'opt1', text: 'Option 1' },
+        { value: 'opt2', text: 'Option 2' },
+      ];
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const select = freshElement.querySelector('select') as HTMLSelectElement;
+      const options = select?.querySelectorAll('option');
+
+      // Verify options are children of select, not siblings
+      expect(select?.contains(options?.[0])).toBe(true);
+      expect(select?.contains(options?.[1])).toBe(true);
+
+      // Verify no options exist outside select
+      const allOptions = freshElement.querySelectorAll('option');
+      const selectOptions = select?.querySelectorAll('option');
+      expect(allOptions?.length).toBe(selectOptions?.length);
+
+      freshElement.remove();
+    });
+
+    it('should set selected option in initial render', async () => {
+      const freshElement = document.createElement('usa-select') as USASelect;
+      freshElement.options = [
+        { value: 'opt1', text: 'Option 1' },
+        { value: 'opt2', text: 'Option 2' },
+      ];
+      freshElement.value = 'opt2';
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const select = freshElement.querySelector('select') as HTMLSelectElement;
+      expect(select?.value).toBe('opt2');
+
+      freshElement.remove();
+    });
+
+    it('should set disabled state in initial render', async () => {
+      const freshElement = document.createElement('usa-select') as USASelect;
+      freshElement.disabled = true;
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const select = freshElement.querySelector('select') as HTMLSelectElement;
+      expect(select?.disabled).toBe(true);
+
+      freshElement.remove();
+    });
+
+    it('should apply USWDS classes in initial render', async () => {
+      const freshElement = document.createElement('usa-select') as USASelect;
+      freshElement.error = 'Error message';
+      freshElement.label = 'Test';
+      document.body.appendChild(freshElement);
+
+      // Wait for Lit's async first render
+      await freshElement.updateComplete;
+
+      const select = freshElement.querySelector('select') as HTMLSelectElement;
+      expect(select?.classList.contains('usa-select')).toBe(true);
+
+      freshElement.remove();
+    });
+  });
+
   describe('Label and Helper Text', () => {
     it('should render label text', async () => {
       element.label = 'Test select';

@@ -29,7 +29,8 @@ import '@uswds-wc/core/styles.css';
 export class USATextInput extends USWDSBaseComponent {
   static override styles = css`
     :host {
-      display: block;
+      display: inline-block;
+      width: 100%;
     }
     :host([hidden]) {
       display: none;
@@ -81,6 +82,14 @@ export class USATextInput extends USWDSBaseComponent {
   @property({ type: Number })
   minlength: number | null = null;
 
+  /**
+   * Whether to render in compact mode (no form-group wrapper)
+   * Use this when the input is inside a fieldset or pattern where
+   * the parent handles spacing and grouping
+   */
+  @property({ type: Boolean })
+  compact = false;
+
   private _inputId?: string;
 
   override connectedCallback() {
@@ -128,6 +137,15 @@ export class USATextInput extends USWDSBaseComponent {
         composed: true,
       })
     );
+  }
+
+  /**
+   * Public API: Reset input to empty value
+   * Allows patterns to clear the input without DOM manipulation
+   */
+  reset(): void {
+    this.value = '';
+    this.requestUpdate();
   }
 
   private get inputId() {
@@ -219,29 +237,35 @@ export class USATextInput extends USWDSBaseComponent {
       .filter(Boolean)
       .join(' ');
 
-    return html`
-      <div class="${this.getFormGroupClasses()}">
-        ${this.renderLabel(inputId)} ${this.renderHint(inputId)} ${this.renderError(inputId)}
-        <input
-          class="${this.getInputClasses()}"
-          id="${inputId}"
-          type="${this.type}"
-          name="${this.name}"
-          .value="${this.value}"
-          placeholder="${this.placeholder}"
-          ?disabled=${this.disabled}
-          ?required=${this.required}
-          ?readonly=${this.readonly}
-          autocomplete="${this.autocomplete}"
-          pattern="${this.pattern}"
-          maxlength="${this.maxlength || ''}"
-          minlength="${this.minlength || ''}"
-          aria-describedby="${ariaDescribedBy}"
-          aria-invalid="${this.error ? 'true' : 'false'}"
-          @input="${this.handleInput}"
-          @change="${this.handleChange}"
-        />
-      </div>
+    const inputTemplate = html`
+      ${this.renderLabel(inputId)} ${this.renderHint(inputId)} ${this.renderError(inputId)}
+      <input
+        class="${this.getInputClasses()}"
+        id="${inputId}"
+        type="${this.type}"
+        name="${this.name}"
+        .value="${this.value}"
+        placeholder="${this.placeholder}"
+        ?disabled=${this.disabled}
+        ?required=${this.required}
+        ?readonly=${this.readonly}
+        autocomplete="${this.autocomplete}"
+        pattern="${this.pattern}"
+        maxlength="${this.maxlength || ''}"
+        minlength="${this.minlength || ''}"
+        aria-describedby="${ariaDescribedBy}"
+        aria-invalid="${this.error ? 'true' : 'false'}"
+        @input="${this.handleInput}"
+        @change="${this.handleChange}"
+      />
     `;
+
+    // Compact mode: no form-group wrapper (for use inside fieldsets/patterns)
+    if (this.compact) {
+      return inputTemplate;
+    }
+
+    // Standard mode: wrap in form-group
+    return html`<div class="${this.getFormGroupClasses()}">${inputTemplate}</div>`;
   }
 }

@@ -1,0 +1,502 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/blocks';
+import * as RaceEthnicityStories from './usa-race-ethnicity-pattern.stories';
+
+<Meta of={RaceEthnicityStories} />
+
+# Race and Ethnicity Pattern
+
+The Race and Ethnicity Pattern is a USWDS-compliant web component for collecting race and ethnicity information according to Office of Management and Budget (OMB) standards.
+
+**USWDS Documentation**: [Race and Ethnicity Pattern](https://designsystem.digital.gov/patterns/create-a-user-profile/race-and-ethnicity/)
+
+## CRITICAL USWDS Requirements
+
+This pattern follows strict USWDS and OMB guidelines:
+
+- ✅ **Use OMB race categories** - 5 standard categories only
+- ✅ **Multi-select checkboxes** - Allow users to select multiple races
+- ✅ **Separate ethnicity question** - Open text input for self-identification
+- ✅ **Two-part structure** - Race and ethnicity asked together but not combined
+- ✅ **"Prefer not to share" option** - Allow users to decline
+- ✅ **Explain why you're asking** - Privacy and data usage transparency
+
+## Overview
+
+The Race and Ethnicity Pattern provides a standardized way to collect demographic information using OMB-compliant categories. It includes two separate sections: race (multi-select checkboxes) and ethnicity (open text input).
+
+### When to Use
+
+Only collect race and ethnicity when:
+- **Required by federal law** for program eligibility
+- **Research purposes** with institutional review
+- **Healthcare** disparities research
+- **Equal opportunity** monitoring with consent
+
+### When NOT to Use
+
+- When not required by law or regulation
+- For marketing or customer profiling
+- Without clear explanation of data usage
+- When alternatives exist for the use case
+
+**Important**: If race/ethnicity is not legally required, do not ask for it. Always explain why this sensitive information is collected.
+
+## Examples
+
+### Default
+
+<Canvas of={RaceEthnicityStories.Default} />
+
+### Required Field
+
+Use for federal programs where demographic data is legally required.
+
+<Canvas of={RaceEthnicityStories.Required} />
+
+### With Explanation Link
+
+Always explain why you're collecting this sensitive information.
+
+<Canvas of={RaceEthnicityStories.WithExplanationLink} />
+
+### Healthcare Example
+
+Example showing appropriate usage for healthcare disparities research.
+
+<Canvas of={RaceEthnicityStories.HealthcareExample} />
+
+### Federal Program Example
+
+Example showing appropriate usage for federal program eligibility.
+
+<Canvas of={RaceEthnicityStories.FederalProgramExample} />
+
+### With Pre-filled Data
+
+<Canvas of={RaceEthnicityStories.WithData} />
+
+### Interactive Demo
+
+<Canvas of={RaceEthnicityStories.Interactive} />
+
+### USWDS Compliance
+
+This example demonstrates full USWDS and OMB compliance.
+
+<Canvas of={RaceEthnicityStories.USWDSCompliance} />
+
+## Properties
+
+<ArgTypes of={RaceEthnicityStories} />
+
+## Events
+
+### `race-ethnicity-change`
+
+Fired when race or ethnicity data changes.
+
+**Event Detail:**
+```typescript
+{
+  value: RaceEthnicityData,
+  raceEthnicityData: RaceEthnicityData
+}
+```
+
+**Example:**
+```typescript
+pattern.addEventListener('race-ethnicity-change', (e) => {
+  console.log('Data changed:', e.detail.raceEthnicityData);
+});
+```
+
+### `pattern-ready`
+
+Fired when the pattern is initialized and ready to use.
+
+**Event Detail:**
+```typescript
+{
+  raceEthnicityData: RaceEthnicityData
+}
+```
+
+## Methods
+
+### `getRaceEthnicityData(): RaceEthnicityData`
+
+Returns the current race and ethnicity data.
+
+**Returns:**
+```typescript
+{
+  race?: string[],          // Selected race categories
+  ethnicity?: string,       // Self-identified ethnicity
+  preferNotToShare?: boolean // User declined to share
+}
+```
+
+**Example:**
+```typescript
+const pattern = document.querySelector('usa-race-ethnicity-pattern');
+const data = pattern.getRaceEthnicityData();
+console.log(data);
+// { race: ['asian', 'white'], ethnicity: 'Chinese and Irish', preferNotToShare: false }
+```
+
+### `setRaceEthnicityData(data: RaceEthnicityData): void`
+
+Sets race and ethnicity data programmatically.
+
+**Parameters:**
+- `data: RaceEthnicityData` - The data to set
+
+**Example:**
+```typescript
+pattern.setRaceEthnicityData({
+  race: ['black-african-american'],
+  ethnicity: 'Jamaican',
+  preferNotToShare: false
+});
+```
+
+### `clearRaceEthnicity(): void`
+
+Clears all race and ethnicity data.
+
+**Example:**
+```typescript
+pattern.clearRaceEthnicity();
+```
+
+### `validateRaceEthnicity(): boolean`
+
+Validates race and ethnicity data. Returns `true` if valid, `false` otherwise.
+
+If "Prefer not to share" is selected, always returns `true`.
+
+If not required and empty, returns `true`.
+
+If required, at least one of race or ethnicity must be provided.
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+if (pattern.validateRaceEthnicity()) {
+  console.log('Data is valid');
+} else {
+  console.log('Please provide race or ethnicity information');
+}
+```
+
+## OMB Race Categories
+
+The pattern uses the five standard OMB race categories:
+
+1. **American Indian or Alaska Native** - `american-indian-alaska-native`
+2. **Asian** - `asian`
+3. **Black or African American** - `black-african-american`
+4. **Native Hawaiian or Other Pacific Islander** - `native-hawaiian-pacific-islander`
+5. **White** - `white`
+
+**Multi-Select**: Users can select multiple race categories to accurately reflect their background.
+
+## Ethnicity Self-Identification
+
+The ethnicity question uses an open text input to allow users to self-identify their ethnicity in their own words.
+
+**Examples of valid ethnicity responses:**
+- "Mexican"
+- "Hmong and Italian"
+- "Puerto Rican"
+- "Irish and Polish"
+- "Vietnamese"
+
+This approach respects the diversity of ethnic identities and allows users to provide specific, meaningful information.
+
+## Accessibility
+
+The Race and Ethnicity Pattern follows USWDS accessibility guidelines:
+
+- **Fieldset and Legend**: Sections properly grouped with `<fieldset>` and `<legend>`
+- **Hint Text**: Clear instructions for both race and ethnicity
+- **ARIA Attributes**: Inputs connected to hints via `aria-describedby`
+- **Keyboard Navigation**: Full keyboard support for all controls
+- **Screen Reader Support**: Proper semantic HTML and ARIA attributes
+- **Multi-Select Support**: Checkboxes announced correctly by screen readers
+
+## USWDS Best Practices
+
+### Always Explain Why
+
+Per USWDS guidelines, you must explain why you're collecting race and ethnicity:
+
+```html
+<usa-race-ethnicity-pattern
+  race-label="Which of the following race classifications best describe you?"
+  ethnicity-label="I identify my ethnicity as:"
+  show-why-link
+  why-url="/privacy-policy#demographics"
+  required
+></usa-race-ethnicity-pattern>
+```
+
+### Use OMB Categories Only
+
+**❌ Don't add custom categories:**
+```html
+<!-- Bad: Custom categories violate OMB standards -->
+<usa-checkbox value="middle-eastern">Middle Eastern</usa-checkbox>
+```
+
+**✅ Use standard OMB categories:**
+```html
+<!-- Good: Standard OMB categories only -->
+<!-- American Indian or Alaska Native -->
+<!-- Asian -->
+<!-- Black or African American -->
+<!-- Native Hawaiian or Other Pacific Islander -->
+<!-- White -->
+```
+
+### Multi-Select, Not Single-Select
+
+**❌ Don't use radio buttons:**
+```html
+<!-- Bad: Radio buttons force single selection -->
+<usa-radio name="race" value="asian">Asian</usa-radio>
+<usa-radio name="race" value="white">White</usa-radio>
+```
+
+**✅ Use checkboxes for multi-select:**
+```html
+<!-- Good: Checkboxes allow multiple selections -->
+<usa-checkbox name="race" value="asian">Asian</usa-checkbox>
+<usa-checkbox name="race" value="white">White</usa-checkbox>
+```
+
+**Why?** Many people identify with multiple races. OMB standards require multi-select.
+
+### Privacy and Data Usage
+
+**Always:**
+- Use HTTPS for transmission
+- Encrypt data at rest
+- Explain data usage clearly
+- Provide "Prefer not to share" option
+- Only collect when required by law
+- Comply with privacy regulations
+
+## Usage Examples
+
+### Basic Usage
+
+```html
+<usa-race-ethnicity-pattern
+  race-label="Which of the following race classifications best describe you?"
+  ethnicity-label="I identify my ethnicity as:"
+  show-prefer-not-to-share
+></usa-race-ethnicity-pattern>
+```
+
+### With Required Validation
+
+```html
+<usa-race-ethnicity-pattern
+  race-label="Race"
+  ethnicity-label="Ethnicity"
+  required
+  show-why-link
+  why-url="/privacy-policy"
+></usa-race-ethnicity-pattern>
+```
+
+### Programmatic Usage
+
+```typescript
+import { USARaceEthnicityPattern, RaceEthnicityData } from '@uswds-wc/patterns';
+
+// Get the pattern element
+const pattern = document.querySelector('usa-race-ethnicity-pattern') as USARaceEthnicityPattern;
+
+// Listen for changes
+pattern.addEventListener('race-ethnicity-change', (e: CustomEvent) => {
+  const { raceEthnicityData } = e.detail;
+  console.log('Race:', raceEthnicityData.race);
+  console.log('Ethnicity:', raceEthnicityData.ethnicity);
+  console.log('Prefer not to share:', raceEthnicityData.preferNotToShare);
+
+  // Save to your form state
+  saveToForm(raceEthnicityData);
+});
+
+// Set data programmatically
+pattern.setRaceEthnicityData({
+  race: ['asian', 'white'],
+  ethnicity: 'Chinese and Irish',
+  preferNotToShare: false
+});
+
+// Get current data
+const data = pattern.getRaceEthnicityData();
+
+// Validate
+if (!pattern.validateRaceEthnicity()) {
+  alert('Please provide race or ethnicity information');
+}
+
+// Clear
+pattern.clearRaceEthnicity();
+```
+
+## Integration with Forms
+
+### React Example
+
+```tsx
+import { useRef, useEffect } from 'react';
+import '@uswds-wc/patterns';
+import type { USARaceEthnicityPattern, RaceEthnicityData } from '@uswds-wc/patterns';
+
+function DemographicForm() {
+  const patternRef = useRef<USARaceEthnicityPattern>(null);
+
+  useEffect(() => {
+    const pattern = patternRef.current;
+    if (!pattern) return;
+
+    const handleChange = (e: CustomEvent) => {
+      const { raceEthnicityData } = e.detail;
+      console.log('Data:', raceEthnicityData);
+
+      // Validate in real-time
+      if (pattern.validateRaceEthnicity()) {
+        console.log('Valid data');
+      }
+    };
+
+    pattern.addEventListener('race-ethnicity-change', handleChange);
+    return () => pattern.removeEventListener('race-ethnicity-change', handleChange);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!patternRef.current?.validateRaceEthnicity()) {
+      alert('Please provide race or ethnicity information');
+      return;
+    }
+
+    const data = patternRef.current.getRaceEthnicityData();
+    console.log('Submitting:', data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <usa-race-ethnicity-pattern
+        ref={patternRef}
+        race-label="Which of the following race classifications best describe you?"
+        ethnicity-label="I identify my ethnicity as:"
+        show-why-link
+        why-url="/privacy"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### Angular Example
+
+```typescript
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import type { USARaceEthnicityPattern, RaceEthnicityData } from '@uswds-wc/patterns';
+
+@Component({
+  selector: 'app-demographic-form',
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <usa-race-ethnicity-pattern
+        #raceEthnicityPattern
+        race-label="Which of the following race classifications best describe you?"
+        ethnicity-label="I identify my ethnicity as:"
+        show-why-link
+        why-url="/privacy"
+        required
+        (race-ethnicity-change)="onChange($event)"
+      ></usa-race-ethnicity-pattern>
+      <button type="submit">Submit</button>
+    </form>
+  `
+})
+export class DemographicFormComponent {
+  @ViewChild('raceEthnicityPattern') raceEthnicityPattern!: ElementRef<USARaceEthnicityPattern>;
+
+  onChange(event: CustomEvent) {
+    const { raceEthnicityData } = event.detail;
+    console.log('Data:', raceEthnicityData);
+  }
+
+  onSubmit() {
+    const pattern = this.raceEthnicityPattern.nativeElement;
+
+    if (!pattern.validateRaceEthnicity()) {
+      alert('Please provide race or ethnicity information');
+      return;
+    }
+
+    const data = pattern.getRaceEthnicityData();
+    console.log('Submitting:', data);
+  }
+}
+```
+
+## Related Patterns
+
+- [Name Pattern](../?path=/docs/patterns-user-profile-name--docs) - Collect user's name
+- [Date of Birth Pattern](../?path=/docs/patterns-user-profile-date-of-birth--docs) - Collect birth date
+- [Sex Pattern](../?path=/docs/patterns-user-profile-sex--docs) - Collect biological sex
+
+## Technical Notes
+
+### Light DOM Architecture
+
+This pattern uses Light DOM (no Shadow DOM) to allow USWDS styles to cascade properly. This means:
+
+- USWDS CSS classes work directly
+- Parent form styles apply naturally
+- Browser form features work seamlessly
+
+### Data Immutability
+
+The `getRaceEthnicityData()` method returns a copy of the data, not a reference. This prevents external code from accidentally mutating the pattern's internal state.
+
+```typescript
+const data1 = pattern.getRaceEthnicityData();
+const data2 = pattern.getRaceEthnicityData();
+
+console.log(data1 === data2); // false (different objects)
+console.log(data1.race === data2.race); // false (different arrays)
+console.log(data1).toEqual(data2); // true (same values)
+```
+
+### Privacy Considerations
+
+- Pattern does not store data beyond current session
+- No data sent to external services
+- Use HTTPS for transmission
+- Implement server-side encryption for storage
+- Provide clear privacy policy
+- Only collect when required by law
+
+## Browser Support
+
+The Race and Ethnicity Pattern supports all modern browsers:
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+
+For older browsers, polyfills for Web Components may be required.

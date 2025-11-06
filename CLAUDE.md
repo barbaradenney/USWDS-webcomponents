@@ -377,8 +377,54 @@ All changes must include:
 2. Component tests (Cypress) - Interactive behavior (if applicable)
 3. Accessibility tests - axe-core validation
 4. USWDS compliance tests - Automated validation
+5. **Slot and Composition tests** - Light DOM rendering and component composition (NEW)
 
 **Test Failure Policy**: Do not commit if any tests fail, types don't check, or linting errors exist.
+
+### Slot and Composition Testing
+
+**Purpose**: Catch slot rendering issues, Light DOM composition problems, and layout bugs.
+
+**Test Utilities Available**: `@uswds-wc/test-utils/slot-testing-utils.js`
+
+```javascript
+import {
+  verifyPropertyBinding,         // Test property bindings create elements
+  verifyFlexLayoutParticipation,  // Test flex layout compatibility
+  verifyChildComponent,           // Test child component initialization
+  verifyHorizontalLayout,         // Test horizontal flex layouts
+  verifyUSWDSStructure,           // Test USWDS structure compliance
+  verifyNoComboBoxWrapper,        // Test combo-box opt-out
+  verifyCompactMode,              // Test compact mode rendering
+} from '@uswds-wc/test-utils/slot-testing-utils.js';
+```
+
+**When to Use**:
+- Components that accept slotted content (select, textarea)
+- Components used in flex/grid layouts (form components, patterns)
+- Patterns that compose multiple child components (date-of-birth, address, phone)
+- Components with property-based rendering (`.options` property)
+
+**Example Tests**:
+```javascript
+// Test property binding creates DOM elements
+await verifyPropertyBinding(select, 'select', 'option', expectedCount);
+
+// Test flex layout participation (critical for memorable date)
+await verifyFlexLayoutParticipation(select);
+
+// Test child component initialization in patterns
+const monthSelect = await verifyChildComponent(pattern, 'usa-select[name="month"]');
+
+// Test horizontal layout (month, day, year in a row)
+await verifyHorizontalLayout(pattern, [
+  'usa-select[name="month"]',
+  'usa-text-input[name="day"]',
+  'usa-text-input[name="year"]'
+]);
+```
+
+**Complete Guide**: See [docs/SLOT_AND_COMPOSITION_TESTING_STRATEGY.md](docs/SLOT_AND_COMPOSITION_TESTING_STRATEGY.md)
 
 ## Storybook Stories
 
@@ -600,6 +646,70 @@ Automated checks run before every commit:
 - Data-driven performance optimization
 - Track performance improvements over time
 - Spot performance regressions quickly
+
+### Optional Pre-commit Validations
+
+Additional validation checks can be enabled on-demand via environment variables:
+
+#### **Visual Regression Testing** 📸
+
+Runs Playwright visual regression tests for all patterns when pattern files are modified.
+
+```bash
+# Enable for one commit
+VISUAL_REGRESSION_PRECOMMIT=1 git commit -m "feat(patterns): update address layout"
+
+# Or set for session
+export VISUAL_REGRESSION_PRECOMMIT=1
+git commit -m "feat(patterns): update address layout"
+```
+
+**What it does:**
+- Only runs if pattern files (`packages/uswds-wc-patterns/src/patterns/**`) are modified
+- Automatically starts/stops Storybook if needed
+- Tests all 11 patterns across 3 viewports (mobile, tablet, desktop)
+- Blocks commit if visual regressions detected
+- Provides debug commands for fixing issues
+
+**When to use:**
+- Before committing pattern layout changes
+- After modifying pattern styles or structure
+- When updating USWDS classes on patterns
+- Before creating pull requests with pattern changes
+
+**Performance:** ~45s (Storybook running) or ~90s (cold start)
+
+#### **Cypress Component Tests** 🧪
+
+Runs Cypress component tests before commit.
+
+```bash
+CYPRESS_PRECOMMIT=1 git commit -m "feat: add component"
+```
+
+#### **Smoke Tests** 🔥
+
+Runs critical interaction validation for 8 key components.
+
+```bash
+SMOKE_TESTS_PRECOMMIT=1 git commit -m "feat: update component"
+```
+
+**Performance:** ~30s
+
+#### **Bundle Size Validation** 📦
+
+Validates bundle sizes against performance budgets.
+
+```bash
+BUNDLE_SIZE_PRECOMMIT=1 git commit -m "feat: add feature"
+```
+
+**Combine Multiple Checks:**
+```bash
+# Run visual regression + smoke tests
+VISUAL_REGRESSION_PRECOMMIT=1 SMOKE_TESTS_PRECOMMIT=1 git commit -m "feat(patterns): comprehensive update"
+```
 
 ## Post-commit Validation
 

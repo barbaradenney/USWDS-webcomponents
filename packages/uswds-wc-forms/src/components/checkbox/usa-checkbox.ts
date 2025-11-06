@@ -61,6 +61,14 @@ export class USACheckbox extends LitElement {
   @property({ type: Boolean, reflect: true })
   tile = false;
 
+  /**
+   * Whether to render in compact mode (no form-group wrapper)
+   * Use this when the checkbox is inside a fieldset or pattern where
+   * the parent handles spacing and grouping
+   */
+  @property({ type: Boolean })
+  compact = false;
+
   private checkboxElement?: HTMLInputElement;
   private _checkboxId?: string;
   private usingUSWDSEnhancement = false;
@@ -77,10 +85,11 @@ export class USACheckbox extends LitElement {
 
     // Set web component managed flag to prevent USWDS auto-initialization conflicts
     this.setAttribute('data-web-component-managed', 'true');
-    // Don't set role on the host element - it will be on the input
+
     // Initialize progressive enhancement
     this.initializeUSWDSCheckbox();
   }
+
 
   override firstUpdated() {
     // ARCHITECTURE: Script Tag Pattern
@@ -89,14 +98,31 @@ export class USACheckbox extends LitElement {
 
     // Get reference to the checkbox element after first render
     this.checkboxElement = this.querySelector('input[type="checkbox"]') as HTMLInputElement;
-    if (this.checkboxElement) {
+    const label = this.querySelector('label') as HTMLLabelElement;
+
+    if (this.checkboxElement && label) {
       this.updateCheckboxElement();
+
+      // Listen to the native input element's change event
+      this.checkboxElement.addEventListener('change', this.handleChange);
+
+      // Light DOM workaround: The native <label for="..."> mechanism doesn't always
+      // work reliably in Light DOM web components. Add a direct click listener on the
+      // label to manually toggle the checkbox as a fallback.
+      label.addEventListener('click', (e) => {
+        if (this.checkboxElement && !e.defaultPrevented) {
+          this.checkboxElement.checked = !this.checkboxElement.checked;
+          this.checkboxElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
     }
   }
 
   override updated(_changedProperties: Map<string, any>) {
-    // Update the checkbox element if it exists
-    if (this.checkboxElement) {
+    // Update checkbox element reference if needed
+    const currentCheckbox = this.querySelector('input[type="checkbox"]') as HTMLInputElement;
+    if (currentCheckbox) {
+      this.checkboxElement = currentCheckbox;
       this.updateCheckboxElement();
     }
   }
@@ -140,7 +166,7 @@ export class USACheckbox extends LitElement {
     }
   }
 
-  private handleChange(e: Event) {
+  private handleChange = (e: Event) => {
     const checkbox = e.target as HTMLInputElement;
     this.checked = checkbox.checked;
 
@@ -168,6 +194,15 @@ export class USACheckbox extends LitElement {
         composed: true,
       })
     );
+  };
+
+  /**
+   * Public API: Reset checkbox to unchecked state
+   * Allows patterns to clear the checkbox without DOM manipulation
+   */
+  reset(): void {
+    this.checked = false;
+    this.requestUpdate();
   }
 
   private get checkboxId() {
@@ -213,6 +248,15 @@ export class USACheckbox extends LitElement {
   }
 
   override disconnectedCallback() {
+    // Clean up event listeners
+    if (this.checkboxElement) {
+      this.checkboxElement.removeEventListener('change', this.handleChange);
+    }
+    const label = this.querySelector('label');
+    if (label) {
+      // Note: We can't remove the anonymous function, but it will be garbage collected
+      // when the element is removed from the DOM
+    }
     super.disconnectedCallback();
     this.cleanupUSWDS();
   }
@@ -277,10 +321,19 @@ export class USACheckbox extends LitElement {
       <div class="${wrapperClasses}">
         <input
           id="${checkboxId}"
-          class="usa-checkbox__input"
+          class="usa-checkbox__input ${this.tile ? 'usa-checkbox__input--tile' : ''} ${this
+            .error
+            ? 'usa-input--error'
+            : ''}"
           type="checkbox"
+          name="${this.name}"
+          value="${this.value}"
+          ?checked="${this.checked}"
+          ?disabled="${this.disabled}"
+          ?required="${this.required}"
+          .indeterminate="${this.indeterminate}"
           aria-describedby="${ariaDescribedby || undefined}"
-          @change=${this.handleChange}
+          aria-invalid="${this.error ? 'true' : undefined}"
         />
         <label class="usa-checkbox__label" for="${checkboxId}">
           ${this.label} ${this.renderDescription(checkboxId)}

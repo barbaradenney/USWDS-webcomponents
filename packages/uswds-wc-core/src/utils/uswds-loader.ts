@@ -444,7 +444,7 @@ export const CSS_ONLY_USWDS_MODULES = [
   'prose',
   'section',
   'summary-box',
-  'select',
+  // Note: 'select' removed - combo boxes require JavaScript for search/filter functionality
 ] as const;
 
 export type SupportedUSWDSModule = (typeof SUPPORTED_USWDS_MODULES)[number];

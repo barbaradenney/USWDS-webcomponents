@@ -6,6 +6,9 @@ import { initializeSearch } from './usa-search-behavior.js';
 // Import official USWDS compiled CSS
 import '@uswds-wc/core/styles.css';
 
+// Import usa-icon component for search icon
+import '@uswds-wc/data-display/components/icon';
+
 /**
  * USA Search Web Component
  *
@@ -60,12 +63,6 @@ export class USASearch extends USWDSBaseComponent {
 
   @property({ type: String, attribute: 'button-id' })
   buttonId = 'search-button';
-
-  @property({ type: String, attribute: 'submit-icon-src' })
-  submitIconSrc = '/img/search.svg';
-
-  @property({ type: String, attribute: 'submit-icon-alt' })
-  submitIconAlt = '';
 
   @property({ type: Boolean })
   toggleable = false;
@@ -209,11 +206,12 @@ export class USASearch extends USWDSBaseComponent {
                 ${this.size !== 'small'
                   ? html`<span class="usa-search__submit-text">${this.buttonText}</span>`
                   : ''}
-                <img
-                  src="${this.submitIconSrc}"
+                <usa-icon
+                  name="search"
                   class="usa-search__submit-icon"
-                  alt="${this.submitIconAlt}"
-                />
+                  role="img"
+                  aria-label="Search"
+                ></usa-icon>
               </button>
             </div>
           </form>
@@ -246,11 +244,12 @@ export class USASearch extends USWDSBaseComponent {
             ${this.size !== 'small'
               ? html`<span class="usa-search__submit-text">${this.buttonText}</span>`
               : ''}
-            <img
-              src="${this.submitIconSrc}"
+            <usa-icon
+              name="search"
               class="usa-search__submit-icon"
-              alt="${this.submitIconAlt}"
-            />
+              role="img"
+              aria-label="Search"
+            ></usa-icon>
           </button>
         </div>
       </form>

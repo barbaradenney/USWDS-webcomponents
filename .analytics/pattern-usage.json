@@ -1,0 +1,537 @@
+{
+  "patterns": {
+    "address": {
+      "tagName": "usa-address-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 7,
+        "examples": 0,
+        "documentation": 4,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/address/README.mdx",
+          "count": 3
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/address/usa-address-pattern.stories.ts",
+          "count": 7
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/multi-step-form/README.mdx",
+          "count": 1
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USAAddressPattern } from '../address/usa-address-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/address/usa-address-pattern.stories.ts",
+          "imports": [
+            "import './usa-address-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/address/usa-address-pattern.test.ts",
+          "imports": [
+            "import './usa-address-pattern.js'",
+            "import type { USAAddressPattern, AddressData } from './usa-address-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "label": 6,
+        "show-street2": 1,
+        "id": 1
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 58,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    },
+    "phone-number": {
+      "tagName": "usa-phone-number-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 9,
+        "examples": 0,
+        "documentation": 3,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/phone-number/README.mdx",
+          "count": 3
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/phone-number/usa-phone-number-pattern.stories.ts",
+          "count": 9
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USAPhoneNumberPattern } from '../phone-number/usa-phone-number-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/phone-number/usa-phone-number-pattern.stories.ts",
+          "imports": [
+            "import './usa-phone-number-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/phone-number/usa-phone-number-pattern.test.ts",
+          "imports": [
+            "import './usa-phone-number-pattern.js'",
+            "import type { USAPhoneNumberPattern, PhoneNumberData } from './usa-phone-number-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "label": 9,
+        "id": 1
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 58,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    },
+    "name": {
+      "tagName": "usa-name-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 8,
+        "examples": 0,
+        "documentation": 3,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/name/README.mdx",
+          "count": 3
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/name/usa-name-pattern.stories.ts",
+          "count": 8
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USANamePattern } from '../name/usa-name-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/name/usa-name-pattern.stories.ts",
+          "imports": [
+            "import './usa-name-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/name/usa-name-pattern.test.ts",
+          "imports": [
+            "import './usa-name-pattern.js'",
+            "import type { USANamePattern, NameData, NameFormat } from './usa-name-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "format": 7,
+        "id": 1
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 58,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    },
+    "contact-preferences": {
+      "tagName": "usa-contact-preferences-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 6,
+        "examples": 0,
+        "documentation": 1,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/contact-preferences/README.mdx",
+          "count": 1
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/contact-preferences/usa-contact-preferences-pattern.stories.ts",
+          "count": 6
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USAContactPreferencesPattern } from '../contact-preferences/usa-contact-preferences-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/contact-preferences/usa-contact-preferences-pattern.stories.ts",
+          "imports": [
+            "import './usa-contact-preferences-pattern.js'",
+            "import type { ContactMethod, USAContactPreferencesPattern } from './usa-contact-preferences-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/contact-preferences/usa-contact-preferences-pattern.test.ts",
+          "imports": [
+            "import './usa-contact-preferences-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "label": 2,
+        "hint": 3,
+        "id": 1
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 58,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    },
+    "language-selection": {
+      "tagName": "usa-language-selector-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 7,
+        "examples": 0,
+        "documentation": 12,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/language-selection/README.md",
+          "count": 10
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/language-selection/README.mdx",
+          "count": 2
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/language-selection/usa-language-selector-pattern.stories.ts",
+          "count": 7
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USALanguageSelectorPattern } from '../language-selection/usa-language-selector-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "storage-key": 2,
+        "variant": 8,
+        "ref": 2
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 59,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    },
+    "form-summary": {
+      "tagName": "usa-form-summary-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 5,
+        "examples": 0,
+        "documentation": 10,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/form-summary/README.md",
+          "count": 6
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/form-summary/README.mdx",
+          "count": 4
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/form-summary/usa-form-summary-pattern.stories.ts",
+          "count": 5
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USAFormSummaryPattern } from '../form-summary/usa-form-summary-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/form-summary/usa-form-summary-pattern.stories.ts",
+          "imports": [
+            "import './usa-form-summary-pattern.js'",
+            "import type { SummarySection } from './usa-form-summary-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/form-summary/usa-form-summary-pattern.test.ts",
+          "imports": [
+            "import './usa-form-summary-pattern.js'",
+            "import type { USAFormSummaryPattern, SummarySection, SummaryItem } from './usa-form-summary-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "confirmation-title": 4,
+        "id": 1,
+        "sections": 1,
+        "title": 1,
+        "download-button-label": 1
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 59,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    },
+    "multi-step-form": {
+      "tagName": "usa-multi-step-form-pattern",
+      "usages": {
+        "tests": 0,
+        "stories": 7,
+        "examples": 0,
+        "documentation": 11,
+        "other": 0
+      },
+      "locations": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/form-summary/README.md",
+          "count": 1
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/multi-step-form/README.md",
+          "count": 5
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/multi-step-form/README.mdx",
+          "count": 5
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/multi-step-form/usa-multi-step-form-pattern.stories.ts",
+          "count": 7
+        }
+      ],
+      "imports": [
+        {
+          "file": "/uswds-wc-patterns/src/patterns/__tests__/pattern-contracts.test.ts",
+          "imports": [
+            "import { USAMultiStepFormPattern } from '../multi-step-form/usa-multi-step-form-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/multi-step-form/usa-multi-step-form-pattern.stories.ts",
+          "imports": [
+            "import './usa-multi-step-form-pattern.js'",
+            "import type { FormStep } from './usa-multi-step-form-pattern.js'"
+          ]
+        },
+        {
+          "file": "/uswds-wc-patterns/src/patterns/multi-step-form/usa-multi-step-form-pattern.test.ts",
+          "imports": [
+            "import './usa-multi-step-form-pattern.js'",
+            "import type { USAMultiStepFormPattern, FormStep } from './usa-multi-step-form-pattern.js'"
+          ]
+        }
+      ],
+      "properties": {
+        "storage-key": 4,
+        "show-navigation": 2,
+        "steps": 1,
+        "id": 4
+      },
+      "events": {
+        "icon-change": 1,
+        "change": 59,
+        "page-change": 21,
+        "filter-change": 1,
+        "character-count-change": 11,
+        "date-change": 36,
+        "date-range-change": 11,
+        "file-change": 5,
+        "input-change": 10,
+        "range-change": 5,
+        "time-change": 2,
+        "validation-change": 6,
+        "prose-change": 2,
+        "current-step-change": 1,
+        "step-change": 9,
+        "hashchange": 1,
+        "section-change": 3,
+        "language-change": 1,
+        "pattern-ready": 15,
+        "address-change": 4,
+        "phone-change": 5,
+        "name-change": 3,
+        "preferences-change": 4,
+        "pattern-language-change": 14
+      },
+      "composition": []
+    }
+  },
+  "summary": {
+    "totalPatterns": 7,
+    "totalUsages": 93,
+    "mostUsed": {
+      "pattern": "language-selection",
+      "count": 19
+    },
+    "leastUsed": {
+      "pattern": "contact-preferences",
+      "count": 7
+    }
+  }
+}
