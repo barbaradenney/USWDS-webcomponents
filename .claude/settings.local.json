@@ -135,7 +135,8 @@
       "Bash(bash:*)",
       "Bash(pnpm run format:*)",
       "Bash(pnpm exec prettier:*)",
-      "Bash(pnpm --filter @uswds-wc/patterns test:*)"
+      "Bash(pnpm --filter @uswds-wc/patterns test:*)",
+      "Bash(pnpm vitest run:*)"
     ],
     "deny": [],
     "ask": []

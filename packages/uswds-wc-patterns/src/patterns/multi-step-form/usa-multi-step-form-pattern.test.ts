@@ -286,6 +286,8 @@ describe('USAMultiStepFormPattern', () => {
       nextButton?.click();
 
       await validationPattern.updateComplete;
+      // Wait for async navigation to complete
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(validate).toHaveBeenCalled();
       expect(validationPattern.getCurrentStepIndex()).toBe(1); // Should advance
