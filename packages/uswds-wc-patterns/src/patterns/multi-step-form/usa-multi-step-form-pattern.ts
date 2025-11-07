@@ -441,11 +441,17 @@ export class USAMultiStepFormPattern extends LitElement {
   /**
    * Public API: Navigate to specific step by index
    */
-  goToStep(stepIndex: number) {
+  async goToStep(stepIndex: number) {
     if (stepIndex >= 0 && stepIndex < this.steps.length) {
       const previousStep = this.currentStepIndex;
       this.currentStepIndex = stepIndex;
       this.saveState();
+
+      // For Light DOM, explicitly request update with property name to ensure tracking
+      this.requestUpdate('currentStepIndex', previousStep);
+      await this.updateComplete;
+      // Wait for child usa-button elements to complete their firstUpdated lifecycle
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       this.dispatchEvent(
         new CustomEvent('step-change', {

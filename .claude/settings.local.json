@@ -134,7 +134,8 @@
       "Bash(pnpm run format:check:*)",
       "Bash(bash:*)",
       "Bash(pnpm run format:*)",
-      "Bash(pnpm exec prettier:*)"
+      "Bash(pnpm exec prettier:*)",
+      "Bash(pnpm --filter @uswds-wc/patterns test:*)"
     ],
     "deny": [],
     "ask": []
