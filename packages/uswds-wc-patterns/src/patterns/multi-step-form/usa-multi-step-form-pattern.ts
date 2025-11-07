@@ -505,7 +505,8 @@ export class USAMultiStepFormPattern extends LitElement {
       // Wait for:
       // 1. Child usa-button elements to complete their firstUpdated lifecycle
       // 2. updated() cleanup to remove duplicate button groups
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      await new Promise(resolve => setTimeout(resolve, 100)); // Intentional delay for child component init
 
       this.dispatchEvent(
         new CustomEvent('step-change', {
