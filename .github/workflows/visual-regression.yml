@@ -35,9 +35,9 @@ jobs:
         with:
           # Chromatic needs full history for baseline comparison
           fetch-depth: 0      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
         with:
-          version: 9
+          version: 10
 
 
 
