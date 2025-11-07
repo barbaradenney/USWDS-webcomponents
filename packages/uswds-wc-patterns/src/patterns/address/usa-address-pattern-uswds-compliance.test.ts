@@ -256,7 +256,6 @@ describe('USAAddressPattern - USWDS Compliance', () => {
 
     it('should have fields as direct children of fieldset', () => {
       const fieldset = pattern.querySelector('fieldset');
-      const legend = pattern.querySelector('legend');
 
       // All form components should be direct children (or siblings) within fieldset
       const formComponents = pattern.querySelectorAll('usa-text-input, usa-select');

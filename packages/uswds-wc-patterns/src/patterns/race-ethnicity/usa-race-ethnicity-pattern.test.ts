@@ -2,11 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import { USARaceEthnicityPattern } from './usa-race-ethnicity-pattern.js';
 import type { RaceEthnicityData } from './usa-race-ethnicity-pattern.js';
-import {
-  verifyChildComponent,
-  verifyUSWDSStructure,
-  verifyCompactMode,
-} from '@uswds-wc/test-utils/slot-testing-utils.js';
+import { verifyChildComponent, verifyUSWDSStructure } from '@uswds-wc/test-utils/slot-testing-utils.js';
 
 // Register the component
 if (!customElements.get('usa-race-ethnicity-pattern')) {
@@ -811,8 +807,6 @@ describe('USARaceEthnicityPattern', () => {
       });
 
       it('should have label for ethnicity input component', async () => {
-        const textInput = element.querySelector('usa-text-input[name="ethnicity"]');
-
         // The ethnicity input doesn't have a label attribute in the pattern
         // It relies on the fieldset/legend for labeling (USWDS pattern)
         // Verify the fieldset structure instead

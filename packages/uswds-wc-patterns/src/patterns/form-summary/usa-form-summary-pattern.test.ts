@@ -1,11 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import './usa-form-summary-pattern.js';
-import type {
-  USAFormSummaryPattern,
-  SummarySection,
-  SummaryItem,
-} from './usa-form-summary-pattern.js';
+import type { USAFormSummaryPattern, SummarySection } from './usa-form-summary-pattern.js';
 
 describe('USAFormSummaryPattern', () => {
   let pattern: USAFormSummaryPattern;

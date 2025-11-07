@@ -589,7 +589,6 @@ describe('USAContactPreferencesPattern', () => {
       await pattern.updateComplete;
 
       const hints = Array.from(pattern.querySelectorAll('.usa-hint'));
-      const customHint = hints.find((h) => h.id.includes('hint') && h.textContent !== '');
 
       // Should only have the optional hint, not a custom hint
       expect(hints.length).toBe(1);

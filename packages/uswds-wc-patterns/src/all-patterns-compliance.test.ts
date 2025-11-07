@@ -252,7 +252,7 @@ describe('All Patterns - Cross-Pattern Consistency', () => {
   });
 
   it('should all use Light DOM consistently', () => {
-    patterns.forEach((pattern, index) => {
+    patterns.forEach((pattern) => {
       expect((pattern as any).shadowRoot).toBeNull();
     });
   });

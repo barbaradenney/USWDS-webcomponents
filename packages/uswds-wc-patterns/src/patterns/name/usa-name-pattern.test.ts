@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import './usa-name-pattern.js';
-import type { USANamePattern, NameData, NameFormat } from './usa-name-pattern.js';
+import type { USANamePattern, NameData } from './usa-name-pattern.js';
 import {
   verifyChildComponent,
   verifyPropertyBinding,
