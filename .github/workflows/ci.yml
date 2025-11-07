@@ -99,30 +99,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run all unit tests
-        run: |
-          set +e  # Don't fail immediately on non-zero exit code
-          pnpm test > test-output.log 2>&1
-          TEST_EXIT_CODE=$?
-          cat test-output.log
-
-          # Strip ANSI color codes for parsing
-          sed 's/\x1b\[[0-9;]*m//g' test-output.log > test-output-clean.log
-
-          # Check for actual test failures (not just JSDOM unhandled errors)
-          if grep -E "Test Files.*(failed|failing)" test-output-clean.log || grep -E "Tests.*(failed|failing)" test-output-clean.log; then
-            echo "❌ Real test failures detected"
-            exit 1
-          fi
-
-          # Check if all tests passed (look for "Test Files" and "passed" pattern)
-          if grep -q "Test Files" test-output-clean.log && grep -q "passed" test-output-clean.log; then
-            echo "✅ All tests passed (ignoring JSDOM unhandled errors)"
-            exit 0
-          fi
-
-          # If we can't determine success, use original exit code
-          echo "⚠️  Could not parse test output, using exit code: $TEST_EXIT_CODE"
-          exit $TEST_EXIT_CODE
+        run: pnpm test
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}

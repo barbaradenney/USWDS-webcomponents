@@ -20,7 +20,9 @@ describe('USAMultiStepFormPattern', () => {
       const buttons = pattern.querySelectorAll('usa-button');
 
       // Wait for all buttons to complete their update cycle (so firstUpdated runs and content is moved)
-      await Promise.all(Array.from(buttons).map((btn: any) => btn.updateComplete || Promise.resolve()));
+      await Promise.all(
+        Array.from(buttons).map((btn: any) => btn.updateComplete || Promise.resolve())
+      );
 
       const button = Array.from(buttons).find(
         (btn) => btn.textContent?.trim() === buttonText

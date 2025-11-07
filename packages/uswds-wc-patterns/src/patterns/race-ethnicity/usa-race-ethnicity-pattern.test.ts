@@ -2,7 +2,10 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import { USARaceEthnicityPattern } from './usa-race-ethnicity-pattern.js';
 import type { RaceEthnicityData } from './usa-race-ethnicity-pattern.js';
-import { verifyChildComponent, verifyUSWDSStructure } from '@uswds-wc/test-utils/slot-testing-utils.js';
+import {
+  verifyChildComponent,
+  verifyUSWDSStructure,
+} from '@uswds-wc/test-utils/slot-testing-utils.js';
 
 // Register the component
 if (!customElements.get('usa-race-ethnicity-pattern')) {

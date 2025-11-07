@@ -511,7 +511,10 @@ describe('USASSNPattern', () => {
       it('should initialize SSN text input component', async () => {
         const { verifyChildComponent } = await import('@uswds-wc/test-utils/slot-testing-utils.js');
 
-        const ssnInput = await verifyChildComponent(element, 'usa-text-input[name="social-security-no"]');
+        const ssnInput = await verifyChildComponent(
+          element,
+          'usa-text-input[name="social-security-no"]'
+        );
         expect(ssnInput).toBeTruthy();
 
         // Verify internal structure rendered
