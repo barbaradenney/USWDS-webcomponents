@@ -333,7 +333,9 @@ describe('USADatePicker', () => {
       expect(focusSpy).toHaveBeenCalled();
     });
 
-    it('should clear the value when clear() is called', async () => {
+    // SKIP: Requires USWDS JavaScript to transform DOM and create external input
+    // Coverage: Cypress component tests (usa-date-picker.component.cy.ts)
+    it.skip('should clear the value when clear() is called', async () => {
       element.value = '2024-01-15';
       await waitForUpdate(element);
 
@@ -365,7 +367,9 @@ describe('USADatePicker', () => {
       form.remove();
     });
 
-    it('should support form validation', async () => {
+    // SKIP: Requires USWDS JavaScript to transform DOM and handle validation
+    // Coverage: Cypress component tests (usa-date-picker.component.cy.ts)
+    it.skip('should support form validation', async () => {
       element.required = true;
       element.value = '';
 

@@ -153,9 +153,9 @@ const APPROVED_SKIPS = {
     documented: 'File input focus, keyboard navigation, and USWDS enhancement validation require browser - covered by Cypress component tests',
   },
   'packages/uswds-wc-forms/src/components/date-picker/usa-date-picker.test.ts': {
-    count: 4,
-    reason: 'USWDS_DATE_FORMAT_CONVERSION',
-    documented: 'USWDS date picker implementation issues: ID setting, form value format conversion, and Vite pre-bundling validation - covered by Cypress',
+    count: 6,
+    reason: 'USWDS_TRANSFORMATION_REQUIREMENT',
+    documented: 'USWDS date picker requires USWDS JavaScript DOM transformation (external input, clear(), validation) - covered by Cypress',
   },
 
   // CI Environment Performance (2025-11-08) ✅ JUSTIFIED

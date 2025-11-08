@@ -137,7 +137,8 @@
       "Bash(pnpm exec prettier:*)",
       "Bash(pnpm --filter @uswds-wc/patterns test:*)",
       "Bash(pnpm vitest run:*)",
-      "Bash(pnpm --filter @uswds-wc/actions test usa-search)"
+      "Bash(pnpm --filter @uswds-wc/actions test usa-search)",
+      "Bash(gh run watch:*)"
     ],
     "deny": [],
     "ask": []
