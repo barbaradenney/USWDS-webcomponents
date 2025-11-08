@@ -368,6 +368,9 @@ importers:
       '@uswds-wc/core':
         specifier: workspace:*
         version: link:../uswds-wc-core
+      '@uswds-wc/data-display':
+        specifier: workspace:*
+        version: link:../uswds-wc-data-display
       '@uswds-wc/feedback':
         specifier: workspace:*
         version: link:../uswds-wc-feedback

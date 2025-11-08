@@ -31,6 +31,7 @@
   "dependencies": {
     "@uswds-wc/actions": "workspace:*",
     "@uswds-wc/core": "workspace:*",
+    "@uswds-wc/data-display": "workspace:*",
     "@uswds-wc/feedback": "workspace:*"
   },
   "peerDependencies": {
