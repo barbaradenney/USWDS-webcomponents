@@ -872,13 +872,15 @@ describe('USADateRangePicker', () => {
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {
-    it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
-      // Test with default configuration
-      element.legend = 'Travel Dates';
-      element.startLabel = 'Departure Date';
-      element.endLabel = 'Return Date';
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+    it(
+      'should pass comprehensive accessibility tests (same as Storybook)',
+      async () => {
+        // Test with default configuration
+        element.legend = 'Travel Dates';
+        element.startLabel = 'Departure Date';
+        element.endLabel = 'Return Date';
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
       // Test with hint text
       element.hint = 'Please select your travel dates';
@@ -912,12 +914,14 @@ describe('USADateRangePicker', () => {
       await element.updateComplete;
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test with range validation enabled
-      element.readonly = false;
-      element.validateRange = true;
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
-    });
+        // Test with range validation enabled
+        element.readonly = false;
+        element.validateRange = true;
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+      },
+      10000
+    ); // Increased timeout for multiple accessibility checks
 
     it('should maintain accessibility during date selection', async () => {
       element.legend = 'Event Dates';

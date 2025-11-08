@@ -1221,14 +1221,16 @@ describe('USAMemorableDate', () => {
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {
-    it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
-      // Test default memorable date
-      element.label = 'Date of Birth';
-      element.month = '06';
-      element.day = '15';
-      element.year = '1985';
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+    it(
+      'should pass comprehensive accessibility tests (same as Storybook)',
+      async () => {
+        // Test default memorable date
+        element.label = 'Date of Birth';
+        element.month = '06';
+        element.day = '15';
+        element.year = '1985';
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
       // Test disabled state
       element.disabled = true;
@@ -1252,33 +1254,39 @@ describe('USAMemorableDate', () => {
       element.year = '';
       await element.updateComplete;
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
-    });
+      },
+      10000
+    ); // Increased timeout for comprehensive accessibility tests
 
-    it('should maintain accessibility during dynamic updates', async () => {
-      // Set initial accessible state
-      element.label = 'Employment Start Date';
-      element.month = '01';
-      element.day = '01';
-      element.year = '2020';
-      element.hint = 'Enter your first day of federal employment';
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+    it(
+      'should maintain accessibility during dynamic updates',
+      async () => {
+        // Set initial accessible state
+        element.label = 'Employment Start Date';
+        element.month = '01';
+        element.day = '01';
+        element.year = '2020';
+        element.hint = 'Enter your first day of federal employment';
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Update date values dynamically
-      element.setValue('03', '15', '2021');
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+        // Update date values dynamically
+        element.setValue('03', '15', '2021');
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test date clearing
-      element.clear();
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+        // Test date clearing
+        element.clear();
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
-      // Test setting from ISO date
-      element.setFromISODate('1985-12-25');
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
-    });
+        // Test setting from ISO date
+        element.setFromISODate('1985-12-25');
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+      },
+      10000
+    ); // Increased timeout for comprehensive accessibility tests
 
     it('should pass accessibility with form integration', async () => {
       const form = document.createElement('form');

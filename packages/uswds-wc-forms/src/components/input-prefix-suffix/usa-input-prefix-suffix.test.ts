@@ -1163,13 +1163,15 @@ describe('USAInputPrefixSuffix', () => {
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {
-    it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
-      // Test basic input with prefix text
-      element.label = 'Username';
-      element.prefix = '@';
-      element.value = 'user123';
-      await element.updateComplete;
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+    it(
+      'should pass comprehensive accessibility tests (same as Storybook)',
+      async () => {
+        // Test basic input with prefix text
+        element.label = 'Username';
+        element.prefix = '@';
+        element.value = 'user123';
+        await element.updateComplete;
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
 
       // Test with suffix text
       element.prefix = '';
@@ -1225,7 +1227,9 @@ describe('USAInputPrefixSuffix', () => {
       element.value = '';
       await element.updateComplete;
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
-    });
+      },
+      10000
+    ); // Increased timeout for comprehensive accessibility tests
 
     it('should maintain accessibility during dynamic updates', async () => {
       // Start with basic configuration

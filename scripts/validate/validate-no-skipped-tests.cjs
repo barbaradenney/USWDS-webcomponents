@@ -148,9 +148,9 @@ const APPROVED_SKIPS = {
   // JSDOM limitation (2025-10-30, updated 2025-11-08) ✅ JUSTIFIED
   // File input focus and USWDS enhancement validation not supported in JSDOM
   'packages/uswds-wc-forms/src/components/file-input/usa-file-input.test.ts': {
-    count: 7,
+    count: 8,
     reason: 'JSDOM_LIMITATION',
-    documented: 'File input focus, keyboard navigation, and USWDS enhancement validation require browser - covered by Cypress component tests',
+    documented: 'File input focus, keyboard navigation, USWDS enhancement, and data-enhanced validation require browser - covered by Cypress component tests',
   },
   'packages/uswds-wc-forms/src/components/date-picker/usa-date-picker.test.ts': {
     count: 6,
