@@ -25,7 +25,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.test.ts'],
-    exclude: ['node_modules', 'dist'],
+    exclude: [
+      'node_modules',
+      'dist',
+      '**/*.browser.test.ts', // Exclude browser-dependent tests (require real browser/Playwright)
+    ],
   },
   resolve: {
     alias: {
