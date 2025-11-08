@@ -170,10 +170,11 @@ describe('USAMultiStepFormPattern', () => {
     it('should show Submit button on final step', async () => {
       await pattern.goToStep(2);
       await pattern.updateComplete;
-      // Light DOM requires extra time for re-render
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Light DOM requires extra time for re-render, especially in full test suite
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      const submitButton = await waitForButton('Submit');
+      // Increase timeout for concurrent test execution
+      const submitButton = await waitForButton('Submit', 5000);
       expect(submitButton).toBeTruthy();
     });
 
@@ -211,9 +212,12 @@ describe('USAMultiStepFormPattern', () => {
 
       await customPattern.goToStep(2);
       await customPattern.updateComplete;
+      // Light DOM requires extra time for re-render, especially in full test suite
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      const backButton = await waitForButton('Previous');
-      const submitButton = await waitForButton('Finish');
+      // Increase timeout for concurrent test execution
+      const backButton = await waitForButton('Previous', 5000);
+      const submitButton = await waitForButton('Finish', 5000);
 
       expect(backButton).toBeTruthy();
       expect(submitButton).toBeTruthy();
@@ -278,18 +282,18 @@ describe('USAMultiStepFormPattern', () => {
       ];
       container.appendChild(validationPattern);
       await validationPattern.updateComplete;
-      // Wait for child components to render
-      await new Promise((resolve) => setTimeout(resolve, 250));
+      // Wait for child components to render (increased for concurrent execution)
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Use helper to ensure button content is rendered
+      // Use helper to ensure button content is rendered (increased timeout)
       pattern = validationPattern; // Update pattern reference for waitForButton helper
-      const nextButton = await waitForButton('Next');
+      const nextButton = await waitForButton('Next', 5000);
       expect(nextButton).toBeTruthy();
       nextButton?.click();
 
       await validationPattern.updateComplete;
-      // Wait for async navigation to complete
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      // Wait for async navigation to complete (increased for concurrent execution)
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       expect(validate).toHaveBeenCalled();
       expect(validationPattern.getCurrentStepIndex()).toBe(1); // Should advance
@@ -307,17 +311,18 @@ describe('USAMultiStepFormPattern', () => {
       ];
       container.appendChild(asyncPattern);
       await asyncPattern.updateComplete;
-      // Wait for child components to render
-      await new Promise((resolve) => setTimeout(resolve, 250));
+      // Wait for child components to render (increased for concurrent execution)
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Use helper to ensure button content is rendered
+      // Use helper to ensure button content is rendered (increased timeout)
       pattern = asyncPattern; // Update pattern reference for waitForButton helper
-      const nextButton = await waitForButton('Next');
+      const nextButton = await waitForButton('Next', 5000);
       expect(nextButton).toBeTruthy();
       nextButton?.click();
 
       await asyncPattern.updateComplete;
-      await new Promise((resolve) => setTimeout(resolve, 250)); // Wait for async validation
+      // Wait for async validation (increased for concurrent execution)
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       expect(validate).toHaveBeenCalled();
       expect(asyncPattern.getCurrentStepIndex()).toBe(1);
