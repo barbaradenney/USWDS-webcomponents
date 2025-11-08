@@ -112,6 +112,11 @@ const resize = (event: MediaQueryListEvent): void => {
  * @returns Cleanup function
  */
 export function initializeFooter(root: HTMLElement | Document = document): () => void {
+  // Guard against undefined window in test teardown (prevents "window is not defined" in CI)
+  if (typeof window === 'undefined') {
+    return () => {}; // Return noop cleanup function
+  }
+
   // Initialize HTML tag based on window width
   toggleHtmlTag(window.innerWidth < HIDE_MAX_WIDTH);
 
