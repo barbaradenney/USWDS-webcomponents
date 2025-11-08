@@ -29,7 +29,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@uswds-wc/core": "workspace:*"
+    "@uswds-wc/core": "workspace:*",
+    "@uswds-wc/data-display": "workspace:*"
   },
   "peerDependencies": {
     "lit": "^3.0.0"

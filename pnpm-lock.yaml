@@ -327,6 +327,9 @@ importers:
       '@uswds-wc/core':
         specifier: workspace:*
         version: link:../uswds-wc-core
+      '@uswds-wc/data-display':
+        specifier: workspace:*
+        version: link:../uswds-wc-data-display
     devDependencies:
       '@uswds-wc/test-utils':
         specifier: workspace:*
