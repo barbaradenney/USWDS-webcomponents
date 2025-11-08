@@ -327,28 +327,30 @@ export const ApplicationIntegration: Story = {
  */
 export const PatternReadyEvent: Story = {
   render: () => {
-    const handlePatternReady = (e: CustomEvent) => {
+    // Use requestAnimationFrame to access DOM after render
+    requestAnimationFrame(() => {
+      const pattern = document.querySelector('usa-language-selector-pattern');
       const display = document.getElementById('ready-state-display');
-      if (display) {
-        display.innerHTML = `
-          <div class="usa-alert usa-alert--info usa-alert--slim">
-            <div class="usa-alert__body">
-              <p class="usa-alert__text">
-                Pattern initialized with language: <strong>${e.detail.code}</strong>
-                ${e.detail.persisted ? '(restored from localStorage)' : '(default)'}
-              </p>
+
+      if (pattern && display) {
+        pattern.addEventListener('pattern-ready', ((e: CustomEvent) => {
+          display.innerHTML = `
+            <div class="usa-alert usa-alert--info usa-alert--slim">
+              <div class="usa-alert__body">
+                <p class="usa-alert__text">
+                  Pattern initialized with language: <strong>${e.detail.code}</strong>
+                  ${e.detail.persisted ? '(restored from localStorage)' : '(default)'}
+                </p>
+              </div>
             </div>
-          </div>
-        `;
+          `;
+          console.log('Pattern Ready Event:', e.detail);
+        }) as EventListener);
       }
-      console.log('Pattern Ready Event:', e.detail);
-    };
+    });
 
     return html`
-      <usa-language-selector-pattern
-        persist-preference
-        @pattern-ready="${handlePatternReady}"
-      ></usa-language-selector-pattern>
+      <usa-language-selector-pattern persist-preference></usa-language-selector-pattern>
 
       <div id="ready-state-display" style="margin-top: 1rem;"></div>
 
