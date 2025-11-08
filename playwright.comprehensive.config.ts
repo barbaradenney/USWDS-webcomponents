@@ -51,7 +51,7 @@ export default defineConfig({
     }],
     ['list'],
     // Custom reporter for comprehensive reporting
-    ['./scripts/playwright-comprehensive-reporter.js']
+    ['./scripts/test/playwright-comprehensive-reporter.js']
   ],
 
   // Global test setup and teardown
