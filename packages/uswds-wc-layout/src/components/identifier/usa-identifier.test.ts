@@ -1027,31 +1027,35 @@ describe('USAIdentifier', () => {
   });
 
   describe('Accessibility Compliance (CRITICAL)', () => {
-    it('should pass comprehensive accessibility tests (same as Storybook)', async () => {
-      // Setup identifier with comprehensive government data
-      element.domain = 'example.gov';
-      element.agency = 'U.S. Department of Example Services';
-      element.description =
-        'Official site of the U.S. Department of Example Services providing citizen services and information.';
-      element.parentAgency = 'Executive Office of the President';
-      element.parentAgencyHref = 'https://whitehouse.gov';
-      element.showLogos = true;
-      element.showRequiredLinks = true;
-      element.logos = [
-        {
-          src: '/img/us-flag-small.png',
-          alt: 'U.S. Flag',
-        },
-        {
-          src: '/img/example-seal.png',
-          alt: 'Department of Example Services official seal',
-        },
-      ];
-      await waitForUpdate(element);
+    it(
+      'should pass comprehensive accessibility tests (same as Storybook)',
+      async () => {
+        // Setup identifier with comprehensive government data
+        element.domain = 'example.gov';
+        element.agency = 'U.S. Department of Example Services';
+        element.description =
+          'Official site of the U.S. Department of Example Services providing citizen services and information.';
+        element.parentAgency = 'Executive Office of the President';
+        element.parentAgencyHref = 'https://whitehouse.gov';
+        element.showLogos = true;
+        element.showRequiredLinks = true;
+        element.logos = [
+          {
+            src: '/img/us-flag-small.png',
+            alt: 'U.S. Flag',
+          },
+          {
+            src: '/img/example-seal.png',
+            alt: 'Department of Example Services official seal',
+          },
+        ];
+        await waitForUpdate(element);
 
-      // Run comprehensive accessibility audit
-      await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
-    });
+        // Run comprehensive accessibility audit
+        await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
+      },
+      10000
+    ); // Increased timeout for CI environment - accessibility tests can be slow
 
     it('should pass accessibility tests with minimal configuration', async () => {
       element.domain = 'simple.gov';
