@@ -178,6 +178,9 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: 🏗️ Build packages
+        run: pnpm run build
+
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
 
@@ -220,6 +223,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build packages
+        run: pnpm run build
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -285,6 +291,9 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: 🏗️ Build packages
+        run: pnpm run build
+
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
@@ -327,6 +336,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build packages
+        run: pnpm run build
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -373,6 +385,9 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: 🏗️ Build packages
+        run: pnpm run build
+
       - name: 👁️ Run visual regression tests
         run: npm run test:visual
         env:
@@ -409,6 +424,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build packages
+        run: pnpm run build
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
