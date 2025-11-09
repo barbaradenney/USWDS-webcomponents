@@ -920,8 +920,8 @@ describe('USADateRangePicker', () => {
         await element.updateComplete;
         await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
       },
-      10000
-    ); // Increased timeout for multiple accessibility checks
+      30000
+    ); // Increased timeout for multiple accessibility checks (canvas operations in jsdom can be slow)
 
     it('should maintain accessibility during date selection', async () => {
       element.legend = 'Event Dates';

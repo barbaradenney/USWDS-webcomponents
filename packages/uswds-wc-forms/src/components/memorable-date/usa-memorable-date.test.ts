@@ -1255,8 +1255,8 @@ describe('USAMemorableDate', () => {
       await element.updateComplete;
       await testComponentAccessibility(element, USWDS_A11Y_CONFIG.FULL_COMPLIANCE);
       },
-      10000
-    ); // Increased timeout for comprehensive accessibility tests
+      30000
+    ); // Increased timeout for comprehensive accessibility tests (canvas operations in jsdom can be slow)
 
     it(
       'should maintain accessibility during dynamic updates',

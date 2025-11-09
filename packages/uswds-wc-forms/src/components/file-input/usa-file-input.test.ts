@@ -770,16 +770,22 @@ describe('USAFileInput', () => {
       await waitForUpdate(element);
 
       // Structure needed for USWDS mirrored behavior:
-      // 1. Input element with .usa-file-input class (USWDS transforms this)
+      // 1. Input element with type="file" (may have usa-file-input class before enhancement,
+      //    or usa-file-input__input class after enhancement)
       const input = element.querySelector('input[type="file"]');
       expect(input).toBeTruthy();
-      expect(input?.classList.contains('usa-file-input')).toBe(true);
+
+      // Check for either the initial class (before USWDS enhancement)
+      // or the enhanced class (after USWDS enhancement) - both are valid
+      const hasFileInputClass = input?.classList.contains('usa-file-input') ||
+                                input?.classList.contains('usa-file-input__input');
+      expect(hasFileInputClass).toBe(true);
 
       // Note: Component provides minimal structure for progressive enhancement
       // USWDS JavaScript will:
       // - Transform the input element
       // - Create drag-and-drop target and file preview
-      // - Add usa-file-input__input class during enhancement
+      // - Replace usa-file-input class with usa-file-input__input during enhancement
       // - Add data-enhanced attribute during transformation
     });
 
