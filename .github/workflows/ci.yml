@@ -206,6 +206,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Download built packages from build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: packages/
+
       # Cache Cypress binary to avoid reinstallation
       - name: Cache Cypress binary
         id: cypress-cache
@@ -273,6 +280,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Download built packages from build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: packages/
+
       - name: Install Playwright browsers (chromium + firefox only)
         run: npx playwright install chromium firefox --with-deps
 
@@ -327,6 +341,13 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # Download built packages from build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: packages/
 
       - name: Install Playwright browsers (webkit only - a11y uses chromium)
         run: npx playwright install webkit chromium --with-deps
