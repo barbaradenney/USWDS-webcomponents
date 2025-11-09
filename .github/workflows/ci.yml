@@ -276,24 +276,16 @@ jobs:
       - name: Install Playwright browsers (chromium + firefox only)
         run: npx playwright install chromium firefox --with-deps
 
-      - name: Start Storybook for testing
-        run: pnpm run storybook &
-        env:
-          CI: true
-
-      - name: Wait for Storybook
-        run: npx wait-on http://localhost:6006 --timeout 120000
+      - name: Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
 
       - name: Run Playwright tests (chromium + firefox)
         run: npx playwright test --project=chromium --project=firefox --workers=4 --reporter=line
         env:
           CI: true
-
-      - name: Stop Storybook
-        if: always()
-        run: |
-          # Kill any process using port 6006
-          lsof -ti:6006 | xargs kill -9 2>/dev/null || true
 
       - name: Upload Playwright report (desktop)
         uses: actions/upload-artifact@v4
@@ -339,13 +331,11 @@ jobs:
       - name: Install Playwright browsers (webkit only - a11y uses chromium)
         run: npx playwright install webkit chromium --with-deps
 
-      - name: Start Storybook for testing
-        run: pnpm run storybook &
-        env:
-          CI: true
-
-      - name: Wait for Storybook
-        run: npx wait-on http://localhost:6006 --timeout 120000
+      - name: Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
 
       - name: Run Playwright tests (webkit only)
         run: npx playwright test --project=webkit --workers=4 --reporter=line
