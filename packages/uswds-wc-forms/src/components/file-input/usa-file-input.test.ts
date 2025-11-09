@@ -777,8 +777,9 @@ describe('USAFileInput', () => {
 
       // Check for either the initial class (before USWDS enhancement)
       // or the enhanced class (after USWDS enhancement) - both are valid
-      const hasFileInputClass = input?.classList.contains('usa-file-input') ||
-                                input?.classList.contains('usa-file-input__input');
+      const hasFileInputClass =
+        input?.classList.contains('usa-file-input') ||
+        input?.classList.contains('usa-file-input__input');
       expect(hasFileInputClass).toBe(true);
 
       // Note: Component provides minimal structure for progressive enhancement
