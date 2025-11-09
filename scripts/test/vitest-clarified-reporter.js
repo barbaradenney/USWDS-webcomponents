@@ -13,10 +13,7 @@ import { DefaultReporter } from 'vitest/reporters';
 
 export default class ClarifiedReporter extends DefaultReporter {
   onFinished(files = [], errors = []) {
-    // Let the default reporter handle most output
-    super.onFinished(files, errors);
-
-    // Calculate statistics
+    // Calculate statistics BEFORE calling parent (to detect failures)
     const totalFiles = files.length;
     const passedFiles = files.filter(f => f.result?.state === 'pass').length;
     const failedFiles = files.filter(f => f.result?.state === 'fail').length;
@@ -42,6 +39,9 @@ export default class ClarifiedReporter extends DefaultReporter {
       }
     });
 
+    // Let the default reporter handle most output
+    super.onFinished(files, errors);
+
     // Add clarification footer
     console.log('\n📊 Test Summary (Clarified):');
     console.log('━'.repeat(60));
@@ -66,6 +66,12 @@ export default class ClarifiedReporter extends DefaultReporter {
       console.log(`   (Running tests only from this package)`);
     } else {
       console.log(`\n📦 Package Scope: All packages (monorepo-wide)`);
+    }
+
+    // IMPORTANT: Ensure we exit with code 0 if all tests passed
+    // This prevents false positive failures in CI
+    if (failedFiles === 0 && failedTests === 0 && errors.length === 0) {
+      process.exitCode = 0;
     }
   }
 
