@@ -423,21 +423,25 @@ describe('USATimePicker', () => {
 
     it('should render correct DOM structure for USWDS behavior enhancement', async () => {
       // Validates that the component renders the structure needed by usa-time-picker-behavior.ts
+      // IMPORTANT: Check BEFORE USWDS transformation (which removes original input)
       element.label = 'Test time';
       element.value = '09:00';
-      await waitForUpdate(element);
 
-      // Structure needed for USWDS mirrored behavior:
+      // Wait for component to render, but NOT for USWDS transformation
+      // We need to check the initial structure that USWDS will enhance
+      await element.updateComplete;
+
+      // Structure needed for USWDS mirrored behavior (BEFORE transformation):
       // 1. Container with .usa-time-picker class
       const container = element.querySelector('.usa-time-picker');
       expect(container).toBeTruthy();
 
-      // 2. Input element
+      // 2. Input element (will be removed by USWDS transformation)
       const input = element.querySelector('input');
       expect(input).toBeTruthy();
       expect(input?.classList.contains('usa-input')).toBe(true);
 
-      // 3. data-enhanced attribute on container
+      // 3. data-enhanced attribute on container (set to "false" initially)
       expect(container?.hasAttribute('data-enhanced')).toBe(true);
 
       // 4. data-default-value on input
@@ -445,6 +449,7 @@ describe('USATimePicker', () => {
 
       // This structure allows usa-time-picker-behavior.ts to:
       // - Find the container via TIME_PICKER selector
+      // - Transform the input into a combo-box (removes original input)
       // - Create and show/hide the dropdown with proper attribute manipulation
       // - Handle time selection and updates
     });
