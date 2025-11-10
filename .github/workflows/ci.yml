@@ -207,16 +207,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Download built packages from build job
-      - name: Download build artifacts
+      # Download pre-built Storybook from build job
+      - name: Download Storybook build
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: packages/
-
-      # Rebuild Storybook with downloaded packages
-      - name: Rebuild Storybook with built packages
-        run: pnpm run build-storybook
+          name: storybook-static
+          path: storybook-static/
 
       # Cache Cypress binary to avoid reinstallation
       - name: Cache Cypress binary
@@ -285,16 +281,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Download built packages from build job
-      - name: Download build artifacts
+      # Download pre-built Storybook from build job
+      - name: Download Storybook build
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: packages/
-
-      # Rebuild Storybook with downloaded packages
-      - name: Rebuild Storybook with built packages
-        run: pnpm run build-storybook
+          name: storybook-static
+          path: storybook-static/
 
       - name: Install Playwright browsers (chromium + firefox only)
         run: npx playwright install chromium firefox --with-deps
@@ -345,16 +337,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Download built packages from build job
-      - name: Download build artifacts
+      # Download pre-built Storybook from build job
+      - name: Download Storybook build
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: packages/
-
-      # Rebuild Storybook with downloaded packages
-      - name: Rebuild Storybook with built packages
-        run: pnpm run build-storybook
+          name: storybook-static
+          path: storybook-static/
 
       - name: Install Playwright browsers (webkit only - a11y uses chromium)
         run: npx playwright install webkit chromium --with-deps
