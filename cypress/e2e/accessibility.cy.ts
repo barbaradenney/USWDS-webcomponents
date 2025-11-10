@@ -1,16 +1,16 @@
 // cypress/e2e/accessibility.cy.ts
 describe('USWDS Components Accessibility Tests', () => {
   const components = [
-    { name: 'accordion', story: 'default' },
-    { name: 'alert', story: 'default' },
-    { name: 'button', story: 'default' },
-    { name: 'tooltip', story: 'default' },
+    { name: 'accordion', story: 'default', category: 'structure' },
+    { name: 'alert', story: 'default', category: 'feedback' },
+    { name: 'button', story: 'default', category: 'actions' },
+    { name: 'tooltip', story: 'default', category: 'feedback' },
   ];
 
-  components.forEach(({ name, story }) => {
+  components.forEach(({ name, story, category }) => {
     describe(`${name} accessibility`, () => {
       beforeEach(() => {
-        cy.selectStory(`components-${name}`, story);
+        cy.selectStory(`${category}-${name}`, story);
         // Note: Axe injection moved to individual tests to avoid race conditions
         // See Session 7 findings on axe injection pattern
       });
@@ -55,8 +55,8 @@ describe('USWDS Components Accessibility Tests', () => {
 
   describe('Global accessibility checks', () => {
     it('should have no accessibility violations across all components', () => {
-      components.forEach(({ name, story }) => {
-        cy.selectStory(`components-${name}`, story);
+      components.forEach(({ name, story, category }) => {
+        cy.selectStory(`${category}-${name}`, story);
         // Inject axe per-component to avoid race conditions
         cy.injectAxe();
         cy.wait(500); // Wait for axe to be ready

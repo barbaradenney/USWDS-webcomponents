@@ -1,7 +1,7 @@
 // cypress/e2e/tooltip.cy.ts
 describe('USWDS Tooltip E2E Tests', () => {
   beforeEach(() => {
-    cy.selectStory('components-tooltip', 'default');
+    cy.selectStory('feedback-tooltip', 'default');
     cy.wait(1000); // Wait for story to load and USWDS to transform
     cy.injectAxe();
   });
@@ -35,22 +35,22 @@ describe('USWDS Tooltip E2E Tests', () => {
 
   it('should position tooltip correctly', () => {
     // Test different position stories
-    cy.selectStory('components-tooltip', 'top-position');
+    cy.selectStory('feedback-tooltip', 'top-position');
     cy.wait(1000);
     cy.get('usa-tooltip button').trigger('mouseover');
     cy.get('.usa-tooltip__body--top').should('exist');
 
-    cy.selectStory('components-tooltip', 'bottom-position');
+    cy.selectStory('feedback-tooltip', 'bottom-position');
     cy.wait(1000);
     cy.get('usa-tooltip button').trigger('mouseover');
     cy.get('.usa-tooltip__body--bottom').should('exist');
 
-    cy.selectStory('components-tooltip', 'left-position');
+    cy.selectStory('feedback-tooltip', 'left-position');
     cy.wait(1000);
     cy.get('usa-tooltip button').trigger('mouseover');
     cy.get('.usa-tooltip__body--left').should('exist');
 
-    cy.selectStory('components-tooltip', 'right-position');
+    cy.selectStory('feedback-tooltip', 'right-position');
     cy.wait(1000);
     cy.get('usa-tooltip button').trigger('mouseover');
     cy.get('.usa-tooltip__body--right').should('exist');
@@ -103,7 +103,7 @@ describe('USWDS Tooltip E2E Tests', () => {
     ];
 
     positions.forEach(([story, position]) => {
-      cy.selectStory('components-tooltip', story);
+      cy.selectStory('feedback-tooltip', story);
       cy.wait(1000);
       cy.get('usa-tooltip button').trigger('mouseover');
       cy.visualTest(`tooltip-${position}`);

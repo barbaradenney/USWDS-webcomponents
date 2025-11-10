@@ -26,7 +26,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
   const INTERACTIVE_COMPONENTS = [
     {
       name: 'accordion',
-      storyId: 'components-accordion--default',
+      storyId: 'structure-accordion--default',
       interactions: [
         {
           test: 'expand/collapse on click',
@@ -39,7 +39,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
     },
     {
       name: 'combo-box',
-      storyId: 'components-combo-box--default',
+      storyId: 'forms-combo-box--default',
       interactions: [
         {
           test: 'dropdown opens on toggle click',
@@ -59,7 +59,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
     },
     {
       name: 'date-picker',
-      storyId: 'components-date-picker--default',
+      storyId: 'forms-date-picker--default',
       interactions: [
         {
           test: 'calendar opens on button click',
@@ -72,7 +72,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
     },
     {
       name: 'modal',
-      storyId: 'components-modal--default',
+      storyId: 'feedback-modal--default',
       interactions: [
         {
           test: 'opens on trigger click',
@@ -89,7 +89,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
     },
     {
       name: 'time-picker',
-      storyId: 'components-time-picker--default',
+      storyId: 'forms-time-picker--default',
       interactions: [
         {
           test: 'dropdown opens on toggle click',
