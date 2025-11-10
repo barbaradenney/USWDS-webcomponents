@@ -39,6 +39,12 @@ export default class ClarifiedReporter extends DefaultReporter {
       }
     });
 
+    // CRITICAL: Set exit code BEFORE calling parent reporter
+    // This prevents the parent from overriding our exit code
+    if (failedFiles === 0 && failedTests === 0 && errors.length === 0) {
+      process.exitCode = 0;
+    }
+
     // Let the default reporter handle most output
     super.onFinished(files, errors);
 
@@ -66,12 +72,6 @@ export default class ClarifiedReporter extends DefaultReporter {
       console.log(`   (Running tests only from this package)`);
     } else {
       console.log(`\n📦 Package Scope: All packages (monorepo-wide)`);
-    }
-
-    // IMPORTANT: Ensure we exit with code 0 if all tests passed
-    // This prevents false positive failures in CI
-    if (failedFiles === 0 && failedTests === 0 && errors.length === 0) {
-      process.exitCode = 0;
     }
   }
 

@@ -229,12 +229,18 @@ jobs:
         if: steps.cypress-cache.outputs.cache-hit != 'true'
         run: npx cypress install
 
+      - name: Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
+
       - name: Run Cypress component tests
         uses: cypress-io/github-action@v6
         with:
           # Don't run install again - dependencies already installed above
           install: false
-          start: pnpm run storybook
+          start: npx http-server storybook-static -p 6006 -s
           wait-on: 'http://localhost:6006'
           wait-on-timeout: 120
           command: pnpm run cypress:run
