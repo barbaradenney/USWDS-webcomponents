@@ -207,12 +207,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Download pre-built Storybook from build job
-      - name: Download Storybook build
+      # Download built packages from build job so Storybook can load them
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: storybook-static
-          path: storybook-static/
+          name: dist
+          path: packages/
 
       # Cache Cypress binary to avoid reinstallation
       - name: Cache Cypress binary
@@ -234,7 +234,8 @@ jobs:
         with:
           # Don't run install again - dependencies already installed above
           install: false
-          start: npx http-server storybook-static -p 6006 -s
+          # Start Storybook dev server (NOT static build)
+          start: pnpm run storybook
           wait-on: 'http://localhost:6006'
           wait-on-timeout: 120
           command: pnpm run cypress:run
