@@ -214,6 +214,10 @@ jobs:
           name: dist
           path: packages/
 
+      # Rebuild Storybook with downloaded packages
+      - name: Rebuild Storybook with built packages
+        run: pnpm run build-storybook
+
       # Cache Cypress binary to avoid reinstallation
       - name: Cache Cypress binary
         id: cypress-cache
@@ -228,12 +232,6 @@ jobs:
       - name: Install Cypress binary
         if: steps.cypress-cache.outputs.cache-hit != 'true'
         run: npx cypress install
-
-      - name: Download Storybook build
-        uses: actions/download-artifact@v4
-        with:
-          name: storybook-static
-          path: storybook-static
 
       - name: Run Cypress component tests
         uses: cypress-io/github-action@v6
@@ -294,14 +292,12 @@ jobs:
           name: dist
           path: packages/
 
+      # Rebuild Storybook with downloaded packages
+      - name: Rebuild Storybook with built packages
+        run: pnpm run build-storybook
+
       - name: Install Playwright browsers (chromium + firefox only)
         run: npx playwright install chromium firefox --with-deps
-
-      - name: Download Storybook build
-        uses: actions/download-artifact@v4
-        with:
-          name: storybook-static
-          path: storybook-static
 
       - name: Run Playwright tests (chromium + firefox)
         run: npx playwright test --project=chromium --project=firefox --workers=4 --reporter=line
@@ -356,14 +352,12 @@ jobs:
           name: dist
           path: packages/
 
+      # Rebuild Storybook with downloaded packages
+      - name: Rebuild Storybook with built packages
+        run: pnpm run build-storybook
+
       - name: Install Playwright browsers (webkit only - a11y uses chromium)
         run: npx playwright install webkit chromium --with-deps
-
-      - name: Download Storybook build
-        uses: actions/download-artifact@v4
-        with:
-          name: storybook-static
-          path: storybook-static
 
       - name: Run Playwright tests (webkit only)
         run: npx playwright test --project=webkit --workers=4 --reporter=line
