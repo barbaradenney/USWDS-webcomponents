@@ -151,14 +151,11 @@ describe('Character Count - Accessibility', () => {
 
     it('should support screen reader announcements for limit', () => {
       cy.get('@characterCount').within(() => {
-        // Type until near limit
-        const textarea = cy.get('textarea, input');
-
         // Get max length
-        textarea.invoke('attr', 'maxlength').then(maxLength => {
+        cy.get('textarea, input').invoke('attr', 'maxlength').then(maxLength => {
           if (maxLength) {
             const nearLimit = 'a'.repeat(parseInt(maxLength) - 5);
-            textarea.clear().type(nearLimit);
+            cy.get('textarea, input').clear().type(nearLimit);
 
             // Wait for USWDS to update status
             cy.wait(200);
@@ -173,14 +170,12 @@ describe('Character Count - Accessibility', () => {
 
     it('should warn when approaching character limit', () => {
       cy.get('@characterCount').within(() => {
-        const textarea = cy.get('textarea, input');
-
         // Type text approaching limit
-        textarea.invoke('attr', 'maxlength').then(maxLength => {
+        cy.get('textarea, input').invoke('attr', 'maxlength').then(maxLength => {
           if (maxLength) {
             // Type to within 10 characters of limit
             const text = 'a'.repeat(parseInt(maxLength) - 10);
-            textarea.clear().type(text);
+            cy.get('textarea, input').clear().type(text);
 
             // Wait for USWDS to update status
             cy.wait(200);
@@ -204,18 +199,16 @@ describe('Character Count - Accessibility', () => {
       cy.wait(500);
 
       cy.get('usa-character-count').within(() => {
-        const textarea = cy.get('textarea, input');
-
         // Get max length and exceed it
-        textarea.invoke('attr', 'maxlength').then(maxLength => {
+        cy.get('textarea, input').invoke('attr', 'maxlength').then(maxLength => {
           if (!maxLength) {
             // If no maxlength, set one programmatically for testing
-            textarea.invoke('attr', 'maxlength', '50');
+            cy.get('textarea, input').invoke('attr', 'maxlength', '50');
           }
         });
 
         // Type beyond limit (browser may prevent, but status should show)
-        textarea.clear().type('a'.repeat(60), { force: true });
+        cy.get('textarea, input').clear().type('a'.repeat(60), { force: true });
 
         // Wait for USWDS to update error state
         cy.wait(250);
@@ -333,14 +326,12 @@ describe('Character Count - Accessibility', () => {
 
     it('should handle rapid content changes accessibly', () => {
       cy.get('@characterCount').within(() => {
-        const textarea = cy.get('textarea, input');
-
         // Rapid updates
-        textarea.type('A');
+        cy.get('textarea, input').type('A');
         cy.wait(50);
-        textarea.type('B');
+        cy.get('textarea, input').type('B');
         cy.wait(50);
-        textarea.type('C');
+        cy.get('textarea, input').type('C');
         cy.wait(50);
 
         // ARIA attributes should remain stable on screen reader status
@@ -363,9 +354,8 @@ describe('Character Count - Accessibility', () => {
         cy.get('textarea').should('exist');
 
         // Textarea should have proper ARIA
-        cy.get('textarea')
-          .should('have.attr', 'aria-describedby')
-          .and('have.attr', 'id');
+        cy.get('textarea').should('have.attr', 'aria-describedby');
+        cy.get('textarea').should('have.attr', 'id');
 
         // Visual status should be visible, SR status should have aria-live
         cy.get('.usa-character-count__status').should('be.visible');
@@ -387,9 +377,8 @@ describe('Character Count - Accessibility', () => {
         cy.get('input[type="text"]').should('exist');
 
         // Input should have proper ARIA
-        cy.get('input')
-          .should('have.attr', 'aria-describedby')
-          .and('have.attr', 'id');
+        cy.get('input').should('have.attr', 'aria-describedby');
+        cy.get('input').should('have.attr', 'id');
 
         // Visual status should be visible, SR status should have aria-live
         cy.get('.usa-character-count__status').should('be.visible');
