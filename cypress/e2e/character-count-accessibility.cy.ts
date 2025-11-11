@@ -41,6 +41,9 @@ describe('Character Count - Accessibility', () => {
     it('should pass comprehensive accessibility tests (same as Storybook)', () => {
       cy.get('@characterCount').should('be.visible');
 
+      // Wait longer for axe to be fully ready
+      cy.wait(200);
+
       // Run axe accessibility audit
       cy.checkA11y('usa-character-count', {
         runOnly: {
@@ -108,7 +111,7 @@ describe('Character Count - Accessibility', () => {
         cy.get('textarea, input').type('Test');
 
         // Wait for USWDS to update character count
-        cy.wait(100);
+        cy.wait(200);
 
         // Status message should reflect character count
         cy.get('.usa-character-count__status')
@@ -127,7 +130,7 @@ describe('Character Count - Accessibility', () => {
         cy.focused().type('Testing keyboard input');
 
         // Wait for USWDS to update character count
-        cy.wait(100);
+        cy.wait(200);
 
         // Character count should update
         cy.get('.usa-character-count__status')
@@ -158,7 +161,7 @@ describe('Character Count - Accessibility', () => {
             textarea.clear().type(nearLimit);
 
             // Wait for USWDS to update status
-            cy.wait(100);
+            cy.wait(200);
 
             // Status should show remaining characters
             cy.get('.usa-character-count__status')
@@ -180,7 +183,7 @@ describe('Character Count - Accessibility', () => {
             textarea.clear().type(text);
 
             // Wait for USWDS to update status
-            cy.wait(100);
+            cy.wait(200);
 
             // Status should indicate approaching limit
             cy.get('.usa-character-count__status')
@@ -215,7 +218,7 @@ describe('Character Count - Accessibility', () => {
         textarea.clear().type('a'.repeat(60), { force: true });
 
         // Wait for USWDS to update error state
-        cy.wait(150);
+        cy.wait(250);
 
         // Status should show error state
         cy.get('.usa-character-count__status')
@@ -241,7 +244,7 @@ describe('Character Count - Accessibility', () => {
       });
 
       // Wait for update
-      cy.wait(100);
+      cy.wait(200);
 
       // Verify ARIA attributes persist
       cy.get('@characterCount').within(() => {
@@ -256,7 +259,7 @@ describe('Character Count - Accessibility', () => {
       });
 
       // Wait for update
-      cy.wait(100);
+      cy.wait(200);
 
       // Verify ARIA attributes still persist
       cy.get('@characterCount').within(() => {
@@ -288,7 +291,7 @@ describe('Character Count - Accessibility', () => {
         cy.get('textarea, input').type('Testing announcements');
 
         // Wait for USWDS to update status
-        cy.wait(100);
+        cy.wait(200);
 
         // Status should update (screen reader would announce)
         cy.get('.usa-character-count__status')
@@ -306,7 +309,7 @@ describe('Character Count - Accessibility', () => {
         cy.get('textarea, input').type('Update content');
 
         // Wait for update
-        cy.wait(100);
+        cy.wait(200);
 
         // Relationship should persist
         cy.get('textarea, input').then($input => {
@@ -317,7 +320,7 @@ describe('Character Count - Accessibility', () => {
 
         // Clear and type more
         cy.get('textarea, input').clear().type('More updates');
-        cy.wait(100);
+        cy.wait(200);
 
         // Relationship should still persist
         cy.get('textarea, input').then($input => {

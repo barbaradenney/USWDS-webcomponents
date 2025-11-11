@@ -16,6 +16,8 @@ describe('Header Navigation', () => {
     beforeEach(() => {
       cy.visit('/iframe.html?id=navigation-header--default&viewMode=story');
       cy.injectAxe();
+      // Wait for USWDS header JavaScript to initialize
+      cy.wait(500);
     });
 
     describe('Body Padding Compensation', () => {
@@ -71,16 +73,21 @@ describe('Header Navigation', () => {
       it('should toggle mobile menu on button click', () => {
         cy.get('.usa-menu-btn').click();
 
+        // Wait for menu toggle animation
+        cy.wait(300);
+
         cy.get('.usa-nav').should('be.visible').and('have.class', 'is-visible');
       });
 
       it('should close mobile menu when clicking close button', () => {
         // Open menu
         cy.get('.usa-menu-btn').click();
+        cy.wait(300);
         cy.get('.usa-nav').should('be.visible');
 
         // Close menu
         cy.get('.usa-nav__close').click();
+        cy.wait(300);
 
         cy.get('.usa-nav').should('not.have.class', 'is-visible');
       });
@@ -88,7 +95,8 @@ describe('Header Navigation', () => {
       it('should trap focus within mobile menu when open', () => {
         cy.get('.usa-menu-btn').click();
 
-        cy.wait(100);
+        // Wait for menu to open and focus trap to initialize
+        cy.wait(400);
 
         // Tab through elements
         cy.focused().tab().tab().tab();
@@ -119,6 +127,8 @@ describe('Header Navigation', () => {
     beforeEach(() => {
       cy.visit('/iframe.html?id=navigation-header--extended&viewMode=story');
       cy.injectAxe();
+      // Wait for USWDS header JavaScript to initialize
+      cy.wait(500);
     });
 
     describe('Dropdown Navigation', () => {
@@ -133,6 +143,7 @@ describe('Header Navigation', () => {
 
       // Click to open
       cy.get('@navButton').click();
+      cy.wait(200); // Wait for dropdown animation
 
       cy.get('.usa-nav__submenu')
         .first()
@@ -141,6 +152,7 @@ describe('Header Navigation', () => {
 
       // Click to close
       cy.get('@navButton').click();
+      cy.wait(200); // Wait for dropdown animation
 
       cy.get('.usa-nav__submenu')
         .first()

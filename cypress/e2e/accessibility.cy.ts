@@ -31,14 +31,20 @@ describe('USWDS Components Accessibility Tests', () => {
       });
 
       it(`should be keyboard navigable`, () => {
+        // Wait for component initialization
+        cy.wait(300);
+
         // Test tab navigation
         cy.get('body').tab();
+        cy.wait(200); // Wait for focus to settle
         cy.focused().should('be.visible');
-        
+
         // Test that all interactive elements can receive focus
         cy.get('button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])')
           .each(($el) => {
-            cy.wrap($el).focus().should('be.focused');
+            cy.wrap($el).focus();
+            cy.wait(150); // Wait for focus to settle on each element
+            cy.wrap($el).should('be.focused');
           });
       });
 
