@@ -7,12 +7,13 @@ describe('Storybook Integration Tests', () => {
   it('should test Button component from Storybook', () => {
     // Visit a specific story
     cy.selectStory('actions-button', 'primary');
-    
+
     // Test the component
     cy.get('usa-button').should('exist');
     cy.get('usa-button').should('contain.text', 'Button');
-    cy.get('usa-button').should('have.class', 'usa-button');
-    
+    // Check for USWDS class inside the component (Light DOM)
+    cy.get('usa-button .usa-button').should('exist');
+
     // Test accessibility
     cy.injectAxe();
     cy.checkAccessibility();
@@ -21,11 +22,12 @@ describe('Storybook Integration Tests', () => {
   it('should test Alert component from Storybook', () => {
     // Visit a specific story
     cy.selectStory('feedback-alert', 'default');
-    
+
     // Test the component
     cy.get('usa-alert').should('exist');
-    cy.get('usa-alert').should('have.class', 'usa-alert');
-    
+    // Check for USWDS class inside the component (Light DOM)
+    cy.get('usa-alert .usa-alert').should('exist');
+
     // Test accessibility
     cy.injectAxe();
     cy.checkAccessibility();

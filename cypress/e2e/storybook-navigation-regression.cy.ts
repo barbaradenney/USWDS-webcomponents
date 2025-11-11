@@ -50,6 +50,9 @@ describe('Storybook Navigation Regression Tests', () => {
       cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
       cy.get('usa-accordion').should('exist');
 
+      // Wait for layout forcing and USWDS initialization
+      cy.wait(500);
+
       // CRITICAL TEST: Click accordion button after navigation
       cy.get('.usa-accordion__button').first().click();
 
@@ -80,6 +83,10 @@ describe('Storybook Navigation Regression Tests', () => {
       // Return to accordion - should still work
       cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
       cy.get('usa-accordion').should('exist');
+
+      // Wait for layout forcing and USWDS initialization
+      cy.wait(500);
+
       cy.get('.usa-accordion__button').first().click();
       cy.get('.usa-accordion__content').first().should('not.have.attr', 'hidden');
 
@@ -105,8 +112,14 @@ describe('Storybook Navigation Regression Tests', () => {
       cy.visit(`${STORYBOOK_URL}/?path=/story/feedback-modal--default`);
       cy.get('usa-modal').should('exist');
 
+      // Wait for layout forcing and USWDS initialization
+      cy.wait(500);
+
       // Open modal
       cy.get('[data-open-modal]').first().click();
+
+      // Wait for modal to fully open and render
+      cy.wait(300);
 
       // Verify modal wrapper has dimensions
       cy.get('.usa-modal-wrapper').should('be.visible');
