@@ -13,7 +13,7 @@
 describe('Summary Box - Content Transitions', () => {
   beforeEach(() => {
     // Visit the summary box Storybook story
-    cy.visit('/iframe.html?id=components-summary-box--default&viewMode=story');
+    cy.visit('/iframe.html?id=data-display-summary-box--default&viewMode=story');
 
     // Wait for USWDS JavaScript to initialize
     cy.wait(1000);

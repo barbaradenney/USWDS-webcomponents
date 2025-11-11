@@ -21,7 +21,7 @@
 describe('Date Picker - Month Navigation and Constraints', () => {
   beforeEach(() => {
     // Visit the date picker Storybook story
-    cy.visit('/iframe.html?id=components-date-picker--default&viewMode=story');
+    cy.visit('/iframe.html?id=forms-date-picker--default&viewMode=story');
     cy.wait(1000); // Wait for USWDS initialization
   });
 
@@ -166,7 +166,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
   describe('Min Date Constraints', () => {
     beforeEach(() => {
       // Visit story with min date constraint
-      cy.visit('/iframe.html?id=components-date-picker--with-date-range&viewMode=story');
+      cy.visit('/iframe.html?id=forms-date-picker--with-date-range&viewMode=story');
       cy.wait(1000);
     });
 
@@ -281,7 +281,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
   describe('Max Date Constraints', () => {
     beforeEach(() => {
       // Visit story with max date constraint
-      cy.visit('/iframe.html?id=components-date-picker--with-date-range&viewMode=story');
+      cy.visit('/iframe.html?id=forms-date-picker--with-date-range&viewMode=story');
       cy.wait(1000);
     });
 
@@ -412,7 +412,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
   describe('Combined Min/Max Constraints', () => {
     beforeEach(() => {
       // Visit story with both min and max dates
-      cy.visit('/iframe.html?id=components-date-picker--with-date-range&viewMode=story');
+      cy.visit('/iframe.html?id=forms-date-picker--with-date-range&viewMode=story');
       cy.wait(1000);
     });
 

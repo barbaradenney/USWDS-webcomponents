@@ -14,7 +14,7 @@
 describe('Date Picker Calendar Tests', () => {
   beforeEach(() => {
     // Visit the date picker Storybook story
-    cy.visit('/iframe.html?id=components-date-picker--default&viewMode=story');
+    cy.visit('/iframe.html?id=forms-date-picker--default&viewMode=story');
     cy.injectAxe(); // For accessibility testing
   });
 
@@ -229,7 +229,7 @@ describe('Date Picker Calendar Tests', () => {
 
     it('should handle range variant keyboard navigation', () => {
       // Visit range variant story
-      cy.visit('/iframe.html?id=components-date-picker--range&viewMode=story');
+      cy.visit('/iframe.html?id=forms-date-picker--range&viewMode=story');
 
       cy.get('usa-date-picker').then(($el) => {
         const element = $el[0] as any;

@@ -13,7 +13,7 @@
 
 describe('Validation - USWDS Live Region Creation', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:6006/iframe.html?id=components-validation--default&viewMode=story');
+    cy.visit('http://localhost:6006/iframe.html?id=forms-validation--default&viewMode=story');
     cy.wait(2000); // Wait for component initialization and USWDS behavior setup
   });
 
@@ -58,7 +58,7 @@ describe('Validation - USWDS Live Region Creation', () => {
 
 describe('Validation - Live Region Behavior', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:6006/iframe.html?id=components-validation--default&viewMode=story');
+    cy.visit('http://localhost:6006/iframe.html?id=forms-validation--default&viewMode=story');
     cy.wait(2000);
   });
 
@@ -103,7 +103,7 @@ describe('Validation - Live Region Behavior', () => {
 
 describe('Validation - Multiple Instances', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:6006/iframe.html?id=components-validation--multiple-instances&viewMode=story');
+    cy.visit('http://localhost:6006/iframe.html?id=forms-validation--multiple-instances&viewMode=story');
     cy.wait(2000);
   });
 
@@ -133,7 +133,7 @@ describe('Validation - Multiple Instances', () => {
 
 describe('Validation - Accessibility Compliance', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:6006/iframe.html?id=components-validation--default&viewMode=story');
+    cy.visit('http://localhost:6006/iframe.html?id=forms-validation--default&viewMode=story');
     cy.wait(2000);
   });
 

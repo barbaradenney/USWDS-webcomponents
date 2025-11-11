@@ -13,7 +13,7 @@
 
 describe('Modal Focus Management', () => {
   beforeEach(() => {
-    cy.visit('/iframe.html?id=components-modal--default&viewMode=story');
+    cy.visit('/iframe.html?id=feedback-modal--default&viewMode=story');
     // Note: injectAxe moved to individual test that needs it to avoid race conditions
   });
 

@@ -13,7 +13,7 @@
 
 describe('Time Picker Interactions', () => {
   beforeEach(() => {
-    cy.visit('/iframe.html?id=components-time-picker--default&viewMode=story');
+    cy.visit('/iframe.html?id=forms-time-picker--default&viewMode=story');
     cy.injectAxe();
   });
 
@@ -144,7 +144,7 @@ describe('Time Picker Interactions', () => {
     });
 
     it('should set default value if provided', () => {
-      cy.visit('/iframe.html?id=components-time-picker--with-default-value&viewMode=story');
+      cy.visit('/iframe.html?id=forms-time-picker--with-default-value&viewMode=story');
 
       cy.get('usa-time-picker').then(($el) => {
         const element = $el[0] as any;

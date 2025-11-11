@@ -20,7 +20,7 @@
 describe('Combo Box DOM Structure Validation', () => {
   beforeEach(() => {
     // Visit the combo-box Storybook story
-    cy.visit('/iframe.html?id=components-combo-box--default&viewMode=story');
+    cy.visit('/iframe.html?id=forms-combo-box--default&viewMode=story');
     cy.wait(1000); // Wait for Storybook and USWDS initialization
     cy.injectAxe(); // For accessibility testing
   });
@@ -373,7 +373,7 @@ describe('Combo Box DOM Structure Validation', () => {
 
     it('should handle disabled state correctly', () => {
       // Visit the disabled story
-      cy.visit('/iframe.html?id=components-combo-box--disabled&viewMode=story');
+      cy.visit('/iframe.html?id=forms-combo-box--disabled&viewMode=story');
       cy.wait(1000); // Wait for USWDS transformation
 
       cy.get('usa-combo-box').within(() => {

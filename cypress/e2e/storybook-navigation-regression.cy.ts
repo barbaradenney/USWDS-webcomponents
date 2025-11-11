@@ -29,7 +29,7 @@ describe('Storybook Navigation Regression Tests', () => {
   describe('Accordion Component', () => {
     it('should work after page reload', () => {
       // Navigate directly to accordion story
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-accordion--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
 
       // Wait for story to render
       cy.get('usa-accordion').should('exist');
@@ -43,11 +43,11 @@ describe('Storybook Navigation Regression Tests', () => {
 
     it('should work after navigating from another component (CRITICAL)', () => {
       // Start at a different component
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-button--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/actions-button--default`);
       cy.get('usa-button').should('exist');
 
       // Navigate to accordion
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-accordion--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
       cy.get('usa-accordion').should('exist');
 
       // CRITICAL TEST: Click accordion button after navigation
@@ -66,19 +66,19 @@ describe('Storybook Navigation Regression Tests', () => {
 
     it('should work after multiple navigation cycles', () => {
       // Navigate: Button → Accordion → Alert → Accordion
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-button--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/actions-button--default`);
       cy.get('usa-button').should('exist');
 
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-accordion--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
       cy.get('usa-accordion').should('exist');
       cy.get('.usa-accordion__button').first().click();
       cy.get('.usa-accordion__content').first().should('not.have.attr', 'hidden');
 
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-alert--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/feedback-alert--default`);
       cy.get('usa-alert').should('exist');
 
       // Return to accordion - should still work
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-accordion--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
       cy.get('usa-accordion').should('exist');
       cy.get('.usa-accordion__button').first().click();
       cy.get('.usa-accordion__content').first().should('not.have.attr', 'hidden');
@@ -98,11 +98,11 @@ describe('Storybook Navigation Regression Tests', () => {
   describe('Other Interactive Components', () => {
     it('modal should work after navigation', () => {
       // Navigate from another component
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-button--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/actions-button--default`);
       cy.get('usa-button').should('exist');
 
       // Go to modal
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-modal--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/feedback-modal--default`);
       cy.get('usa-modal').should('exist');
 
       // Open modal
@@ -126,7 +126,7 @@ describe('Storybook Navigation Regression Tests', () => {
     it('should have forceLayoutRecalculation in Storybook decorator', () => {
       // This test verifies the fix is present
       // We can't directly test the function, but we can verify behavior
-      cy.visit(`${STORYBOOK_URL}/?path=/story/components-accordion--default`);
+      cy.visit(`${STORYBOOK_URL}/?path=/story/structure-accordion--default`);
 
       // After navigation, verify storybook-root has been toggled
       cy.get('#storybook-root').should('exist');

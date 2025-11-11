@@ -12,7 +12,7 @@
 
 describe('In-Page Navigation Scroll Behavior', () => {
   beforeEach(() => {
-    cy.visit('/iframe.html?id=components-in-page-navigation--default&viewMode=story');
+    cy.visit('/iframe.html?id=navigation-in-page-navigation--default&viewMode=story');
     cy.injectAxe();
   });
 
@@ -152,7 +152,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
 
     it('should use custom heading elements from data-heading-elements', () => {
       // Visit a page with custom content structure
-      cy.visit('/iframe.html?id=components-in-page-navigation--custom-headings&viewMode=story');
+      cy.visit('/iframe.html?id=navigation-in-page-navigation--custom-headings&viewMode=story');
 
       cy.get('usa-in-page-navigation').then(($el) => {
         $el.attr('data-heading-elements', 'h3');

@@ -25,7 +25,7 @@ describe('Character Count - Accessibility', () => {
     });
 
     // Visit the character count Storybook story
-    cy.visit('/iframe.html?id=components-character-count--default&viewMode=story');
+    cy.visit('/iframe.html?id=forms-character-count--default&viewMode=story');
 
     // Wait for component to render (NOT waiting for USWDS - this component doesn't use it)
     cy.wait(500);
@@ -197,7 +197,7 @@ describe('Character Count - Accessibility', () => {
 
     it('should indicate error state when limit exceeded', () => {
       // Visit error state story
-      cy.visit('/iframe.html?id=components-character-count--error&viewMode=story');
+      cy.visit('/iframe.html?id=forms-character-count--error&viewMode=story');
       cy.wait(500);
 
       cy.get('usa-character-count').within(() => {
@@ -352,7 +352,7 @@ describe('Character Count - Accessibility', () => {
 
     it('should support textarea variant accessibility', () => {
       // Visit textarea variant
-      cy.visit('/iframe.html?id=components-character-count--textarea&viewMode=story');
+      cy.visit('/iframe.html?id=forms-character-count--textarea&viewMode=story');
       cy.wait(500);
 
       cy.get('usa-character-count').within(() => {
@@ -376,7 +376,7 @@ describe('Character Count - Accessibility', () => {
 
     it('should support input variant accessibility', () => {
       // Visit input variant
-      cy.visit('/iframe.html?id=components-character-count--input&viewMode=story');
+      cy.visit('/iframe.html?id=forms-character-count--input&viewMode=story');
       cy.wait(1000);
 
       cy.get('usa-character-count').within(() => {

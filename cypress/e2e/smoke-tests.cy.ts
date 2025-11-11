@@ -130,7 +130,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
    */
   describe('Character Count - Live Updates', () => {
     beforeEach(() => {
-      cy.visit('/iframe.html?id=components-character-count--default&viewMode=story');
+      cy.visit('/iframe.html?id=forms-character-count--default&viewMode=story');
     });
 
     it('should update count when typing', () => {
@@ -141,7 +141,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
 
   describe('File Input - File Selection', () => {
     beforeEach(() => {
-      cy.visit('/iframe.html?id=components-file-input--default&viewMode=story');
+      cy.visit('/iframe.html?id=forms-file-input--default&viewMode=story');
     });
 
     it('should show file name when file selected', () => {
@@ -158,7 +158,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
 
   describe('Search - Form Submission', () => {
     beforeEach(() => {
-      cy.visit('/iframe.html?id=components-search--default&viewMode=story');
+      cy.visit('/iframe.html?id=actions-search--default&viewMode=story');
     });
 
     it('should handle search button click', () => {
@@ -176,7 +176,7 @@ describe('Smoke Tests - Critical Component Interactions', () => {
  */
 describe('Regression: Time-Picker Dropdown Bug (2025-10-17)', () => {
   beforeEach(() => {
-    cy.visit('/iframe.html?id=components-time-picker--default&viewMode=story');
+    cy.visit('/iframe.html?id=forms-time-picker--default&viewMode=story');
   });
 
   it('CRITICAL: dropdown must open when clicking toggle button', () => {

@@ -12,7 +12,7 @@
 
 describe('Tooltip Positioning', () => {
   beforeEach(() => {
-    cy.visit('/iframe.html?id=components-tooltip--default&viewMode=story');
+    cy.visit('/iframe.html?id=feedback-tooltip--default&viewMode=story');
     cy.injectAxe();
   });
 
@@ -54,7 +54,7 @@ describe('Tooltip Positioning', () => {
       cy.get('usa-tooltip button').first().focus().should('have.focus');
 
       // Test with link (visit OnLink story)
-      cy.visit('/iframe.html?id=components-tooltip--on-link&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-tooltip--on-link&viewMode=story');
       cy.get('usa-tooltip a').first().should('be.visible');
       cy.get('usa-tooltip a').first().focus().should('have.focus');
     });
@@ -62,7 +62,7 @@ describe('Tooltip Positioning', () => {
 
   describe('Tooltip Positioning', () => {
     it('should position tooltip below trigger when position="bottom"', () => {
-      cy.visit('/iframe.html?id=components-tooltip--bottom-position&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-tooltip--bottom-position&viewMode=story');
 
       cy.get('usa-tooltip button').trigger('mouseover');
 
@@ -79,7 +79,7 @@ describe('Tooltip Positioning', () => {
     });
 
     it('should position tooltip to left when position="left"', () => {
-      cy.visit('/iframe.html?id=components-tooltip--left-position&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-tooltip--left-position&viewMode=story');
 
       cy.get('usa-tooltip button').trigger('mouseover');
 
@@ -96,7 +96,7 @@ describe('Tooltip Positioning', () => {
     });
 
     it('should position tooltip to right when position="right"', () => {
-      cy.visit('/iframe.html?id=components-tooltip--right-position&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-tooltip--right-position&viewMode=story');
 
       cy.get('usa-tooltip button').trigger('mouseover');
 

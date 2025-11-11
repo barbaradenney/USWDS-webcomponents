@@ -13,7 +13,7 @@
 describe('Site Alert DOM Manipulation Edge Case', () => {
   beforeEach(() => {
     // Visit the site-alert Storybook story
-    cy.visit('/iframe.html?id=components-site-alert--default&viewMode=story');
+    cy.visit('/iframe.html?id=feedback-alert--default&viewMode=story');
     cy.injectAxe(); // For accessibility testing
   });
 

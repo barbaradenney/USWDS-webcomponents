@@ -22,7 +22,7 @@ describe('Modal - Variants and Size', () => {
   describe('Modal Size Variants', () => {
     it('should render both normal and large modals correctly', () => {
       // Visit default modal story (normal size)
-      cy.visit('/iframe.html?id=components-modal--default&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-modal--default&viewMode=story');
       cy.wait(1000); // Wait for USWDS initialization
 
       // Open normal modal
@@ -41,7 +41,7 @@ describe('Modal - Variants and Size', () => {
       cy.get('.usa-modal-wrapper').should('have.class', 'is-hidden');
 
       // Now visit large modal story
-      cy.visit('/iframe.html?id=components-modal--large&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-modal--large&viewMode=story');
       cy.wait(1000);
 
       // Open large modal
@@ -57,7 +57,7 @@ describe('Modal - Variants and Size', () => {
 
     it('should apply correct classes for large variant', () => {
       // Visit large modal story
-      cy.visit('/iframe.html?id=components-modal--large&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-modal--large&viewMode=story');
       cy.wait(1000);
 
       // Open modal
@@ -80,7 +80,7 @@ describe('Modal - Variants and Size', () => {
 
     it('should maintain large variant class throughout interaction', () => {
       // Visit large modal story
-      cy.visit('/iframe.html?id=components-modal--large&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-modal--large&viewMode=story');
       cy.wait(1000);
 
       // Open modal
@@ -105,7 +105,7 @@ describe('Modal - Variants and Size', () => {
 
   describe('Modal State Persistence', () => {
     beforeEach(() => {
-      cy.visit('/iframe.html?id=components-modal--default&viewMode=story');
+      cy.visit('/iframe.html?id=feedback-modal--default&viewMode=story');
       cy.wait(1000);
     });
 

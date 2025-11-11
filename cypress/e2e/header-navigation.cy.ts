@@ -14,7 +14,7 @@
 describe('Header Navigation', () => {
   describe('Basic Navigation - Default Story', () => {
     beforeEach(() => {
-      cy.visit('/iframe.html?id=components-header--default&viewMode=story');
+      cy.visit('/iframe.html?id=navigation-header--default&viewMode=story');
       cy.injectAxe();
     });
 
@@ -117,7 +117,7 @@ describe('Header Navigation', () => {
 
   describe('Extended Navigation - Extended Story', () => {
     beforeEach(() => {
-      cy.visit('/iframe.html?id=components-header--extended&viewMode=story');
+      cy.visit('/iframe.html?id=navigation-header--extended&viewMode=story');
       cy.injectAxe();
     });
 
