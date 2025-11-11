@@ -13,8 +13,11 @@
 describe('Site Alert DOM Manipulation Edge Case', () => {
   beforeEach(() => {
     // Visit the site-alert Storybook story
-    cy.visit('/iframe.html?id=feedback-alert--default&viewMode=story');
+    cy.visit('/iframe.html?id=feedback-site-alert--default&viewMode=story');
     cy.injectAxe(); // For accessibility testing
+
+    // Wait for USWDS initialization
+    cy.wait(500);
   });
 
   describe('Light DOM Element Moving', () => {
@@ -58,7 +61,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.appendChild(complexContent);
       });
 
-      cy.wait(100); // Let Lit update
+      cy.wait(300); // Let Lit update
 
       cy.get('usa-site-alert').within(() => {
         cy.get('.usa-alert__heading')
@@ -84,7 +87,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.appendChild(paragraph);
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       cy.get('usa-site-alert').within(() => {
         // Component should still function
@@ -105,7 +108,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.slim = true;
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       cy.get('usa-site-alert').then(($el) => {
         const element = $el[0] as any;
@@ -115,7 +118,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.slim = false;
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       cy.get('usa-site-alert').within(() => {
         // Component should reflect latest state
@@ -136,7 +139,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.visible = true;
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       // Hide
       cy.get('usa-site-alert').then(($el) => {
@@ -144,7 +147,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.hide();
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       // Alert should be hidden
       cy.get('usa-site-alert').within(() => {
@@ -157,7 +160,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.show();
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       // Alert should be visible with correct content
       cy.get('usa-site-alert').within(() => {
@@ -184,7 +187,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.noIcon = false;
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       cy.get('usa-site-alert').then(($el) => {
         const element = $el[0] as any;
@@ -194,7 +197,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.noIcon = true;
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       // Element should still be connected
       cy.get('usa-site-alert').then(($el) => {
@@ -224,7 +227,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.appendChild(complexDiv);
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       cy.get('usa-site-alert').within(() => {
         // Component structure should remain intact
@@ -256,7 +259,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.appendChild(paragraph);
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       // Component should still render (though content may differ due to Lit limitation)
       cy.get('usa-site-alert').within(() => {
@@ -287,7 +290,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         newContainer.appendChild(alertElement);
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       // Element should exist in new location
       cy.get('#new-container usa-site-alert').should('exist');
@@ -324,7 +327,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         alertElement.type = 'emergency';
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       // Component should still exist
       cy.get('#move-container usa-site-alert').should('exist');
@@ -349,7 +352,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.appendChild(content);
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       cy.get('usa-site-alert').within(() => {
         cy.get('section').should('have.attr', 'aria-label', 'Site alert');
@@ -367,7 +370,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.appendChild(paragraph);
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       // Run axe checks
       cy.checkA11y('usa-site-alert', {
@@ -391,7 +394,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
         element.noIcon = false;
       });
 
-      cy.wait(50);
+      cy.wait(200);
 
       cy.get('usa-site-alert').within(() => {
         cy.get('.usa-site-alert')
@@ -439,7 +442,7 @@ describe('Site Alert DOM Manipulation Edge Case', () => {
           element.heading = `${type.charAt(0).toUpperCase() + type.slice(1)} Alert`;
         });
 
-        cy.wait(50);
+        cy.wait(200);
 
         cy.get('usa-site-alert').within(() => {
           cy.get('.usa-site-alert')
