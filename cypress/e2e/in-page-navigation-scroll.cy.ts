@@ -14,6 +14,9 @@ describe('In-Page Navigation Scroll Behavior', () => {
   beforeEach(() => {
     cy.visit('/iframe.html?id=navigation-in-page-navigation--default&viewMode=story');
     cy.injectAxe();
+
+    // Wait for USWDS in-page navigation initialization
+    cy.wait(500);
   });
 
   describe('Scroll Behavior', () => {
@@ -78,8 +81,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
     it('should reset tabindex to -1 after heading loses focus', () => {
       // Focus a navigation link
       cy.get('usa-in-page-navigation a').first().focus();
-
-      cy.wait(100);
+      cy.wait(300);
 
       // Get the target heading ID
       cy.get('usa-in-page-navigation a').first().then(($link) => {
@@ -97,7 +99,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
         // Tab away
         cy.focused().tab();
 
-        cy.wait(100);
+        cy.wait(300);
 
         // Heading should have tabindex -1
         cy.get(`#${targetId}`).should('have.attr', 'tabindex', '-1');
@@ -106,7 +108,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
 
     it('should navigate with arrow keys', () => {
       cy.get('usa-in-page-navigation a').first().focus();
-
+      cy.wait(200);
       // Press down arrow
       cy.focused().type('{downarrow}');
 
@@ -117,7 +119,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
 
     it('should navigate with up arrow', () => {
       cy.get('usa-in-page-navigation a').eq(1).focus();
-
+      cy.wait(200);
       // Press up arrow
       cy.focused().type('{uparrow}');
 
@@ -132,7 +134,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
         $el.attr('data-title-text', 'Custom Navigation Title');
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       cy.get('usa-in-page-navigation').within(() => {
         cy.contains('Custom Navigation Title').should('exist');
@@ -144,7 +146,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
         $el.attr('data-title-heading-level', 'h3');
       });
 
-      cy.wait(100);
+      cy.wait(300);
 
       // Title should be rendered as h3
       cy.get('usa-in-page-navigation h3').should('exist');
@@ -154,11 +156,14 @@ describe('In-Page Navigation Scroll Behavior', () => {
       // Visit a page with custom content structure
       cy.visit('/iframe.html?id=navigation-in-page-navigation--custom-headings&viewMode=story');
 
+      // Wait for USWDS initialization after story navigation
+      cy.wait(500);
+
       cy.get('usa-in-page-navigation').then(($el) => {
         $el.attr('data-heading-elements', 'h3');
       });
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Should generate links from h3 elements
       cy.get('usa-in-page-navigation a').should('have.length.at.least', 1);
@@ -169,7 +174,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
         $el.attr('data-heading-elements', 'h2, h3');
       });
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Should generate links from both h2 and h3 elements
       cy.get('usa-in-page-navigation a').should('have.length.at.least', 1);
@@ -210,7 +215,7 @@ describe('In-Page Navigation Scroll Behavior', () => {
         // Scroll down
         cy.scrollTo(0, 500);
 
-        cy.wait(100);
+        cy.wait(300);
 
         // Should maintain position (sticky)
         cy.get('usa-in-page-navigation').then(($el2) => {

@@ -32,7 +32,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Calendar should be visible
       cy.get('.usa-date-picker__calendar').should('be.visible');
@@ -59,7 +59,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Get current month
       cy.get('.usa-date-picker__calendar__month-label')
@@ -200,7 +200,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         if ($disabled.length > 0) {
           // Click disabled date
           cy.wrap($disabled).first().click({ force: true });
-          cy.wait(100);
+          cy.wait(200);
 
           // Input should remain empty or unchanged
           cy.get('usa-date-picker')
@@ -226,7 +226,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .first()
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Calendar should close
       cy.get('.usa-date-picker__calendar').should('not.be.visible');
@@ -369,7 +369,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       cy.get('.usa-date-picker__calendar__date[disabled]').then(($disabled) => {
         if ($disabled.length > 0) {
           cy.wrap($disabled).first().click({ force: true });
-          cy.wait(100);
+          cy.wait(200);
 
           // Input should remain empty
           cy.get('usa-date-picker')
@@ -395,7 +395,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .first()
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Calendar should close
       cy.get('.usa-date-picker__calendar').should('not.be.visible');
@@ -451,7 +451,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .eq(5) // Pick a date in the middle
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Should close and have value
       cy.get('.usa-date-picker__calendar').should('not.be.visible');
@@ -536,7 +536,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .first()
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
       cy.get('.usa-date-picker__calendar').should('not.be.visible');
     });
 
@@ -579,7 +579,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .first()
         .click();
 
-      cy.wait(200);
+      cy.wait(300);
 
       // Should have value
       cy.get('usa-date-picker')

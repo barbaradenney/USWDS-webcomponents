@@ -16,6 +16,9 @@ describe('Date Picker Calendar Tests', () => {
     // Visit the date picker Storybook story
     cy.visit('/iframe.html?id=forms-date-picker--default&viewMode=story');
     cy.injectAxe(); // For accessibility testing
+
+    // Wait for USWDS date picker JavaScript to initialize
+    cy.wait(500);
   });
 
   describe('Calendar UI Rendering', () => {
@@ -27,6 +30,9 @@ describe('Date Picker Calendar Tests', () => {
           cy.get('.usa-date-picker__button')
             .should('be.visible')
             .click();
+
+          // Wait for calendar animation
+          cy.wait(300);
 
           // Calendar should appear
           cy.get('.usa-date-picker__calendar')
@@ -41,10 +47,12 @@ describe('Date Picker Calendar Tests', () => {
 
         // Open calendar
         button.click();
+        cy.wait(300);
         cy.get('.usa-date-picker__calendar').should('be.visible');
 
         // Close calendar
         button.click();
+        cy.wait(300);
         cy.get('.usa-date-picker__calendar').should('not.be.visible');
       });
     });
@@ -53,7 +61,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-
+        cy.wait(300);
         // Verify navigation elements exist
         cy.get('.usa-date-picker__calendar').within(() => {
           cy.get('.usa-date-picker__calendar__previous-month').should('exist');
@@ -68,7 +76,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-
+        cy.wait(300);
         // Verify day headers (Sun, Mon, Tue, etc.)
         cy.get('.usa-date-picker__calendar__table').within(() => {
           cy.get('thead th').should('have.length', 7); // 7 days of week
@@ -114,10 +122,10 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Focus input
         cy.get('.usa-date-picker__external-input').focus();
-
+        cy.wait(200);
         // Tab should move focus forward (not trapped)
         cy.focused().tab();
-
+        cy.wait(200);
         // Should be able to tab to calendar button
         cy.get('.usa-date-picker__button').should('have.focus');
       });
@@ -129,7 +137,7 @@ describe('Date Picker Calendar Tests', () => {
         cy.get('.usa-date-picker__external-input')
           .focus()
           .tab();
-
+        cy.wait(200);
         // Next focus should be calendar button
         cy.get('.usa-date-picker__button').should('have.focus');
       });
@@ -149,7 +157,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.get('.usa-date-picker__calendar').should('be.visible');
+        cy.wait(300);        cy.get('.usa-date-picker__calendar').should('be.visible');
 
         // Press Escape to close
         cy.get('.usa-date-picker__external-input').type('{esc}');
@@ -161,10 +169,10 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-
+        cy.wait(300);
         // Use arrow keys to navigate dates
         cy.get('.usa-date-picker__calendar__date').first().focus();
-        cy.focused().type('{rightarrow}');
+        cy.wait(200);        cy.focused().type('{rightarrow}');
 
         // Focus should move to next date
         cy.focused().should('have.attr', 'data-value');
@@ -174,7 +182,7 @@ describe('Date Picker Calendar Tests', () => {
     it('should maintain focus visibility (WCAG 2.4.7)', () => {
       cy.get('usa-date-picker').within(() => {
         cy.get('.usa-date-picker__external-input').focus();
-
+        cy.wait(200);
         // Focused element should have visible focus indicator
         cy.focused().should('have.css', 'outline-width').and('not.equal', '0px');
       });
@@ -230,6 +238,9 @@ describe('Date Picker Calendar Tests', () => {
     it('should handle range variant keyboard navigation', () => {
       // Visit range variant story
       cy.visit('/iframe.html?id=forms-date-picker--range&viewMode=story');
+
+      // Wait for USWDS initialization after story navigation
+      cy.wait(500);
 
       cy.get('usa-date-picker').then(($el) => {
         const element = $el[0] as any;
