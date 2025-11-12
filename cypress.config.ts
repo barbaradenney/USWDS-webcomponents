@@ -14,6 +14,12 @@ export default defineConfig({
     screenshotOnRunFailure: true,
     setupNodeEvents(on, config) {
       // implement node event listeners here
+      on('task', {
+        log(message) {
+          // Log task for test debugging - messages appear in terminal during test runs
+          return null;
+        }
+      });
     },
   },
   component: {

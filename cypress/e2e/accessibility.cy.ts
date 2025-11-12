@@ -11,6 +11,7 @@ describe('USWDS Components Accessibility Tests', () => {
     describe(`${name} accessibility`, () => {
       beforeEach(() => {
         cy.selectStory(`${category}-${name}`, story);
+        cy.wait(1000); // Wait for story to fully load
         // Note: Axe injection moved to individual tests to avoid race conditions
         // See Session 7 findings on axe injection pattern
       });
@@ -18,14 +19,32 @@ describe('USWDS Components Accessibility Tests', () => {
       it(`should meet WCAG accessibility standards`, () => {
         // Inject axe per-test to avoid race conditions
         cy.injectAxe();
-        cy.wait(500); // Wait for axe to be ready
+        cy.wait(1000); // Wait for axe to be ready
 
-        // Run axe with standard WCAG rules
+        // Verify axe is loaded before running checks
+        cy.window().then((win) => {
+          expect(win.axe).to.not.be.undefined;
+        });
+
+        // Run axe with standard WCAG rules and log violations
         // Note: 'keyboard-navigation' and 'focus-management' are not valid axe-core rules
         // Keyboard and focus testing is handled in separate test cases below
+        // Exclude page-level rules that don't apply to Storybook iframe context
         cy.checkAccessibility({
           rules: {
             'color-contrast': { enabled: true },
+            'landmark-one-main': { enabled: false }, // Storybook iframe doesn't need main landmark
+            'page-has-heading-one': { enabled: false }, // Storybook iframe doesn't need h1
+            'region': { enabled: false }, // Storybook iframe context
+          }
+        }, undefined, (violations) => {
+          // Log violations for debugging
+          if (violations.length > 0) {
+            cy.log(`${name} has ${violations.length} violations`);
+            violations.forEach((violation, index) => {
+              cy.log(`Violation ${index + 1}: ${violation.id} - ${violation.description}`);
+              cy.log(`Impact: ${violation.impact}, nodes: ${violation.nodes.length}`);
+            });
           }
         });
       });
@@ -87,10 +106,24 @@ describe('USWDS Components Accessibility Tests', () => {
     it('should have no accessibility violations across all components', () => {
       components.forEach(({ name, story, category }) => {
         cy.selectStory(`${category}-${name}`, story);
+        cy.wait(1000); // Wait for story to fully load
         // Inject axe per-component to avoid race conditions
         cy.injectAxe();
-        cy.wait(500); // Wait for axe to be ready
-        cy.checkAccessibility();
+        cy.wait(1000); // Wait for axe to be ready
+
+        // Verify axe is loaded
+        cy.window().then((win) => {
+          expect(win.axe).to.not.be.undefined;
+        });
+
+        // Check accessibility with Storybook-appropriate rules
+        cy.checkAccessibility({
+          rules: {
+            'landmark-one-main': { enabled: false },
+            'page-has-heading-one': { enabled: false },
+            'region': { enabled: false },
+          }
+        });
       });
     });
   });
