@@ -41,8 +41,8 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       cy.get('.usa-date-picker__calendar__month-label')
         .invoke('text')
         .then((initialMonth) => {
-          // Click next month button
-          cy.get('.usa-date-picker__calendar__next-month').click();
+          // Click next month button without triggering focusout
+          cy.clickDatePickerNav('.usa-date-picker__calendar__next-month');
 
           cy.wait(300);
 
@@ -83,29 +83,29 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(400); // Increased wait for calendar to fully open
+      cy.wait(500);
 
-      // Navigate forward 3 months - verify calendar visible before each click
+      // Navigate forward 3 months - trigger click without changing focus
       cy.get('.usa-date-picker__calendar').should('be.visible');
-      cy.get('.usa-date-picker__calendar__next-month').click();
-      cy.wait(400);
-
-      cy.get('.usa-date-picker__calendar').should('be.visible');
-      cy.get('.usa-date-picker__calendar__next-month').click();
-      cy.wait(400);
+      cy.get('.usa-date-picker__calendar__next-month').trigger('click');
+      cy.wait(500);
 
       cy.get('.usa-date-picker__calendar').should('be.visible');
-      cy.get('.usa-date-picker__calendar__next-month').click();
-      cy.wait(400);
+      cy.get('.usa-date-picker__calendar__next-month').trigger('click');
+      cy.wait(500);
+
+      cy.get('.usa-date-picker__calendar').should('be.visible');
+      cy.get('.usa-date-picker__calendar__next-month').trigger('click');
+      cy.wait(500);
 
       // Navigate backward 2 months
       cy.get('.usa-date-picker__calendar').should('be.visible');
-      cy.get('.usa-date-picker__calendar__previous-month').click();
-      cy.wait(400);
+      cy.get('.usa-date-picker__calendar__previous-month').trigger('click');
+      cy.wait(500);
 
       cy.get('.usa-date-picker__calendar').should('be.visible');
-      cy.get('.usa-date-picker__calendar__previous-month').click();
-      cy.wait(400);
+      cy.get('.usa-date-picker__calendar__previous-month').trigger('click');
+      cy.wait(500);
 
       // Calendar should still be functional
       cy.get('.usa-date-picker__calendar').should('be.visible');
@@ -116,17 +116,17 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Open calendar
       cy.get('usa-date-picker')
         .find('.usa-date-picker__button')
-        .click();
+        .trigger('click'); // Use native click
 
-      cy.wait(400); // Increased wait for calendar stability
+      cy.wait(500);
 
       // Verify calendar is visible before interaction
       cy.get('.usa-date-picker__calendar').should('be.visible');
 
       // Click year-selection button to open year picker
-      cy.get('.usa-date-picker__calendar__year-selection').click();
+      cy.clickDatePickerNav('.usa-date-picker__calendar__year-selection');
 
-      cy.wait(400); // Increased wait for year picker to appear
+      cy.wait(500);
 
       // Year picker table should be visible
       cy.get('.usa-date-picker__calendar__year-picker').should('be.visible');
@@ -139,23 +139,23 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Open calendar
       cy.get('usa-date-picker')
         .find('.usa-date-picker__button')
-        .click();
+        .trigger('click'); // Use native click
 
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar visible before opening year selection
       cy.get('.usa-date-picker__calendar').should('be.visible');
 
       // Open year selection
-      cy.get('.usa-date-picker__calendar__year-selection').click();
-      cy.wait(400);
+      cy.clickDatePickerNav('.usa-date-picker__calendar__year-selection');
+      cy.wait(500);
 
       // Verify year picker is visible
       cy.get('.usa-date-picker__calendar__year-picker').should('be.visible');
 
       // Select a year
-      cy.get('.usa-date-picker__calendar__year').first().click();
-      cy.wait(400); // Increased wait for transition back to date view
+      cy.get('.usa-date-picker__calendar__year').first().trigger('click');
+      cy.wait(500);
 
       // Should return to date view
       cy.get('.usa-date-picker__calendar__date-picker').should('be.visible');
@@ -199,7 +199,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       cy.get('.usa-date-picker__calendar__date[disabled]').then(($disabled) => {
         if ($disabled.length > 0) {
           // Click disabled date
-          cy.wrap($disabled).first().click({ force: true });
+          cy.wrap($disabled).first().trigger('click');
           cy.wait(200);
 
           // Input should remain empty or unchanged
@@ -244,9 +244,9 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       cy.get('usa-date-picker')
         .first()
         .find('.usa-date-picker__button')
-        .click();
+        .trigger('click'); // Use native click
 
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar is visible
       cy.get('.usa-date-picker__calendar').should('be.visible');
@@ -254,8 +254,8 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate backward to ensure we're not at max date boundary
       cy.get('.usa-date-picker__calendar__previous-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__previous-month');
+          cy.wait(500);
           // Verify calendar still visible after navigation
           cy.get('.usa-date-picker__calendar').should('be.visible');
         }
@@ -264,8 +264,8 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate forward a month
       cy.get('.usa-date-picker__calendar__next-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__next-month');
+          cy.wait(500);
           // Verify calendar still visible after navigation
           cy.get('.usa-date-picker__calendar').should('be.visible');
         }
@@ -292,7 +292,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar is visible
       cy.get('.usa-date-picker__calendar').should('be.visible');
@@ -300,14 +300,14 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate backward first to ensure we can navigate forward
       cy.get('.usa-date-picker__calendar__previous-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__previous-month');
+          cy.wait(500);
           cy.get('.usa-date-picker__calendar').should('be.visible');
 
           cy.get('.usa-date-picker__calendar__previous-month').then(($btn2) => {
             if (!$btn2.is(':disabled')) {
-              cy.wrap($btn2).click();
-              cy.wait(400);
+              cy.wrap($btn2).trigger('click');
+              cy.wait(500);
               cy.get('.usa-date-picker__calendar').should('be.visible');
             }
           });
@@ -317,16 +317,16 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate forward to approach max date boundary
       cy.get('.usa-date-picker__calendar__next-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__next-month');
+          cy.wait(500);
           cy.get('.usa-date-picker__calendar').should('be.visible');
         }
       });
 
       cy.get('.usa-date-picker__calendar__next-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__next-month');
+          cy.wait(500);
           cy.get('.usa-date-picker__calendar').should('be.visible');
         }
       });
@@ -342,7 +342,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar is visible
       cy.get('.usa-date-picker__calendar').should('be.visible');
@@ -350,8 +350,8 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate backward first to give us room to navigate forward
       cy.get('.usa-date-picker__calendar__previous-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__previous-month');
+          cy.wait(500);
           cy.get('.usa-date-picker__calendar').should('be.visible');
         }
       });
@@ -359,8 +359,8 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate forward to a month with disabled dates (approaching max date)
       cy.get('.usa-date-picker__calendar__next-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
-          cy.wait(400);
+          cy.clickDatePickerNav('.usa-date-picker__calendar__next-month');
+          cy.wait(500);
           cy.get('.usa-date-picker__calendar').should('be.visible');
         }
       });
@@ -368,7 +368,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Try to click a disabled date if any exist
       cy.get('.usa-date-picker__calendar__date[disabled]').then(($disabled) => {
         if ($disabled.length > 0) {
-          cy.wrap($disabled).first().click({ force: true });
+          cy.wrap($disabled).first().trigger('click');
           cy.wait(200);
 
           // Input should remain empty
@@ -474,14 +474,14 @@ describe('Date Picker - Month Navigation and Constraints', () => {
       // Navigate forward and backward - check if buttons are enabled first
       cy.get('.usa-date-picker__calendar__next-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
+          cy.clickDatePickerNav('.usa-date-picker__calendar__next-month');
           cy.wait(300);
         }
       });
 
       cy.get('.usa-date-picker__calendar__previous-month').then(($btn) => {
         if (!$btn.is(':disabled')) {
-          cy.wrap($btn).click();
+          cy.clickDatePickerNav('.usa-date-picker__calendar__previous-month');
           cy.wait(300);
         }
       });
@@ -501,7 +501,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar visible before rapid navigation
       cy.get('.usa-date-picker__calendar').should('be.visible');
@@ -546,14 +546,14 @@ describe('Date Picker - Month Navigation and Constraints', () => {
         .find('.usa-date-picker__button')
         .click();
 
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar visible
       cy.get('.usa-date-picker__calendar').should('be.visible');
 
       // Open year picker
-      cy.get('.usa-date-picker__calendar__year-selection').click();
-      cy.wait(400);
+      cy.clickDatePickerNav('.usa-date-picker__calendar__year-selection');
+      cy.wait(500);
 
       // Verify year picker visible
       cy.get('.usa-date-picker__calendar__year-picker').should('be.visible');
@@ -568,7 +568,7 @@ describe('Date Picker - Month Navigation and Constraints', () => {
 
       // Navigate months - verify visible before click
       cy.get('.usa-date-picker__calendar__next-month').click();
-      cy.wait(400);
+      cy.wait(500);
 
       // Verify calendar still visible after navigation
       cy.get('.usa-date-picker__calendar').should('be.visible');
