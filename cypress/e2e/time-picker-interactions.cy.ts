@@ -10,13 +10,15 @@
  * See: cypress/BROWSER_TESTS_MIGRATION_PLAN.md
  * Source: src/components/time-picker/usa-time-picker.test.ts
  *
- * SKIPPED TESTS (11 total):
+ * SKIPPED TESTS (9 total):
  * These tests require features not yet implemented in usa-time-picker:
  * - Reactive property watching (placeholder changes)
- * - Value synchronization from USWDS combo-box back to component
  * - Attribute forwarding/observation system (aria, required, disabled)
  * - 12-hour to 24-hour format conversion
  * - Story infrastructure (with-default-value story doesn't exist)
+ *
+ * FIXED:
+ * - Value synchronization from USWDS combo-box back to component (2 tests fixed)
  *
  * Tests validate core USWDS combo-box behavior which is working correctly.
  * Component limitations are documented but don't affect basic functionality.
@@ -70,9 +72,11 @@ describe('Time Picker Interactions', () => {
       cy.get('.usa-combo-box__list').should('be.visible');
     });
 
-    // SKIPPED: Escape key behavior inconsistent
-    // USWDS combo-box may not be handling Escape key properly in this context
-    // Timing issue or browser keyboard event handling difference
+    // SKIPPED: USWDS combo-box escape key behavior not working
+    // When combo-box list is opened with arrow down key, pressing Escape doesn't close it
+    // This is USWDS combo-box behavior (not our component implementation)
+    // The list remains visible: expected '<ul#time-picker-input--list.usa-combo-box__list>' not to be 'visible'
+    // Differs from tooltip escape behavior which works correctly
     it.skip('should handle escape key', () => {
       cy.get('usa-time-picker input')
         .focus()
@@ -82,10 +86,9 @@ describe('Time Picker Interactions', () => {
       cy.get('.usa-combo-box__list').should('not.be.visible');
     });
 
-    // SKIPPED: Value sync not working
-    // USWDS sets value on internal input/select, but component.value property isn't updated
-    // Requires implementing value observation from USWDS combo-box changes
-    it.skip('should handle enter key to select option', () => {
+    // Value sync now working via MutationObserver and change event listener
+    // Component observes USWDS internal input changes and syncs to value property
+    it('should handle enter key to select option', () => {
       cy.get('usa-time-picker input')
         .focus()
         .type('{downarrow}') // Open list
@@ -128,10 +131,9 @@ describe('Time Picker Interactions', () => {
   });
 
   describe('Time Selection', () => {
-    // SKIPPED: Value sync not working
-    // USWDS sets value on internal input/select, but component.value property isn't updated
-    // Requires implementing value observation from USWDS combo-box changes
-    it.skip('should select time when clicking option', () => {
+    // Value sync now working via MutationObserver and change event listener
+    // Component observes USWDS internal input changes and syncs to value property
+    it('should select time when clicking option', () => {
       cy.get('usa-time-picker').within(() => {
         // Open dropdown
         cy.get('.usa-combo-box__toggle-list').click();
@@ -218,11 +220,10 @@ describe('Time Picker Interactions', () => {
       cy.get('usa-time-picker input').should('be.disabled');
     });
 
-    // SKIPPED: axe-core selector issue
-    // checkA11y with 'usa-time-picker' selector not finding elements
-    // Component passes basic accessibility - likely test configuration issue
-    it.skip('should pass axe accessibility checks', () => {
-      cy.checkA11y('usa-time-picker', {
+    it('should pass axe accessibility checks', () => {
+      // Check the whole page instead of using custom element selector
+      // axe-core doesn't recognize custom element names as valid selectors
+      cy.checkA11y(null, {
         runOnly: {
           type: 'tag',
           values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
