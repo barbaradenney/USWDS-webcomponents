@@ -104,16 +104,6 @@ export class USACheckbox extends LitElement {
 
       // Listen to the native input element's change event
       this.checkboxElement.addEventListener('change', this.handleChange);
-
-      // Light DOM workaround: The native <label for="..."> mechanism doesn't always
-      // work reliably in Light DOM web components. Add a direct click listener on the
-      // label to manually toggle the checkbox as a fallback.
-      label.addEventListener('click', (e) => {
-        if (this.checkboxElement && !e.defaultPrevented) {
-          this.checkboxElement.checked = !this.checkboxElement.checked;
-          this.checkboxElement.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      });
     }
   }
 
@@ -250,11 +240,6 @@ export class USACheckbox extends LitElement {
     // Clean up event listeners
     if (this.checkboxElement) {
       this.checkboxElement.removeEventListener('change', this.handleChange);
-    }
-    const label = this.querySelector('label');
-    if (label) {
-      // Note: We can't remove the anonymous function, but it will be garbage collected
-      // when the element is removed from the DOM
     }
     super.disconnectedCallback();
     this.cleanupUSWDS();
