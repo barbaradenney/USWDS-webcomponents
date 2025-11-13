@@ -138,7 +138,17 @@
       "Bash(pnpm --filter @uswds-wc/patterns test:*)",
       "Bash(pnpm vitest run:*)",
       "Bash(pnpm --filter @uswds-wc/actions test usa-search)",
-      "Bash(gh run watch:*)"
+      "Bash(gh run watch:*)",
+      "Bash(pnpm --filter @uswds-wc/forms test -- --run packages/uswds-wc-forms/src/components/input-prefix-suffix/usa-input-prefix-suffix.test.ts)",
+      "Bash(pnpm exec vitest:*)",
+      "Bash(pnpm --filter @uswds-wc/forms test:*)",
+      "Bash(pnpm install:*)",
+      "Bash(timeout 120 pnpm test:*)",
+      "Bash(timeout 60 pnpm:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(npx prettier:*)",
+      "Bash(pnpm run typecheck:*)",
+      "Bash(timeout 30 pnpm run storybook:*)"
     ],
     "deny": [],
     "ask": []
