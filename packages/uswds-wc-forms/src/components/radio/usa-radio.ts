@@ -94,16 +94,6 @@ export class USARadio extends LitElement {
 
       // Listen to the native input element's change event
       this.radioElement.addEventListener('change', this.handleChange);
-
-      // Light DOM workaround: The native <label for="..."> mechanism doesn't always
-      // work reliably in Light DOM web components. Add a direct click listener on the
-      // label to manually toggle the radio as a fallback.
-      label.addEventListener('click', (e) => {
-        if (this.radioElement && !e.defaultPrevented && !this.disabled) {
-          this.radioElement.checked = true;
-          this.radioElement.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      });
     }
   }
 
@@ -224,11 +214,6 @@ export class USARadio extends LitElement {
     // Clean up event listeners
     if (this.radioElement) {
       this.radioElement.removeEventListener('change', this.handleChange);
-    }
-    const label = this.querySelector('label');
-    if (label) {
-      // Note: We can't remove the anonymous function, but it will be garbage collected
-      // when the element is removed from the DOM
     }
     super.disconnectedCallback();
     this.cleanupUSWDS();
