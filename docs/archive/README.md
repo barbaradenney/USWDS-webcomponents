@@ -199,3 +199,14 @@ For bundle optimization, see:
 - **Category**: TEMPORARY
 - **Age**: 9 days
 
+
+### PLAYWRIGHT_COVERAGE_ANALYSIS.md (Archived 2025-11-14)
+- **Reason**: Temporary doc older than 7 days (12 days)
+- **Category**: TEMPORARY
+- **Age**: 12 days
+
+### PLAYWRIGHT_PHASE2_IMPLEMENTATION_PLAN.md (Archived 2025-11-14)
+- **Reason**: Temporary doc older than 7 days (12 days)
+- **Category**: TEMPORARY
+- **Age**: 12 days
+
