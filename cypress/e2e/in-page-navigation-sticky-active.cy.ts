@@ -11,6 +11,9 @@
 describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => {
   beforeEach(() => {
     cy.viewport(1280, 720);
+    // Load the component by visiting Storybook (ensures web component is registered)
+    cy.visit('/iframe.html?id=navigation-in-page-navigation--default&viewMode=story');
+    cy.wait(100); // Wait for component registration
   });
 
   describe('Sticky Navigation Positioning', () => {
