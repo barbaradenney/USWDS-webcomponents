@@ -177,6 +177,8 @@ describe('Smoke Tests - Critical Component Interactions', () => {
 describe('Regression: Time-Picker Dropdown Bug (2025-10-17)', () => {
   beforeEach(() => {
     cy.visit('/iframe.html?id=forms-time-picker--default&viewMode=story');
+    // Wait for USWDS combo-box initialization in CI
+    cy.wait(1000);
   });
 
   it('CRITICAL: dropdown must open when clicking toggle button', () => {
@@ -187,12 +189,20 @@ describe('Regression: Time-Picker Dropdown Bug (2025-10-17)', () => {
     // THE CRITICAL TEST - Click must work
     cy.get('usa-time-picker .usa-combo-box__toggle-list').click();
 
-    // Dropdown MUST appear
-    cy.get('usa-time-picker .usa-combo-box__list').should('be.visible');
+    // Wait for USWDS combo-box dropdown to render in CI
+    cy.wait(500);
+
+    // Dropdown MUST appear with retry timeout
+    cy.get('usa-time-picker .usa-combo-box__list', { timeout: 5000 }).should('be.visible');
   });
 
   it('CRITICAL: dropdown must open when pressing arrow down', () => {
     cy.get('usa-time-picker input').focus().type('{downarrow}');
-    cy.get('usa-time-picker .usa-combo-box__list').should('be.visible');
+
+    // Wait for USWDS combo-box dropdown to render in CI
+    cy.wait(500);
+
+    // Dropdown MUST appear with retry timeout
+    cy.get('usa-time-picker .usa-combo-box__list', { timeout: 5000 }).should('be.visible');
   });
 });
