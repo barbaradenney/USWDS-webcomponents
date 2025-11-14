@@ -103,8 +103,9 @@ describe('USWDS Components Accessibility Tests', () => {
   });
 
   describe('Global accessibility checks', () => {
-    it('should have no accessibility violations across all components', () => {
-      components.forEach(({ name, story, category }) => {
+    // Test each component individually to avoid axe race conditions
+    components.forEach(({ name, story, category }) => {
+      it(`${name} should have no accessibility violations`, () => {
         cy.selectStory(`${category}-${name}`, story);
         cy.wait(1000); // Wait for story to fully load
         // Inject axe per-component to avoid race conditions

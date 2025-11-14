@@ -210,11 +210,11 @@ describe('Character Count - Accessibility', () => {
         // Type beyond limit (browser may prevent, but status should show)
         cy.get('textarea, input').clear().type('a'.repeat(60), { force: true });
 
-        // Wait for USWDS to update error state
-        cy.wait(250);
+        // Wait for USWDS to update error state (longer in CI)
+        cy.wait(500);
 
-        // Status should show error state
-        cy.get('.usa-character-count__status')
+        // Status should show error state with retry
+        cy.get('.usa-character-count__status', { timeout: 5000 })
           .should('have.class', 'usa-character-count__status--error');
       });
     });
