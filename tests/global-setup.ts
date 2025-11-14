@@ -34,52 +34,32 @@ async function globalSetup(config: FullConfig) {
     }
   }
 
-  // Check if Storybook is already running
-  let storybookRunning = false;
-  try {
-    const response = await fetch('http://localhost:6006/iframe.html');
-    storybookRunning = response.ok;
-  } catch (error) {
-    // Storybook is not running
-  }
+  // Note: Storybook is automatically started by Playwright's webServer configuration
+  // We just verify it's available here
+  console.log('⏳ Waiting for Storybook to be ready...');
 
-  if (!storybookRunning) {
-    console.log('🔄 Starting Storybook for testing...');
+  let attempts = 0;
+  const maxAttempts = 60; // 2 minutes timeout
+  let storybookReady = false;
 
-    // Start Storybook in the background
-    const { spawn } = require('child_process');
-    const storybookProcess = spawn('npm', ['run', 'storybook'], {
-      stdio: 'pipe',
-      detached: true
-    });
-
-    // Store process ID for cleanup
-    fs.writeFileSync('./test-reports/storybook.pid', storybookProcess.pid.toString());
-
-    // Wait for Storybook to be ready
-    let attempts = 0;
-    const maxAttempts = 60; // 2 minutes timeout
-
-    while (attempts < maxAttempts) {
-      try {
-        const response = await fetch('http://localhost:6006/iframe.html');
-        if (response.ok) {
-          console.log('✅ Storybook is ready');
-          break;
-        }
-      } catch (error) {
-        // Still starting up...
+  while (attempts < maxAttempts && !storybookReady) {
+    try {
+      const response = await fetch('http://localhost:6006/iframe.html');
+      if (response.ok) {
+        storybookReady = true;
+        console.log('✅ Storybook is ready');
+        break;
       }
-
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      attempts++;
-
-      if (attempts >= maxAttempts) {
-        throw new Error('Storybook failed to start within timeout period');
-      }
+    } catch (error) {
+      // Still waiting for Playwright webServer to start Storybook...
     }
-  } else {
-    console.log('✅ Storybook is already running');
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    attempts++;
+
+    if (attempts >= maxAttempts) {
+      throw new Error('Storybook failed to start within timeout period (started by Playwright webServer)');
+    }
   }
 
   // Verify Playwright browsers are installed
