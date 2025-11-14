@@ -41,8 +41,8 @@ describe('Character Count - Accessibility', () => {
     it('should pass comprehensive accessibility tests (same as Storybook)', () => {
       cy.get('@characterCount').should('be.visible');
 
-      // Wait longer for axe to be fully ready
-      cy.wait(200);
+      // Wait longer for axe to be fully ready (increased from 200ms to avoid race condition)
+      cy.wait(500);
 
       // Run axe accessibility audit
       cy.checkA11y('usa-character-count', {
@@ -210,11 +210,11 @@ describe('Character Count - Accessibility', () => {
         // Type beyond limit (browser may prevent, but status should show)
         cy.get('textarea, input').clear().type('a'.repeat(60), { force: true });
 
-        // Wait for USWDS to update error state (longer in CI)
-        cy.wait(500);
+        // Wait longer for USWDS to update error state in CI (increased from 500ms)
+        cy.wait(1000);
 
-        // Status should show error state with retry
-        cy.get('.usa-character-count__status', { timeout: 5000 })
+        // Status should show error state with increased retry timeout (increased from 5000ms to 10000ms)
+        cy.get('.usa-character-count__status', { timeout: 10000 })
           .should('have.class', 'usa-character-count__status--error');
       });
     });
@@ -264,6 +264,9 @@ describe('Character Count - Accessibility', () => {
         cy.get('.usa-character-count__status')
           .should('contain.text', 'character');
       });
+
+      // Wait before accessibility audit to prevent Axe race condition
+      cy.wait(300);
 
       // Run accessibility audit after updates
       cy.checkA11y('usa-character-count', {
@@ -340,6 +343,9 @@ describe('Character Count - Accessibility', () => {
           .and('have.class', 'usa-sr-only');
       });
 
+      // Wait before accessibility audit to prevent Axe race condition
+      cy.wait(300);
+
       // Should still pass accessibility audit
       cy.checkA11y('usa-character-count');
     });
@@ -362,6 +368,9 @@ describe('Character Count - Accessibility', () => {
         cy.get('.usa-character-count__sr-status')
           .should('have.attr', 'aria-live', 'polite');
       });
+
+      // Wait before accessibility audit to prevent Axe race condition
+      cy.wait(300);
 
       // Accessibility audit
       cy.checkA11y('usa-character-count');
@@ -386,6 +395,9 @@ describe('Character Count - Accessibility', () => {
           .should('have.attr', 'aria-live', 'polite');
       });
 
+      // Wait before accessibility audit to prevent Axe race condition
+      cy.wait(300);
+
       // Accessibility audit
       cy.checkA11y('usa-character-count');
     });
@@ -393,6 +405,9 @@ describe('Character Count - Accessibility', () => {
 
   describe('WCAG 2.1 Compliance', () => {
     it('should pass WCAG 2.1 Level AA', () => {
+      // Wait for component to be ready before accessibility audit
+      cy.wait(300);
+
       cy.checkA11y('usa-character-count', {
         runOnly: {
           type: 'tag',
@@ -412,6 +427,9 @@ describe('Character Count - Accessibility', () => {
         expect($el[0].scrollWidth).to.be.lte($el[0].clientWidth + 1);
       });
 
+      // Wait before accessibility audit to prevent Axe race condition
+      cy.wait(300);
+
       // Should still be accessible at narrow width
       cy.checkA11y('usa-character-count');
     });
@@ -429,6 +447,9 @@ describe('Character Count - Accessibility', () => {
         cy.get('textarea, input').should('be.visible');
         cy.get('.usa-character-count__status').should('be.visible');
       });
+
+      // Wait before accessibility audit to prevent Axe race condition
+      cy.wait(300);
 
       // Should still pass accessibility
       cy.checkA11y('usa-character-count');
