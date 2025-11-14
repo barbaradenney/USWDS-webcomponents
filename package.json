@@ -788,5 +788,10 @@
     "vitest": "^3.2.4",
     "wait-on": "^8.0.5"
   },
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.0",
+  "pnpm": {
+    "overrides": {
+      "js-yaml": ">=4.1.1"
+    }
+  }
 }
