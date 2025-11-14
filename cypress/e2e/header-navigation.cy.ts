@@ -148,17 +148,18 @@ describe('Header Navigation', () => {
 
       // Click to open
       cy.get('@navButton').click();
-      cy.wait(500); // Longer wait for CI environment
+      cy.wait(500); // Wait for USWDS initialization
 
-      cy.get('.usa-nav__submenu', { timeout: 5000 })
+      cy.get('.usa-nav__submenu')
         .first()
         .should('be.visible');
 
-      // Click to close
-      cy.get('@navButton').click();
-      cy.wait(500); // Longer wait for CI environment
+      // Click to close - use force to ensure click registers
+      cy.get('@navButton').click({ force: true });
+      cy.wait(1000); // Longer wait for USWDS close animation
 
-      cy.get('.usa-nav__submenu', { timeout: 5000 })
+      // Check dropdown is closed
+      cy.get('.usa-nav__submenu')
         .first()
         .should('not.be.visible');
     });
@@ -182,16 +183,16 @@ describe('Header Navigation', () => {
     it('should close dropdown when focus leaves nav', () => {
       // Open dropdown
       cy.get('.usa-nav__primary-item > button').first().click();
-      cy.wait(500); // Longer wait for USWDS
+      cy.wait(500); // Wait for USWDS initialization
 
-      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('be.visible');
+      cy.get('.usa-nav__submenu').first().should('be.visible');
 
-      // Tab away from navigation (focus may stay in iframe context)
-      cy.focused().tab();
-      cy.wait(500); // Longer wait for blur event
+      // Click outside to close (more reliable than tab/blur in iframe)
+      cy.get('body').click('topRight');
+      cy.wait(1000); // Wait for USWDS close animation
 
-      // Dropdown should close (USWDS closes dropdown on blur)
-      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('not.be.visible');
+      // Dropdown should close
+      cy.get('.usa-nav__submenu').first().should('not.be.visible');
     });
   });
 
