@@ -35,7 +35,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}      - name: Install pnpm
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
