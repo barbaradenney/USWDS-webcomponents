@@ -1,6 +1,6 @@
 {
   "name": "@uswds-wc/core",
-  "version": "2.3.1",
+  "version": "2.0.0",
   "description": "Core utilities and base components for USWDS Web Components",
   "type": "module",
   "main": "./dist/index.js",
@@ -15,7 +15,10 @@
       "import": "./dist/utils/*.js",
       "types": "./dist/utils/*.d.ts"
     },
-    "./styles.css": "./src/styles/styles.css"
+    "./styles.css": {
+      "import": "./src/styles/styles.css",
+      "default": "./dist/styles/styles.css"
+    }
   },
   "files": [
     "dist",
@@ -33,11 +36,7 @@
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "devDependencies": {
-    "lit": "^3.0.0",
-    "vitest": "^3.2.4",
-    "jsdom": "^27.0.1"
-  },
+  "devDependencies": {},
   "keywords": [
     "uswds",
     "web-components",
@@ -48,7 +47,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/barbaradenney/uswds-wc.git",
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
     "directory": "packages/uswds-wc-core"
   }
 }

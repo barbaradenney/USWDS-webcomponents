@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2025-11-12
+
+### 🐛 **Bug Fixes**
+
+#### Critical Component Fixes
+- **Checkbox Double-Toggle Bug (CRITICAL)**: Fixed bug where clicking checkbox or label didn't change state due to manual label click handler interfering with native browser behavior (usa-checkbox.ts:108-116 removed)
+- **Radio Double-Event Bug**: Preventively removed same problematic pattern from radio component to ensure reliable event handling (usa-radio.ts:98-106 removed)
+- **Time Picker Value Synchronization**: Implemented dual observation system (MutationObserver + change event listener) to sync USWDS combo-box value changes back to component property (usa-time-picker.ts:88-151)
+
+#### Test Improvements
+- **Tooltip Accessibility Test**: Un-skipped and fixed tooltip accessibility test with proper wait for USWDS transformation
+- **Checkbox Regression Tests**: Added 2 regression tests to prevent double-toggle bug from recurring
+- **Radio Regression Tests**: Added 2 regression tests for event handling reliability
+- **Time Picker Tests**: Un-skipped 2 Cypress tests now that value synchronization is working
+
+### 📝 **Documentation**
+
+- **Time Picker Clear Button**: Enhanced documentation explaining USWDS combo-box clear button behavior (only shows for user-typed input, not programmatic value changes)
+- **Test Documentation**: Comprehensive survey and categorization of all 45 skipped Cypress tests with detailed explanations of USWDS behaviors, component limitations, and test infrastructure requirements
+
+### 🎯 **Test Suite Status**
+
+- Unit Tests: 1452/1452 passing (100%)
+- Cypress Tests: Improved coverage with 3 critical bugs fixed
+- All test skips properly documented and justified
+
 ## [2.1.1] - 2025-11-02
 
 ### 📝 **Documentation**

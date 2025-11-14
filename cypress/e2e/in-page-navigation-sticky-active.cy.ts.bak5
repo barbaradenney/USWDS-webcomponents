@@ -63,7 +63,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
         // Scroll down the page
         cy.scrollTo(0, 500);
-      cy.wait(500); // Wait for intersection observer        cy.wait(750);
+        cy.wait(750);
 
         // Navigation should maintain its position (sticky behavior)
         cy.get('usa-in-page-navigation').then(($navAfterScroll) => {
@@ -82,7 +82,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
       scrollPositions.forEach((position) => {
         cy.scrollTo(0, position);
-      cy.wait(500); // Wait for intersection observer        cy.wait(400);
+        cy.wait(400);
 
         cy.get('usa-in-page-navigation').should('be.visible');
       });
@@ -90,7 +90,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
     it('should not overlap content when sticky', () => {
       cy.scrollTo(0, 500);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
 
       cy.get('usa-in-page-navigation').then(($nav) => {
         const navRect = $nav[0].getBoundingClientRect();
@@ -122,7 +122,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
         // Scroll down
         cy.scrollTo(0, 400);
-      cy.wait(500); // Wait for intersection observer        cy.wait(750);
+        cy.wait(750);
 
         // Navigation should remain visible and positioned correctly
         cy.get('usa-in-page-navigation').should('be.visible');
@@ -140,16 +140,16 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
         // Reset scroll for next viewport
         cy.scrollTo(0, 0);
-      cy.wait(500); // Wait for intersection observer      });
+      });
     });
 
     it('should handle rapid scrolling without position glitches', () => {
       // Rapid scroll to different positions
       cy.scrollTo(0, 500, { duration: 100 });
-      cy.wait(500); // Wait for intersection observer      cy.scrollTo(0, 1000, { duration: 100 });
-      cy.wait(500); // Wait for intersection observer      cy.scrollTo(0, 200, { duration: 100 });
-      cy.wait(500); // Wait for intersection observer      cy.scrollTo(0, 1500, { duration: 100 });
-      cy.wait(500); // Wait for intersection observer
+      cy.scrollTo(0, 1000, { duration: 100 });
+      cy.scrollTo(0, 200, { duration: 100 });
+      cy.scrollTo(0, 1500, { duration: 100 });
+
       cy.wait(750); // Let animations settle
 
       // Navigation should still be visible and positioned correctly
@@ -206,7 +206,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
     it('should update active link when scrolling to different sections', () => {
       // Start at top - intro should be active
       cy.scrollTo(0, 0);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
 
       cy.get('usa-in-page-navigation a[href="#intro"]').should('have.class', 'usa-current');
       cy.get('usa-in-page-navigation a[href="#overview"]').should('not.have.class', 'usa-current');
@@ -266,7 +266,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
       // Scroll back to intro
       cy.scrollTo(0, 0);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
 
       cy.get('usa-in-page-navigation a[href="#intro"]').should('have.class', 'usa-current');
       cy.get('usa-in-page-navigation a[href="#details"]').should('not.have.class', 'usa-current');
@@ -468,11 +468,11 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
       // Navigation should remain sticky throughout scroll
       cy.scrollTo(0, 1000);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
       cy.get('usa-in-page-navigation').should('be.visible');
 
       cy.scrollTo(0, 2000);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
       cy.get('usa-in-page-navigation').should('be.visible');
 
       // Active link should persist
@@ -511,7 +511,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
       // Scroll to very bottom
       cy.scrollTo('bottom');
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
 
       // Last section should be active even if it's short
       cy.get('usa-in-page-navigation a[href="#end"]').should('have.class', 'usa-current');
@@ -570,15 +570,15 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
 
       // Check accessibility at different scroll positions
       cy.scrollTo(0, 0);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
       cy.checkA11y('usa-in-page-navigation');
 
       cy.scrollTo(0, 500);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
       cy.checkA11y('usa-in-page-navigation');
 
       cy.scrollTo(0, 1000);
-      cy.wait(500); // Wait for intersection observer      cy.wait(750);
+      cy.wait(750);
       cy.checkA11y('usa-in-page-navigation');
     });
 

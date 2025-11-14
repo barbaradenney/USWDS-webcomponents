@@ -230,6 +230,7 @@ export class USAInputPrefixSuffix extends LitElement {
             ?readonly=${this.readonly}
             autocomplete="${this.autocomplete}"
             aria-describedby="${this.getAriaDescribedBy(hasError)}"
+            aria-invalid="${hasError ? 'true' : 'false'}"
             @input="${this.handleInputChange}"
             @change="${this.handleInputChange}"
           />

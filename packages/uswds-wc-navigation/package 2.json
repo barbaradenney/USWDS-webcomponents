@@ -1,7 +1,7 @@
 {
-  "name": "@uswds-wc/structure",
-  "version": "2.3.1",
-  "description": "USWDS Structure Components - Web Components",
+  "name": "@uswds-wc/navigation",
+  "version": "2.0.0",
+  "description": "USWDS Navigation Components - Web Components",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -29,28 +29,26 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@uswds-wc/core": "workspace:*"
+    "@uswds-wc/core": "workspace:*",
+    "@uswds-wc/actions": "workspace:*"
   },
   "peerDependencies": {
     "lit": "^3.0.0"
   },
-  "devDependencies": {
-    "@uswds-wc/test-utils": "workspace:*",
-    "jsdom": "27.0.1",
-    "lit": "^3.0.0",
-    "vitest": "3.2.4"
-  },
+  "devDependencies": {},
   "keywords": [
     "uswds",
     "web-components",
-    "structure",
-    "accordion"
+    "navigation",
+    "header",
+    "footer",
+    "breadcrumb"
   ],
   "author": "Barbara Miles",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/barbaradenney/uswds-wc.git",
-    "directory": "packages/uswds-wc-structure"
+    "url": "https://github.com/barbaradenney/USWDS-webcomponents.git",
+    "directory": "packages/uswds-wc-navigation"
   }
 }

@@ -333,11 +333,71 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock window.getComputedStyle for better CSS testing
+// Suppress jsdom "Not implemented: window.getComputedStyle(elt, pseudoElt)" warnings
+// that occur during axe-core accessibility tests checking pseudo-element color contrast
 const originalGetComputedStyle = window.getComputedStyle;
+const originalError = console.error;
+
+// Filter out getComputedStyle pseudo-element warnings
+console.error = (...args: any[]) => {
+  const message = args.join(' ');
+
+  // Suppress jsdom getComputedStyle warnings (pseudo-elements not implemented)
+  if (
+    message.includes('Not implemented: window.getComputedStyle') ||
+    message.includes('getComputedStyle(elt, pseudoElt)')
+  ) {
+    return;
+  }
+
+  // Let other errors through
+  return originalError.apply(console, args);
+};
+
 window.getComputedStyle = (element: Element, pseudoElement?: string | null) => {
-  const originalStyles = originalGetComputedStyle(element, pseudoElement);
-  // Return a more complete mock if the original fails
-  if (!originalStyles) {
+  // If pseudo-element is requested, return a complete mock to prevent jsdom errors
+  // jsdom doesn't implement getComputedStyle for pseudo-elements (:before, :after, etc.)
+  if (pseudoElement) {
+    return {
+      getPropertyValue: (property: string) => {
+        // Return sensible defaults for common pseudo-element properties
+        if (property === 'display') return 'inline';
+        if (property === 'content') return '""';
+        if (property === 'color') return 'rgb(0, 0, 0)';
+        if (property === 'background-color') return 'rgba(0, 0, 0, 0)';
+        return '';
+      },
+      setProperty: () => {},
+      removeProperty: () => '',
+      cssFloat: '',
+      cssText: '',
+      length: 0,
+      parentRule: null,
+      getPropertyPriority: () => '',
+      item: () => '',
+    } as any;
+  }
+
+  // For non-pseudo-element calls, use original implementation
+  try {
+    const originalStyles = originalGetComputedStyle.call(window, element);
+    // Return a more complete mock if the original fails
+    if (!originalStyles) {
+      return {
+        getPropertyValue: () => '',
+        setProperty: () => {},
+        removeProperty: () => '',
+        cssFloat: '',
+        cssText: '',
+        length: 0,
+        parentRule: null,
+        getPropertyPriority: () => '',
+        item: () => '',
+      } as any;
+    }
+    return originalStyles;
+  } catch (error) {
+    // Fallback mock if original throws
     return {
       getPropertyValue: () => '',
       setProperty: () => {},
@@ -346,11 +406,10 @@ window.getComputedStyle = (element: Element, pseudoElement?: string | null) => {
       cssText: '',
       length: 0,
       parentRule: null,
-      propertyPriority: () => '',
+      getPropertyPriority: () => '',
       item: () => '',
     } as any;
   }
-  return originalStyles;
 };
 
 // Mock window.scrollTo for components that use scrolling

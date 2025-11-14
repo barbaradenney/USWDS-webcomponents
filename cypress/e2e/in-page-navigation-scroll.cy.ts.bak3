@@ -30,12 +30,11 @@ describe('In-Page Navigation Scroll Behavior', () => {
           });
 
           $link[0].click();
-          cy.wait(500); // Longer wait for click handler in CI
         });
       });
 
       // Default should be prevented to allow smooth scroll
-      cy.wait(500).then(() => {
+      cy.wrap(null).should(() => {
         expect(defaultPrevented).to.be.true;
       });
     });
@@ -82,36 +81,35 @@ describe('In-Page Navigation Scroll Behavior', () => {
     it('should reset tabindex to -1 after heading loses focus', () => {
       // Focus a navigation link
       cy.get('usa-in-page-navigation a').first().focus();
-      cy.wait(500); // Longer wait for focus in CI
+
+      cy.wait(300);
 
       // Get the target heading ID
       cy.get('usa-in-page-navigation a').first().then(($link) => {
         const href = $link.attr('href');
         const targetId = href?.replace('#', '');
 
-        if (!targetId) {
-          cy.log('No target ID found, skipping test');
-          return;
-        }
-
         // Click to navigate
         $link[0].click();
 
-        cy.wait(1000); // Longer wait for scroll and focus management in CI
+        cy.wait(500);
 
-        // Check if target element exists with timeout
-        cy.get(`#${targetId}`, { timeout: 5000 }).should('exist').then(($target) => {
-          // Target may or may not receive focus depending on USWDS implementation
-          // The important thing is that it gets tabindex -1 for keyboard access
-          // Use more lenient check - tabindex may be added or may already exist
-          cy.wrap($target).invoke('attr', 'tabindex').should('exist');
-        });
+        // Target heading should be focused
+        cy.get(`#${targetId}`).should('have.focus');
+
+        // Tab away
+        cy.focused().tab();
+
+        cy.wait(300);
+
+        // Heading should have tabindex -1
+        cy.get(`#${targetId}`).should('have.attr', 'tabindex', '-1');
       });
     });
 
     it('should navigate with arrow keys', () => {
       cy.get('usa-in-page-navigation a').first().focus();
-      cy.wait(200);
+
       // Press down arrow
       cy.focused().type('{downarrow}');
 
@@ -122,65 +120,54 @@ describe('In-Page Navigation Scroll Behavior', () => {
 
     it('should navigate with up arrow', () => {
       cy.get('usa-in-page-navigation a').eq(1).focus();
-      cy.wait(300);
 
       // Press up arrow
       cy.focused().type('{uparrow}');
-      cy.wait(200);
 
-      // Should move to a link (may not be exactly the first due to implementation)
-      cy.focused().should('match', 'a');
-      cy.focused().parents('usa-in-page-navigation').should('exist');
+      // Should move to previous link
+      cy.get('usa-in-page-navigation a').first().should('have.focus');
     });
   });
 
   describe('Customization Data Attributes', () => {
-    it('should accept custom title data attribute', () => {
-      // Test that component accepts the data attribute
+    it('should use custom title from data-title-text', () => {
       cy.get('usa-in-page-navigation').then(($el) => {
         $el.attr('data-title-text', 'Custom Navigation Title');
-
-        // Verify attribute was set
-        expect($el.attr('data-title-text')).to.equal('Custom Navigation Title');
       });
 
-      // Note: USWDS may not re-render after attribute change
-      // Data attributes should be set before USWDS initialization
+      cy.wait(300);
+
+      cy.get('usa-in-page-navigation').within(() => {
+        cy.contains('Custom Navigation Title').should('exist');
+      });
     });
 
-    it('should accept custom heading level data attribute', () => {
-      // Test that component accepts the data attribute
+    it('should use custom heading level from data-title-heading-level', () => {
       cy.get('usa-in-page-navigation').then(($el) => {
         $el.attr('data-title-heading-level', 'h3');
-
-        // Verify attribute was set
-        expect($el.attr('data-title-heading-level')).to.equal('h3');
       });
 
-      // Note: USWDS initializes on page load
-      // To test actual rendering, attribute must be present before initialization
+      cy.wait(300);
+
+      // Title should be rendered as h3
+      cy.get('usa-in-page-navigation h3').should('exist');
     });
 
-    it('should accept custom heading elements data attribute', () => {
+    it('should use custom heading elements from data-heading-elements', () => {
       // Visit a page with custom content structure
-      cy.visit('/iframe.html?id=navigation-in-page-navigation--custom-headings&viewMode=story')
-        .then(() => {
-          // Wait for story to load
-          cy.wait(500);
-        }, () => {
-          // Story may not exist, use default story
-          cy.log('Custom headings story not found, using default');
-          cy.visit('/iframe.html?id=navigation-in-page-navigation--default&viewMode=story');
-          cy.wait(500);
-        });
+      cy.visit('/iframe.html?id=navigation-in-page-navigation--custom-headings&viewMode=story');
 
-      // Test that component accepts the data attribute
+      // Wait for USWDS initialization after story navigation
+      cy.wait(500);
+
       cy.get('usa-in-page-navigation').then(($el) => {
         $el.attr('data-heading-elements', 'h3');
-
-        // Verify attribute was set
-        expect($el.attr('data-heading-elements')).to.equal('h3');
       });
+
+      cy.wait(300);
+
+      // Should generate links from h3 elements
+      cy.get('usa-in-page-navigation a').should('have.length.at.least', 1);
     });
 
     it('should handle multiple heading selectors', () => {
@@ -202,10 +189,10 @@ describe('In-Page Navigation Scroll Behavior', () => {
         win.scrollTo(0, 500);
       });
 
-      cy.wait(1000); // Longer wait for intersection observer in CI
+      cy.wait(500);
 
-      // An active link should exist with retry
-      cy.get('usa-in-page-navigation .usa-current', { timeout: 5000 }).should('exist');
+      // An active link should exist
+      cy.get('usa-in-page-navigation .usa-current').should('exist');
     });
 
     it('should only have one active link at a time', () => {
@@ -213,36 +200,30 @@ describe('In-Page Navigation Scroll Behavior', () => {
         win.scrollTo(0, 500);
       });
 
-      cy.wait(1000); // Longer wait for intersection observer in CI
+      cy.wait(500);
 
-      // Only one link should be active with retry
-      cy.get('usa-in-page-navigation .usa-current', { timeout: 5000 }).should('have.length', 1);
+      // Only one link should be active
+      cy.get('usa-in-page-navigation .usa-current').should('have.length', 1);
     });
   });
 
   describe('Sticky Behavior', () => {
-    it('should maintain visibility when scrolling', () => {
-      // Scroll down significantly
-      cy.scrollTo(0, 800);
-      cy.wait(300);
-
-      // Component should still be visible (either sticky or scrolled with page)
-      cy.get('usa-in-page-navigation').should('be.visible');
-
-      // Check if component has sticky positioning
+    it('should stick to viewport when scrolling', () => {
+      // Get initial position
       cy.get('usa-in-page-navigation').then(($el) => {
-        const position = $el.css('position');
-        const top = $el[0].getBoundingClientRect().top;
+        const initialTop = $el[0].getBoundingClientRect().top;
 
-        // If sticky/fixed, should be near top of viewport
-        // If not sticky, will have scrolled with content
-        if (position === 'sticky' || position === 'fixed') {
-          // Should be near top of viewport
-          expect(top).to.be.lessThan(200);
-        } else {
-          // Regular positioning - just verify it exists
-          cy.log('Component does not use sticky positioning');
-        }
+        // Scroll down
+        cy.scrollTo(0, 500);
+
+        cy.wait(300);
+
+        // Should maintain position (sticky)
+        cy.get('usa-in-page-navigation').then(($el2) => {
+          const newTop = $el2[0].getBoundingClientRect().top;
+          // Top position should be similar (sticky)
+          expect(Math.abs(newTop - initialTop)).to.be.lessThan(50);
+        });
       });
     });
   });

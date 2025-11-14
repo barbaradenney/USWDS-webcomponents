@@ -77,7 +77,8 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      cy.wait(200);
+      // Wait longer for modal to fully open and USWDS focus trap to initialize
+      cy.wait(500);
 
       // Focus should move to modal
       cy.get('.usa-modal').should('be.visible');
@@ -91,11 +92,11 @@ describe('Modal Focus Management', () => {
 
         // Focus the first element
         cy.wrap($first).focus();
-        cy.wait(100);
+        cy.wait(200); // Increased wait for focus to settle
 
         // Tab a few times
         cy.focused().tab();
-        cy.wait(100);
+        cy.wait(200); // Increased wait for tab navigation
 
         // Should still be within modal
         cy.focused().then($current => {
@@ -109,10 +110,15 @@ describe('Modal Focus Management', () => {
       // Open modal
       cy.get('button').contains('Open Modal').as('trigger').click();
 
+      // Wait for modal to fully open
+      cy.wait(300);
       cy.get('.usa-modal').should('be.visible');
 
       // Close modal
       cy.get('.usa-modal__close').click();
+
+      // Wait for modal close animation and focus return
+      cy.wait(300);
 
       // Focus should return to trigger
       cy.get('@trigger').should('have.focus');
