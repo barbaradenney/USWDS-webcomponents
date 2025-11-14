@@ -56,7 +56,11 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      cy.wait(200); // Wait for modal to open
+      // Wait longer for modal animation and USWDS initialization in CI (increased from 200ms)
+      cy.wait(1000);
+
+      // Ensure modal is visible before testing
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
       // Tab through interactive elements
       cy.get('.usa-modal').within(() => {
@@ -77,11 +81,11 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      // Wait longer for modal to fully open and USWDS focus trap to initialize
-      cy.wait(500);
+      // Wait longer for modal to fully open and USWDS focus trap to initialize in CI (increased from 500ms)
+      cy.wait(1000);
 
-      // Focus should move to modal
-      cy.get('.usa-modal').should('be.visible');
+      // Ensure modal is visible and focus trap is activated
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
       // Get all focusable elements and verify focus stays in modal
       cy.get('.usa-modal').find('button, a, [tabindex]:not([tabindex="-1"])').then($focusable => {
@@ -110,18 +114,18 @@ describe('Modal Focus Management', () => {
       // Open modal
       cy.get('button').contains('Open Modal').as('trigger').click();
 
-      // Wait for modal to fully open
-      cy.wait(300);
-      cy.get('.usa-modal').should('be.visible');
+      // Wait longer for modal animation and USWDS initialization in CI (increased from 300ms)
+      cy.wait(1000);
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
       // Close modal
       cy.get('.usa-modal__close').click();
 
-      // Wait for modal close animation and focus return
-      cy.wait(300);
+      // Wait longer for modal close animation and focus return in CI (increased from 300ms)
+      cy.wait(1000);
 
-      // Focus should return to trigger
-      cy.get('@trigger').should('have.focus');
+      // Focus should return to trigger with retry
+      cy.get('@trigger', { timeout: 5000 }).should('have.focus');
     });
   });
 
@@ -132,7 +136,11 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      cy.wait(200);
+      // Wait longer for modal animation in CI (increased from 200ms)
+      cy.wait(1000);
+
+      // Ensure modal is visible before checking ARIA
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
       cy.get('.usa-modal').then(($modal) => {
         const labelledBy = $modal.attr('aria-labelledby');
@@ -155,7 +163,11 @@ describe('Modal Focus Management', () => {
         element.description = 'Modal description text';
       });
 
-      cy.wait(200);
+      // Wait longer for modal animation in CI (increased from 200ms)
+      cy.wait(1000);
+
+      // Ensure modal is visible before checking ARIA
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
       cy.get('.usa-modal').then(($modal) => {
         const describedBy = $modal.attr('aria-describedby');
@@ -173,10 +185,13 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      cy.wait(200);
+      // Wait longer for modal animation in CI (increased from 200ms)
+      cy.wait(1000);
 
-      cy.get('.usa-modal')
-        .should('have.attr', 'role', 'dialog')
+      // Ensure modal is visible and ARIA attributes are set
+      cy.get('.usa-modal', { timeout: 5000 })
+        .should('be.visible')
+        .and('have.attr', 'role', 'dialog')
         .and('have.attr', 'aria-modal', 'true');
     });
   });
@@ -188,7 +203,11 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      cy.wait(200);
+      // Wait longer for modal animation in CI (increased from 200ms)
+      cy.wait(1000);
+
+      // Ensure modal is visible before testing
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
       // Get original font size
       cy.get('.usa-modal__heading').then(($heading) => {
@@ -211,10 +230,11 @@ describe('Modal Focus Management', () => {
         element.open = true;
       });
 
-      cy.wait(200);
+      // Wait longer for modal animation in CI (increased from 200ms)
+      cy.wait(1000);
 
-      // Modal should be visible and usable
-      cy.get('.usa-modal').should('be.visible');
+      // Modal should be visible and usable with retry
+      cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
       cy.get('.usa-modal__heading').should('be.visible');
       cy.get('.usa-modal__close').should('be.visible');
 
@@ -240,10 +260,11 @@ describe('Modal Focus Management', () => {
           element.open = true;
         });
 
-        cy.wait(200);
+        // Wait longer for modal animation in CI (increased from 200ms)
+        cy.wait(1000);
 
-        // Modal should be fully visible
-        cy.get('.usa-modal').should('be.visible');
+        // Modal should be fully visible with retry
+        cy.get('.usa-modal', { timeout: 5000 }).should('be.visible');
 
         // All interactive elements should be accessible
         cy.get('.usa-modal__close').should('be.visible').and('not.be.disabled');
