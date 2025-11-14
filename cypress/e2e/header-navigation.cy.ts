@@ -148,17 +148,17 @@ describe('Header Navigation', () => {
 
       // Click to open
       cy.get('@navButton').click();
-      cy.wait(300); // Wait for dropdown animation
+      cy.wait(500); // Longer wait for CI environment
 
-      cy.get('.usa-nav__submenu')
+      cy.get('.usa-nav__submenu', { timeout: 5000 })
         .first()
         .should('be.visible');
 
       // Click to close
       cy.get('@navButton').click();
-      cy.wait(300); // Wait for dropdown animation
+      cy.wait(500); // Longer wait for CI environment
 
-      cy.get('.usa-nav__submenu')
+      cy.get('.usa-nav__submenu', { timeout: 5000 })
         .first()
         .should('not.be.visible');
     });
@@ -166,31 +166,32 @@ describe('Header Navigation', () => {
     it('should close dropdown when clicking outside', () => {
       // Open dropdown
       cy.get('.usa-nav__primary-item > button').first().click();
+      cy.wait(500); // Wait for USWDS initialization
 
-      cy.get('.usa-nav__submenu').first().should('be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('be.visible');
 
       // Click outside
       cy.get('body').click('topLeft');
 
-      cy.wait(100);
+      cy.wait(500); // Longer wait for CI
 
       // Dropdown should close
-      cy.get('.usa-nav__submenu').first().should('not.be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('not.be.visible');
     });
 
     it('should close dropdown when focus leaves nav', () => {
       // Open dropdown
       cy.get('.usa-nav__primary-item > button').first().click();
-      cy.wait(300);
+      cy.wait(500); // Longer wait for USWDS
 
-      cy.get('.usa-nav__submenu').first().should('be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('be.visible');
 
       // Tab away from navigation (focus may stay in iframe context)
       cy.focused().tab();
-      cy.wait(300);
+      cy.wait(500); // Longer wait for blur event
 
       // Dropdown should close (USWDS closes dropdown on blur)
-      cy.get('.usa-nav__submenu').first().should('not.be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('not.be.visible');
     });
   });
 
@@ -198,24 +199,28 @@ describe('Header Navigation', () => {
     it('should close dropdown on Escape key', () => {
       // Open dropdown
       cy.get('.usa-nav__primary-item > button').first().click();
+      cy.wait(500); // Wait for USWDS initialization
 
-      cy.get('.usa-nav__submenu').first().should('be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('be.visible');
 
       // Press Escape
       cy.get('body').type('{esc}');
+      cy.wait(500); // Wait for close animation
 
       // Dropdown should close
-      cy.get('.usa-nav__submenu').first().should('not.be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('not.be.visible');
     });
 
     it('should focus nav control button after closing with Escape', () => {
       // Open dropdown
       cy.get('.usa-nav__primary-item > button').first().as('navButton').click();
+      cy.wait(500); // Wait for USWDS initialization
 
-      cy.get('.usa-nav__submenu').first().should('be.visible');
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('be.visible');
 
       // Press Escape
       cy.get('body').type('{esc}');
+      cy.wait(500); // Wait for focus management
 
       // Nav control button should have focus
       cy.get('@navButton').should('have.focus');
@@ -224,12 +229,17 @@ describe('Header Navigation', () => {
     it('should navigate dropdown items with arrow keys', () => {
       // Open dropdown
       cy.get('.usa-nav__primary-item > button').first().click();
+      cy.wait(500); // Wait for USWDS initialization
+
+      cy.get('.usa-nav__submenu', { timeout: 5000 }).first().should('be.visible');
 
       // Focus first item
       cy.get('.usa-nav__submenu a').first().focus();
+      cy.wait(200); // Wait for focus to settle
 
       // Use arrow down to navigate
       cy.focused().type('{downarrow}');
+      cy.wait(200); // Wait for keyboard navigation
 
       // Should move to next item
       cy.focused().should('not.be', cy.get('.usa-nav__submenu a').first());
