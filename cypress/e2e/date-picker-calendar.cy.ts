@@ -32,7 +32,7 @@ describe('Date Picker Calendar Tests', () => {
             .click();
 
           // Wait for calendar animation
-          cy.wait(300);
+          cy.wait(1000);
 
           // Calendar should appear
           cy.get('.usa-date-picker__calendar')
@@ -45,12 +45,13 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
-        cy.get('.usa-date-picker__calendar').should('be.visible');
+        // Wait longer for USWDS calendar rendering in CI (increased from 300ms)
+        cy.wait(1000);
+        cy.get('.usa-date-picker__calendar', { timeout: 5000 }).should('be.visible');
 
         // Close calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
+        cy.wait(1000);
         cy.get('.usa-date-picker__calendar').should('not.be.visible');
       });
     });
@@ -59,7 +60,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
+        cy.wait(1000);
         // Verify navigation elements exist
         cy.get('.usa-date-picker__calendar').within(() => {
           cy.get('.usa-date-picker__calendar__previous-month').should('exist');
@@ -74,7 +75,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
+        cy.wait(1000);
         // Verify day headers (Sun, Mon, Tue, etc.)
         cy.get('.usa-date-picker__calendar__table').within(() => {
           cy.get('thead th').should('have.length', 7); // 7 days of week
@@ -92,7 +93,7 @@ describe('Date Picker Calendar Tests', () => {
 
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
+        cy.wait(1000);
 
         // Calendar should have proper ARIA role (and aria-label if present - not all implementations require it)
         cy.get('.usa-date-picker__calendar')
@@ -107,10 +108,10 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar by clicking button (Enter key may not work in all USWDS versions)
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
+        cy.wait(1000);
 
         // Calendar should be visible
-        cy.get('.usa-date-picker__calendar').should('be.visible');
+        cy.get('.usa-date-picker__calendar'), { timeout: 5000 }.should('be.visible');
       });
     });
 
@@ -149,10 +150,10 @@ describe('Date Picker Calendar Tests', () => {
 
         // Press Enter on the calendar button
         cy.focused().type('{enter}');
-        cy.wait(300);
+        cy.wait(1000);
 
         // Calendar should be visible
-        cy.get('.usa-date-picker__calendar').should('be.visible');
+        cy.get('.usa-date-picker__calendar'), { timeout: 5000 }.should('be.visible');
       });
     });
 
@@ -160,7 +161,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);        cy.get('.usa-date-picker__calendar').should('be.visible');
+        cy.wait(1000);        cy.get('.usa-date-picker__calendar'), { timeout: 5000 }.should('be.visible');
 
         // Press Escape to close
         cy.get('.usa-date-picker__external-input').type('{esc}');
@@ -172,7 +173,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(300);
+        cy.wait(1000);
 
         // Calendar dates should be present and focusable
         cy.get('.usa-date-picker__calendar__date').should('have.length.at.least', 1);
@@ -378,7 +379,7 @@ describe('Date Picker Calendar Tests', () => {
         element.value = '2024-06-01';
 
         // Wait for value to be set
-        cy.wait(300);
+        cy.wait(1000);
 
         // Verify property was set on component
         expect(element.value).to.equal('2024-06-01');
