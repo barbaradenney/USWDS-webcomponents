@@ -106,6 +106,7 @@ async function globalSetup(config: FullConfig) {
     });
 
     // Wait for Storybook to render the story
+    // CI is VERY slow - need generous timeout for element registration
     await page.waitForFunction(
       () => {
         // Check that:
@@ -116,7 +117,7 @@ async function globalSetup(config: FullConfig) {
                document.getElementById('storybook-root')?.children.length > 0 &&
                document.querySelector('usa-button') !== null;
       },
-      { timeout: 20000 } // Allow extra time for CI element registration
+      { timeout: 60000 } // CI needs 60s for custom element registration + rendering
     );
 
     console.log('✅ Basic component accessibility verified');
