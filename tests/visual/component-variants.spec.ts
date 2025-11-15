@@ -205,21 +205,21 @@ test.describe('Component Visual Regression Tests', () => {
   // Card Component Visual Tests
   test.describe('Card Component', () => {
     test('should render card variants correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-card--default');
+      await page.goto('/iframe.html?id=data-display-card--default');
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveScreenshot('card-default.png');
 
-      await page.goto('/iframe.html?id=components-card--with-media');
+      await page.goto('/iframe.html?id=data-display-card--with-media');
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveScreenshot('card-with-media.png');
 
-      await page.goto('/iframe.html?id=components-card--header-first');
+      await page.goto('/iframe.html?id=data-display-card--header-first');
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveScreenshot('card-header-first.png');
     });
 
     test('should render card responsively', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-card--default');
+      await page.goto('/iframe.html?id=data-display-card--default');
       await page.waitForLoadState('networkidle');
 
       // Desktop
@@ -239,7 +239,7 @@ test.describe('Component Visual Regression Tests', () => {
   // Banner Component Visual Tests
   test.describe('Banner Component', () => {
     test('should render banner correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-banner--default');
+      await page.goto('/iframe.html?id=feedback-banner--default');
       await page.waitForLoadState('networkidle');
       await expect(page).toHaveScreenshot('banner-default.png');
 
@@ -251,7 +251,7 @@ test.describe('Component Visual Regression Tests', () => {
     });
 
     test('should render banner responsively', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-banner--default');
+      await page.goto('/iframe.html?id=feedback-banner--default');
       await page.waitForLoadState('networkidle');
 
       // Mobile view

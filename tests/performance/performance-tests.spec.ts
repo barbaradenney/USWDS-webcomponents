@@ -30,10 +30,10 @@ test.describe('Performance Testing', () => {
     const results: Record<string, PerformanceMetrics> = {};
 
     const testComponents = [
-      { name: 'button', story: 'components-button--default' },
-      { name: 'table', story: 'components-table--with-large-dataset' },
-      { name: 'accordion', story: 'components-accordion--multiple-items' },
-      { name: 'modal', story: 'components-modal--default' },
+      { name: 'button', story: 'actions-button--default' },
+      { name: 'table', story: 'data-display-table--default' },
+      { name: 'accordion', story: 'structure-accordion--default' },
+      { name: 'modal', story: 'feedback-modal--default' },
     ];
 
     for (const { name, story } of testComponents) {
@@ -120,7 +120,7 @@ test.describe('Performance Testing', () => {
   });
 
   test('should handle large datasets efficiently', async ({ page }) => {
-    await page.goto('/iframe.html?id=components-table--with-large-dataset');
+    await page.goto('/iframe.html?id=data-display-table--default');
 
     const startTime = performance.now();
 
@@ -249,7 +249,7 @@ test.describe('Performance Testing', () => {
     // Test CSS loading performance
     const startTime = Date.now();
 
-    await page.goto('/iframe.html?id=components-collection--large-list');
+    await page.goto('/iframe.html?id=data-display-collection--large-list');
     await page.waitForLoadState('networkidle');
 
     const loadTime = Date.now() - startTime;

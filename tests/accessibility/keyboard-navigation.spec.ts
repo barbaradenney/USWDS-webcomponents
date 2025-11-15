@@ -10,7 +10,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Tab Navigation Tests', () => {
     test('should navigate through button groups correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button-group--primary');
+      await page.goto('/iframe.html?id=actions-button-group--primary');
       await page.waitForLoadState('networkidle');
 
       // Start tab navigation
@@ -52,7 +52,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should skip non-focusable elements', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-card--primary');
+      await page.goto('/iframe.html?id=data-display-card--primary');
       await page.waitForLoadState('networkidle');
 
       let focusableCount = 0;
@@ -413,7 +413,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should navigate between landmarks with proper roles', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-header--primary');
+      await page.goto('/iframe.html?id=navigation-header--primary');
       await page.waitForLoadState('networkidle');
 
       // Look for landmark elements

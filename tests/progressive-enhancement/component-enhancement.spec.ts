@@ -91,7 +91,7 @@ test.describe('Progressive Enhancement Tests', () => {
     test('Navigation should work with anchor links', async ({ page }) => {
       await page.setJavaScriptEnabled(false);
 
-      await page.goto('/iframe.html?id=components-header--default');
+      await page.goto('/iframe.html?id=navigation-header--default');
 
       // Find navigation links
       const navLinks = page.locator('a[href]');
@@ -231,7 +231,7 @@ test.describe('Progressive Enhancement Tests', () => {
         delete Element.prototype.addEventListener;
       });
 
-      await page.goto('/iframe.html?id=components-card--default');
+      await page.goto('/iframe.html?id=data-display-card--default');
 
       // Component should still render basic HTML
       const card = page.locator('usa-card, [class*="card"]').first();
@@ -453,7 +453,7 @@ test.describe('Progressive Enhancement Tests', () => {
       });
 
       const startTime = Date.now();
-      await page.goto('/iframe.html?id=components-card--default');
+      await page.goto('/iframe.html?id=data-display-card--default');
       const loadTime = Date.now() - startTime;
 
       // Component should still render even with slow network
@@ -515,7 +515,7 @@ test.describe('Progressive Enhancement Tests', () => {
         delete (document.createElement('div')).style.flexbox;
       });
 
-      await page.goto('/iframe.html?id=components-button-group--default');
+      await page.goto('/iframe.html?id=actions-button-group--default');
 
       // Component should still render with fallback layout
       const buttonGroup = page.locator('usa-button-group').first();

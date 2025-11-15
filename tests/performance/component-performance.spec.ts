@@ -475,7 +475,7 @@ test.describe('Component Performance Tests', () => {
 
   test.describe('Table Component Performance', () => {
     test('should handle large datasets efficiently', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-table--sortable');
+      await page.goto('/iframe.html?id=data-display-table--sortable');
       await page.waitForLoadState('networkidle');
 
       const tablePerformance = await page.evaluate(async () => {
@@ -530,8 +530,8 @@ test.describe('Component Performance Tests', () => {
         { name: 'Button Secondary', url: '/iframe.html?id=actions-button--secondary' },
         { name: 'Alert Info', url: '/iframe.html?id=feedback-alert--info' },
         { name: 'Alert Warning', url: '/iframe.html?id=feedback-alert--warning' },
-        { name: 'Card Default', url: '/iframe.html?id=components-card--default' },
-        { name: 'Card With Media', url: '/iframe.html?id=components-card--with-media' }
+        { name: 'Card Default', url: '/iframe.html?id=data-display-card--default' },
+        { name: 'Card With Media', url: '/iframe.html?id=data-display-card--with-media' }
       ];
 
       const performanceResults = [];

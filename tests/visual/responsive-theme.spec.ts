@@ -175,7 +175,7 @@ test.describe('Responsive Design and Theme Visual Tests', () => {
     });
 
     test('should render grid components correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-collection--default');
+      await page.goto('/iframe.html?id=data-display-collection--default');
       await page.waitForLoadState('networkidle');
 
       const breakpoints = [
@@ -242,7 +242,7 @@ test.describe('Responsive Design and Theme Visual Tests', () => {
   test.describe('Component Density Tests', () => {
     test('should render compact component variations', async ({ page }) => {
       // Test table with compact spacing
-      await page.goto('/iframe.html?id=components-table--default');
+      await page.goto('/iframe.html?id=data-display-table--default');
       await page.waitForLoadState('networkidle');
 
       // Apply compact modifier if available
@@ -257,7 +257,7 @@ test.describe('Responsive Design and Theme Visual Tests', () => {
     });
 
     test('should render components with different spacing scales', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button-group--default');
+      await page.goto('/iframe.html?id=actions-button-group--default');
       await page.waitForLoadState('networkidle');
 
       // Default spacing

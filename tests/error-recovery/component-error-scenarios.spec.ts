@@ -205,7 +205,7 @@ test.describe('Component Error Recovery Tests', () => {
     });
 
     test('Components should handle direct child removal', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-card--default');
+      await page.goto('/iframe.html?id=data-display-card--default');
 
       // Remove child elements directly
       await page.evaluate(() => {
@@ -346,7 +346,7 @@ test.describe('Component Error Recovery Tests', () => {
 
   test.describe('Memory Pressure and Performance Degradation', () => {
     test('Components should handle memory pressure', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-table--default');
+      await page.goto('/iframe.html?id=data-display-table--default');
 
       // Simulate memory pressure by creating many objects
       await page.evaluate(() => {
