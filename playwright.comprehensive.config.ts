@@ -332,19 +332,21 @@ export default defineConfig({
   },
 
   // Web server configuration (if needed)
-  webServer: process.env.CI
+  // Use static build if storybook-static/ exists (ci.yml workflow downloads it)
+  // Otherwise use dev server (comprehensive-testing.yml builds on-demand)
+  webServer: require('fs').existsSync('./storybook-static')
     ? {
-        // CI: Serve pre-built static Storybook (built by Build Verification job)
+        // Serve pre-built static Storybook (faster, used in ci.yml)
         command: 'npx http-server storybook-static -p 6006 --silent',
         url: 'http://localhost:6006',
         reuseExistingServer: false,
         timeout: 30000, // Static server starts quickly (30s)
       }
     : {
-        // Local: Use dev server with hot reload
+        // Start Storybook dev server (used in comprehensive-testing.yml and local)
         command: 'npm run storybook',
         url: 'http://localhost:6006',
-        reuseExistingServer: true,
+        reuseExistingServer: !process.env.CI,
         timeout: 120000, // 2 minutes to start Storybook dev server
         stdout: 'inherit',
         stderr: 'inherit',
