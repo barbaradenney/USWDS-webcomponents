@@ -102,7 +102,7 @@ async function globalSetup(config: FullConfig) {
     // Wait for navigation and all network requests to complete
     await page.goto('http://localhost:6006/iframe.html?id=components-button--default', {
       waitUntil: 'networkidle',
-      timeout: 30000 // CI needs more time for asset loading
+      timeout: 60000 // CI needs more time for asset loading (60s for slow I/O)
     });
 
     // Wait for Storybook to render the story
@@ -116,7 +116,7 @@ async function globalSetup(config: FullConfig) {
                document.getElementById('storybook-root')?.children.length > 0 &&
                document.querySelector('usa-button') !== null;
       },
-      { timeout: 10000 } // Should be quick once assets are loaded
+      { timeout: 20000 } // Allow extra time for CI element registration
     );
 
     console.log('✅ Basic component accessibility verified');
