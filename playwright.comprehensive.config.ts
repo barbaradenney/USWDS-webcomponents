@@ -332,14 +332,23 @@ export default defineConfig({
   },
 
   // Web server configuration (if needed)
-  webServer: {
-    command: 'npm run storybook',
-    url: 'http://localhost:6006',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000, // 2 minutes to start Storybook
-    stdout: 'inherit', // Show Storybook output for debugging (temporary)
-    stderr: 'inherit', // Show Storybook errors for debugging (temporary)
-  },
+  webServer: process.env.CI
+    ? {
+        // CI: Serve pre-built static Storybook (built by Build Verification job)
+        command: 'npx http-server storybook-static -p 6006 --silent',
+        url: 'http://localhost:6006',
+        reuseExistingServer: false,
+        timeout: 30000, // Static server starts quickly (30s)
+      }
+    : {
+        // Local: Use dev server with hot reload
+        command: 'npm run storybook',
+        url: 'http://localhost:6006',
+        reuseExistingServer: true,
+        timeout: 120000, // 2 minutes to start Storybook dev server
+        stdout: 'inherit',
+        stderr: 'inherit',
+      },
 
   // Output directories
   outputDir: './test-reports/playwright-artifacts',
