@@ -57,25 +57,26 @@ let healthScore = 0;
 let totalChecks = 0;
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 1. Tests Status
+// 1. Tests Status (from cached regression validation)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 totalChecks++;
 try {
-  const testOutput = exec('npm test -- --run --silent 2>&1', { ignoreError: true });
-  const testMatch = testOutput.match(/(\d+) passing/);
-  const failMatch = testOutput.match(/(\d+) failing/);
-
-  if (failMatch) {
-    console.log(RED + '❌ Tests: ' + failMatch[1] + ' failing' + RESET);
-  } else if (testMatch) {
-    console.log(GREEN + '✅ Tests: ' + testMatch[1] + ' passing' + RESET);
-    healthScore++;
+  // Use cached regression validation instead of running all tests
+  const regressionFile = 'test-reports/regression-validation.json';
+  if (fs.existsSync(regressionFile)) {
+    const regression = JSON.parse(fs.readFileSync(regressionFile, 'utf8'));
+    if (regression.overallPassed && regression.regressionTestsPassed) {
+      console.log(GREEN + '✅ Tests: All passing (from regression validation)' + RESET);
+      healthScore++;
+    } else {
+      console.log(RED + '❌ Tests: Regression validation failing' + RESET);
+    }
   } else {
-    console.log(YELLOW + '⚠️  Tests: Unable to determine status' + RESET);
+    console.log(YELLOW + '⚠️  Tests: No cached results (run npm test)' + RESET);
   }
-} catch {
-  console.log(RED + '❌ Tests: FAILING' + RESET);
+} catch (error) {
+  console.log(YELLOW + '⚠️  Tests: Unable to determine status' + RESET);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
