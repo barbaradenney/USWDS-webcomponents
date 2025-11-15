@@ -131,15 +131,15 @@ async function globalSetup(config: FullConfig) {
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  // Set page default timeout to 60s for CI (overrides Playwright's 30s default)
-  page.setDefaultTimeout(60000);
+  // Set page default timeout to 120s for CI (Storybook build needs time to load/execute all JS)
+  page.setDefaultTimeout(120000);
 
   try {
     console.log('🌐 Navigating to Storybook story...');
     // Wait for navigation and all network requests to complete
     await page.goto('http://localhost:6006/iframe.html?id=components-button--default', {
       waitUntil: 'networkidle',
-      timeout: 60000 // CI needs more time for asset loading (60s for slow I/O)
+      timeout: 120000 // CI needs more time for asset loading and JS execution (120s for slow I/O + bundle parsing)
     });
     console.log('✅ Navigation complete (networkidle reached)');
 
@@ -187,7 +187,7 @@ async function globalSetup(config: FullConfig) {
                document.getElementById('storybook-root')?.children.length > 0 &&
                document.querySelector('usa-button') !== null;
       },
-      { timeout: 60000 } // CI needs 60s for custom element registration + rendering
+      { timeout: 120000 } // CI needs 120s for bundle loading + custom element registration + rendering
     );
 
     console.log('✅ Basic component accessibility verified');
