@@ -34,8 +34,29 @@ async function globalSetup(config: FullConfig) {
     }
   }
 
-  // Note: Storybook is automatically started by Playwright's webServer configuration
-  // We just verify it's available here
+  // In CI, start http-server once for all test projects
+  // This is more efficient than starting it in each GitHub Actions job
+  if (process.env.CI && fs.existsSync('./storybook-static')) {
+    console.log('🚀 Starting http-server for storybook-static (CI environment)...');
+    try {
+      // Start http-server in background
+      const serverProcess = exec('npx http-server storybook-static -p 6006 --silent');
+
+      // Store PID for cleanup in global teardown
+      if (serverProcess.pid) {
+        fs.writeFileSync('.storybook-server.pid', serverProcess.pid.toString());
+        console.log(`   Server PID: ${serverProcess.pid}`);
+      }
+
+      console.log('✅ http-server started');
+    } catch (error) {
+      console.error('❌ Failed to start http-server:', error);
+      throw error;
+    }
+  }
+
+  // Note: In local development, Storybook is started by Playwright's webServer configuration
+  // In CI, we start http-server above and disable webServer to avoid timing issues
   console.log('⏳ Waiting for Storybook to be ready...');
   console.log(`   CI environment: ${process.env.CI === 'true' ? 'YES' : 'NO'}`);
   console.log(`   Node version: ${process.version}`);
