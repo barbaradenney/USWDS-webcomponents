@@ -99,11 +99,32 @@ async function globalSetup(config: FullConfig) {
   const page = await context.newPage();
 
   try {
-    await page.goto('http://localhost:6006/iframe.html?id=components-button--default');
-    await page.waitForSelector('usa-button', { timeout: 10000 });
+    // Wait for navigation and all network requests to complete
+    await page.goto('http://localhost:6006/iframe.html?id=components-button--default', {
+      waitUntil: 'networkidle',
+      timeout: 30000 // CI needs more time for asset loading
+    });
+
+    // Wait for Storybook to render the story
+    await page.waitForFunction(
+      () => {
+        // Check that:
+        // 1. Custom element is registered
+        // 2. Storybook root has content
+        // 3. usa-button element exists in DOM
+        return customElements.get('usa-button') !== undefined &&
+               document.getElementById('storybook-root')?.children.length > 0 &&
+               document.querySelector('usa-button') !== null;
+      },
+      { timeout: 10000 } // Should be quick once assets are loaded
+    );
+
     console.log('✅ Basic component accessibility verified');
   } catch (error) {
     console.error('❌ Component accessibility test failed:', error);
+    console.error('  - This usually means components are not loading in Storybook');
+    console.error('  - Check that storybook-static build completed successfully');
+    console.error('  - Verify custom elements are being registered');
     throw error;
   } finally {
     await browser.close();
