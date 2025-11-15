@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import fs from 'fs';
 
 /**
  * Comprehensive Playwright Configuration for USWDS Web Components
@@ -334,7 +335,7 @@ export default defineConfig({
   // Web server configuration (if needed)
   // Use static build if storybook-static/ exists (ci.yml workflow downloads it)
   // Otherwise use dev server (comprehensive-testing.yml builds on-demand)
-  webServer: require('fs').existsSync('./storybook-static')
+  webServer: fs.existsSync('./storybook-static')
     ? {
         // Serve pre-built static Storybook (faster, used in ci.yml)
         command: 'npx http-server storybook-static -p 6006 --silent',
