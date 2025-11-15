@@ -332,26 +332,18 @@ export default defineConfig({
     userAgent: 'USWDS-WebComponents-Test-Runner/1.0',
   },
 
-  // Web server configuration (if needed)
-  // Use static build if storybook-static/ exists (ci.yml workflow downloads it)
-  // Otherwise use dev server (comprehensive-testing.yml builds on-demand)
-  webServer: fs.existsSync('./storybook-static')
-    ? {
-        // Serve pre-built static Storybook (faster, used in ci.yml)
-        command: 'npx http-server storybook-static -p 6006 --silent',
-        url: 'http://localhost:6006',
-        reuseExistingServer: false,
-        timeout: 30000, // Static server starts quickly (30s)
-      }
-    : {
-        // Start Storybook dev server (used in comprehensive-testing.yml and local)
-        command: 'npm run storybook',
-        url: 'http://localhost:6006',
-        reuseExistingServer: !process.env.CI,
-        timeout: 120000, // 2 minutes to start Storybook dev server
-        stdout: 'inherit',
-        stderr: 'inherit',
-      },
+  // Web server configuration
+  // Note: comprehensive-testing.yml starts http-server manually in each job
+  // after downloading the storybook-static artifact. This avoids timing issues
+  // where webServer runs before the artifact is available.
+  // For local development, start Storybook manually: npm run storybook
+  webServer: process.env.CI ? undefined : {
+    // Local development only - start Storybook dev server
+    command: 'npm run storybook',
+    url: 'http://localhost:6006',
+    reuseExistingServer: true,
+    timeout: 120000,
+  },
 
   // Output directories
   outputDir: './test-reports/playwright-artifacts',

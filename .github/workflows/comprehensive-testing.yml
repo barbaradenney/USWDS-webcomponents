@@ -220,6 +220,14 @@ jobs:
           name: storybook-static
           path: storybook-static/
 
+      - name: 🚀 Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 --silent &
+          echo $! > .storybook-server.pid
+          # Wait for server to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+          echo "✅ Storybook server ready"
+
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
 
@@ -268,6 +276,14 @@ jobs:
         with:
           name: storybook-static
           path: storybook-static/
+
+      - name: 🚀 Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 --silent &
+          echo $! > .storybook-server.pid
+          # Wait for server to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+          echo "✅ Storybook server ready"
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -339,6 +355,14 @@ jobs:
           name: storybook-static
           path: storybook-static/
 
+      - name: 🚀 Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 --silent &
+          echo $! > .storybook-server.pid
+          # Wait for server to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+          echo "✅ Storybook server ready"
+
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
@@ -387,6 +411,14 @@ jobs:
         with:
           name: storybook-static
           path: storybook-static/
+
+      - name: 🚀 Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 --silent &
+          echo $! > .storybook-server.pid
+          # Wait for server to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+          echo "✅ Storybook server ready"
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -439,6 +471,14 @@ jobs:
           name: storybook-static
           path: storybook-static/
 
+      - name: 🚀 Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 --silent &
+          echo $! > .storybook-server.pid
+          # Wait for server to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+          echo "✅ Storybook server ready"
+
       - name: 👁️ Run visual regression tests
         run: npm run test:visual
         env:
@@ -481,6 +521,14 @@ jobs:
         with:
           name: storybook-static
           path: storybook-static/
+
+      - name: 🚀 Start Storybook server
+        run: |
+          npx http-server storybook-static -p 6006 --silent &
+          echo $! > .storybook-server.pid
+          # Wait for server to be ready
+          timeout 30 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+          echo "✅ Storybook server ready"
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
