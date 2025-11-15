@@ -135,7 +135,10 @@ describe('Smoke Tests - Critical Component Interactions', () => {
 
     it('should update count when typing', () => {
       cy.get('usa-character-count textarea').type('Hello');
-      cy.get('usa-character-count .usa-character-count__message').should('contain', '5');
+      // Wait for USWDS to update character count
+      cy.wait(300);
+      // USWDS uses .usa-character-count__status for the visible status message
+      cy.get('usa-character-count .usa-character-count__status').should('contain', '5');
     });
   });
 
