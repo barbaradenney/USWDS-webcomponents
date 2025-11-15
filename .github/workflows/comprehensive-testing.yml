@@ -99,6 +99,42 @@ jobs:
           echo "  Event: ${{ github.event_name }}"
           echo "  Environment: ${{ inputs.test_environment || 'default' }}"
 
+  # Build Storybook static site (used by all Playwright tests)
+  build-storybook:
+    name: 🏗️ Build Storybook
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build packages
+        run: pnpm run build
+
+      - name: 📚 Build Storybook static site
+        run: pnpm run build-storybook
+
+      - name: 📦 Upload Storybook build
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
+          retention-days: 7
+
   # Core testing suite - Unit tests, linting, type checking
   core-tests:
     name: 🔍 Core Tests
@@ -151,7 +187,7 @@ jobs:
   accessibility-tests:
     name: ♿ Accessibility Tests
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build-storybook]
     strategy:
       fail-fast: false
       matrix:
@@ -178,8 +214,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build packages
-        run: pnpm run build
+      - name: 📥 Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -205,7 +244,7 @@ jobs:
   security-tests:
     name: 🔒 Security Tests
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build-storybook]
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -224,8 +263,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build packages
-        run: pnpm run build
+      - name: 📥 Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
@@ -253,7 +295,7 @@ jobs:
   cross-browser-tests:
     name: 🌐 Cross-Browser Tests
     runs-on: ${{ matrix.os }}
-    needs: setup
+    needs: [setup, build-storybook]
     strategy:
       fail-fast: false
       matrix:
@@ -291,8 +333,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build packages
-        run: pnpm run build
+      - name: 📥 Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps ${{ matrix.browser }}
@@ -317,7 +362,7 @@ jobs:
   performance-tests:
     name: ⚡ Performance Tests
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build-storybook]
     if: needs.setup.outputs.should_run_performance == 'true'
     steps:
       - name: 📥 Checkout
@@ -337,8 +382,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build packages
-        run: pnpm run build
+      - name: 📥 Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps chromium
@@ -363,7 +411,7 @@ jobs:
   visual-tests:
     name: 👁️ Visual Regression Tests
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build-storybook]
     if: needs.setup.outputs.should_run_visual == 'true'
     steps:
       - name: 📥 Checkout
@@ -385,8 +433,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build packages
-        run: pnpm run build
+      - name: 📥 Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
 
       - name: 👁️ Run visual regression tests
         run: npm run test:visual
@@ -406,7 +457,7 @@ jobs:
   integration-tests:
     name: 🔄 Integration & Error Recovery Tests
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [setup, build-storybook]
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -425,8 +476,11 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build packages
-        run: pnpm run build
+      - name: 📥 Download Storybook build
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static/
 
       - name: 🎭 Install Playwright browsers
         run: npx playwright install --with-deps
