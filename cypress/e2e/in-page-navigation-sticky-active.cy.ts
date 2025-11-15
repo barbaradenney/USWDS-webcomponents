@@ -8,12 +8,25 @@
  * 4. Sticky positioning works across different viewport sizes
  */
 
+/**
+ * Helper to wait for in-page-navigation component to fully render
+ * Web components using Lit have async rendering lifecycle
+ */
+function waitForComponentReady() {
+  // Wait for Lit's update cycle to complete and USWDS behavior to initialize
+  cy.get('usa-in-page-navigation').should('exist');
+  cy.wait(200); // Lit update cycle
+  cy.get('usa-in-page-navigation nav.usa-in-page-nav').should('exist');
+  cy.get('usa-in-page-navigation .usa-in-page-nav__list').should('exist');
+  cy.wait(550); // USWDS initialization (total 750ms from setting items)
+}
+
 describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => {
   beforeEach(() => {
     cy.viewport(1280, 720);
     // Load the component by visiting Storybook (ensures web component is registered)
     cy.visit('/iframe.html?id=navigation-in-page-navigation--default&viewMode=story');
-    cy.wait(100); // Wait for component registration
+    cy.wait(500); // Wait for component registration and initialization
   });
 
   describe('Sticky Navigation Positioning', () => {
@@ -55,7 +68,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750); // Allow component to initialize
+      waitForComponentReady();
     });
 
     it('should remain in fixed position during page scroll', () => {
@@ -211,7 +224,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
     });
 
     it('should update active link when scrolling to different sections', () => {
@@ -363,7 +376,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
     });
 
     it('should apply USWDS usa-current class to active link', () => {
@@ -448,7 +461,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Scroll through short sections
       cy.get('#short-2').scrollIntoView();
@@ -477,7 +490,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Navigation should remain sticky throughout scroll
       cy.scrollTo(0, 1000);
@@ -522,7 +535,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Scroll to very bottom
       cy.scrollTo('bottom');
@@ -566,7 +579,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
     });
 
     it('should maintain focus management during navigation', () => {
@@ -638,7 +651,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Component should render basic USWDS structure
       cy.get('usa-in-page-navigation nav.usa-in-page-nav').should('exist');
@@ -667,7 +680,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Get initial structure
       cy.get('usa-in-page-navigation .usa-in-page-nav__list').then(($list) => {
@@ -683,7 +696,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
           ];
         });
 
-        cy.wait(750);
+      waitForComponentReady();
 
         // Should have exactly 3 items, not duplicates
         cy.get('usa-in-page-navigation .usa-in-page-nav__item').should('have.length', 3);
@@ -712,7 +725,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Verify single navigation structure
       cy.get('usa-in-page-navigation nav.usa-in-page-nav').should('have.length', 1);
@@ -743,7 +756,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Verify navigation exists
       cy.get('usa-in-page-navigation nav.usa-in-page-nav').should('exist');
@@ -783,7 +796,7 @@ describe('In-Page Navigation - Sticky Behavior and Active Link Tracking', () => 
         ];
       });
 
-      cy.wait(750);
+      waitForComponentReady();
 
       // Should render final state correctly without duplicates
       cy.get('usa-in-page-navigation .usa-in-page-nav__item').should('have.length', 2);
