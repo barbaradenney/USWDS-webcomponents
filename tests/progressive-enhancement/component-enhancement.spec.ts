@@ -13,7 +13,7 @@ test.describe('Progressive Enhancement Tests', () => {
       // Disable JavaScript
       await page.setJavaScriptEnabled(false);
 
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
 
       // Button should still be visible and clickable at HTML level
       const button = page.locator('button, [role="button"]').first();
@@ -30,7 +30,7 @@ test.describe('Progressive Enhancement Tests', () => {
     test('Form components should submit via browser default', async ({ page }) => {
       await page.setJavaScriptEnabled(false);
 
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
 
       // Find form or create one for testing
       const hasForm = await page.locator('form').count() > 0;
@@ -64,7 +64,7 @@ test.describe('Progressive Enhancement Tests', () => {
     test('Accordion should show/hide with CSS-only toggle', async ({ page }) => {
       await page.setJavaScriptEnabled(false);
 
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
 
       // Accordion should be visible
       const accordion = page.locator('usa-accordion').first();
@@ -118,7 +118,7 @@ test.describe('Progressive Enhancement Tests', () => {
 
   test.describe('Reduced CSS Support', () => {
     test('Components should be readable with minimal CSS', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-alert--default');
+      await page.goto('/iframe.html?id=feedback-alert--default');
 
       // Apply minimal CSS to simulate older browsers
       await page.addStyleTag({
@@ -174,7 +174,7 @@ test.describe('Progressive Enhancement Tests', () => {
     });
 
     test('Form controls should work without custom styling', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
 
       // Remove all custom styles
       await page.addStyleTag({
@@ -260,7 +260,7 @@ test.describe('Progressive Enhancement Tests', () => {
         window.Date.parse = OriginalDate.parse;
       });
 
-      await page.goto('/iframe.html?id=components-date-picker--default');
+      await page.goto('/iframe.html?id=forms-date-picker--default');
 
       // Should fallback to basic text input
       const dateInput = page.locator('input[type="date"], input[type="text"]').first();
@@ -290,7 +290,7 @@ test.describe('Progressive Enhancement Tests', () => {
         };
       });
 
-      await page.goto('/iframe.html?id=components-modal--default');
+      await page.goto('/iframe.html?id=feedback-modal--default');
 
       // Modal trigger should still work
       const trigger = page.locator('button[data-open-modal], [data-open-modal]').first();
@@ -309,7 +309,7 @@ test.describe('Progressive Enhancement Tests', () => {
       // Set reduced motion preference
       await page.emulateMedia({ reducedMotion: 'reduce' });
 
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
 
       // Check that animations are disabled or reduced
       const elements = page.locator('usa-accordion *, *');
@@ -343,7 +343,7 @@ test.describe('Progressive Enhancement Tests', () => {
     });
 
     test('Components should work in high contrast mode', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
 
       // Simulate high contrast mode
       await page.addStyleTag({
@@ -410,7 +410,7 @@ test.describe('Progressive Enhancement Tests', () => {
     });
 
     test('Components should work with screen reader navigation', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-breadcrumb--default');
+      await page.goto('/iframe.html?id=navigation-breadcrumb--default');
 
       // Check for proper semantic structure
       const breadcrumb = page.locator('usa-breadcrumb, nav[aria-label*="breadcrumb" i]').first();
@@ -475,7 +475,7 @@ test.describe('Progressive Enhancement Tests', () => {
         await route.continue();
       });
 
-      await page.goto('/iframe.html?id=components-combo-box--default');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
 
       // Check if component shows loading state or graceful degradation
       const comboBox = page.locator('usa-combo-box').first();

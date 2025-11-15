@@ -158,7 +158,7 @@ test.describe('Responsive Design and Theme Visual Tests', () => {
         await page.setViewportSize({ width: width + 40, height: 800 }); // Add padding
 
         // Test form components that are width-sensitive
-        await page.goto('/iframe.html?id=components-text-input--default');
+        await page.goto('/iframe.html?id=forms-text-input--default');
         await page.waitForLoadState('networkidle');
 
         // Create a container with specific width
@@ -195,7 +195,7 @@ test.describe('Responsive Design and Theme Visual Tests', () => {
   // Focus and Interactive State Tests
   test.describe('Interactive State Visual Tests', () => {
     test('should render focus states consistently', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const button = page.locator('.usa-button').first();
@@ -210,7 +210,7 @@ test.describe('Responsive Design and Theme Visual Tests', () => {
     });
 
     test('should render form element states consistently', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       const input = page.locator('.usa-input').first();

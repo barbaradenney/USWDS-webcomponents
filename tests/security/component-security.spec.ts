@@ -63,7 +63,7 @@ test.describe('Component Security Tests', () => {
 
   test.describe('XSS (Cross-Site Scripting) Protection', () => {
     test('Text Input should sanitize malicious script tags', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
 
       const xssPayloads = [
         '<script>alert("XSS")</script>',
@@ -105,7 +105,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Alert component should sanitize message content', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-alert--default');
+      await page.goto('/iframe.html?id=feedback-alert--default');
 
       const maliciousContent = '<script>alert("XSS via Alert")</script><img src="x" onerror="alert(\'IMG XSS\')">';
 
@@ -134,7 +134,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Button component should resist XSS in attributes', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
 
       // Try to inject XSS via data attributes
       await page.evaluate(() => {
@@ -159,7 +159,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Combo Box should sanitize option data', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-combo-box--default');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
 
       // Inject malicious options
       await page.evaluate(() => {
@@ -202,7 +202,7 @@ test.describe('Component Security Tests', () => {
 
   test.describe('Content Security Policy (CSP) Compliance', () => {
     test('Components should not use inline styles', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
 
       // Check for inline styles
       const inlineStyles = await page.evaluate(() => {
@@ -222,7 +222,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Components should not use inline event handlers', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
 
       // Check for inline event handlers
       const inlineEvents = await page.evaluate(() => {
@@ -254,7 +254,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Components should not use javascript: URLs', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-link--default');
+      await page.goto('/iframe.html?id=actions-link--default');
 
       // Check for javascript: URLs
       const javascriptUrls = await page.evaluate(() => {
@@ -277,7 +277,7 @@ test.describe('Component Security Tests', () => {
 
   test.describe('DOM Clobbering Resistance', () => {
     test('Components should work when document.createElement is clobbered', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-modal--default');
+      await page.goto('/iframe.html?id=feedback-modal--default');
 
       // Clobber document.createElement
       await page.evaluate(() => {
@@ -304,7 +304,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Components should handle clobbered window.location', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-breadcrumb--default');
+      await page.goto('/iframe.html?id=navigation-breadcrumb--default');
 
       // Clobber window.location
       await page.evaluate(() => {
@@ -328,7 +328,7 @@ test.describe('Component Security Tests', () => {
 
   test.describe('Input Validation and Sanitization', () => {
     test('Date Picker should validate date formats', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-date-picker--default');
+      await page.goto('/iframe.html?id=forms-date-picker--default');
 
       const maliciousDates = [
         '<script>alert("XSS")</script>',
@@ -358,7 +358,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Search component should sanitize query parameters', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-search--default');
+      await page.goto('/iframe.html?id=actions-search--default');
 
       const maliciousQueries = [
         '<script>alert("Search XSS")</script>',
@@ -387,7 +387,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('File Input should validate file types', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-file-input--default');
+      await page.goto('/iframe.html?id=forms-file-input--default');
 
       // Create a malicious file with script content
       await page.evaluate(() => {
@@ -422,7 +422,7 @@ test.describe('Component Security Tests', () => {
 
   test.describe('Prototype Pollution Protection', () => {
     test('Components should not be vulnerable to prototype pollution', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
 
       // Attempt prototype pollution
       await page.evaluate(() => {
@@ -453,7 +453,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Form components should handle malicious form data safely', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
 
       // Try to pollute via form data
       await page.evaluate(() => {
@@ -490,7 +490,7 @@ test.describe('Component Security Tests', () => {
 
   test.describe('Authentication and Authorization', () => {
     test('Components should not expose sensitive information in DOM', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
 
       // Check for potential sensitive data exposure
       const sensitivePatterns = [
@@ -519,7 +519,7 @@ test.describe('Component Security Tests', () => {
     });
 
     test('Form components should not auto-complete sensitive fields inappropriately', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--default');
+      await page.goto('/iframe.html?id=forms-text-input--default');
 
       // Check autocomplete attributes on sensitive inputs
       const autocompleteSettings = await page.evaluate(() => {

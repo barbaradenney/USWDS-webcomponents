@@ -42,7 +42,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
 
   test.describe('ARIA Live Region Testing', () => {
     test('should announce alert messages correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-alert--default');
+      await page.goto('/iframe.html?id=feedback-alert--default');
       await page.waitForLoadState('networkidle');
 
       // Test alert announcement
@@ -61,7 +61,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should handle dynamic content announcements', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-combo-box--default');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
 
       // Open combo box and test announcements
@@ -85,7 +85,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should announce form validation errors', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--with-validation');
+      await page.goto('/iframe.html?id=forms-text-input--with-validation');
       await page.waitForLoadState('networkidle');
 
       // Trigger validation error
@@ -105,7 +105,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
 
   test.describe('ARIA Label and Description Testing', () => {
     test('should provide comprehensive button descriptions', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-button--accessibility-features');
+      await page.goto('/iframe.html?id=actions-button--accessibility-features');
       await page.waitForLoadState('networkidle');
 
       // Test buttons with ARIA labels
@@ -122,7 +122,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should provide form control descriptions', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--with-label');
+      await page.goto('/iframe.html?id=forms-text-input--with-label');
       await page.waitForLoadState('networkidle');
 
       // Test form control labeling
@@ -146,7 +146,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should handle complex widget descriptions', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-accordion--default');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       // Test accordion button descriptions
@@ -197,7 +197,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should provide logical navigation in modal dialogs', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-modal--default');
+      await page.goto('/iframe.html?id=feedback-modal--default');
       await page.waitForLoadState('networkidle');
 
       // Open modal
@@ -259,7 +259,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
 
   test.describe('Interactive Widget Screen Reader Support', () => {
     test('should announce combo box interactions', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-combo-box--default');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
 
       const input = page.locator('.usa-combo-box__input');
@@ -293,7 +293,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should announce date picker navigation', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-date-picker--default');
+      await page.goto('/iframe.html?id=forms-date-picker--default');
       await page.waitForLoadState('networkidle');
 
       // Open date picker
@@ -359,7 +359,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
 
   test.describe('Form Accessibility and Screen Reader Support', () => {
     test('should announce form validation states', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-text-input--required');
+      await page.goto('/iframe.html?id=forms-text-input--required');
       await page.waitForLoadState('networkidle');
 
       const input = page.locator('input[required]').first();
@@ -419,7 +419,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
   test.describe('Status and Progress Announcements', () => {
     test('should announce loading states', async ({ page }) => {
       // Test with a component that has loading states
-      await page.goto('/iframe.html?id=components-button--default');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       // Add test for loading state if component supports it

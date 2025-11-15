@@ -170,7 +170,7 @@ test.describe('Performance Testing', () => {
 
     // Create and destroy components multiple times
     for (let i = 0; i < 10; i++) {
-      await page.goto('/iframe.html?id=components-modal--default');
+      await page.goto('/iframe.html?id=feedback-modal--default');
       await page.waitForLoadState('networkidle');
 
       // Open modal
@@ -214,7 +214,7 @@ test.describe('Performance Testing', () => {
   });
 
   test('should handle rapid state changes efficiently', async ({ page }) => {
-    await page.goto('/iframe.html?id=components-accordion--multiple-items');
+    await page.goto('/iframe.html?id=structure-accordion--multiple-items');
     await page.waitForLoadState('networkidle');
 
     const accordionButtons = page.locator('usa-accordion button');
