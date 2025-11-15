@@ -37,6 +37,8 @@ async function globalSetup(config: FullConfig) {
   // Note: Storybook is automatically started by Playwright's webServer configuration
   // We just verify it's available here
   console.log('⏳ Waiting for Storybook to be ready...');
+  console.log(`   CI environment: ${process.env.CI === 'true' ? 'YES' : 'NO'}`);
+  console.log(`   Node version: ${process.version}`);
 
   let attempts = 0;
   const maxAttempts = 60; // 2 minutes timeout
@@ -48,16 +50,26 @@ async function globalSetup(config: FullConfig) {
       if (response.ok) {
         storybookReady = true;
         console.log('✅ Storybook is ready');
+        console.log(`   Response status: ${response.status}`);
+        console.log(`   Response headers: ${JSON.stringify(Object.fromEntries(response.headers))}`);
         break;
+      } else {
+        console.log(`   Attempt ${attempts + 1}/${maxAttempts}: Got ${response.status}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       // Still waiting for Playwright webServer to start Storybook...
+      if (attempts % 10 === 0) {
+        console.log(`   Attempt ${attempts + 1}/${maxAttempts}: ${error.message}`);
+      }
     }
 
     await new Promise(resolve => setTimeout(resolve, 2000));
     attempts++;
 
     if (attempts >= maxAttempts) {
+      console.error('❌ Storybook never became available');
+      console.error('   Playwright webServer should have started it automatically');
+      console.error('   Check that storybook-static build completed successfully');
       throw new Error('Storybook failed to start within timeout period (started by Playwright webServer)');
     }
   }
@@ -102,14 +114,48 @@ async function globalSetup(config: FullConfig) {
   page.setDefaultTimeout(60000);
 
   try {
+    console.log('🌐 Navigating to Storybook story...');
     // Wait for navigation and all network requests to complete
     await page.goto('http://localhost:6006/iframe.html?id=components-button--default', {
       waitUntil: 'networkidle',
       timeout: 60000 // CI needs more time for asset loading (60s for slow I/O)
     });
+    console.log('✅ Navigation complete (networkidle reached)');
+
+    // Capture initial page state for debugging
+    const pageTitle = await page.title();
+    const pageUrl = page.url();
+    console.log(`   Page title: "${pageTitle}"`);
+    console.log(`   Page URL: ${pageUrl}`);
+
+    // Check what's actually in the DOM
+    const hasStorybookRoot = await page.evaluate(() => {
+      const root = document.getElementById('storybook-root');
+      return {
+        exists: root !== null,
+        hasChildren: root?.children.length > 0,
+        childCount: root?.children.length || 0,
+        innerHTML: root?.innerHTML.substring(0, 200) || ''
+      };
+    });
+    console.log(`   Storybook root: ${JSON.stringify(hasStorybookRoot)}`);
+
+    // Check if custom elements are defined
+    const customElementStatus = await page.evaluate(() => {
+      return {
+        'usa-button': customElements.get('usa-button') !== undefined,
+        'usa-alert': customElements.get('usa-alert') !== undefined,
+        totalDefined: Array.from(document.querySelectorAll('*'))
+          .filter(el => el.tagName.includes('-'))
+          .map(el => el.tagName.toLowerCase())
+          .filter((v, i, a) => a.indexOf(v) === i).length
+      };
+    });
+    console.log(`   Custom elements: ${JSON.stringify(customElementStatus)}`);
 
     // Wait for Storybook to render the story
     // CI is VERY slow - need generous timeout for element registration
+    console.log('⏳ Waiting for usa-button element registration...');
     await page.waitForFunction(
       () => {
         // Check that:
@@ -126,6 +172,23 @@ async function globalSetup(config: FullConfig) {
     console.log('✅ Basic component accessibility verified');
   } catch (error) {
     console.error('❌ Component accessibility test failed:', error);
+
+    // Capture final page state for debugging
+    try {
+      const finalState = await page.evaluate(() => {
+        return {
+          url: window.location.href,
+          title: document.title,
+          bodyText: document.body?.textContent?.substring(0, 500),
+          scripts: Array.from(document.querySelectorAll('script')).map(s => s.src).filter(Boolean),
+          errors: (window as any).__errors || []
+        };
+      });
+      console.error('   Final page state:', JSON.stringify(finalState, null, 2));
+    } catch (e) {
+      console.error('   Could not capture final page state');
+    }
+
     console.error('  - This usually means components are not loading in Storybook');
     console.error('  - Check that storybook-static build completed successfully');
     console.error('  - Verify custom elements are being registered');
