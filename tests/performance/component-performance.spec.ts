@@ -58,7 +58,7 @@ test.describe('Component Performance Tests', () => {
 
   test.describe('Button Component Performance', () => {
     test('should render within performance budget', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button--primary');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       // Measure initial render performance
@@ -90,7 +90,7 @@ test.describe('Component Performance Tests', () => {
     });
 
     test('should handle multiple instances efficiently', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button--primary');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const results = await page.evaluate(async () => {
@@ -135,7 +135,7 @@ test.describe('Component Performance Tests', () => {
     });
 
     test('should not leak memory on removal', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button--primary');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       await page.evaluate(async () => {
@@ -475,7 +475,7 @@ test.describe('Component Performance Tests', () => {
 
   test.describe('Table Component Performance', () => {
     test('should handle large datasets efficiently', async ({ page }) => {
-      await page.goto('/iframe.html?id=data-display-table--sortable');
+      await page.goto('/iframe.html?id=data-display-table--sorting-demo');
       await page.waitForLoadState('networkidle');
 
       const tablePerformance = await page.evaluate(async () => {
@@ -526,7 +526,7 @@ test.describe('Component Performance Tests', () => {
   test.describe('Performance Regression Tests', () => {
     test('should maintain consistent performance across component variants', async ({ page }) => {
       const components = [
-        { name: 'Button Primary', url: '/iframe.html?id=actions-button--primary' },
+        { name: 'Button Primary', url: '/iframe.html?id=actions-button--default' },
         { name: 'Button Secondary', url: '/iframe.html?id=actions-button--secondary' },
         { name: 'Alert Info', url: '/iframe.html?id=feedback-alert--info' },
         { name: 'Alert Warning', url: '/iframe.html?id=feedback-alert--warning' },

@@ -10,7 +10,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Tab Navigation Tests', () => {
     test('should navigate through button groups correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button-group--primary');
+      await page.goto('/iframe.html?id=actions-button-group--default');
       await page.waitForLoadState('networkidle');
 
       // Start tab navigation
@@ -34,7 +34,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should handle reverse tab navigation (Shift+Tab)', async ({ page }) => {
-      await page.goto('/iframe.html?id=structure-accordion--primary');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       // Tab forward to last element
@@ -52,7 +52,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should skip non-focusable elements', async ({ page }) => {
-      await page.goto('/iframe.html?id=data-display-card--primary');
+      await page.goto('/iframe.html?id=data-display-card--default');
       await page.waitForLoadState('networkidle');
 
       let focusableCount = 0;
@@ -89,7 +89,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Arrow Key Navigation Tests', () => {
     test('should navigate accordion with arrow keys', async ({ page }) => {
-      await page.goto('/iframe.html?id=structure-accordion--primary');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       // Focus first accordion button
@@ -118,7 +118,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should navigate combo box options with arrow keys', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-combo-box--primary');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
 
       // Open combo box
@@ -151,7 +151,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should navigate menu items with arrow keys', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-menu--primary');
+      await page.goto('/iframe.html?id=navigation-header--default');
       await page.waitForLoadState('networkidle');
 
       // Look for menu trigger
@@ -173,7 +173,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Activation Key Tests', () => {
     test('should activate buttons with Enter and Space', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button--primary');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       let clickCount = 0;
@@ -199,7 +199,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should activate accordion items with Enter and Space', async ({ page }) => {
-      await page.goto('/iframe.html?id=structure-accordion--primary');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       const firstButton = page.locator('.usa-accordion__button').first();
@@ -218,7 +218,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should handle form submission with Enter', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-text-input--primary');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       // Add form wrapper for testing
@@ -249,7 +249,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Focus Management Tests', () => {
     test('should manage focus in modal dialogs', async ({ page }) => {
-      await page.goto('/iframe.html?id=feedback-modal--primary');
+      await page.goto('/iframe.html?id=feedback-modal--default');
       await page.waitForLoadState('networkidle');
 
       // Track initial focus
@@ -296,7 +296,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should manage focus in dropdown menus', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-combo-box--primary');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
 
       const input = page.locator('.usa-combo-box__input');
@@ -324,7 +324,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should handle focus visible indicators', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button--primary');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       const button = page.locator('usa-button').first();
@@ -347,7 +347,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Keyboard Shortcuts Tests', () => {
     test('should support common keyboard shortcuts', async ({ page }) => {
-      await page.goto('/iframe.html?id=structure-accordion--primary');
+      await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
 
       const firstButton = page.locator('.usa-accordion__button').first();
@@ -365,7 +365,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should handle Escape key properly', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-combo-box--primary');
+      await page.goto('/iframe.html?id=forms-combo-box--default');
       await page.waitForLoadState('networkidle');
 
       // Open dropdown
@@ -385,7 +385,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Skip Links and Landmarks', () => {
     test('should provide skip links for keyboard users', async ({ page }) => {
-      await page.goto('/iframe.html?id=components-skip-link--primary');
+      await page.goto('/iframe.html?id=navigation-skip-link--default');
       await page.waitForLoadState('networkidle');
 
       // Press Tab to reveal skip link
@@ -413,7 +413,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should navigate between landmarks with proper roles', async ({ page }) => {
-      await page.goto('/iframe.html?id=navigation-header--primary');
+      await page.goto('/iframe.html?id=navigation-header--default');
       await page.waitForLoadState('networkidle');
 
       // Look for landmark elements
@@ -441,7 +441,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
   test.describe('Form Navigation Tests', () => {
     test('should navigate form fields logically', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-text-input--primary');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       // Add multiple form fields for testing
@@ -491,7 +491,7 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
     });
 
     test('should handle required field indicators', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-text-input--primary');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       // Add required field for testing

@@ -10,7 +10,7 @@ test.describe('Component Visual Regression Tests', () => {
   // Button Component Visual Tests
   test.describe('Button Component', () => {
     test('should render all button variants correctly', async ({ page }) => {
-      await page.goto('/iframe.html?id=actions-button--primary');
+      await page.goto('/iframe.html?id=actions-button--default');
       await page.waitForLoadState('networkidle');
 
       // Test primary button

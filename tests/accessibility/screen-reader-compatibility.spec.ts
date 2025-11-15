@@ -122,7 +122,7 @@ test.describe('Screen Reader Compatibility Tests', () => {
     });
 
     test('should provide form control descriptions', async ({ page }) => {
-      await page.goto('/iframe.html?id=forms-text-input--with-label');
+      await page.goto('/iframe.html?id=forms-text-input--default');
       await page.waitForLoadState('networkidle');
 
       // Test form control labeling
