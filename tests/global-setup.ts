@@ -98,6 +98,9 @@ async function globalSetup(config: FullConfig) {
   const context = await browser.newContext();
   const page = await context.newPage();
 
+  // Set page default timeout to 60s for CI (overrides Playwright's 30s default)
+  page.setDefaultTimeout(60000);
+
   try {
     // Wait for navigation and all network requests to complete
     await page.goto('http://localhost:6006/iframe.html?id=components-button--default', {
