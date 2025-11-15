@@ -337,8 +337,8 @@ export default defineConfig({
     url: 'http://localhost:6006',
     reuseExistingServer: !process.env.CI,
     timeout: 120000, // 2 minutes to start Storybook
-    stdout: 'pipe', // Capture stdout for debugging
-    stderr: 'pipe', // Capture stderr for debugging
+    stdout: 'inherit', // Show Storybook output for debugging (temporary)
+    stderr: 'inherit', // Show Storybook errors for debugging (temporary)
   },
 
   // Output directories
