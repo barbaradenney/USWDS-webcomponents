@@ -78,8 +78,6 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 720 },
-        // Enable additional browser features for comprehensive testing
-        permissions: ['accessibility-events'],
         colorScheme: 'light',
       },
       dependencies: ['setup'],
