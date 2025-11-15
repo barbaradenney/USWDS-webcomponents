@@ -137,7 +137,7 @@ async function globalSetup(config: FullConfig) {
   try {
     console.log('🌐 Navigating to Storybook story...');
     // Wait for navigation and all network requests to complete
-    await page.goto('http://localhost:6006/iframe.html?id=components-button--default', {
+    await page.goto('http://localhost:6006/iframe.html?id=actions-button--default', {
       waitUntil: 'networkidle',
       timeout: 120000 // CI needs more time for asset loading and JS execution (120s for slow I/O + bundle parsing)
     });
