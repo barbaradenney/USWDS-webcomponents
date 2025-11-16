@@ -144,39 +144,40 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
   });
 
   test.describe('Arrow Key Navigation Tests', () => {
-    test('should navigate accordion with arrow keys', async ({ page }) => {
+    test('should navigate accordion with Tab key (USWDS standard)', async ({ page }) => {
       await page.goto('/iframe.html?id=structure-accordion--default');
       await page.waitForLoadState('networkidle');
+
+      // USWDS Accordion does NOT support arrow key navigation
+      // It uses standard Tab navigation between buttons
+      // Reference: https://designsystem.digital.gov/components/accordion/#accessibility-accordion
 
       // Focus first accordion button
       const firstButton = page.locator('.usa-accordion__button').first();
       await firstButton.focus();
+      await expect(firstButton).toBeFocused();
 
-      // Test down arrow
-      await page.keyboard.press('ArrowDown');
-      await page.waitForTimeout(100); // Wait for arrow key focus change
+      // Test Tab to move to next button
+      await page.keyboard.press('Tab');
+      await page.waitForTimeout(100);
       const secondButton = page.locator('.usa-accordion__button').nth(1);
       await expect(secondButton).toBeFocused();
 
-      // Test up arrow
-      await page.keyboard.press('ArrowUp');
-      await page.waitForTimeout(100); // Wait for arrow key focus change
+      // Test Shift+Tab to move back
+      await page.keyboard.press('Shift+Tab');
+      await page.waitForTimeout(100);
       await expect(firstButton).toBeFocused();
 
-      // Test home key (if supported)
-      await page.keyboard.press('ArrowDown');
-      await page.waitForTimeout(100);
-      await page.keyboard.press('ArrowDown');
-      await page.waitForTimeout(100);
-      await page.keyboard.press('Home');
-      await page.waitForTimeout(100); // Wait for Home key focus change
-      await expect(firstButton).toBeFocused();
+      // Test Enter/Space to expand/collapse
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(200);
+      const firstContent = page.locator('.usa-accordion__content').first();
+      await expect(firstContent).toBeVisible();
 
-      // Test end key (if supported)
-      await page.keyboard.press('End');
-      await page.waitForTimeout(100); // Wait for End key focus change
-      const lastButton = page.locator('.usa-accordion__button').last();
-      await expect(lastButton).toBeFocused();
+      // Test Space to collapse
+      await page.keyboard.press('Space');
+      await page.waitForTimeout(200);
+      await expect(firstContent).toBeHidden();
     });
 
     test('should navigate combo box options with arrow keys', async ({ page }) => {
