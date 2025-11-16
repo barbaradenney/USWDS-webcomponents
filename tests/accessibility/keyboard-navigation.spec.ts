@@ -154,21 +154,27 @@ test.describe('Keyboard Navigation Accessibility Tests', () => {
 
       // Test down arrow
       await page.keyboard.press('ArrowDown');
+      await page.waitForTimeout(100); // Wait for arrow key focus change
       const secondButton = page.locator('.usa-accordion__button').nth(1);
       await expect(secondButton).toBeFocused();
 
       // Test up arrow
       await page.keyboard.press('ArrowUp');
+      await page.waitForTimeout(100); // Wait for arrow key focus change
       await expect(firstButton).toBeFocused();
 
       // Test home key (if supported)
       await page.keyboard.press('ArrowDown');
+      await page.waitForTimeout(100);
       await page.keyboard.press('ArrowDown');
+      await page.waitForTimeout(100);
       await page.keyboard.press('Home');
+      await page.waitForTimeout(100); // Wait for Home key focus change
       await expect(firstButton).toBeFocused();
 
       // Test end key (if supported)
       await page.keyboard.press('End');
+      await page.waitForTimeout(100); // Wait for End key focus change
       const lastButton = page.locator('.usa-accordion__button').last();
       await expect(lastButton).toBeFocused();
     });
