@@ -121,7 +121,8 @@ export function initializeFooter(root: HTMLElement | Document = document): () =>
   toggleHtmlTag(window.innerWidth < HIDE_MAX_WIDTH);
 
   // Set up media query listener (skip if window.matchMedia not available in test environment)
-  const mediaQueryList = window.matchMedia && window.matchMedia(`(max-width: ${HIDE_MAX_WIDTH - 0.1}px)`);
+  const mediaQueryList =
+    window.matchMedia && window.matchMedia(`(max-width: ${HIDE_MAX_WIDTH - 0.1}px)`);
 
   // Define removeListener for cleanup (noop if mediaQueryList not available)
   let removeListener: ((handler: (event: MediaQueryListEvent) => void) => void) | null = null;
