@@ -178,7 +178,13 @@ export class USARadio extends LitElement {
       return this.id;
     }
     if (!this._radioId) {
-      this._radioId = `radio-${Math.random().toString(36).substring(2, 11)}`;
+      // Generate exactly 9 random characters to ensure consistent ID length
+      // Math.random().toString(36) can produce varying lengths, so we pad if needed
+      let randomPart = Math.random().toString(36).substring(2, 11);
+      while (randomPart.length < 9) {
+        randomPart += Math.random().toString(36).substring(2, 3);
+      }
+      this._radioId = `radio-${randomPart.substring(0, 9)}`;
     }
     return this._radioId;
   }
