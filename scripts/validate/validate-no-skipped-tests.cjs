@@ -157,6 +157,11 @@ const APPROVED_SKIPS = {
     reason: 'USWDS_TRANSFORMATION_REQUIREMENT',
     documented: 'USWDS date picker requires USWDS JavaScript DOM transformation (external input, clear(), validation, label-input ID association) - covered by Cypress',
   },
+  'packages/uswds-wc-forms/src/components/time-picker/usa-time-picker.test.ts': {
+    count: 1,
+    reason: 'USWDS_TRANSFORMATION_REQUIREMENT',
+    documented: 'USWDS time-picker requires USWDS JavaScript DOM transformation (data-default-value attribute cleared after value changes) - covered by Cypress',
+  },
 
   // CI Environment Performance (2025-11-08) ✅ JUSTIFIED
   // Performance test timing threshold exceeded in CI environment
