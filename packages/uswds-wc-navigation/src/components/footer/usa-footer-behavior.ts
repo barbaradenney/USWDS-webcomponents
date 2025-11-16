@@ -120,23 +120,28 @@ export function initializeFooter(root: HTMLElement | Document = document): () =>
   // Initialize HTML tag based on window width
   toggleHtmlTag(window.innerWidth < HIDE_MAX_WIDTH);
 
-  // Set up media query listener
-  const mediaQueryList = window.matchMedia(`(max-width: ${HIDE_MAX_WIDTH - 0.1}px)`);
+  // Set up media query listener (skip if window.matchMedia not available in test environment)
+  const mediaQueryList = window.matchMedia && window.matchMedia(`(max-width: ${HIDE_MAX_WIDTH - 0.1}px)`);
 
-  // Use the modern API if available, fallback to deprecated addListener
-  const addListener = mediaQueryList.addEventListener
-    ? (handler: (event: MediaQueryListEvent) => void) =>
-        mediaQueryList.addEventListener('change', handler)
-    : (handler: (event: MediaQueryListEvent) => void) =>
-        (mediaQueryList as any).addListener(handler);
+  // Define removeListener for cleanup (noop if mediaQueryList not available)
+  let removeListener: ((handler: (event: MediaQueryListEvent) => void) => void) | null = null;
 
-  const removeListener = mediaQueryList.removeEventListener
-    ? (handler: (event: MediaQueryListEvent) => void) =>
-        mediaQueryList.removeEventListener('change', handler)
-    : (handler: (event: MediaQueryListEvent) => void) =>
-        (mediaQueryList as any).removeListener(handler);
+  if (mediaQueryList) {
+    // Use the modern API if available, fallback to deprecated addListener
+    const addListener = mediaQueryList.addEventListener
+      ? (handler: (event: MediaQueryListEvent) => void) =>
+          mediaQueryList.addEventListener('change', handler)
+      : (handler: (event: MediaQueryListEvent) => void) =>
+          (mediaQueryList as any).addListener(handler);
 
-  addListener(resize);
+    removeListener = mediaQueryList.removeEventListener
+      ? (handler: (event: MediaQueryListEvent) => void) =>
+          mediaQueryList.removeEventListener('change', handler)
+      : (handler: (event: MediaQueryListEvent) => void) =>
+          (mediaQueryList as any).removeListener(handler);
+
+    addListener(resize);
+  }
 
   // Event delegation for button clicks
   const handleClick = (event: Event) => {
@@ -153,7 +158,9 @@ export function initializeFooter(root: HTMLElement | Document = document): () =>
   rootEl.addEventListener('click', handleClick);
 
   return () => {
-    removeListener(resize);
+    if (removeListener) {
+      removeListener(resize);
+    }
     rootEl.removeEventListener('click', handleClick);
   };
 }
