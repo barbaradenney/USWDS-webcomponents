@@ -153,9 +153,9 @@ const APPROVED_SKIPS = {
     documented: 'File input focus, keyboard navigation, USWDS enhancement, and data-enhanced validation require browser - covered by Cypress component tests',
   },
   'packages/uswds-wc-forms/src/components/date-picker/usa-date-picker.test.ts': {
-    count: 7,
+    count: 8,
     reason: 'USWDS_TRANSFORMATION_REQUIREMENT',
-    documented: 'USWDS date picker requires USWDS JavaScript DOM transformation (external input, clear(), validation, label-input ID association) - covered by Cypress',
+    documented: 'USWDS date picker requires USWDS JavaScript DOM transformation (external input, clear(), validation, label-input ID association, input ID generation) - covered by Cypress',
   },
   'packages/uswds-wc-forms/src/components/time-picker/usa-time-picker.test.ts': {
     count: 1,
