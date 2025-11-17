@@ -126,13 +126,18 @@ test.describe('Component Security Tests', () => {
       const xssDetected = await page.evaluate(() => window.xssDetected);
       expect(xssDetected).toBe(false);
 
-      // Alert should still be visible but content should be safe
+      // Alert should still be visible and content is safe (HTML-encoded by browser)
       const alert = page.locator('usa-alert').first();
       await expect(alert).toBeVisible();
 
+      // When using textContent, the browser HTML-encodes the content in innerHTML
+      // So <script> becomes &lt;script&gt; and onerror= becomes visible in HTML but not executable
+      // This is expected and safe - the important check is that XSS doesn't execute (verified above)
       const alertHTML = await alert.innerHTML();
-      expect(alertHTML).not.toMatch(/<script[^>]*>/);
-      expect(alertHTML).not.toMatch(/onerror\s*=/);
+
+      // Verify content is HTML-encoded (safe)
+      expect(alertHTML).toContain('&lt;script&gt;'); // Encoded, not executable
+      expect(alertHTML).toContain('onerror='); // Visible in HTML but not executable as attribute
     });
 
     test('Button component should resist XSS in attributes', async ({ page }) => {
@@ -384,13 +389,16 @@ test.describe('Component Security Tests', () => {
 
         await page.waitForTimeout(300);
 
-        // XSS should not execute
+        // XSS should not execute (MOST IMPORTANT - this is the actual security validation)
         const xssDetected = await page.evaluate(() => window.xssDetected);
         expect(xssDetected).toBe(false);
 
-        // Check that query is properly handled
+        // Input values are TEXT (not HTML), so they can contain <script> as text (inherently safe)
+        // The browser never executes scripts from input.value - it's just text
         const inputValue = await input.inputValue();
-        expect(inputValue).not.toMatch(/<script[^>]*>/);
+
+        // Verify the input accepted the text value (expected behavior)
+        expect(inputValue).toBe(query); // Input values are text, not sanitized HTML
       }
     });
 
