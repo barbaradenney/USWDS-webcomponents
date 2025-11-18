@@ -984,14 +984,16 @@ describe('USAStepIndicator', () => {
         const segments = element.querySelectorAll('.usa-step-indicator__segment');
 
         // Only current segment should have aria-current="step"
-        segments.forEach((segment, index) => {
+        let index = 0;
+        for (const segment of segments) {
           if (index === 2) {
             // Current step
             expect(await waitForARIAAttribute(segment, 'aria-current')).toBe('step');
           } else {
             expect(await waitForARIAAttribute(segment, 'aria-current')).toBe('false');
           }
-        });
+          index++;
+        }
       });
     });
 
