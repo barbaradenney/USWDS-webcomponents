@@ -185,3 +185,59 @@ export async function waitForDatePickerInit(datePicker) {
   const extraWait = isCI() ? 300 : 150;
   await new Promise((resolve) => setTimeout(resolve, extraWait));
 }
+
+/**
+ * Gets CI-aware timeout multiplier for performance tests
+ *
+ * CI environments are slower and need more lenient timeouts:
+ * ```typescript
+ * const timeout = 1000 * getCITimeoutMultiplier(); // 1s local, 3s CI
+ * ```
+ *
+ * @returns Multiplier for timeouts (3x in CI, 1x locally)
+ */
+export function getCITimeoutMultiplier() {
+  return isCI() ? 3 : 1;
+}
+
+/**
+ * Asserts that a performance metric is within CI-aware tolerance
+ *
+ * Use for performance tests that may vary in CI:
+ * ```typescript
+ * const duration = performance.measure(...);
+ * expectPerformanceWithinTolerance(duration, 1000, 0.2); // ±20% local, ±40% CI
+ * ```
+ *
+ * @param actual - Actual measured value
+ * @param expected - Expected baseline value
+ * @param tolerance - Tolerance as decimal (0.2 = 20%)
+ */
+export function expectPerformanceWithinTolerance(actual, expected, tolerance = 0.2) {
+  const ciTolerance = isCI() ? tolerance * 2 : tolerance;
+  const maxAllowed = expected * (1 + ciTolerance);
+
+  if (actual > maxAllowed) {
+    throw new Error(
+      `Performance assertion failed: ${actual}ms > ${maxAllowed}ms (expected ${expected}ms ±${ciTolerance * 100}% in ${isCI() ? 'CI' : 'local'})`
+    );
+  }
+}
+
+/**
+ * Gets CI-aware expected value with tolerance
+ *
+ * Use when you need the actual threshold value:
+ * ```typescript
+ * const maxDuration = getCIAwareExpectedValue(1000, 0.2); // 1200ms local, 1400ms CI
+ * expect(duration).toBeLessThan(maxDuration);
+ * ```
+ *
+ * @param expected - Expected baseline value
+ * @param tolerance - Tolerance as decimal (0.2 = 20%)
+ * @returns Maximum allowed value accounting for CI
+ */
+export function getCIAwareExpectedValue(expected, tolerance = 0.2) {
+  const ciTolerance = isCI() ? tolerance * 2 : tolerance;
+  return expected * (1 + ciTolerance);
+}

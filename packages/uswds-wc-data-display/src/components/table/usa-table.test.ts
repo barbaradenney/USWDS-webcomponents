@@ -12,7 +12,7 @@ import {
   testTextSpacing,
   testMobileAccessibility,
 } from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
-import { waitForARIAAttribute } from '@uswds-wc/test-utils';
+import { waitForARIAAttribute, expectPerformanceWithinTolerance } from '@uswds-wc/test-utils';
 
 // Helper function to wait for USWDS initialization - MUST be at top level for all tests
 const waitForUSWDS = async (el: USATable) => {
@@ -811,9 +811,10 @@ describe('USATable', () => {
       const rows = element.querySelectorAll('tbody tr');
       expect(rows.length).toBe(1000);
 
-      // Should complete rendering within reasonable time (18 seconds for large dataset in CI environment)
-      // CI environments are slower than local, so increased from 5s to 18s to account for CI variability
-      expect(endTime - startTime).toBeLessThan(18000);
+      // Should complete rendering within reasonable time
+      // CI-aware tolerance: local 5s, CI 6s (5s * 1.2 tolerance)
+      const renderTime = endTime - startTime;
+      expectPerformanceWithinTolerance(renderTime, 5000, 0.2);
     }, 25000); // Increased timeout to 25s for CI environment
   });
 
