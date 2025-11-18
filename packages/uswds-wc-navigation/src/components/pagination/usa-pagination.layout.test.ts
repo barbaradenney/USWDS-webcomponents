@@ -379,13 +379,13 @@ describe('USAPagination Layout Tests', () => {
 
       // Page buttons should have descriptive labels
       const pageButtons = element.querySelectorAll('.usa-pagination__button');
-      pageButtons.forEach((button) => {
+      for (const button of pageButtons) {
         const page = button.getAttribute('data-page');
         expect(
           await waitForARIAAttribute(button, 'aria-label'),
           `Page button should have descriptive aria-label`
         ).toBe(`Page ${page}`);
-      });
+      }
     });
 
     it('should prevent invalid navigation correctly', async () => {
