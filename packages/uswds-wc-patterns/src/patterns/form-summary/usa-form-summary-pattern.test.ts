@@ -500,12 +500,12 @@ describe('USAFormSummaryPattern', () => {
       expect(dl).toBeTruthy();
     });
 
-    it('should have descriptive aria-labels on edit buttons', () => {
+    it('should have descriptive aria-labels on edit buttons', async () => {
       const editButtons = pattern.querySelectorAll('.usa-button--unstyled');
-      editButtons.forEach((button) => {
+      for (const button of editButtons) {
         expect(await waitForARIAAttribute(button, 'aria-label')).toBeTruthy();
         expect(await waitForARIAAttribute(button, 'aria-label')).toMatch(/^Edit /);
-      });
+      }
     });
 
     it('should use USWDS alert component for confirmation', async () => {
