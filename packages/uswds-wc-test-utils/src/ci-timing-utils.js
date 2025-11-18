@@ -22,7 +22,7 @@ export function isCI() {
  * Gets the CI timing multiplier
  * CI environments need more iterations due to slower execution
  */
-function getCIMultiplier(): number {
+function getCIMultiplier() {
   return isCI() ? 2 : 1;
 }
 
@@ -40,10 +40,7 @@ function getCIMultiplier(): number {
  * @param element - The element to wait for
  * @param iterations - Base number of iterations (multiplied in CI)
  */
-export async function waitForPropertyPropagation(
-  element: HTMLElement,
-  iterations = 2
-): Promise<void> {
+export async function waitForPropertyPropagation(element, iterations = 2) {
   const totalIterations = iterations * getCIMultiplier();
   for (let i = 0; i < totalIterations; i++) {
     await waitForUpdate(element);
@@ -66,11 +63,7 @@ export async function waitForPropertyPropagation(
  * @param timeout - Maximum time to wait in milliseconds
  * @returns The attribute value, or null if not set within timeout
  */
-export async function waitForARIAAttribute(
-  element: HTMLElement,
-  attribute: string,
-  timeout = 2000
-): Promise<string | null> {
+export async function waitForARIAAttribute(element, attribute, timeout = 2000) {
   const start = Date.now();
   const checkInterval = isCI() ? 100 : 50;
 
@@ -101,7 +94,7 @@ export async function waitForARIAAttribute(
  *
  * @param modal - The modal element
  */
-export async function waitForModalOpen(modal: HTMLElement): Promise<void> {
+export async function waitForModalOpen(modal) {
   // Wait for property propagation
   await waitForPropertyPropagation(modal, 3);
 
@@ -122,9 +115,7 @@ export async function waitForModalOpen(modal: HTMLElement): Promise<void> {
  *
  * @param accordion - The accordion element
  */
-export async function waitForAccordionTransition(
-  accordion: HTMLElement
-): Promise<void> {
+export async function waitForAccordionTransition(accordion) {
   await waitForPropertyPropagation(accordion, 2);
 
   // Wait for CSS transition
@@ -143,7 +134,7 @@ export async function waitForAccordionTransition(
  *
  * @param element - The combo-box element
  */
-export async function waitForComboBoxInit(element: HTMLElement): Promise<void> {
+export async function waitForComboBoxInit(element) {
   await waitForPropertyPropagation(element, 3);
 
   // Extra wait for USWDS combo-box setup
@@ -164,10 +155,7 @@ export async function waitForComboBoxInit(element: HTMLElement): Promise<void> {
  * @param element - The element to wait for
  * @param timeout - Maximum time to wait
  */
-export async function waitForElementRender(
-  element: HTMLElement,
-  timeout = 2000
-): Promise<void> {
+export async function waitForElementRender(element, timeout = 2000) {
   const start = Date.now();
 
   while (Date.now() - start < timeout) {
@@ -190,9 +178,7 @@ export async function waitForElementRender(
  *
  * @param datePicker - The date picker element
  */
-export async function waitForDatePickerInit(
-  datePicker: HTMLElement
-): Promise<void> {
+export async function waitForDatePickerInit(datePicker) {
   await waitForPropertyPropagation(datePicker, 3);
 
   // Extra wait for calendar rendering
