@@ -261,10 +261,10 @@ describe('USATable', () => {
 
       // Initially no sorting applied - aria-sort should NOT be set until after first sort
       // This matches USWDS behavior exactly (see usa-table-behavior.ts sortRows() line 157)
-      sortableHeaders.forEach((header) => {
+      for (const header of sortableHeaders) {
         const ariaSort = await waitForARIAAttribute(header, 'aria-sort');
         expect(ariaSort).toBeNull(); // No attribute until sorting occurs
-      });
+      }
     });
 
     it('should handle sort click and dispatch event', async () => {

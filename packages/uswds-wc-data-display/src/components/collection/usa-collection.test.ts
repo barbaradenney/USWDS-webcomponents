@@ -196,13 +196,13 @@ describe('USACollection', () => {
       await waitForUpdate(element);
     });
 
-    it('should have proper ARIA attributes', () => {
+    it('should have proper ARIA attributes', async () => {
       const metaLists = element.querySelectorAll('.usa-collection__meta');
 
-      metaLists.forEach((list) => {
+      for (const list of metaLists) {
         const ariaLabel = await waitForARIAAttribute(list, 'aria-label');
         expect(['More information', 'Topics']).toContain(ariaLabel);
-      });
+      }
     });
 
     it('should have proper time elements', () => {
@@ -904,9 +904,18 @@ describe('USACollection', () => {
 
       it('should render metadata items in proper list structure', async () => {
         const firstItem = element.querySelectorAll('.usa-collection__item')[0];
-        const metadataList = Array.from(
+        const metadataLists = Array.from(
           firstItem?.querySelectorAll('.usa-collection__meta') || []
-        ).find((list) => await waitForARIAAttribute(list, 'aria-label') === 'More information');
+        );
+
+        let metadataList;
+        for (const list of metadataLists) {
+          const ariaLabel = await waitForARIAAttribute(list, 'aria-label');
+          if (ariaLabel === 'More information') {
+            metadataList = list;
+            break;
+          }
+        }
 
         const metaItems = metadataList?.querySelectorAll('.usa-collection__meta-item');
         expect(metaItems && metaItems.length > 0).toBe(true);
@@ -920,9 +929,18 @@ describe('USACollection', () => {
 
       it('should render tags with usa-tag class', async () => {
         const firstItem = element.querySelectorAll('.usa-collection__item')[0];
-        const tagsList = Array.from(
+        const metadataLists = Array.from(
           firstItem?.querySelectorAll('.usa-collection__meta') || []
-        ).find((list) => await waitForARIAAttribute(list, 'aria-label') === 'Topics');
+        );
+
+        let tagsList;
+        for (const list of metadataLists) {
+          const ariaLabel = await waitForARIAAttribute(list, 'aria-label');
+          if (ariaLabel === 'Topics') {
+            tagsList = list;
+            break;
+          }
+        }
 
         const tags = tagsList?.querySelectorAll('.usa-tag');
         expect(tags).toHaveLength(2);

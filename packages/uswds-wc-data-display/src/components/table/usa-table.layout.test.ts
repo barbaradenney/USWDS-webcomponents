@@ -330,16 +330,16 @@ describe('USATable Layout Tests', () => {
         expect(table.getAttribute('role')).toBe('table');
       }
 
-      sortableHeaders.forEach((header) => {
+      for (const header of sortableHeaders) {
         const ariaSort = await waitForARIAAttribute(header, 'aria-sort');
         expect(ariaSort === 'none' || ariaSort === 'ascending' || ariaSort === 'descending').toBe(
           true
         );
-      });
+      }
 
-      sortButtons.forEach((button) => {
+      for (const button of sortButtons) {
         expect(await waitForARIAAttribute(button, 'aria-label')).toBeTruthy();
-      });
+      }
     });
 
     it('should handle cell content overflow correctly', async () => {
