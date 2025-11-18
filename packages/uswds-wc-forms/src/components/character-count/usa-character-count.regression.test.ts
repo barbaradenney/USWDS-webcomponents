@@ -458,9 +458,14 @@ describe('USACharacterCount Interactive Regression Tests', () => {
       expect(ariaLiveElements.length).toBeGreaterThan(0);
 
       // Check that at least one element has the correct aria-live attribute
-      const hasAriaLivePolite = Array.from(ariaLiveElements).some(
-        (el) => await waitForARIAAttribute(el, 'aria-live') === 'polite'
-      );
+      let hasAriaLivePolite = false;
+      for (const el of Array.from(ariaLiveElements)) {
+        const ariaLive = await waitForARIAAttribute(el, 'aria-live');
+        if (ariaLive === 'polite') {
+          hasAriaLivePolite = true;
+          break;
+        }
+      }
       expect(hasAriaLivePolite).toBe(true);
     });
 

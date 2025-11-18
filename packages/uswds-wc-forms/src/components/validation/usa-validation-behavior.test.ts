@@ -192,13 +192,13 @@ describe('USWDS Validation Behavior Contract', () => {
       // itemStatus = `${listItem.textContent} ${currentStatus}`
       const items = element.querySelectorAll('.usa-checklist__item');
 
-      items.forEach((item) => {
+      for (const item of items) {
         const ariaLabel = await waitForARIAAttribute(item, 'aria-label');
         // Should contain the text content plus status
         if (ariaLabel) {
           expect(ariaLabel).toContain(item.textContent || '');
         }
-      });
+      }
     });
 
     it('should use custom incomplete message from data attribute', async () => {
