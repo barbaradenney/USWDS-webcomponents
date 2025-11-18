@@ -152,6 +152,8 @@ describe('USADatePicker', () => {
     it('should handle required state', async () => {
       element.required = true;
       await waitForUpdate(element);
+      // Wait for DOM to update after property change
+      await waitForUpdate(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       const label = element.querySelector('label');
