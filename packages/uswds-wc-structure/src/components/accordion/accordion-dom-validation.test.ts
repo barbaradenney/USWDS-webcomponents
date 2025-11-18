@@ -119,7 +119,7 @@ describe('Accordion DOM Structure Validation', () => {
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
       buttons.forEach((button) => {
-        const controlsId = button.getAttribute('aria-controls');
+        const controlsId = await waitForARIAAttribute(button, 'aria-controls');
         expect(controlsId).toBeTruthy();
 
         const content = element.querySelector(`#${controlsId}`);
@@ -136,7 +136,7 @@ describe('Accordion DOM Structure Validation', () => {
 
       const button = element.querySelector('.usa-accordion__button[aria-expanded="true"]');
       if (button) {
-        const controlsId = button.getAttribute('aria-controls');
+        const controlsId = await waitForARIAAttribute(button, 'aria-controls');
         const content = element.querySelector(`#${controlsId}`);
         expect(content?.hasAttribute('hidden')).toBe(false);
       }
@@ -149,7 +149,7 @@ describe('Accordion DOM Structure Validation', () => {
 
       const button = element.querySelector('.usa-accordion__button[aria-expanded="false"]');
       if (button) {
-        const controlsId = button.getAttribute('aria-controls');
+        const controlsId = await waitForARIAAttribute(button, 'aria-controls');
         const content = element.querySelector(`#${controlsId}`);
         expect(content?.hasAttribute('hidden')).toBe(true);
       }

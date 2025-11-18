@@ -7,6 +7,7 @@ import {
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USALanguageSelector', () => {
   let element: USALanguageSelector;
@@ -228,11 +229,11 @@ describe('USALanguageSelector', () => {
     it('should update aria-expanded attribute', async () => {
       const toggleButton = element.querySelector('.usa-language__link') as HTMLButtonElement;
 
-      expect(toggleButton.getAttribute('aria-expanded')).toBe('false');
+      expect(await waitForARIAAttribute(toggleButton, 'aria-expanded')).toBe('false');
 
       toggleButton.click();
       await element.updateComplete;
-      expect(toggleButton.getAttribute('aria-expanded')).toBe('true');
+      expect(await waitForARIAAttribute(toggleButton, 'aria-expanded')).toBe('true');
     });
 
     it('should show/hide submenu based on state', async () => {
@@ -419,7 +420,7 @@ describe('USALanguageSelector', () => {
       await element.updateComplete;
 
       const toggleButton = element.querySelector('.usa-language__link') as HTMLButtonElement;
-      expect(toggleButton.getAttribute('aria-controls')).toBe('language-options');
+      expect(await waitForARIAAttribute(toggleButton, 'aria-controls')).toBe('language-options');
 
       const submenu = element.querySelector('#language-options');
       expect(submenu).toBeTruthy();
@@ -951,8 +952,8 @@ describe('USALanguageSelector', () => {
 
       expect(toggleButton).toBeTruthy();
       expect(submenu).toBeTruthy();
-      expect(toggleButton.getAttribute('aria-expanded')).toBeTruthy();
-      expect(toggleButton.getAttribute('aria-controls')).toBe('language-options');
+      expect(await waitForARIAAttribute(toggleButton, 'aria-expanded')).toBeTruthy();
+      expect(await waitForARIAAttribute(toggleButton, 'aria-controls')).toBe('language-options');
       expect(submenu.id).toBe('language-options');
     });
 
@@ -961,14 +962,14 @@ describe('USALanguageSelector', () => {
       const submenu = element.querySelector('.usa-language__submenu') as HTMLElement;
 
       // Initially closed
-      expect(toggleButton.getAttribute('aria-expanded')).toBe('false');
+      expect(await waitForARIAAttribute(toggleButton, 'aria-expanded')).toBe('false');
       expect(submenu.hasAttribute('hidden')).toBe(true);
 
       // Click to open
       toggleButton.click();
       await element.updateComplete;
 
-      expect(toggleButton.getAttribute('aria-expanded')).toBe('true');
+      expect(await waitForARIAAttribute(toggleButton, 'aria-expanded')).toBe('true');
       expect(submenu.hasAttribute('hidden')).toBe(false);
     });
 

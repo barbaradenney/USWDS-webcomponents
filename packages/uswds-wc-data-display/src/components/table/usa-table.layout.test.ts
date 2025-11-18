@@ -7,6 +7,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import '../table/index.ts';
 import type { USATable } from './usa-table.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USATable Layout Tests', () => {
   let element: USATable;
@@ -330,14 +331,14 @@ describe('USATable Layout Tests', () => {
       }
 
       sortableHeaders.forEach((header) => {
-        const ariaSort = header.getAttribute('aria-sort');
+        const ariaSort = await waitForARIAAttribute(header, 'aria-sort');
         expect(ariaSort === 'none' || ariaSort === 'ascending' || ariaSort === 'descending').toBe(
           true
         );
       });
 
       sortButtons.forEach((button) => {
-        expect(button.getAttribute('aria-label')).toBeTruthy();
+        expect(await waitForARIAAttribute(button, 'aria-label')).toBeTruthy();
       });
     });
 

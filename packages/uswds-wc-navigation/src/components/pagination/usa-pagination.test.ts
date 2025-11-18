@@ -7,6 +7,7 @@ import {
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USAPagination', () => {
   let element: USAPagination;
@@ -309,7 +310,7 @@ describe('USAPagination', () => {
 
       pageButtons.forEach((button) => {
         const pageNum = button.textContent?.trim();
-        expect(button.getAttribute('aria-label')).toBe(`Page ${pageNum}`);
+        expect(await waitForARIAAttribute(button, 'aria-label')).toBe(`Page ${pageNum}`);
       });
     });
 

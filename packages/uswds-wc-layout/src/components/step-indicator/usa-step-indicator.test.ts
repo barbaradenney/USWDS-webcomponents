@@ -7,6 +7,7 @@ import {
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
 import { validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USAStepIndicator', () => {
   let element: USAStepIndicator;
@@ -986,9 +987,9 @@ describe('USAStepIndicator', () => {
         segments.forEach((segment, index) => {
           if (index === 2) {
             // Current step
-            expect(segment.getAttribute('aria-current')).toBe('step');
+            expect(await waitForARIAAttribute(segment, 'aria-current')).toBe('step');
           } else {
-            expect(segment.getAttribute('aria-current')).toBe('false');
+            expect(await waitForARIAAttribute(segment, 'aria-current')).toBe('false');
           }
         });
       });

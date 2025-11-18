@@ -12,6 +12,7 @@ import {
   testTextSpacing,
   testMobileAccessibility,
 } from '@uswds-wc/test-utils/responsive-accessibility-utils.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 // Helper function to wait for USWDS initialization - MUST be at top level for all tests
 const waitForUSWDS = async (el: USATable) => {
@@ -261,7 +262,7 @@ describe('USATable', () => {
       // Initially no sorting applied - aria-sort should NOT be set until after first sort
       // This matches USWDS behavior exactly (see usa-table-behavior.ts sortRows() line 157)
       sortableHeaders.forEach((header) => {
-        const ariaSort = header.getAttribute('aria-sort');
+        const ariaSort = await waitForARIAAttribute(header, 'aria-sort');
         expect(ariaSort).toBeNull(); // No attribute until sorting occurs
       });
     });

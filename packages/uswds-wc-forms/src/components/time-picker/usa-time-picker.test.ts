@@ -10,6 +10,7 @@ import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
+import { waitForPropertyPropagation } from '@uswds-wc/test-utils';
 
 describe('USATimePicker', () => {
   let element: USATimePicker;
@@ -356,7 +357,7 @@ describe('USATimePicker', () => {
   describe('USWDS Integration Requirements', () => {
     it('should include data-default-value attribute on input element', async () => {
       element.value = '14:30';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -366,7 +367,7 @@ describe('USATimePicker', () => {
 
     it('should include data-default-value empty string when no value', async () => {
       element.value = '';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -384,7 +385,7 @@ describe('USATimePicker', () => {
 
     it('should render placeholder when set', async () => {
       element.placeholder = 'Select a time';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -394,7 +395,7 @@ describe('USATimePicker', () => {
     it('should display placeholder when no value set', async () => {
       element.placeholder = 'hh:mm';
       element.value = '';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -407,13 +408,13 @@ describe('USATimePicker', () => {
     // TODO: Investigate why USWDS time-picker doesn't preserve data-default-value after value changes
     it.skip('should maintain data-default-value when value changes', async () => {
       element.value = '09:00';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       let input = element.querySelector('input') as HTMLInputElement;
       expect(input?.getAttribute('data-default-value')).toBe('09:00');
 
       element.value = '17:30';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       input = element.querySelector('input') as HTMLInputElement;
       expect(input?.getAttribute('data-default-value')).toBe('17:30');
@@ -461,7 +462,7 @@ describe('USATimePicker', () => {
       // CRITICAL: data-enhanced must be a string, not boolean
       // Pattern found in combo box Bug #1
       element.value = '09:00';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const wrapper = element.querySelector('.usa-time-picker');
 
@@ -476,7 +477,7 @@ describe('USATimePicker', () => {
       // CRITICAL: data-default-value is required for USWDS to set initial value
       // Pattern documented in USWDS_INITIAL_VALUE_PATTERN.md
       element.value = '14:30';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       expect(input).toBeTruthy();

@@ -20,6 +20,7 @@ import {
 import './usa-accordion.js';
 import type { USAAccordion, AccordionItem } from './usa-accordion.js';
 import { assertHTMLIsRendered, cleanupAfterTest } from '@uswds-wc/test-utils/test-utils.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USAAccordion', () => {
   let element: USAAccordion;
@@ -461,7 +462,7 @@ describe('USAAccordion', () => {
 
       // Should end up in same state (10 clicks = even = closed)
       // USWDS manages the state via ARIA attributes
-      expect(button.getAttribute('aria-expanded')).toBe('false');
+      expect(await waitForARIAAttribute(button, 'aria-expanded')).toBe('false');
     });
 
     it('should handle items with no content', async () => {
@@ -896,7 +897,7 @@ describe('USAAccordion', () => {
         await element.updateComplete;
 
         // Verify aria-expanded and hidden are always in sync
-        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        const isExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
         const isHidden = content?.hasAttribute('hidden');
 
         expect(isExpanded).toBe(!isHidden);
@@ -1140,7 +1141,7 @@ describe('USAAccordion', () => {
 
       // All should start collapsed
       buttons.forEach((button) => {
-        expect(button.getAttribute('aria-expanded')).toBe('false');
+        expect(await waitForARIAAttribute(button, 'aria-expanded')).toBe('false');
       });
 
       // Expand first item
@@ -1159,7 +1160,7 @@ describe('USAAccordion', () => {
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
       buttons.forEach((button) => {
-        const controls = button.getAttribute('aria-controls');
+        const controls = await waitForARIAAttribute(button, 'aria-controls');
         expect(controls).toBeTruthy();
 
         const result = testARIARelationships(button);
@@ -1675,7 +1676,7 @@ describe('USAAccordion', () => {
         const contents = element.querySelectorAll('.usa-accordion__content');
 
         buttons.forEach((button, index) => {
-          const controlsId = button.getAttribute('aria-controls');
+          const controlsId = await waitForARIAAttribute(button, 'aria-controls');
           const contentId = contents[index]?.getAttribute('id');
 
           expect(controlsId).toBeTruthy();
@@ -1688,7 +1689,7 @@ describe('USAAccordion', () => {
         const contents = element.querySelectorAll('.usa-accordion__content');
 
         buttons.forEach((button, index) => {
-          const isExpanded = button.getAttribute('aria-expanded') === 'true';
+          const isExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
           const isHidden = contents[index]?.hasAttribute('hidden');
 
           // When expanded, should NOT be hidden

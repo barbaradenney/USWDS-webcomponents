@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import '@uswds-wc/test-utils/test-utils.js';
 import './usa-form-summary-pattern.js';
 import type { USAFormSummaryPattern, SummarySection } from './usa-form-summary-pattern.js';
+import { waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USAFormSummaryPattern', () => {
   let pattern: USAFormSummaryPattern;
@@ -502,8 +503,8 @@ describe('USAFormSummaryPattern', () => {
     it('should have descriptive aria-labels on edit buttons', () => {
       const editButtons = pattern.querySelectorAll('.usa-button--unstyled');
       editButtons.forEach((button) => {
-        expect(button.getAttribute('aria-label')).toBeTruthy();
-        expect(button.getAttribute('aria-label')).toMatch(/^Edit /);
+        expect(await waitForARIAAttribute(button, 'aria-label')).toBeTruthy();
+        expect(await waitForARIAAttribute(button, 'aria-label')).toMatch(/^Edit /);
       });
     });
 

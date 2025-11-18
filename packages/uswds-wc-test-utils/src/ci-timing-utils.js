@@ -13,7 +13,8 @@ import { waitForUpdate } from './test-utils.js';
 /**
  * Checks if running in CI environment
  */
-export function isCI(): boolean {
+export function isCI() {
+  // eslint-disable-next-line no-undef
   return process.env.CI === 'true' || process.env.CI === '1';
 }
 
@@ -79,6 +80,7 @@ export async function waitForARIAAttribute(
     if (value !== null && value !== '') {
       return value;
     }
+    // Controlled delay for polling - Promise auto-completes, no cleanup needed
     await new Promise((resolve) => setTimeout(resolve, checkInterval));
   }
 

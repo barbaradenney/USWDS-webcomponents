@@ -12,6 +12,7 @@ import {
   getFocusableElements,
   testActivationKeys,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
+import { waitForPropertyPropagation } from '@uswds-wc/test-utils';
 
 describe('USAFileInput', () => {
   let element: USAFileInput;
@@ -79,7 +80,7 @@ describe('USAFileInput', () => {
 
     it('should handle multiple file selection', async () => {
       element.multiple = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input.multiple).toBe(true);
@@ -87,7 +88,7 @@ describe('USAFileInput', () => {
 
     it('should handle disabled state', async () => {
       element.disabled = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input.disabled).toBe(true);
@@ -95,7 +96,7 @@ describe('USAFileInput', () => {
 
     it('should handle required state', async () => {
       element.required = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       const label = element.querySelector('label');
@@ -106,7 +107,7 @@ describe('USAFileInput', () => {
 
     it('should handle accept attribute', async () => {
       element.accept = '.pdf,.doc,.docx';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input.accept).toBe('.pdf,.doc,.docx');
@@ -118,7 +119,7 @@ describe('USAFileInput', () => {
       element.label = 'Test File';
       element.hint = 'Test hint';
 
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const formGroup = element.querySelector('.usa-form-group');
       const label = element.querySelector('.usa-label');
@@ -136,7 +137,7 @@ describe('USAFileInput', () => {
 
     it('should not render hint when not provided', async () => {
       element.hint = '';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const hint = element.querySelector('.usa-hint');
       expect(hint).toBe(null);
@@ -144,7 +145,7 @@ describe('USAFileInput', () => {
 
     it('should render required asterisk when required', async () => {
       element.required = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const requiredAbbr = element.querySelector('abbr[title="required"]');
       expect(requiredAbbr).toBeTruthy();
@@ -153,7 +154,7 @@ describe('USAFileInput', () => {
 
     it('should set form group class for required fields', async () => {
       element.required = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const formGroup = element.querySelector('.usa-form-group');
       expect(formGroup?.classList.contains('usa-form-group--required')).toBe(true);
@@ -163,7 +164,7 @@ describe('USAFileInput', () => {
   describe('ARIA and Accessibility', () => {
     it('should use custom input ID when provided', async () => {
       element.inputId = 'custom-file-input';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]');
       expect(input?.id).toBe('custom-file-input');
@@ -173,7 +174,7 @@ describe('USAFileInput', () => {
       element.inputId = 'test-file';
       element.label = 'Test Label';
 
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const label = element.querySelector('label');
       const input = element.querySelector('input[type="file"]');
@@ -186,7 +187,7 @@ describe('USAFileInput', () => {
       element.inputId = 'test-file';
       element.hint = 'Test hint';
 
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]');
       const hint = element.querySelector('.usa-hint');
@@ -218,7 +219,7 @@ describe('USAFileInput', () => {
   describe('Drag and Drop', () => {
     it('should not accept drop when disabled', async () => {
       element.disabled = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const target = element.querySelector('.usa-file-input') as HTMLElement;
       const mockFile = new File(['content'], 'dropped.txt', { type: 'text/plain' });
@@ -255,7 +256,7 @@ describe('USAFileInput', () => {
 
     it('should support form validation', async () => {
       element.required = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input.checkValidity()).toBe(false);
@@ -535,7 +536,7 @@ describe('USAFileInput', () => {
       // SKIP: JSDOM limitation - input[type="file"] focus not supported
       // This test requires a real browser environment (covered by Cypress tests)
       element.label = 'Upload document';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -549,7 +550,7 @@ describe('USAFileInput', () => {
 
     it('should activate file picker with Space/Enter keys', async () => {
       element.label = 'Choose file';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -565,7 +566,7 @@ describe('USAFileInput', () => {
 
     it('should support Enter and Space key activation', async () => {
       element.label = 'Select files';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -609,7 +610,7 @@ describe('USAFileInput', () => {
 
     it('should have no keyboard traps', async () => {
       element.label = 'Upload';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -638,7 +639,7 @@ describe('USAFileInput', () => {
     // TODO: Move to Cypress component tests where real browser focus works correctly
     it.skip('should maintain focus visibility (WCAG 2.4.7)', async () => {
       element.label = 'Select document';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -660,7 +661,7 @@ describe('USAFileInput', () => {
     it.skip('should support multiple file selection via keyboard', async () => {
       element.label = 'Upload multiple files';
       element.multiple = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -677,7 +678,7 @@ describe('USAFileInput', () => {
     it('should not respond to disabled file inputs via keyboard', async () => {
       element.label = 'Disabled upload';
       element.disabled = true;
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -708,7 +709,7 @@ describe('USAFileInput', () => {
     it.skip('should handle file type restrictions with keyboard', async () => {
       element.label = 'Upload PDF';
       element.accept = '.pdf,application/pdf';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -728,7 +729,7 @@ describe('USAFileInput', () => {
     it.skip('should provide accessible instructions via keyboard', async () => {
       element.label = 'Upload image';
       element.instructions = 'Select PNG or JPG files only';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -746,7 +747,7 @@ describe('USAFileInput', () => {
     it.skip('should handle error state keyboard interaction', async () => {
       element.label = 'Upload file';
       element.error = 'File size too large';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
@@ -812,7 +813,7 @@ describe('USAFileInput', () => {
       // Validates component structure allows proper USWDS enhancement
       element.label = 'Upload document';
       element.name = 'document-upload';
-      await waitForUpdate(element);
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input[type="file"]');
       const label = element.querySelector('label');
