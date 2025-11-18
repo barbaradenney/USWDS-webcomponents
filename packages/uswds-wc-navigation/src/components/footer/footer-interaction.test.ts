@@ -9,9 +9,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-footer.ts';
 import type { USAFooter } from './usa-footer.js';
 import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('Footer JavaScript Interaction Testing', () => {
   let element: USAFooter;
@@ -119,7 +117,8 @@ describe('Footer JavaScript Interaction Testing', () => {
 
       if (collapsibleButtons.length > 0) {
         const firstButton = collapsibleButtons[0] as HTMLButtonElement;
-        const initialExpanded = await waitForARIAAttribute(firstButton, 'aria-expanded') === 'true';
+        const initialExpanded =
+          (await waitForARIAAttribute(firstButton, 'aria-expanded')) === 'true';
 
         let eventFired = false;
         element.addEventListener('footer-section-toggle', () => {
@@ -130,7 +129,7 @@ describe('Footer JavaScript Interaction Testing', () => {
         firstButton.click();
         await waitForUpdate(element);
 
-        const newExpanded = await waitForARIAAttribute(firstButton, 'aria-expanded') === 'true';
+        const newExpanded = (await waitForARIAAttribute(firstButton, 'aria-expanded')) === 'true';
         const stateChanged = newExpanded !== initialExpanded || eventFired;
 
         if (!stateChanged) {

@@ -1369,7 +1369,8 @@ describe.skip('USAModal', () => {
       element.open = true;
       await waitForPropertyPropagation(element);
 
-      const primaryButton = element.querySelector('.usa-modal__primary-action') ||
+      const primaryButton =
+        element.querySelector('.usa-modal__primary-action') ||
         element.querySelector('.usa-button[type="button"]');
 
       if (primaryButton) {
@@ -1396,7 +1397,8 @@ describe.skip('USAModal', () => {
       element.open = true;
       await waitForPropertyPropagation(element);
 
-      const secondaryButton = element.querySelector('.usa-modal__secondary-action') ||
+      const secondaryButton =
+        element.querySelector('.usa-modal__secondary-action') ||
         element.querySelector('.usa-button--unstyled');
 
       if (secondaryButton) {

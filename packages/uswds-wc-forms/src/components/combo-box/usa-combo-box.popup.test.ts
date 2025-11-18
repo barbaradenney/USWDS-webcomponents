@@ -2,9 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import './usa-combo-box.ts';
 import type { USAComboBox } from './usa-combo-box.js';
 import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 /**
  * Regression Tests for Combo Box Functionality
@@ -368,7 +366,7 @@ describe('USAComboBox Regression Tests', () => {
         const isHidden =
           list.hasAttribute('hidden') ||
           !list.classList.contains('is-visible') ||
-          await waitForARIAAttribute(list, 'aria-hidden') === 'true';
+          (await waitForARIAAttribute(list, 'aria-hidden')) === 'true';
 
         expect(isHidden).toBe(true);
       }

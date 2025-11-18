@@ -11,9 +11,7 @@ import {
   verifyKeyboardOnlyUsable,
   getFocusableElements,
 } from '@uswds-wc/test-utils/keyboard-navigation-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USACollection', () => {
   let element: USACollection;

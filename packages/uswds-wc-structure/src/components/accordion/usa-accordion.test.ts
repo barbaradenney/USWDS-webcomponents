@@ -897,7 +897,7 @@ describe('USAAccordion', () => {
         await element.updateComplete;
 
         // Verify aria-expanded and hidden are always in sync
-        const isExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
+        const isExpanded = (await waitForARIAAttribute(button, 'aria-expanded')) === 'true';
         const isHidden = content?.hasAttribute('hidden');
 
         expect(isExpanded).toBe(!isHidden);
@@ -1692,7 +1692,7 @@ describe('USAAccordion', () => {
 
         let index = 0;
         for (const button of buttons) {
-          const isExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
+          const isExpanded = (await waitForARIAAttribute(button, 'aria-expanded')) === 'true';
           const isHidden = contents[index]?.hasAttribute('hidden');
 
           // When expanded, should NOT be hidden

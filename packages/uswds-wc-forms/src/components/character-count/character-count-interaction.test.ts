@@ -9,9 +9,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-character-count.ts';
 import type { USACharacterCount } from './usa-character-count.js';
 import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('Character Count JavaScript Interaction Testing', () => {
   let element: USACharacterCount;

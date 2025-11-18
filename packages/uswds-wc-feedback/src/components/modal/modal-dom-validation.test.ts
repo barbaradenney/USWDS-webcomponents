@@ -326,7 +326,9 @@ describe('Modal DOM Structure Validation', () => {
       expect(wrapper.getAttribute('role')).toBe('dialog');
       expect(await waitForARIAAttribute(wrapper, 'aria-modal')).toBe('true');
       expect(await waitForARIAAttribute(wrapper, 'aria-labelledby')).toBe(`${modalId}-heading`);
-      expect(await waitForARIAAttribute(wrapper, 'aria-describedby')).toBe(`${modalId}-description`);
+      expect(await waitForARIAAttribute(wrapper, 'aria-describedby')).toBe(
+        `${modalId}-description`
+      );
     });
 
     it('should have matching heading id', async () => {

@@ -105,9 +105,10 @@ describe('USABanner Layout Tests', () => {
     const header = element.querySelector('.usa-banner__header');
 
     // Initially banner should be collapsed
-    expect(await waitForARIAAttribute(button, 'aria-expanded'), 'Button should be collapsed initially').toBe(
-      'false'
-    );
+    expect(
+      await waitForARIAAttribute(button, 'aria-expanded'),
+      'Button should be collapsed initially'
+    ).toBe('false');
     expect(content.hidden, 'Content should be hidden initially').toBe(true);
     expect(
       header!.classList.contains('usa-banner__header--expanded'),
@@ -120,7 +121,9 @@ describe('USABanner Layout Tests', () => {
     // Wait for DOM update
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    expect(await waitForARIAAttribute(button, 'aria-expanded'), 'Button should be expanded').toBe('true');
+    expect(await waitForARIAAttribute(button, 'aria-expanded'), 'Button should be expanded').toBe(
+      'true'
+    );
     expect(content.hidden, 'Content should be visible when expanded').toBe(false);
     expect(
       header!.classList.contains('usa-banner__header--expanded'),
@@ -133,7 +136,10 @@ describe('USABanner Layout Tests', () => {
     // Wait for DOM update
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    expect(await waitForARIAAttribute(button, 'aria-expanded'), 'Button should be collapsed again').toBe('false');
+    expect(
+      await waitForARIAAttribute(button, 'aria-expanded'),
+      'Button should be collapsed again'
+    ).toBe('false');
     expect(content.hidden, 'Content should be hidden when collapsed').toBe(true);
     expect(
       header!.classList.contains('usa-banner__header--expanded'),
@@ -308,9 +314,10 @@ describe('USABanner Layout Tests', () => {
       // This test requires Cypress for full interactive behavior testing
       // Here we verify the component is set up correctly for USWDS enhancement
       expect(button, 'Button should exist').toBeTruthy();
-      expect(await waitForARIAAttribute(button, 'aria-controls'), 'Button should have aria-controls').toBe(
-        'gov-banner-default'
-      );
+      expect(
+        await waitForARIAAttribute(button, 'aria-controls'),
+        'Button should have aria-controls'
+      ).toBe('gov-banner-default');
 
       // Verify programmatic control works (tested in "should handle banner expansion states correctly")
       element.expanded = true;
@@ -334,7 +341,9 @@ describe('USABanner Layout Tests', () => {
       expect(button.tagName, 'Should be a button element').toBe('BUTTON');
 
       // Verify button is in the accessibility tree
-      expect(await waitForARIAAttribute(button, 'aria-expanded'), 'Should have aria-expanded').toBe('false');
+      expect(await waitForARIAAttribute(button, 'aria-expanded'), 'Should have aria-expanded').toBe(
+        'false'
+      );
       expect(await waitForARIAAttribute(button, 'aria-controls'), 'Should have aria-controls').toBe(
         'gov-banner-default'
       );

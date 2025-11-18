@@ -154,7 +154,9 @@ describe('USWDS Table Behavior Contract', () => {
       await waitForBehaviorInit(element);
 
       expect(header.hasAttribute('aria-sort')).toBe(true);
-      expect(['ascending', 'descending']).toContain(await waitForARIAAttribute(header, 'aria-sort'));
+      expect(['ascending', 'descending']).toContain(
+        await waitForARIAAttribute(header, 'aria-sort')
+      );
     });
   });
 
@@ -461,7 +463,9 @@ describe('USWDS Table Behavior Contract', () => {
       const header = customElement.querySelector('th[aria-sort]');
 
       if (header) {
-        expect(['ascending', 'descending']).toContain(await waitForARIAAttribute(header, 'aria-sort'));
+        expect(['ascending', 'descending']).toContain(
+          await waitForARIAAttribute(header, 'aria-sort')
+        );
       }
 
       customElement.remove();

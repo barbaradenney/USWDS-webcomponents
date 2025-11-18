@@ -2,9 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-validation.ts';
 import type { USAValidation } from './usa-validation.js';
 import { waitForUpdate, validateComponentJavaScript } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 /**
  * Regression Tests for Validation Component Interactive Functionality
@@ -465,7 +463,9 @@ describe('USAValidation Interactive Regression Tests', () => {
       await waitForUpdate(element);
 
       const input = element.querySelector('#test-input') as HTMLInputElement;
-      expect(await waitForARIAAttribute(input, 'aria-describedby')).toBe('test-input-hint test-input-error');
+      expect(await waitForARIAAttribute(input, 'aria-describedby')).toBe(
+        'test-input-hint test-input-error'
+      );
     });
 
     it('should have correct role attributes for messages', async () => {

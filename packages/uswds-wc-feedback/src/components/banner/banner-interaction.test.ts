@@ -9,9 +9,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-banner.ts';
 import type { USABanner } from './usa-banner.js';
 import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('Banner JavaScript Interaction Testing', () => {
   let element: USABanner;

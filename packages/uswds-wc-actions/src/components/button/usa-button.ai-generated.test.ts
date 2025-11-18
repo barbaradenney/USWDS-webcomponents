@@ -84,7 +84,7 @@ describe('UsaButton - AI Generated Tests', () => {
     const button = element.querySelector('button');
     const hasAccessibleContent =
       element.textContent?.trim() ||
-      await waitForARIAAttribute(element, 'aria-label') ||
+      (await waitForARIAAttribute(element, 'aria-label')) ||
       button?.getAttribute('aria-label');
     expect(hasAccessibleContent).toBeTruthy();
 

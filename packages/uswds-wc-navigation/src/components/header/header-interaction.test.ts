@@ -9,9 +9,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-header.ts';
 import type { USAHeader } from './usa-header.js';
 import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('Header JavaScript Interaction Testing', () => {
   let element: USAHeader;
@@ -90,7 +88,8 @@ describe('Header JavaScript Interaction Testing', () => {
       const nav = element.querySelector('.usa-nav') as HTMLElement;
 
       if (menuButton && nav) {
-        const initialExpanded = await waitForARIAAttribute(menuButton, 'aria-expanded') === 'true';
+        const initialExpanded =
+          (await waitForARIAAttribute(menuButton, 'aria-expanded')) === 'true';
 
         let eventFired = false;
         element.addEventListener('menu-toggle', () => {
@@ -101,7 +100,7 @@ describe('Header JavaScript Interaction Testing', () => {
         menuButton.click();
         await waitForUpdate(element);
 
-        const newExpanded = await waitForARIAAttribute(menuButton, 'aria-expanded') === 'true';
+        const newExpanded = (await waitForARIAAttribute(menuButton, 'aria-expanded')) === 'true';
         const menuToggled = newExpanded !== initialExpanded || eventFired;
 
         if (!menuToggled) {
@@ -139,7 +138,8 @@ describe('Header JavaScript Interaction Testing', () => {
 
       if (dropdownButtons.length > 0) {
         const firstDropdown = dropdownButtons[0] as HTMLButtonElement;
-        const initialExpanded = await waitForARIAAttribute(firstDropdown, 'aria-expanded') === 'true';
+        const initialExpanded =
+          (await waitForARIAAttribute(firstDropdown, 'aria-expanded')) === 'true';
 
         let eventFired = false;
         element.addEventListener('dropdown-toggle', () => {
@@ -150,7 +150,7 @@ describe('Header JavaScript Interaction Testing', () => {
         firstDropdown.click();
         await waitForUpdate(element);
 
-        const newExpanded = await waitForARIAAttribute(firstDropdown, 'aria-expanded') === 'true';
+        const newExpanded = (await waitForARIAAttribute(firstDropdown, 'aria-expanded')) === 'true';
         const dropdownToggled = newExpanded !== initialExpanded || eventFired;
 
         if (!dropdownToggled) {

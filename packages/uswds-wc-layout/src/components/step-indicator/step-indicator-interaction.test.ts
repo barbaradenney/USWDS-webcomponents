@@ -9,9 +9,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-step-indicator.ts';
 import type { USAStepIndicator } from './usa-step-indicator.js';
 import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('Step Indicator JavaScript Interaction Testing', () => {
   let element: USAStepIndicator;

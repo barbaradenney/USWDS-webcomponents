@@ -80,7 +80,7 @@ describe('Language Selector JavaScript Interaction Testing', () => {
       const list = element.querySelector('.usa-language__submenu') as HTMLElement;
 
       if (button && list) {
-        const initialExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
+        const initialExpanded = (await waitForARIAAttribute(button, 'aria-expanded')) === 'true';
 
         let eventFired = false;
         element.addEventListener('language-dropdown-toggle', () => {
@@ -91,7 +91,7 @@ describe('Language Selector JavaScript Interaction Testing', () => {
         button.click();
         await waitForUpdate(element);
 
-        const newExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
+        const newExpanded = (await waitForARIAAttribute(button, 'aria-expanded')) === 'true';
         const dropdownToggled = newExpanded !== initialExpanded || eventFired;
 
         if (!dropdownToggled) {
@@ -158,7 +158,7 @@ describe('Language Selector JavaScript Interaction Testing', () => {
         await waitForUpdate(element);
 
         // Check if dropdown closed
-        const isExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
+        const isExpanded = (await waitForARIAAttribute(button, 'aria-expanded')) === 'true';
         if (isExpanded) {
           console.warn('⚠️ Language selector may not be closing on outside clicks');
         }

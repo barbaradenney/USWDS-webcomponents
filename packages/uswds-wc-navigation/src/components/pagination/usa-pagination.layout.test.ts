@@ -373,9 +373,10 @@ describe('USAPagination Layout Tests', () => {
         await waitForARIAAttribute(previousButton, 'aria-label'),
         'Previous button should have aria-label'
       ).toBe('Previous page');
-      expect(await waitForARIAAttribute(nextButton, 'aria-label'), 'Next button should have aria-label').toBe(
-        'Next page'
-      );
+      expect(
+        await waitForARIAAttribute(nextButton, 'aria-label'),
+        'Next button should have aria-label'
+      ).toBe('Next page');
 
       // Page buttons should have descriptive labels
       const pageButtons = element.querySelectorAll('.usa-pagination__button');

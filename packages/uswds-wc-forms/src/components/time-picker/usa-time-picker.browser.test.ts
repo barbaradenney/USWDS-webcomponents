@@ -331,8 +331,13 @@ describe('USATimePicker Browser Tests', () => {
       const list = element.querySelector('.usa-combo-box__list') as HTMLElement;
 
       expect(input.getAttribute('role'), 'Input should have combobox role').toBe('combobox');
-      expect(await waitForARIAAttribute(input, 'aria-expanded'), 'Should have aria-expanded').toBeTruthy();
-      expect(await waitForARIAAttribute(input, 'aria-controls'), 'Should control list').toBe(list.id);
+      expect(
+        await waitForARIAAttribute(input, 'aria-expanded'),
+        'Should have aria-expanded'
+      ).toBeTruthy();
+      expect(await waitForARIAAttribute(input, 'aria-controls'), 'Should control list').toBe(
+        list.id
+      );
     });
 
     it('should update aria-expanded when dropdown opens/closes', async () => {
@@ -347,7 +352,9 @@ describe('USATimePicker Browser Tests', () => {
       // Close
       toggle.click();
       await new Promise((resolve) => setTimeout(resolve, 100));
-      expect(await waitForARIAAttribute(input, 'aria-expanded'), 'Should be collapsed').toBe('false');
+      expect(await waitForARIAAttribute(input, 'aria-expanded'), 'Should be collapsed').toBe(
+        'false'
+      );
     });
 
     it('should have correct ARIA attributes on list options', async () => {

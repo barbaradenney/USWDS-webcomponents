@@ -9,9 +9,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-time-picker.ts';
 import type { USATimePicker } from './usa-time-picker.js';
 import { waitForUpdate } from '@uswds-wc/test-utils/test-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('Time Picker JavaScript Interaction Testing', () => {
   let element: USATimePicker;
@@ -85,7 +83,8 @@ describe('Time Picker JavaScript Interaction Testing', () => {
       const listbox = element.querySelector('.usa-time-picker__list') as HTMLElement;
 
       if (toggleButton && listbox) {
-        const initialExpanded = await waitForARIAAttribute(toggleButton, 'aria-expanded') === 'true';
+        const initialExpanded =
+          (await waitForARIAAttribute(toggleButton, 'aria-expanded')) === 'true';
 
         let eventFired = false;
         element.addEventListener('time-picker-toggle', () => {
@@ -96,7 +95,7 @@ describe('Time Picker JavaScript Interaction Testing', () => {
         toggleButton.click();
         await waitForUpdate(element);
 
-        const newExpanded = await waitForARIAAttribute(toggleButton, 'aria-expanded') === 'true';
+        const newExpanded = (await waitForARIAAttribute(toggleButton, 'aria-expanded')) === 'true';
         const dropdownToggled = newExpanded !== initialExpanded || eventFired;
 
         if (!dropdownToggled) {

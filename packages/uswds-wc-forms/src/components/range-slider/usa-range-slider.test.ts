@@ -12,9 +12,7 @@ import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
-import { waitForPropertyPropagation ,
-  waitForARIAAttribute
-} from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForARIAAttribute } from '@uswds-wc/test-utils';
 
 describe('USARangeSlider', () => {
   let element: USARangeSlider;
@@ -466,7 +464,9 @@ describe('USARangeSlider', () => {
       const hint = element.querySelector('.usa-hint') as HTMLElement;
 
       expect(hint.id).toBe(`${element.inputId}-hint`);
-      expect(await waitForARIAAttribute(input, 'aria-describedby')).toContain(`${element.inputId}-hint`);
+      expect(await waitForARIAAttribute(input, 'aria-describedby')).toContain(
+        `${element.inputId}-hint`
+      );
     });
 
     it('should show required indicator', async () => {
