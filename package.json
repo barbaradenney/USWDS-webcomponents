@@ -282,6 +282,7 @@
     "format:check": "prettier --check packages/**/src/**/*.{ts,js,css,scss}",
     "validate:registrations": "node scripts/validate/validate-component-registrations.js",
     "validate:test-expectations": "node scripts/test/regression-test-validator.js",
+    "validate:test-timing": "node scripts/validate/validate-test-timing.js",
     "// OVER-ENGINEERING PREVENTION": "",
     "detect:over-engineering": "node scripts/validate/detect-over-engineering.js",
     "detect:issues": "node scripts/validate/auto-detect-component-issues.js",
