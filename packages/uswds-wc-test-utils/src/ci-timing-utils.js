@@ -1,0 +1,199 @@
+/**
+ * CI Timing Utilities
+ *
+ * Utilities for handling timing differences between local and CI environments.
+ * CI environments are typically slower, requiring additional waits for:
+ * - ARIA attribute updates
+ * - Property propagation to DOM
+ * - USWDS component initialization
+ */
+
+import { waitForUpdate } from './test-utils.js';
+
+/**
+ * Checks if running in CI environment
+ */
+export function isCI(): boolean {
+  return process.env.CI === 'true' || process.env.CI === '1';
+}
+
+/**
+ * Gets the CI timing multiplier
+ * CI environments need more iterations due to slower execution
+ */
+function getCIMultiplier(): number {
+  return isCI() ? 2 : 1;
+}
+
+/**
+ * Waits for property changes to propagate to the DOM
+ *
+ * Use this after setting properties that affect child elements:
+ * ```typescript
+ * element.required = true;
+ * await waitForPropertyPropagation(element);
+ * const input = element.querySelector('input');
+ * expect(input.required).toBe(true); // Now safe to check
+ * ```
+ *
+ * @param element - The element to wait for
+ * @param iterations - Base number of iterations (multiplied in CI)
+ */
+export async function waitForPropertyPropagation(
+  element: HTMLElement,
+  iterations = 2
+): Promise<void> {
+  const totalIterations = iterations * getCIMultiplier();
+  for (let i = 0; i < totalIterations; i++) {
+    await waitForUpdate(element);
+  }
+}
+
+/**
+ * Waits for an ARIA attribute to be set with a valid value
+ *
+ * Use this when checking ARIA attributes that may not be set immediately:
+ * ```typescript
+ * const ariaSort = await waitForARIAAttribute(header, 'aria-sort');
+ * if (ariaSort) {
+ *   expect(ariaSort).toMatch(/none|ascending|descending/);
+ * }
+ * ```
+ *
+ * @param element - The element with the ARIA attribute
+ * @param attribute - The ARIA attribute name
+ * @param timeout - Maximum time to wait in milliseconds
+ * @returns The attribute value, or null if not set within timeout
+ */
+export async function waitForARIAAttribute(
+  element: HTMLElement,
+  attribute: string,
+  timeout = 2000
+): Promise<string | null> {
+  const start = Date.now();
+  const checkInterval = isCI() ? 100 : 50;
+
+  while (Date.now() - start < timeout) {
+    const value = element.getAttribute(attribute);
+    // Consider both null and empty string as "not set"
+    if (value !== null && value !== '') {
+      return value;
+    }
+    await new Promise((resolve) => setTimeout(resolve, checkInterval));
+  }
+
+  // Return final value (might be null or empty)
+  return element.getAttribute(attribute);
+}
+
+/**
+ * Waits for a modal to fully open and render
+ *
+ * Modals require extra time for USWDS initialization and rendering:
+ * ```typescript
+ * modal.open = true;
+ * await waitForModalOpen(modal);
+ * // Now safe to query modal content
+ * const title = modal.querySelector('.usa-modal__heading');
+ * ```
+ *
+ * @param modal - The modal element
+ */
+export async function waitForModalOpen(modal: HTMLElement): Promise<void> {
+  // Wait for property propagation
+  await waitForPropertyPropagation(modal, 3);
+
+  // Extra wait for USWDS modal initialization
+  const extraWait = isCI() ? 200 : 100;
+  await new Promise((resolve) => setTimeout(resolve, extraWait));
+}
+
+/**
+ * Waits for an accordion to fully expand/collapse
+ *
+ * Accordions use transitions that need time to complete:
+ * ```typescript
+ * button.click();
+ * await waitForAccordionTransition(accordion);
+ * // Now safe to check expanded state
+ * ```
+ *
+ * @param accordion - The accordion element
+ */
+export async function waitForAccordionTransition(
+  accordion: HTMLElement
+): Promise<void> {
+  await waitForPropertyPropagation(accordion, 2);
+
+  // Wait for CSS transition
+  const transitionTime = isCI() ? 400 : 300;
+  await new Promise((resolve) => setTimeout(resolve, transitionTime));
+}
+
+/**
+ * Waits for a combo-box to initialize
+ *
+ * Combo-boxes have complex USWDS initialization:
+ * ```typescript
+ * const comboBox = await waitForComboBoxInit(element);
+ * // Now safe to interact with combo-box
+ * ```
+ *
+ * @param element - The combo-box element
+ */
+export async function waitForComboBoxInit(element: HTMLElement): Promise<void> {
+  await waitForPropertyPropagation(element, 3);
+
+  // Extra wait for USWDS combo-box setup
+  const extraWait = isCI() ? 300 : 150;
+  await new Promise((resolve) => setTimeout(resolve, extraWait));
+}
+
+/**
+ * Generic wait for element to be in DOM and rendered
+ *
+ * Use when an element should exist but might not be rendered yet:
+ * ```typescript
+ * element.appendChild(newChild);
+ * await waitForElementRender(newChild);
+ * // Now safe to query or measure newChild
+ * ```
+ *
+ * @param element - The element to wait for
+ * @param timeout - Maximum time to wait
+ */
+export async function waitForElementRender(
+  element: HTMLElement,
+  timeout = 2000
+): Promise<void> {
+  const start = Date.now();
+
+  while (Date.now() - start < timeout) {
+    if (element.offsetParent !== null || element.offsetWidth > 0) {
+      // Element is rendered
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+}
+
+/**
+ * Waits for a date picker to initialize
+ *
+ * Date pickers have complex USWDS initialization with calendar rendering:
+ * ```typescript
+ * await waitForDatePickerInit(datePicker);
+ * // Now safe to interact with calendar
+ * ```
+ *
+ * @param datePicker - The date picker element
+ */
+export async function waitForDatePickerInit(
+  datePicker: HTMLElement
+): Promise<void> {
+  await waitForPropertyPropagation(datePicker, 3);
+
+  // Extra wait for calendar rendering
+  const extraWait = isCI() ? 300 : 150;
+  await new Promise((resolve) => setTimeout(resolve, extraWait));
+}
