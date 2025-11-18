@@ -1140,9 +1140,9 @@ describe('USAAccordion', () => {
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
       // All should start collapsed
-      buttons.forEach((button) => {
+      for (const button of buttons) {
         expect(await waitForARIAAttribute(button, 'aria-expanded')).toBe('false');
-      });
+      }
 
       // Expand first item
       (buttons[0] as HTMLElement).click();
@@ -1159,7 +1159,7 @@ describe('USAAccordion', () => {
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
-      buttons.forEach((button) => {
+      for (const button of buttons) {
         const controls = await waitForARIAAttribute(button, 'aria-controls');
         expect(controls).toBeTruthy();
 
@@ -1170,7 +1170,7 @@ describe('USAAccordion', () => {
         // Verify controlled element exists
         const controlledElement = document.getElementById(controls || '');
         expect(controlledElement).toBeTruthy();
-      });
+      }
     });
 
     it('should maintain ARIA when expanding/collapsing (WCAG 4.1.2)', async () => {
@@ -1675,27 +1675,31 @@ describe('USAAccordion', () => {
         const buttons = element.querySelectorAll('.usa-accordion__button');
         const contents = element.querySelectorAll('.usa-accordion__content');
 
-        buttons.forEach((button, index) => {
+        let index = 0;
+        for (const button of buttons) {
           const controlsId = await waitForARIAAttribute(button, 'aria-controls');
           const contentId = contents[index]?.getAttribute('id');
 
           expect(controlsId).toBeTruthy();
           expect(controlsId).toBe(contentId);
-        });
+          index++;
+        }
       });
 
       it('should sync aria-expanded with hidden attribute', async () => {
         const buttons = element.querySelectorAll('.usa-accordion__button');
         const contents = element.querySelectorAll('.usa-accordion__content');
 
-        buttons.forEach((button, index) => {
+        let index = 0;
+        for (const button of buttons) {
           const isExpanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
           const isHidden = contents[index]?.hasAttribute('hidden');
 
           // When expanded, should NOT be hidden
           // When collapsed, SHOULD be hidden
           expect(isExpanded).toBe(!isHidden);
-        });
+          index++;
+        }
       });
     });
   });

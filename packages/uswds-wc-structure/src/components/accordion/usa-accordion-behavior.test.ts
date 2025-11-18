@@ -271,13 +271,13 @@ describe('USWDS Accordion Behavior Contract', () => {
 
       const buttons = element.querySelectorAll('.usa-accordion__button');
 
-      buttons.forEach((button) => {
+      for (const button of buttons) {
         const contentId = await waitForARIAAttribute(button, 'aria-controls');
         const content = element.querySelector(`#${contentId}`) as HTMLElement;
         const expanded = await waitForARIAAttribute(button, 'aria-expanded') === 'true';
 
         expect(content.hasAttribute('hidden')).toBe(!expanded);
-      });
+      }
     });
   });
 
