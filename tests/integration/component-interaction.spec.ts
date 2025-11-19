@@ -475,8 +475,9 @@ test.describe('Component Interaction Tests', () => {
       await page.fill('#user-email', 'jane.smith@example.com');
 
       // Scroll radio button into view before checking
-      await page.locator('#role-editor').scrollIntoViewIfNeeded();
-      await page.check('#role-editor');
+      const roleEditorLocator = page.locator('#role-editor');
+      await roleEditorLocator.scrollIntoViewIfNeeded();
+      await roleEditorLocator.check();
 
       // Test role-based permission updates (component interaction)
       await page.waitForTimeout(100); // Let the change event handler run
@@ -904,8 +905,9 @@ test.describe('Component Interaction Tests', () => {
       await page.fill('#phone', '(555) 123-4567');
 
       // Scroll radio button into view before checking
-      await page.locator('#contact-email').scrollIntoViewIfNeeded();
-      await page.check('#contact-email');
+      const contactEmailLocator = page.locator('#contact-email');
+      await contactEmailLocator.scrollIntoViewIfNeeded();
+      await contactEmailLocator.check();
 
       // Open third accordion
       await page.click('button[aria-controls="a3"]');
@@ -913,10 +915,12 @@ test.describe('Component Interaction Tests', () => {
 
       // Fill preferences
       // Scroll radio buttons into view before checking
-      await page.locator('#notify-email').scrollIntoViewIfNeeded();
-      await page.check('#notify-email');
-      await page.locator('#notify-sms').scrollIntoViewIfNeeded();
-      await page.check('#notify-sms');
+      const notifyEmailLocator = page.locator('#notify-email');
+      await notifyEmailLocator.scrollIntoViewIfNeeded();
+      await notifyEmailLocator.check();
+      const notifySmsLocator = page.locator('#notify-sms');
+      await notifySmsLocator.scrollIntoViewIfNeeded();
+      await notifySmsLocator.check();
       await page.selectOption('#timezone', 'EST');
 
       // Test cross-form data collection

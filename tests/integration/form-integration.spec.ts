@@ -315,21 +315,25 @@ test.describe('Real Form Integration Tests', () => {
 
       // Contact preferences
       // Scroll checkboxes into view before checking
-      await page.locator('#contact-phone').scrollIntoViewIfNeeded();
-      await page.check('#contact-phone');
-      await page.locator('#contact-mail').scrollIntoViewIfNeeded();
-      await page.check('#contact-mail');
+      const contactPhoneLocator = page.locator('#contact-phone');
+      await contactPhoneLocator.scrollIntoViewIfNeeded();
+      await contactPhoneLocator.check();
+      const contactMailLocator = page.locator('#contact-mail');
+      await contactMailLocator.scrollIntoViewIfNeeded();
+      await contactMailLocator.check();
 
       // Issue category
-      await page.locator('#category-healthcare').scrollIntoViewIfNeeded();
-      await page.check('#category-healthcare');
+      const categoryHealthcareLocator = page.locator('#category-healthcare');
+      await categoryHealthcareLocator.scrollIntoViewIfNeeded();
+      await categoryHealthcareLocator.check();
 
       // Message
       await page.fill('#message', 'I am writing to express my concern about healthcare access in our district. Many residents are struggling to find affordable healthcare options.');
 
       // Verification
-      await page.locator('#verify').scrollIntoViewIfNeeded();
-      await page.check('#verify');
+      const verifyLocator = page.locator('#verify');
+      await verifyLocator.scrollIntoViewIfNeeded();
+      await verifyLocator.check();
 
       // Submit form
       await page.click('button[type="submit"]');
@@ -740,10 +744,12 @@ test.describe('Real Form Integration Tests', () => {
 
       // Fill step 3
       // Scroll checkboxes into view before checking
-      await page.locator('#permit-business').scrollIntoViewIfNeeded();
-      await page.check('#permit-business');
-      await page.locator('#permit-signage').scrollIntoViewIfNeeded();
-      await page.check('#permit-signage');
+      const permitBusinessLocator = page.locator('#permit-business');
+      await permitBusinessLocator.scrollIntoViewIfNeeded();
+      await permitBusinessLocator.check();
+      const permitSignageLocator = page.locator('#permit-signage');
+      await permitSignageLocator.scrollIntoViewIfNeeded();
+      await permitSignageLocator.check();
       await page.fill('#start-date', '2024-12-01');
 
       // Continue to review
@@ -763,8 +769,9 @@ test.describe('Real Form Integration Tests', () => {
       await expect(page.locator('#step-4')).toBeVisible();
 
       // Complete submission
-      await page.locator('#certify').scrollIntoViewIfNeeded();
-      await page.check('#certify');
+      const certifyLocator = page.locator('#certify');
+      await certifyLocator.scrollIntoViewIfNeeded();
+      await certifyLocator.check();
       await page.click('text=Submit Application');
 
       // Verify successful submission
@@ -913,8 +920,9 @@ test.describe('Real Form Integration Tests', () => {
 
       // Fill form correctly
       await page.fill('#required-field', 'Test value');
-      await page.locator('#contact-email').scrollIntoViewIfNeeded();
-      await page.check('#contact-email');
+      const contactEmailLocator2 = page.locator('#contact-email');
+      await contactEmailLocator2.scrollIntoViewIfNeeded();
+      await contactEmailLocator2.check();
       await page.click('button[type="submit"]');
 
       // Verify success
