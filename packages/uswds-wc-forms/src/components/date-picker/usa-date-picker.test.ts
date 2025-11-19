@@ -152,9 +152,9 @@ describe('USADatePicker', () => {
 
     it('should handle required state', async () => {
       element.required = true;
-      // Use CI-aware property propagation utility
-      // CI environments need more time for property changes to propagate to DOM
-      await waitForPropertyPropagation(element);
+      // Use increased iterations for date-picker (complex USWDS component)
+      // Date picker needs more time than standard components for property propagation
+      await waitForPropertyPropagation(element, 4);
 
       const input = element.querySelector('input') as HTMLInputElement;
       const label = element.querySelector('label');
