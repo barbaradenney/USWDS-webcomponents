@@ -99,9 +99,18 @@ async function globalSetup(config: FullConfig) {
   try {
     await execAsync('npx playwright --version');
     console.log('✅ Playwright is available');
+
+    // Actually install browsers if not already installed
+    console.log('📥 Ensuring Playwright browsers are installed...');
+    try {
+      await execAsync('npx playwright install --with-deps chromium');
+      console.log('✅ Playwright browsers ready');
+    } catch (installError) {
+      console.warn('⚠️  Browser installation encountered an issue (may already be installed)');
+    }
   } catch (error) {
-    console.log('📥 Installing Playwright browsers...');
-    await execAsync('npx playwright install');
+    console.log('📥 Installing Playwright and browsers...');
+    await execAsync('npx playwright install --with-deps');
     console.log('✅ Playwright browsers installed');
   }
 
