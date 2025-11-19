@@ -473,6 +473,9 @@ test.describe('Component Interaction Tests', () => {
       // Test form interaction within modal
       await page.fill('#user-name', 'Jane Smith');
       await page.fill('#user-email', 'jane.smith@example.com');
+
+      // Scroll radio button into view before checking
+      await page.locator('#role-editor').scrollIntoViewIfNeeded();
       await page.check('#role-editor');
 
       // Test role-based permission updates (component interaction)
@@ -899,6 +902,9 @@ test.describe('Component Interaction Tests', () => {
       // Fill contact form
       await page.fill('#email', 'john.doe@example.com');
       await page.fill('#phone', '(555) 123-4567');
+
+      // Scroll radio button into view before checking
+      await page.locator('#contact-email').scrollIntoViewIfNeeded();
       await page.check('#contact-email');
 
       // Open third accordion
@@ -906,7 +912,10 @@ test.describe('Component Interaction Tests', () => {
       await expect(page.locator('#a3')).toBeVisible();
 
       // Fill preferences
+      // Scroll radio buttons into view before checking
+      await page.locator('#notify-email').scrollIntoViewIfNeeded();
       await page.check('#notify-email');
+      await page.locator('#notify-sms').scrollIntoViewIfNeeded();
       await page.check('#notify-sms');
       await page.selectOption('#timezone', 'EST');
 

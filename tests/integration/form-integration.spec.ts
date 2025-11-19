@@ -314,16 +314,21 @@ test.describe('Real Form Integration Tests', () => {
       await page.fill('#zip', '90210');
 
       // Contact preferences
+      // Scroll checkboxes into view before checking
+      await page.locator('#contact-phone').scrollIntoViewIfNeeded();
       await page.check('#contact-phone');
+      await page.locator('#contact-mail').scrollIntoViewIfNeeded();
       await page.check('#contact-mail');
 
       // Issue category
+      await page.locator('#category-healthcare').scrollIntoViewIfNeeded();
       await page.check('#category-healthcare');
 
       // Message
       await page.fill('#message', 'I am writing to express my concern about healthcare access in our district. Many residents are struggling to find affordable healthcare options.');
 
       // Verification
+      await page.locator('#verify').scrollIntoViewIfNeeded();
       await page.check('#verify');
 
       // Submit form
@@ -734,7 +739,10 @@ test.describe('Real Form Integration Tests', () => {
       await expect(page.locator('#step-3')).toBeVisible();
 
       // Fill step 3
+      // Scroll checkboxes into view before checking
+      await page.locator('#permit-business').scrollIntoViewIfNeeded();
       await page.check('#permit-business');
+      await page.locator('#permit-signage').scrollIntoViewIfNeeded();
       await page.check('#permit-signage');
       await page.fill('#start-date', '2024-12-01');
 
@@ -755,6 +763,7 @@ test.describe('Real Form Integration Tests', () => {
       await expect(page.locator('#step-4')).toBeVisible();
 
       // Complete submission
+      await page.locator('#certify').scrollIntoViewIfNeeded();
       await page.check('#certify');
       await page.click('text=Submit Application');
 
@@ -904,6 +913,7 @@ test.describe('Real Form Integration Tests', () => {
 
       // Fill form correctly
       await page.fill('#required-field', 'Test value');
+      await page.locator('#contact-email').scrollIntoViewIfNeeded();
       await page.check('#contact-email');
       await page.click('button[type="submit"]');
 
