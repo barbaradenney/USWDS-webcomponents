@@ -274,6 +274,7 @@ export class USATimePicker extends USWDSBaseComponent {
           data-min-time="${this.minTime || ''}"
           data-max-time="${this.maxTime || ''}"
           data-step="${this.step || '30'}"
+          data-default-value="${this.value || ''}"
           data-enhanced="false"
         >
           ${this.renderInput(inputClasses, ariaDescribedBy)}
@@ -284,17 +285,14 @@ export class USATimePicker extends USWDSBaseComponent {
 
   // Public API methods for imperative control
   show() {
-    console.log('Time Picker: Show triggered - delegating to USWDS');
     // USWDS time picker will handle dropdown showing via its event listeners
   }
 
   hide() {
-    console.log('Time Picker: Hide triggered - delegating to USWDS');
     // USWDS time picker will handle dropdown hiding via its event listeners
   }
 
   updateOptions() {
-    console.log('Time Picker: Update options triggered - delegating to USWDS');
     // USWDS time picker will handle option generation automatically
   }
 }

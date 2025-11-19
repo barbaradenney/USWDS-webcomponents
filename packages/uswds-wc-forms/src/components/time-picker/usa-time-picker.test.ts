@@ -355,24 +355,26 @@ describe('USATimePicker', () => {
    * See: /tmp/combo-box-complete-summary.md for pattern details
    */
   describe('USWDS Integration Requirements', () => {
-    it('should include data-default-value attribute on input element', async () => {
+    it('should include data-default-value attribute on container element', async () => {
       element.value = '14:30';
       await waitForPropertyPropagation(element);
 
-      const input = element.querySelector('input') as HTMLInputElement;
-      expect(input).toBeTruthy();
-      expect(input?.hasAttribute('data-default-value')).toBe(true);
-      expect(input?.getAttribute('data-default-value')).toBe('14:30');
+      // USWDS reads data-default-value from container, not input (same pattern as combo-box)
+      const container = element.querySelector('.usa-time-picker');
+      expect(container).toBeTruthy();
+      expect(container?.hasAttribute('data-default-value')).toBe(true);
+      expect(container?.getAttribute('data-default-value')).toBe('14:30');
     });
 
     it('should include data-default-value empty string when no value', async () => {
       element.value = '';
       await waitForPropertyPropagation(element);
 
-      const input = element.querySelector('input') as HTMLInputElement;
-      expect(input).toBeTruthy();
-      expect(input?.hasAttribute('data-default-value')).toBe(true);
-      expect(input?.getAttribute('data-default-value')).toBe('');
+      // USWDS reads data-default-value from container (same pattern as combo-box)
+      const container = element.querySelector('.usa-time-picker');
+      expect(container).toBeTruthy();
+      expect(container?.hasAttribute('data-default-value')).toBe(true);
+      expect(container?.getAttribute('data-default-value')).toBe('');
     });
 
     it('should include data-enhanced="false" on time picker wrapper', async () => {
