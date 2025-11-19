@@ -152,9 +152,9 @@ describe('USADatePicker', () => {
 
     it('should handle required state', async () => {
       element.required = true;
-      await waitForUpdate(element);
-      // Wait for DOM to update after property change
-      await waitForUpdate(element);
+      // Use CI-aware property propagation utility
+      // CI environments need more time for property changes to propagate to DOM
+      await waitForPropertyPropagation(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       const label = element.querySelector('label');
