@@ -9,9 +9,10 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Progressive Enhancement Tests', () => {
   test.describe('No JavaScript Fallback', () => {
-    test('Button should work as basic HTML button without JS', async ({ page }) => {
-      // Disable JavaScript
-      await page.setJavaScriptEnabled(false);
+    test('Button should work as basic HTML button without JS', async ({ browser }) => {
+      // Create browser context with JavaScript disabled
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
 
       await page.goto('/iframe.html?id=actions-button--default');
 
@@ -25,10 +26,16 @@ test.describe('Progressive Enhancement Tests', () => {
       // Button should maintain basic styling and be recognizable
       const buttonText = await button.textContent();
       expect(buttonText?.trim().length).toBeGreaterThan(0);
+
+      // Cleanup
+      await page.close();
+      await context.close();
     });
 
-    test('Form components should submit via browser default', async ({ page }) => {
-      await page.setJavaScriptEnabled(false);
+    test('Form components should submit via browser default', async ({ browser }) => {
+      // Create browser context with JavaScript disabled
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
 
       await page.goto('/iframe.html?id=forms-text-input--default');
 
@@ -59,10 +66,16 @@ test.describe('Progressive Enhancement Tests', () => {
         await textInput.fill('test input');
         await expect(textInput).toHaveValue('test input');
       }
+
+      // Cleanup
+      await page.close();
+      await context.close();
     });
 
-    test('Accordion should show/hide with CSS-only toggle', async ({ page }) => {
-      await page.setJavaScriptEnabled(false);
+    test('Accordion should show/hide with CSS-only toggle', async ({ browser }) => {
+      // Create browser context with JavaScript disabled
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
 
       await page.goto('/iframe.html?id=structure-accordion--default');
 
@@ -86,10 +99,16 @@ test.describe('Progressive Enhancement Tests', () => {
         await firstSummary.click();
         await expect(firstDetails).toHaveAttribute('open');
       }
+
+      // Cleanup
+      await page.close();
+      await context.close();
     });
 
-    test('Navigation should work with anchor links', async ({ page }) => {
-      await page.setJavaScriptEnabled(false);
+    test('Navigation should work with anchor links', async ({ browser }) => {
+      // Create browser context with JavaScript disabled
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
 
       await page.goto('/iframe.html?id=navigation-header--default');
 
@@ -113,6 +132,10 @@ test.describe('Progressive Enhancement Tests', () => {
           expect(linkText?.trim().length).toBeGreaterThan(0);
         }
       }
+
+      // Cleanup
+      await page.close();
+      await context.close();
     });
   });
 
