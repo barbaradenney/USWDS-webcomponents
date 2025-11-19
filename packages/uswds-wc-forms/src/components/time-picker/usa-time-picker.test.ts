@@ -10,7 +10,7 @@ import {
   testComponentAccessibility,
   USWDS_A11Y_CONFIG,
 } from '@uswds-wc/test-utils/accessibility-utils.js';
-import { waitForPropertyPropagation } from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForComboBoxInit } from '@uswds-wc/test-utils';
 
 describe('USATimePicker', () => {
   let element: USATimePicker;
@@ -385,7 +385,9 @@ describe('USATimePicker', () => {
 
     it('should render placeholder when set', async () => {
       element.placeholder = 'Select a time';
-      await waitForPropertyPropagation(element);
+      // Use waitForComboBoxInit for complex USWDS time picker initialization
+      // Time picker has similar complex initialization to combo-box (300ms in CI)
+      await waitForComboBoxInit(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       expect(input).toBeTruthy();

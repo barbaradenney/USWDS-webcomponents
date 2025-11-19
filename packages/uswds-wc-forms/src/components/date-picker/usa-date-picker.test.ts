@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import './usa-date-picker.ts';
 import type { USADatePicker } from './usa-date-picker.js';
-import { waitForPropertyPropagation } from '@uswds-wc/test-utils';
+import { waitForPropertyPropagation, waitForDatePickerInit } from '@uswds-wc/test-utils';
 
 // Helper to wait for date picker button structure to be created
 async function waitForDatePickerButton(element: USADatePicker): Promise<HTMLButtonElement | null> {
@@ -152,9 +152,9 @@ describe('USADatePicker', () => {
 
     it('should handle required state', async () => {
       element.required = true;
-      // Use increased iterations for date-picker (complex USWDS component)
-      // Date picker needs more time than standard components for property propagation
-      await waitForPropertyPropagation(element, 4);
+      // Use waitForDatePickerInit for complex USWDS date picker initialization
+      // Includes property propagation + extra wait for calendar rendering (300ms in CI)
+      await waitForDatePickerInit(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
       const label = element.querySelector('label');
