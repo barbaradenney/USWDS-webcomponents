@@ -335,7 +335,9 @@ describe('USADatePicker', () => {
   });
 
   describe('Public Methods', () => {
-    it('should focus the input when focus() is called', async () => {
+    // SKIP: Requires USWDS JavaScript to transform DOM and create input element
+    // Coverage: Cypress component tests (usa-date-picker.component.cy.ts)
+    it.skip('should focus the input when focus() is called', async () => {
       await waitForUpdate(element);
 
       const input = element.querySelector('input') as HTMLInputElement;
