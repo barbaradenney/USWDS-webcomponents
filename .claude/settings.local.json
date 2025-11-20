@@ -155,7 +155,8 @@
       "Bash(pnpm run test:cypress:component:*)",
       "Bash(pnpm cypress:component:*)",
       "Bash(gh run download:*)",
-      "Bash(/tmp/cypress-ci-run-19523285650.log)"
+      "Bash(/tmp/cypress-ci-run-19523285650.log)",
+      "Bash(/tmp/push-failed.txt)"
     ],
     "deny": [],
     "ask": []
