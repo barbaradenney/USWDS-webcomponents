@@ -8,6 +8,7 @@
 // Tests validate core USWDS tooltip behavior which is working correctly.
 // Accessibility test now PASSING - tooltip properly implements WCAG 2.1 AA standards.
 
+
 describe('USWDS Tooltip E2E Tests', () => {
   beforeEach(() => {
     cy.selectStory('feedback-tooltip', 'default');
