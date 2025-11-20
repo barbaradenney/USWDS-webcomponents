@@ -111,7 +111,7 @@ describe('Date Picker Calendar Tests', () => {
         cy.wait(1000);
 
         // Calendar should be visible
-        cy.get('.usa-date-picker__calendar'), { timeout: 5000 }.should('be.visible');
+        cy.get('.usa-date-picker__calendar', { timeout: 5000 }).should('be.visible');
       });
     });
 
@@ -153,7 +153,7 @@ describe('Date Picker Calendar Tests', () => {
         cy.wait(1000);
 
         // Calendar should be visible
-        cy.get('.usa-date-picker__calendar'), { timeout: 5000 }.should('be.visible');
+        cy.get('.usa-date-picker__calendar', { timeout: 5000 }).should('be.visible');
       });
     });
 
@@ -161,7 +161,7 @@ describe('Date Picker Calendar Tests', () => {
       cy.get('usa-date-picker').within(() => {
         // Open calendar
         cy.get('.usa-date-picker__button').click();
-        cy.wait(1000);        cy.get('.usa-date-picker__calendar'), { timeout: 5000 }.should('be.visible');
+        cy.wait(1000);        cy.get('.usa-date-picker__calendar', { timeout: 5000 }).should('be.visible');
 
         // Press Escape to close
         cy.get('.usa-date-picker__external-input').type('{esc}');
