@@ -151,7 +151,11 @@
       "Bash(timeout 30 pnpm run storybook:*)",
       "Bash(pnpm --filter @uswds-wc/structure test:*)",
       "Bash(pnpm --filter @uswds-wc/forms build:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(pnpm run test:cypress:component:*)",
+      "Bash(pnpm cypress:component:*)",
+      "Bash(gh run download:*)",
+      "Bash(/tmp/cypress-ci-run-19523285650.log)"
     ],
     "deny": [],
     "ask": []
