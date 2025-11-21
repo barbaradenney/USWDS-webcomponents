@@ -474,8 +474,8 @@ test.describe('Component Interaction Tests', () => {
       await page.fill('#user-name', 'Jane Smith');
       await page.fill('#user-email', 'jane.smith@example.com');
 
-      // Force check to bypass viewport/actionability checks (element in modal)
-      await page.locator('#role-editor').check({ force: true });
+      // Force click to bypass viewport/actionability checks (element in modal)
+      await page.locator('#role-editor').click({ force: true });
 
       // Test role-based permission updates (component interaction)
       await page.waitForTimeout(100); // Let the change event handler run
@@ -902,16 +902,16 @@ test.describe('Component Interaction Tests', () => {
       await page.fill('#email', 'john.doe@example.com');
       await page.fill('#phone', '(555) 123-4567');
 
-      // Force check to bypass viewport/actionability checks (element in accordion)
-      await page.locator('#contact-email').check({ force: true });
+      // Force click to bypass viewport/actionability checks (element in accordion)
+      await page.locator('#contact-email').click({ force: true });
 
       // Open third accordion
       await page.click('button[aria-controls="a3"]');
       await expect(page.locator('#a3')).toBeVisible();
 
-      // Fill preferences - force check to bypass viewport checks (elements in accordion)
-      await page.locator('#notify-email').check({ force: true });
-      await page.locator('#notify-sms').check({ force: true });
+      // Fill preferences - force click to bypass viewport checks (elements in accordion)
+      await page.locator('#notify-email').click({ force: true });
+      await page.locator('#notify-sms').click({ force: true });
       await page.selectOption('#timezone', 'EST');
 
       // Test cross-form data collection
