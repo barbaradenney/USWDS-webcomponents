@@ -23,10 +23,12 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
+      uses: actions/checkout@v4
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10
 
 
       
@@ -40,7 +42,7 @@ jobs:
       run: pnpm install --frozen-lockfile
       
     - name: Run scripts maintenance check
-      run: npm run scripts:check
+      run: pnpm run scripts:check
       
     - name: Comment on PR if issues found
       if: failure() && github.event_name == 'pull_request'
@@ -50,7 +52,7 @@ jobs:
           const { execSync } = require('child_process');
           let output;
           try {
-            execSync('npm run scripts:check', { encoding: 'utf8' });
+            execSync('pnpm run scripts:check', { encoding: 'utf8' });
             output = 'Scripts maintenance check passed ✅';
           } catch (error) {
             output = error.stdout || error.message;
