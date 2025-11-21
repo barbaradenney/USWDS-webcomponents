@@ -213,9 +213,10 @@ describe('Character Count - Accessibility', () => {
         // Wait longer for USWDS to update error state in CI (increased from 1000ms to 1500ms)
         cy.wait(1500);
 
-        // Status should show error state with increased retry timeout (increased to 15000ms for CI stability)
+        // Status should show invalid state with increased retry timeout (increased to 15000ms for CI stability)
+        // NOTE: USWDS uses '--invalid' class, not '--error' (verified in uswds source)
         cy.get('.usa-character-count__status', { timeout: 15000 })
-          .should('have.class', 'usa-character-count__status--error');
+          .should('have.class', 'usa-character-count__status--invalid');
       });
     });
   });
