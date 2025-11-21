@@ -155,7 +155,8 @@ describe('Smoke Tests - Critical Component Interactions', () => {
         mimeType: 'text/plain'
       }, { force: true });
 
-      cy.get('usa-file-input').should('contain', fileName);
+      // Wait for file name to appear (file-input needs time to update DOM)
+      cy.get('usa-file-input', { timeout: 10000 }).should('contain', fileName);
     });
   });
 

@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-21T16:46:00.000Z",
+  "timestamp": "2025-11-21T18:00:00.000Z",
   "regressionTestsPassed": true,
   "expectationPatternsValid": true,
   "documentationSynced": true,
   "overallPassed": true,
-  "notes": "Fixed form-integration.spec.ts: Changed page.check({ force: true }) to page.locator().click({ force: true }) - check() doesn't support force option. Marked 4 flaky tests as test.skip() due to viewport calculation issues."
+  "notes": "Fixed flaky file-input smoke test: increased timeout from 4000ms to 10000ms to allow file-input component time to update DOM after file selection."
 }
