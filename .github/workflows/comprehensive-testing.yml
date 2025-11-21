@@ -542,7 +542,7 @@ jobs:
           find ./downloaded-artifacts -name "*.xml" -exec cp {} ./test-reports/consolidated/ \;
 
           # Run comprehensive report generation
-          node scripts/test/test-orchestrator.js --no-parallel --html --report-path ./test-reports
+          node scripts/test/test-orchestrator.cjs --no-parallel --html --report-path ./test-reports
 
       - name: 📊 Generate comprehensive summary
         run: |
@@ -661,6 +661,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: 🧠 AI Test Generation Analysis
+        continue-on-error: true
         run: |
           echo "🤖 Running AI-powered test analysis..."
           npm run ai:analyze
