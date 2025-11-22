@@ -41,7 +41,7 @@ jobs:
   flaky-detection:
     name: 🔍 Flaky Test Detection
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' && github.event.inputs.run_flaky != 'false'
+    if: github.event_name != 'push' && (github.event_name == 'schedule' || github.event.inputs.run_flaky != 'false')
     timeout-minutes: 60
     steps:
       - name: Checkout code
@@ -124,7 +124,7 @@ ${report.tests.map((test, i) => `${i + 1}. **${test.name}**
   mutation-testing:
     name: 🧬 Mutation Testing
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' && github.event.inputs.run_mutation != 'false'
+    if: github.event_name != 'push' && (github.event_name == 'schedule' || github.event.inputs.run_mutation != 'false')
     timeout-minutes: 120
     steps:
       - name: Checkout code
@@ -208,7 +208,7 @@ The mutation testing score is below the recommended threshold. This indicates th
   contract-testing:
     name: 📜 Contract Testing
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' && github.event.inputs.run_contracts != 'false'
+    if: github.event_name != 'push' && (github.event_name == 'schedule' || github.event.inputs.run_contracts != 'false')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -284,7 +284,7 @@ The mutation testing score is below the recommended threshold. This indicates th
   performance-regression:
     name: ⚡ Performance Regression
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' && github.event.inputs.run_performance != 'false'
+    if: github.event_name != 'push' && (github.event_name == 'schedule' || github.event.inputs.run_performance != 'false')
     timeout-minutes: 45
     steps:
       - name: Checkout code
