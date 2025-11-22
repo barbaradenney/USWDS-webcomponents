@@ -63,17 +63,19 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: `## 🔧 Scripts Maintenance Check
-            
-\`\`\`
-${output}
-\`\`\`
-
-**Fix suggestions:**
-- Run \`pnpm run scripts:clean\` to auto-fix some issues
-- Review unused scripts and remove if no longer needed
-- Check for orphaned package.json commands
-
-_This check runs automatically on changes to scripts/ or package.json_`
+            body: [
+              '## 🔧 Scripts Maintenance Check',
+              '',
+              '```',
+              output,
+              '```',
+              '',
+              '**Fix suggestions:**',
+              '- Run `pnpm run scripts:clean` to auto-fix some issues',
+              '- Review unused scripts and remove if no longer needed',
+              '- Check for orphaned package.json commands',
+              '',
+              '_This check runs automatically on changes to scripts/ or package.json_'
+            ].join('\n')
           });
 

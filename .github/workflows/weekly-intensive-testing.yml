@@ -87,28 +87,31 @@ jobs:
               const report = JSON.parse(fs.readFileSync('test-reports/flaky-tests.json', 'utf8'));
 
               if (report.flakyTests > 0) {
-                const body = `## 🔍 Flaky Tests Detected
-
-**Summary:**
-- Total test runs: ${report.runs}
-- Flaky tests found: ${report.flakyTests}
-- Date: ${report.timestamp}
-
-**Flaky Tests:**
-
-${report.tests.map((test, i) => `${i + 1}. **${test.name}**
-   - File: \`${test.file}\`
-   - Pass Rate: ${test.passRate}% (${test.passCount}/${report.runs})
-   - Pattern: ${test.runs.map(r => r.passed ? '✓' : '✗').join('')}
-`).join('\n')}
-
-**Recommendations:**
-1. Review test patterns for timing issues
-2. Check for race conditions
-3. Add proper waits/assertions
-4. Consider quarantining until fixed
-
-📄 Full report available in workflow artifacts.`;
+                const body = [
+                  '## 🔍 Flaky Tests Detected',
+                  '',
+                  '**Summary:**',
+                  `- Total test runs: ${report.runs}`,
+                  `- Flaky tests found: ${report.flakyTests}`,
+                  `- Date: ${report.timestamp}`,
+                  '',
+                  '**Flaky Tests:**',
+                  '',
+                  report.tests.map((test, i) => [
+                    `${i + 1}. **${test.name}**`,
+                    `   - File: \`${test.file}\``,
+                    `   - Pass Rate: ${test.passRate}% (${test.passCount}/${report.runs})`,
+                    `   - Pattern: ${test.runs.map(r => r.passed ? '✓' : '✗').join('')}`
+                  ].join('\n')).join('\n'),
+                  '',
+                  '**Recommendations:**',
+                  '1. Review test patterns for timing issues',
+                  '2. Check for race conditions',
+                  '3. Add proper waits/assertions',
+                  '4. Consider quarantining until fixed',
+                  '',
+                  '📄 Full report available in workflow artifacts.'
+                ].join('\n');
 
                 await github.rest.issues.create({
                   owner: context.repo.owner,
@@ -177,24 +180,26 @@ ${report.tests.map((test, i) => `${i + 1}. **${test.name}**
           script: |
             const score = '${{ steps.mutation-score.outputs.score }}';
 
-            const body = `## 🧬 Low Mutation Testing Score
-
-**Current Mutation Score: ${score}%**
-**Target: 80%+**
-
-The mutation testing score is below the recommended threshold. This indicates that your tests may not be catching all potential bugs.
-
-**What This Means:**
-- ${score}% of code mutations were detected by tests
-- ${100 - score}% of mutations survived (bugs that tests didn't catch)
-
-**Recommendations:**
-1. Review survived mutants in the HTML report
-2. Add missing test cases
-3. Improve assertion specificity
-4. Test edge cases more thoroughly
-
-📄 View detailed report in workflow artifacts.`;
+            const body = [
+              '## 🧬 Low Mutation Testing Score',
+              '',
+              `**Current Mutation Score: ${score}%**`,
+              '**Target: 80%+**',
+              '',
+              'The mutation testing score is below the recommended threshold. This indicates that your tests may not be catching all potential bugs.',
+              '',
+              '**What This Means:**',
+              `- ${score}% of code mutations were detected by tests`,
+              `- ${100 - score}% of mutations survived (bugs that tests didn't catch)`,
+              '',
+              '**Recommendations:**',
+              '1. Review survived mutants in the HTML report',
+              '2. Add missing test cases',
+              '3. Improve assertion specificity',
+              '4. Test edge cases more thoroughly',
+              '',
+              '📄 View detailed report in workflow artifacts.'
+            ].join('\n');
 
             await github.rest.issues.create({
               owner: context.repo.owner,
@@ -348,21 +353,23 @@ The mutation testing score is below the recommended threshold. This indicates th
           script: |
             const fs = require('fs');
             if (fs.existsSync('performance-reports/current.json')) {
-              const body = `## ⚡ Performance Regression Detected
-
-Performance has degraded compared to the baseline.
-
-**Metrics:**
-- Bundle size, build time, or render performance exceeded thresholds
-- Review detailed report in workflow artifacts
-
-**Recommendations:**
-1. Identify which metric regressed
-2. Review recent changes
-3. Profile the specific component
-4. Optimize or update baseline if acceptable
-
-📄 Full performance report available in workflow artifacts.`;
+              const body = [
+                '## ⚡ Performance Regression Detected',
+                '',
+                'Performance has degraded compared to the baseline.',
+                '',
+                '**Metrics:**',
+                '- Bundle size, build time, or render performance exceeded thresholds',
+                '- Review detailed report in workflow artifacts',
+                '',
+                '**Recommendations:**',
+                '1. Identify which metric regressed',
+                '2. Review recent changes',
+                '3. Profile the specific component',
+                '4. Optimize or update baseline if acceptable',
+                '',
+                '📄 Full performance report available in workflow artifacts.'
+              ].join('\n');
 
               await github.rest.issues.create({
                 owner: context.repo.owner,

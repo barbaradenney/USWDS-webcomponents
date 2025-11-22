@@ -92,20 +92,19 @@ jobs:
             COMMIT_DESC="automated maintenance tasks"
           fi
           
-          # Build commit message
-          COMMIT_MSG="${COMMIT_TYPE}(${COMMIT_SCOPE}): ${COMMIT_DESC}
+          # Build commit message using heredoc
+          cat >> $GITHUB_OUTPUT << EOF
+          message<<COMMIT_MSG_EOF
+          ${COMMIT_TYPE}(${COMMIT_SCOPE}): ${COMMIT_DESC}
 
-🤖 Automated maintenance performed:
-$(echo "$CHANGED_FILES" | sed 's/^/- /')
+          Automated maintenance performed:
+          $(echo "$CHANGED_FILES" | sed 's/^/- /')
 
-Automated with GitHub Actions Maintenance Workflow
+          Automated with GitHub Actions Maintenance Workflow
 
-Co-Authored-By: GitHub Actions <noreply@github.com>"
-          
-          # Output for next step
-          echo "message<<EOF" >> $GITHUB_OUTPUT
-          echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          Co-Authored-By: GitHub Actions <noreply@github.com>
+          COMMIT_MSG_EOF
+          EOF
 
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true' || github.event.inputs.force_commit == 'true'
