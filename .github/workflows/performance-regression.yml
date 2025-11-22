@@ -14,7 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Need full history for baseline comparison      - name: Install pnpm
+          fetch-depth: 0 # Need full history for baseline comparison
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
@@ -34,7 +36,7 @@ jobs:
         run: npx playwright install chromium
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Run performance tests
         run: |
@@ -237,6 +239,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -247,7 +254,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run Lighthouse CI
         run: |
