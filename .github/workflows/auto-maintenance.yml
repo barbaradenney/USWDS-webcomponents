@@ -22,7 +22,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0      - name: Install pnpm
+          fetch-depth: 0
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
@@ -32,7 +34,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -41,20 +43,20 @@ jobs:
       - name: Run automated maintenance tasks
         run: |
           echo "🤖 Running automated maintenance tasks..."
-          
+
           # Update component status
-          npm run docs:sync
-          
+          pnpm run docs:sync
+
           # Check for dependency updates (security patches only)
-          npm audit fix --only=prod || echo "No security fixes needed"
-          
-          # Update package-lock if needed
-          if [ -n "$(git diff package-lock.json)" ]; then
+          pnpm audit fix --prod || echo "No security fixes needed"
+
+          # Update pnpm-lock if needed
+          if [ -n "$(git diff pnpm-lock.yaml)" ]; then
             echo "📦 Package lock updated"
           fi
-          
+
           # Format any auto-generated files
-          npm run format || echo "No formatting needed"
+          pnpm run format || echo "No formatting needed"
 
       - name: Check for changes
         id: check_changes
@@ -145,19 +147,25 @@ Co-Authored-By: GitHub Actions <noreply@github.com>"
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Check for USWDS updates
         id: uswds_check
         run: |
-          npm ci
-          
-          CURRENT_VERSION=$(npm list @uswds/uswds --depth=0 --json | jq -r '.dependencies."@uswds/uswds".version')
-          LATEST_VERSION=$(npm view @uswds/uswds version)
+          CURRENT_VERSION=$(pnpm list @uswds/uswds --depth=0 --json | jq -r '.dependencies."@uswds/uswds".version')
+          LATEST_VERSION=$(pnpm view @uswds/uswds version)
           
           echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "latest=$LATEST_VERSION" >> $GITHUB_OUTPUT
@@ -190,10 +198,10 @@ Co-Authored-By: GitHub Actions <noreply@github.com>"
             
             ### Automated Update Process
             \`\`\`bash
-            npm update @uswds/uswds
-            npm run uswds:compile
-            npm run test
-            npm run storybook  # Visual verification
+            pnpm update @uswds/uswds
+            pnpm run uswds:compile
+            pnpm run test
+            pnpm run storybook  # Visual verification
             \`\`\`
             
             This issue was created automatically by the maintenance workflow.
