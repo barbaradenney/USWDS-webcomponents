@@ -485,15 +485,16 @@ describe('USATimePicker', () => {
     it('should have data-default-value attribute for USWDS initialization', async () => {
       // CRITICAL: data-default-value is required for USWDS to set initial value
       // Pattern documented in USWDS_INITIAL_VALUE_PATTERN.md
+      // Note: Attribute is on container per USWDS time-picker pattern (same as combo-box)
       element.value = '14:30';
       await waitForPropertyPropagation(element);
 
-      const input = element.querySelector('input') as HTMLInputElement;
-      expect(input).toBeTruthy();
+      const container = element.querySelector('.usa-time-picker') as HTMLElement;
+      expect(container).toBeTruthy();
 
-      // Must have data-default-value attribute
-      expect(input?.hasAttribute('data-default-value')).toBe(true);
-      expect(input?.getAttribute('data-default-value')).toBe('14:30');
+      // Must have data-default-value attribute on container
+      expect(container?.hasAttribute('data-default-value')).toBe(true);
+      expect(container?.getAttribute('data-default-value')).toBe('14:30');
     });
   });
 });
