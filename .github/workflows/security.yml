@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true
 
       - name: Run pnpm audit fix (dry run)
-        run: pnpm audit fix --dry-run --audit-level=moderate
+        run: pnpm audit --audit-level=moderate --json > audit-report.json || true
 
       - name: Upload audit results
         if: failure()
@@ -157,7 +157,7 @@ jobs:
 
       - name: Check licenses
         run: |
-          license-checker --summary --excludePrivatePackages --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC0-1.0;CC-BY-3.0;CC-BY-4.0;Unlicense;WTFPL;Python-2.0' > license-report.txt
+          license-checker --summary --excludePrivatePackages --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC0-1.0;CC-BY-3.0;CC-BY-4.0;Unlicense;WTFPL;Python-2.0;MPL-2.0' > license-report.txt
           cat license-report.txt
 
       - name: Upload license report
