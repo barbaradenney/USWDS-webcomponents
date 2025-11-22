@@ -83,7 +83,7 @@ jobs:
 
       - name: Archive Chromatic results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: chromatic-results
           path: |
@@ -212,7 +212,7 @@ jobs:
 
       - name: Upload cross-browser screenshots
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cross-browser-screenshots-${{ matrix.browser }}
           path: |
@@ -263,7 +263,7 @@ jobs:
 
       - name: Upload accessibility results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: accessibility-visual-results
           path: |
@@ -314,7 +314,7 @@ jobs:
 
       - name: Upload performance results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: performance-visual-results
           path: |
