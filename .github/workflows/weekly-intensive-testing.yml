@@ -395,3 +395,4 @@ Performance has degraded compared to the baseline.
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📅 Scheduled run: Every Sunday at 3 AM UTC" >> $GITHUB_STEP_SUMMARY
           echo "🔄 Next run: $(date -u -d 'next sunday 03:00' '+%Y-%m-%d %H:%M UTC' 2>/dev/null || echo 'Check GitHub Actions schedule')" >> $GITHUB_STEP_SUMMARY
+

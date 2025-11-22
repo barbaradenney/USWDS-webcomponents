@@ -244,3 +244,4 @@ Co-Authored-By: GitHub Actions <noreply@github.com>"
           else
             echo "✅ No merged branches to clean up"
           fi
+

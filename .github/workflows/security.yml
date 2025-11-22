@@ -215,3 +215,4 @@ jobs:
           echo "| License Check | ${{ needs.license-check.result == 'success' && '✅ Compatible' || '⚠️ Review Required' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Secret Scanning | ${{ needs.secret-scanning.result == 'success' && '✅ Clean' || '🚨 Secrets Detected' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+
