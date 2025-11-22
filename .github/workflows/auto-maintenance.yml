@@ -237,7 +237,7 @@ Co-Authored-By: GitHub Actions <noreply@github.com>"
           if [ -n "$MERGED_BRANCHES" ]; then
             echo "📋 Found merged branches to delete:"
             echo "$MERGED_BRANCHES"
-            
+
             # This would require additional permissions to delete remote branches
             # For now, just report what would be deleted
             echo "$MERGED_BRANCHES" | wc -l | xargs echo "Would delete" | xargs echo "branches"
