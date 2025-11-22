@@ -45,10 +45,11 @@ jobs:
           echo "🤖 Running automated maintenance tasks..."
 
           # Update component status
-          pnpm run docs:sync
+          # TODO: Re-enable when scripts/sync-component-docs.js is created
+          # pnpm run docs:sync
 
           # Check for dependency updates (security patches only)
-          pnpm audit fix --prod || echo "No security fixes needed"
+          pnpm audit --audit-level=moderate --json > /tmp/audit-report.json || echo "No security fixes needed"
 
           # Update pnpm-lock if needed
           if [ -n "$(git diff pnpm-lock.yaml)" ]; then
