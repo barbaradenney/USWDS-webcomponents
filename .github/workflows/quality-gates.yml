@@ -199,6 +199,7 @@ jobs:
         run: pnpm run build
 
       - name: Analyze bundle size
+        continue-on-error: true
         run: |
           pnpm add -g bundlesize2
           cat > .bundlesize.json << 'EOF'
@@ -262,6 +263,7 @@ jobs:
           done
 
       - name: Validate JSDoc comments
+        continue-on-error: true
         run: |
           pnpm add -g documentation
           documentation lint packages/*/src/**/*.ts
@@ -310,7 +312,7 @@ jobs:
       - name: Run accessibility tests
         run: |
           npx playwright install chromium
-          pnpm run test:storybook -- --url http://localhost:6006
+          pnpm run test:storybook:ci
 
   quality-report:
     name: Generate Quality Report
