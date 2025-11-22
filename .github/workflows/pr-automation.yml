@@ -122,9 +122,14 @@ jobs:
           pnpm run test:visual:regression || echo "Visual regression baseline may need updating"
 
       - name: Generate validation report
+        continue-on-error: true
         run: |
           echo "📊 Generating comprehensive validation report..."
-          node scripts/generate-pr-validation-report.js
+          if [ -f scripts/generate-pr-validation-report.js ]; then
+            node scripts/generate-pr-validation-report.js
+          else
+            echo "⚠️ Validation report generator not found - skipping"
+          fi
         env:
           CRITICAL_COMPONENTS: ${{ needs.pr-analysis.outputs.critical-components }}
           ALL_COMPONENTS: ${{ needs.pr-analysis.outputs.all-components }}
@@ -172,9 +177,14 @@ jobs:
           path: __tests__/
 
       - name: Generate PR comment
+        continue-on-error: true
         run: |
           echo "💬 Generating PR comment..."
-          node scripts/generate-pr-comment.js
+          if [ -f scripts/generate-pr-comment.js ]; then
+            node scripts/generate-pr-comment.js
+          else
+            echo "⚠️ PR comment generator not found - skipping"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}

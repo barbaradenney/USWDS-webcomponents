@@ -312,7 +312,13 @@ jobs:
         run: pnpm run test:performance:visual
 
       - name: Generate performance report
-        run: node scripts/performance-visual-report.js
+        continue-on-error: true
+        run: |
+          if [ -f scripts/performance-visual-report.js ]; then
+            node scripts/performance-visual-report.js
+          else
+            echo "⚠️ Performance visual report script not found - skipping"
+          fi
 
       - name: Upload performance results
         if: always()

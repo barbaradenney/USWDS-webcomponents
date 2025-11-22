@@ -42,18 +42,24 @@ jobs:
         id: validate
 
       - name: Check for outdated documentation
+        continue-on-error: true
+        id: outdated
         run: |
           if [ -f scripts/check-outdated-docs.js ]; then
             node scripts/check-outdated-docs.js
           else
             echo "⚠️ Outdated docs checker not found - skipping"
           fi
-        continue-on-error: true
-        id: outdated
 
       - name: Sync component documentation status
-        run: node scripts/maintenance/sync-component-docs.js
+        continue-on-error: true
         id: sync
+        run: |
+          if [ -f scripts/maintenance/sync-component-docs.js ]; then
+            node scripts/maintenance/sync-component-docs.js
+          else
+            echo "⚠️ Sync component docs script not found - skipping"
+          fi
 
       - name: Check documentation links
         run: node scripts/validate/validate-documentation-links.cjs
@@ -213,16 +219,21 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate component coverage report
+        continue-on-error: true
         run: |
-          node scripts/sync-component-docs.js
-          
-          # Create coverage badge data
-          TOTAL_COMPONENTS=$(find src/components -mindepth 1 -maxdepth 1 -type d | wc -l)
-          COMPLETE_COMPONENTS=$(grep -o "Complete (90%+): [0-9]*" docs/component-status-report.md | grep -o "[0-9]*" || echo "0")
-          COVERAGE_PERCENT=$(echo "scale=0; $COMPLETE_COMPONENTS * 100 / $TOTAL_COMPONENTS" | bc -l || echo "0")
-          
-          echo "Component Coverage: $COVERAGE_PERCENT% ($COMPLETE_COMPONENTS/$TOTAL_COMPONENTS)"
-          echo "COVERAGE_PERCENT=$COVERAGE_PERCENT" >> $GITHUB_ENV
+          if [ -f scripts/sync-component-docs.js ]; then
+            node scripts/sync-component-docs.js
+
+            # Create coverage badge data
+            TOTAL_COMPONENTS=$(find src/components -mindepth 1 -maxdepth 1 -type d | wc -l)
+            COMPLETE_COMPONENTS=$(grep -o "Complete (90%+): [0-9]*" docs/component-status-report.md | grep -o "[0-9]*" || echo "0")
+            COVERAGE_PERCENT=$(echo "scale=0; $COMPLETE_COMPONENTS * 100 / $TOTAL_COMPONENTS" | bc -l || echo "0")
+
+            echo "Component Coverage: $COVERAGE_PERCENT% ($COMPLETE_COMPONENTS/$TOTAL_COMPONENTS)"
+            echo "COVERAGE_PERCENT=$COVERAGE_PERCENT" >> $GITHUB_ENV
+          else
+            echo "⚠️ Sync component docs script not found - skipping coverage report"
+          fi
 
       - name: Comment on PR if this is a PR
         if: github.event_name == 'push' && github.ref != 'refs/heads/main'
