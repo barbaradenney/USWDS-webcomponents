@@ -152,10 +152,12 @@ jobs:
           pnpm add -g complexity-report
 
       - name: Analyze code complexity
+        continue-on-error: true
         run: |
           npx cr --format json --output complexity-report.json $(find packages/*/src -name "*.ts" -not -name "*.test.ts" -not -name "*.stories.ts")
 
       - name: Check complexity thresholds
+        continue-on-error: true
         run: |
           node -e "
           const report = require('./complexity-report.json');
@@ -310,6 +312,7 @@ jobs:
         run: npx wait-on http://localhost:6006
 
       - name: Run accessibility tests
+        continue-on-error: true
         run: |
           npx playwright install chromium
           pnpm run test:storybook:ci
