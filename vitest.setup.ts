@@ -70,7 +70,7 @@ afterEach(() => {
 
   // Clean up any remaining elements - more aggressive approach
   document.body.innerHTML = '';
-  document.head.querySelectorAll('style[data-component]').forEach(el => el.remove());
+  document.head.querySelectorAll('style[data-component]').forEach((el) => el.remove());
 
   // Reset body classes and styles that components might set
   document.body.className = '';
@@ -132,8 +132,20 @@ afterEach(() => {
     document.body.parentNode?.replaceChild(newBody, document.body);
   } catch (e) {
     // Fallback: try individual event type removal
-    const eventTypes = ['keydown', 'keyup', 'click', 'focus', 'blur', 'resize', 'scroll', 'mousedown', 'mouseup', 'touchstart', 'touchend'];
-    eventTypes.forEach(type => {
+    const eventTypes = [
+      'keydown',
+      'keyup',
+      'click',
+      'focus',
+      'blur',
+      'resize',
+      'scroll',
+      'mousedown',
+      'mouseup',
+      'touchstart',
+      'touchend',
+    ];
+    eventTypes.forEach((type) => {
       try {
         const clone = (window as any).EventTarget.prototype.addEventListener;
         if (clone) {
@@ -149,7 +161,7 @@ afterEach(() => {
   // Clear any cached modules or component state
   try {
     // Clear any component initialization flags
-    document.querySelectorAll('[data-web-component-managed]').forEach(el => {
+    document.querySelectorAll('[data-web-component-managed]').forEach((el) => {
       el.removeAttribute('data-web-component-managed');
     });
   } catch (e) {
@@ -471,7 +483,7 @@ Object.defineProperty(window, 'sessionStorage', {
 
 // Mock HTMLFormElement.requestSubmit for JSdom compatibility
 if (!HTMLFormElement.prototype.requestSubmit) {
-  HTMLFormElement.prototype.requestSubmit = function(submitter?: HTMLElement) {
+  HTMLFormElement.prototype.requestSubmit = function (submitter?: HTMLElement) {
     // Simulate form submission
     const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
 
@@ -504,9 +516,9 @@ if (process.env.CI) {
             return target.hash || ''; // Always return string, never undefined
           }
           return target[prop as keyof Location];
-        }
+        },
       });
-    }
+    },
   });
 
   // Wrap Error constructor to suppress specific USWDS test environment errors
@@ -520,13 +532,13 @@ if (process.env.CI) {
     'Not implemented',
     'window.matchMedia is not a function',
     'window.getComputedStyle',
-    'navigation to another Document'
+    'navigation to another Document',
   ];
 
   global.Error = class SuppressedError extends OriginalError {
     constructor(message?: string) {
       // Check if this error should be suppressed
-      const shouldSuppress = message && suppressedMessages.some(msg => message.includes(msg));
+      const shouldSuppress = message && suppressedMessages.some((msg) => message.includes(msg));
 
       if (shouldSuppress) {
         // Create a silent error that won't be reported by Vitest
@@ -551,7 +563,7 @@ if (process.env.CI) {
   const originalErrorHandler = globalThis.onerror;
   globalThis.onerror = (message, source, lineno, colno, error) => {
     const errorMessage = error?.message || message?.toString() || '';
-    const shouldSuppress = suppressedMessages.some(msg => errorMessage.includes(msg));
+    const shouldSuppress = suppressedMessages.some((msg) => errorMessage.includes(msg));
 
     if (shouldSuppress) {
       return true; // Prevent default error handling
@@ -567,7 +579,7 @@ if (process.env.CI) {
   const originalRejectionHandler = globalThis.onunhandledrejection;
   globalThis.onunhandledrejection = (event: PromiseRejectionEvent) => {
     const errorMessage = event.reason?.message || event.reason?.toString() || '';
-    const shouldSuppress = suppressedMessages.some(msg => errorMessage.includes(msg));
+    const shouldSuppress = suppressedMessages.some((msg) => errorMessage.includes(msg));
 
     if (shouldSuppress) {
       event.preventDefault();
@@ -580,7 +592,9 @@ if (process.env.CI) {
     }
   };
 
-  console.info('✅ Vitest test environment setup complete (CI mode - USWDS error suppression enabled)');
+  console.info(
+    '✅ Vitest test environment setup complete (CI mode - USWDS error suppression enabled)'
+  );
 } else {
   console.info('✅ Vitest test environment setup complete');
 }

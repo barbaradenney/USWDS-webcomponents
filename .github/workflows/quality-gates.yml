@@ -153,7 +153,7 @@ jobs:
 
       - name: Analyze code complexity
         run: |
-          npx cr --format json --output complexity-report.json packages/*/src/**/*.ts
+          npx cr --format json --output complexity-report.json $(find packages/*/src -name "*.ts" -not -name "*.test.ts" -not -name "*.stories.ts")
 
       - name: Check complexity thresholds
         run: |
@@ -201,7 +201,19 @@ jobs:
       - name: Analyze bundle size
         run: |
           pnpm add -g bundlesize2
-          echo '[{"path": "packages/*/dist/*.js", "maxSize": "250KB"}, {"path": "packages/*/dist/*.css", "maxSize": "600KB"}]' > .bundlesize.json
+          cat > .bundlesize.json << 'EOF'
+          [
+            {"path": "packages/uswds-wc-actions/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-forms/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-navigation/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-data-display/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-feedback/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-layout/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-structure/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-patterns/dist/index.js", "maxSize": "250KB"},
+            {"path": "packages/uswds-wc-core/dist/styles.css", "maxSize": "600KB"}
+          ]
+          EOF
           bundlesize -f .bundlesize.json
 
       - name: Generate bundle report

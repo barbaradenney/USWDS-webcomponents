@@ -1,9 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local",
-    "tsconfig.json"
-  ],
+  "globalDependencies": ["**/.env.*local", "tsconfig.json"],
   "remoteCache": {
     "enabled": true
   },
@@ -59,8 +56,5 @@
       "cache": true
     }
   },
-  "globalEnv": [
-    "NODE_ENV",
-    "CI"
-  ]
+  "globalEnv": ["NODE_ENV", "CI"]
 }

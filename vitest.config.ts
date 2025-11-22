@@ -34,9 +34,9 @@ export default defineConfig({
         'Not implemented',
         'window.matchMedia is not a function',
         'window.getComputedStyle',
-        'navigation to another Document'
+        'navigation to another Document',
       ];
-      const shouldSuppress = jsdomLimitations.some(msg => errorMessage.includes(msg));
+      const shouldSuppress = jsdomLimitations.some((msg) => errorMessage.includes(msg));
       if (shouldSuppress) {
         return; // Ignore these errors
       }
@@ -49,19 +49,16 @@ export default defineConfig({
       'packages/**/src/**/*.visual.test.ts',
       'node_modules',
       // Skip behavior/interaction tests in CI - they're flaky in jsdom, covered by Cypress
-      ...(process.env.CI ? [
-        'packages/**/src/**/*-behavior*.test.ts',
-        'packages/**/src/**/*-interaction.test.ts'
-      ] : [])
+      ...(process.env.CI
+        ? ['packages/**/src/**/*-behavior*.test.ts', 'packages/**/src/**/*-interaction.test.ts']
+        : []),
     ],
     // Coverage configuration
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'html', 'json'],
       reportsDirectory: './coverage',
-      include: [
-        'packages/**/src/**/*.ts',
-      ],
+      include: ['packages/**/src/**/*.ts'],
       exclude: [
         'packages/**/src/**/*.test.ts',
         'packages/**/src/**/*.stories.ts',
@@ -149,13 +146,7 @@ export default defineConfig({
   },
   // Optimize dependencies for testing
   optimizeDeps: {
-    include: [
-      'lit',
-      'lit/decorators.js',
-      '@lit/reactive-element',
-      'vitest',
-      '@vitest/expect'
-    ],
+    include: ['lit', 'lit/decorators.js', '@lit/reactive-element', 'vitest', '@vitest/expect'],
   },
   // Cache for better performance
   cacheDir: 'node_modules/.vitest',

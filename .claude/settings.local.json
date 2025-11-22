@@ -156,7 +156,19 @@
       "Bash(pnpm cypress:component:*)",
       "Bash(gh run download:*)",
       "Bash(/tmp/cypress-ci-run-19523285650.log)",
-      "Bash(/tmp/push-failed.txt)"
+      "Bash(/tmp/push-failed.txt)",
+      "Bash(gh pr list:*)",
+      "Bash(pnpm run ai:analyze:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(do)",
+      "Bash(if [ -f \"scripts/$script\" ])",
+      "Bash(then)",
+      "Bash(elif [ -f \"scripts/test/$script\" ])",
+      "Bash(elif [ -f \"scripts/validate/$script\" ])",
+      "Bash(else)",
+      "Bash(yamllint:*)",
+      "Bash(pnpm info:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
