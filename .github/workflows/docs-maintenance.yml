@@ -37,21 +37,26 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Validate documentation consistency
-        run: node scripts/validate-docs.js
+        run: node scripts/validate/validate-docs.js
         continue-on-error: true
         id: validate
 
       - name: Check for outdated documentation
-        run: node scripts/check-outdated-docs.js
+        run: |
+          if [ -f scripts/check-outdated-docs.js ]; then
+            node scripts/check-outdated-docs.js
+          else
+            echo "⚠️ Outdated docs checker not found - skipping"
+          fi
         continue-on-error: true
         id: outdated
 
       - name: Sync component documentation status
-        run: node scripts/sync-component-docs.js
+        run: node scripts/maintenance/sync-component-docs.js
         id: sync
 
       - name: Check documentation links
-        run: node scripts/check-links.js
+        run: node scripts/validate/validate-documentation-links.cjs
         continue-on-error: true
         id: links
 
@@ -132,7 +137,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Check all documentation links
-        run: node scripts/check-links.js
+        run: node scripts/validate/validate-documentation-links.cjs
         continue-on-error: true
         id: comprehensive-links
 
