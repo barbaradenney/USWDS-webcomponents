@@ -74,8 +74,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: AI Test Gap Analysis
-        run: pnpm run ai:analyze
+      # TODO: Re-enable when scripts/ai-test-generator.js is created
+      # - name: AI Test Gap Analysis
+      #   run: pnpm run ai:analyze
 
       - name: Smart Test Recommendations
         run: pnpm run test:recommend:high
