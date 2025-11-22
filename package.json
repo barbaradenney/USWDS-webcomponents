@@ -393,6 +393,7 @@
     "uswds:test-smart": "node scripts/smart-comprehensive-testing.js",
     "uswds:investigate": "echo 'Archived - manual investigation tool no longer needed'",
     "validate:transformations": "node scripts/validate-uswds-transformation.js",
+    "validate:uswds-transformation": "node scripts/validate-uswds-transformation.js",
     "validate:transformations:generate": "node scripts/validate-uswds-transformation.js --generate",
     "validate:transformations:browser": "node scripts/test-browser-transformation.js",
     "validate:transformations:full": "npm run validate:transformations && npm run validate:transformations:browser",
