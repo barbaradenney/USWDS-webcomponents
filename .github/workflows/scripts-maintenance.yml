@@ -76,3 +76,4 @@ ${output}
 
 _This check runs automatically on changes to scripts/ or package.json_`
           });
+
