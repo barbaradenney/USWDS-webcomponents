@@ -123,12 +123,12 @@ jobs:
       - name: Install Cypress
         run: npx cypress install
 
-      - name: Build Storybook (for component tests)
-        if: matrix.test-type == 'component'
+      - name: Build Storybook (for component and accessibility tests)
+        if: matrix.test-type == 'component' || matrix.test-type == 'accessibility'
         run: pnpm run build-storybook
 
-      - name: Start Storybook (for component tests)
-        if: matrix.test-type == 'component'
+      - name: Start Storybook (for component and accessibility tests)
+        if: matrix.test-type == 'component' || matrix.test-type == 'accessibility'
         run: |
           npx http-server storybook-static -p 6006 &
           # Wait for Storybook to be ready
