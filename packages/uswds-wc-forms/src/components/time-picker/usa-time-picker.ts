@@ -271,10 +271,10 @@ export class USATimePicker extends USWDSBaseComponent {
         ${this.renderHint()}
         <div
           class="usa-time-picker"
-          data-min-time="${this.minTime || ''}"
-          data-max-time="${this.maxTime || ''}"
-          data-step="${this.step || '30'}"
-          data-default-value="${this.value || ''}"
+          data-min-time="${this.minTime ?? ''}"
+          data-max-time="${this.maxTime ?? ''}"
+          data-step="${this.step ?? '30'}"
+          data-default-value="${this.value ?? ''}"
           data-enhanced="false"
         >
           ${this.renderInput(inputClasses, ariaDescribedBy)}
