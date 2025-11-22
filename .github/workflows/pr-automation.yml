@@ -66,7 +66,9 @@ jobs:
     if: needs.pr-analysis.outputs.needs-validation == 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4      - name: Install pnpm
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
@@ -86,10 +88,10 @@ jobs:
         run: npx puppeteer browsers install chrome
 
       - name: Build components
-        run: npm run build
+        run: pnpm run build
 
       - name: Start dev server for Puppeteer tests
-        run: npm run dev &
+        run: pnpm run dev &
         env:
           CI: true
 
@@ -99,25 +101,25 @@ jobs:
       - name: Run USWDS transformation validation
         run: |
           echo "🏛️ Running USWDS transformation validation..."
-          npm run validate:uswds-transformation
+          pnpm run validate:uswds-transformation
 
       - name: Run cross-browser validation
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "🌐 Running comprehensive cross-browser validation..."
-          npm run test:cross-browser
+          pnpm run test:cross-browser
 
       - name: Run performance monitoring
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "⚡ Running performance monitoring..."
-          npm run test:performance:monitor
+          pnpm run test:performance:monitor
 
       - name: Run visual regression testing
         if: needs.pr-analysis.outputs.validation-type == 'comprehensive'
         run: |
           echo "📸 Running visual regression testing..."
-          npm run test:visual:regression || echo "Visual regression baseline may need updating"
+          pnpm run test:visual:regression || echo "Visual regression baseline may need updating"
 
       - name: Generate validation report
         run: |
@@ -148,6 +150,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

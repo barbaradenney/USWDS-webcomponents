@@ -25,7 +25,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}      - name: Install pnpm
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
@@ -42,7 +44,7 @@ jobs:
         run: pnpm install --frozen-lockfile
         
       - name: Regenerate Storybook documentation
-        run: npm run docs:storybook
+        run: pnpm run docs:storybook
         
       - name: Check for changes
         id: check-changes

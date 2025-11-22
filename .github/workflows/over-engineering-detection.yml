@@ -12,24 +12,26 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
+      uses: actions/checkout@v4
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10
 
 
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'pnpm'
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
     - name: 🔍 Detect over-engineering patterns
-      run: npm run detect:over-engineering:ci
+      run: pnpm run detect:over-engineering:ci
 
     - name: 📊 Generate over-engineering report
       if: always()

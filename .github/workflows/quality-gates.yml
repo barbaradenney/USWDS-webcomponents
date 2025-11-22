@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4      - name: Install pnpm
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
@@ -29,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
-        run: npm run lint -- --format json --output-file eslint-report.json
+        run: pnpm run lint -- --format json --output-file eslint-report.json
         continue-on-error: true
 
       - name: Upload ESLint report
@@ -55,6 +57,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -65,7 +72,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run TypeScript compiler
-        run: npm run typecheck
+        run: pnpm run typecheck
 
       - name: Check for TypeScript strict mode
         run: |
@@ -81,6 +88,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -91,7 +103,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run tests with coverage
-        run: npm run test:coverage
+        run: pnpm run test:coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -123,6 +135,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -131,8 +148,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
-          npm install -g complexity-report
+          pnpm install --frozen-lockfile
+          pnpm add -g complexity-report
 
       - name: Analyze code complexity
         run: |
@@ -164,6 +181,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -174,11 +196,11 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Analyze bundle size
         run: |
-          npm install -g bundlesize2
+          pnpm add -g bundlesize2
           echo '[{"path": "dist/*.js", "maxSize": "250KB"}, {"path": "dist/*.css", "maxSize": "600KB"}]' > .bundlesize.json
           bundlesize -f .bundlesize.json
 
@@ -203,6 +225,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -224,7 +251,7 @@ jobs:
 
       - name: Validate JSDoc comments
         run: |
-          npm install -g documentation
+          pnpm add -g documentation
           documentation lint src/**/*.ts
 
       - name: Check Storybook stories exist
@@ -245,6 +272,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -255,12 +287,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run accessibility tests
         run: |
           npx playwright install chromium
-          npm run test:storybook -- --url http://localhost:6006
+          pnpm run test:storybook -- --url http://localhost:6006
 
   quality-report:
     name: Generate Quality Report

@@ -31,11 +31,12 @@ jobs:
         version: 10
 
 
-      
+
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         cache: 'pnpm'
         
     - name: Install dependencies
@@ -69,7 +70,7 @@ ${output}
 \`\`\`
 
 **Fix suggestions:**
-- Run \`npm run scripts:clean\` to auto-fix some issues
+- Run \`pnpm run scripts:clean\` to auto-fix some issues
 - Review unused scripts and remove if no longer needed
 - Check for orphaned package.json commands
 

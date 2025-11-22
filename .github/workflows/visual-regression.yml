@@ -34,7 +34,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           # Chromatic needs full history for baseline comparison
-          fetch-depth: 0      - name: Install pnpm
+          fetch-depth: 0
+
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 10
@@ -44,22 +46,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: |
-          npm ci
+          pnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
       - name: Initialize USWDS
-        run: npm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: npm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
         env:
           NODE_OPTIONS: '--max-old-space-size=4096'
 
@@ -172,25 +174,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: |
-          npm ci
+          pnpm install --frozen-lockfile
           npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Initialize USWDS
-        run: npm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: npm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Start Storybook server
         run: |
@@ -223,23 +230,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Initialize USWDS
-        run: npm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: npm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run accessibility visual tests
         run: |
@@ -269,28 +281,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: |
-          npm ci
+          pnpm install --frozen-lockfile
           npx playwright install --with-deps chromium
 
       - name: Initialize USWDS
-        run: npm run uswds:init
+        run: pnpm run uswds:init
 
       - name: Compile USWDS styles
-        run: npm run uswds:compile
+        run: pnpm run uswds:compile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Run performance visual tests
-        run: npm run test:performance:visual
+        run: pnpm run test:performance:visual
 
       - name: Generate performance report
         run: node scripts/performance-visual-report.js
