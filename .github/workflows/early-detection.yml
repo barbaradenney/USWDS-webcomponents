@@ -120,6 +120,9 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
 
+      - name: Install Cypress
+        run: npx cypress install
+
       - name: Run Test Type - ${{ matrix.test-type }}
         run: |
           case "${{ matrix.test-type }}" in
