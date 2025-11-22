@@ -123,6 +123,17 @@ jobs:
       - name: Install Cypress
         run: npx cypress install
 
+      - name: Build Storybook (for component tests)
+        if: matrix.test-type == 'component'
+        run: pnpm run build-storybook
+
+      - name: Start Storybook (for component tests)
+        if: matrix.test-type == 'component'
+        run: |
+          npx http-server storybook-static -p 6006 &
+          # Wait for Storybook to be ready
+          timeout 60 bash -c 'until curl -s http://localhost:6006 > /dev/null; do sleep 1; done'
+
       - name: Run Test Type - ${{ matrix.test-type }}
         run: |
           case "${{ matrix.test-type }}" in
