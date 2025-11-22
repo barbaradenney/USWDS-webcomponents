@@ -210,3 +210,19 @@ For bundle optimization, see:
 - **Category**: TEMPORARY
 - **Age**: 12 days
 
+
+### CYPRESS_TEST_FAILURES_ANALYSIS.md (Archived 2025-11-22)
+- **Reason**: Temporary doc older than 7 days (11 days)
+- **Category**: TEMPORARY
+- **Age**: 11 days
+
+### PATTERN_IMPROVEMENTS_SUMMARY.md (Archived 2025-11-22)
+- **Reason**: Temporary doc older than 7 days (16 days)
+- **Category**: TEMPORARY
+- **Age**: 16 days
+
+### SESSION_SUMMARY.md (Archived 2025-11-22)
+- **Reason**: Temporary doc older than 7 days (16 days)
+- **Category**: TEMPORARY
+- **Age**: 16 days
+
